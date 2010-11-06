@@ -1,0 +1,133 @@
+
+Main Author
+============
+
+Michael Krause          <m.krause@tu-harburg.de>
+
+
+Borrowed Code
+==============
+
+Niklas Beisert          <nbeisert@physik.tu-muenchen.de>
+Tammo Hinrichs          <kb@ms.demo.org>
+	(xm-player.c derived from OpenCP-kb980717)
+	Check out: http://www.cubic.org/player/
+Tammo Hinrichs		<kb@ms.demo.org>
+	Assembly code for kb-x86 mixer
+The GIMP Team
+	(tips-dialog.c from the GIMP)
+Simon Kågedal		<simon@sdf.se>
+	(Sample map editor derived from clavier-0.1.3)
+Francois Pinard         <pinard@iro.umontreal.ca>
+	(recode.c derived from the recode-3.4.1 package)
+Free Software Foundation, Inc.
+	(poll.c quickly c&p'ed from libc-5.4.46 source)
+Fredrik Huss
+	(XM cheat sheet from ft2 archive)
+Juan Linietsky
+	(some icons taken from CheeseTracker)
+
+
+Contributions
+==============
+
+Jon Forsberg            <zzed@cyberdude.com>
+	(bug fix in keys.c)
+Arthibus Gissehel	<gissehel@vachefolle.com>
+	(RPM specfile)
+Stefan Hager		<b.hager@eduhi.at>
+	(WAV saving bug fix, stereo sample loader work)
+Maik Naeher		<m_naeher@informatik.uni-kl.de>
+	(implemented detection of more .mod formats)
+Darin Ohashi            <dmohashi@algonquin.uwaterloo.ca>
+	(tracked down a bug in sample-display.c)
+Michael Schwendt        <sidplay@geocities.com>
+	(corrected some historical peculiarities in the README)
+Erik Thiele		<erikyyy@studbox.uni-stuttgart.de>
+	(pointed out some ... stupid ...  XI loader bugs :D)
+Kai Vehmanen		<kai.vehmanen@wakkanet.fi>
+	(ALSA support)
+Yuuki NINOMIYA          <gm@smn.enjoy.ne.jp>
+        (bug fix in menubar.c; i18n without GNOME)
+Martin Andersson	<t3tr1s@yahoo.com>
+	(the SoundTracker logo and splash screen)
+Conrad Parker		<conradp@cse.unsw.edu.au>
+	("Reverse" function in sample editor; bug fixes)
+Tomasz Maka		<pasp@ll.pl>
+	("Save region" function, insert / delete row stuff,
+	 status bar, timer and other stuff)
+Nicolas Leveille	<nicolas.leveille@free.fr>
+	(track editor IT-style stuff)
+Jason Nunn		<jsno@downunder.net.au>
+	(gz zip bz2 archive handler)
+Luc Tanguay		<luc.tanguay@bell.ca>
+	(MIDI controller input)
+Tijs van Bakel  	<smoke@casema.net>
+	(Minor row highlighting)
+Olivier Glorieux	<sglorzlinux@netcourrier.com>
+	(Block mode selection with mouse support)
+Rikard Bosnjakovic 	<bos@hack.org>
+	(pointed out some stupid leaks)
+Fabian Giesen		<fg@farb-rausch.de>
+	(Win32 port)
+Felix Bohmann		<fb@farb-rausch.de>
+	(borrowed me his SGI O2 for the IRIX port)
+Aki Kemppainen		<kemppaia@assari.cc.tut.fi>
+	(reported various GUI bugs)
+Mardy			<mardy@users.sourceforge.net>
+	(sample display vertical flipping bug)
+Yury Aliaev		<mutabor@catholic.org>
+	(pattern import/export in FT2 .xp format, minor
+ 	bugfixes and improvements, mouse wheel functions,
+	playlist editor)
+Thomas Uwe Gruettmueller <sloyment@gmx.net>
+	(various fixes)
+Wilbern Cobb		<wcobb@openbsd.org>
+	(OpenBSD and 64bit fixes, SUN audio drivers)
+Erik de Castro Lopo	<erikd-100@mega-nerd.com>
+	(libsndfile support)
+Anthony Van Groningen	<avan@uwm.edu>
+	(JACK support)
+Henri Jylkkä		<hj@bsdmail.org>
+Frank Knappe		<knappe@tu-harburg.de>
+	(Help with NetBSD port)
+Mathias Meyer		<mathmeye@users.sourceforge.net>
+	(Darwin fixes)
+
+
+Translations
+=============
+
+Colin Marquardt		<colin.marquardt@gmx.de>
+Thomas R. Koll		<tomk32@tomk32.de>
+	(de)
+Atsushi Yamagata	<yamagata@plathome.co.jp>
+Yuuki NINOMIYA		<gm@smn.enjoy.ne.jp>
+Junichi Uekawa		<dancer@netfort.gr.jp>
+	(ja)
+Yuri Bongiorno		<yurix@tiscalinet.it>
+	(it)
+Zbigniew Chyla		<chyla@alice.ci.pwr.wroc.pl>
+	(pl)
+German Jose Gomez Garcia <german@pinon.ccu.uniovi.es>
+Vicente E. Llorens	<vllorens@mundofree.com>,
+	(es)
+Michael Shigorin	<mike@altlinux.ru>
+Yury Aliaev		<mutabor@catholic.org>
+	(ru)
+Michel Robitaille	<robitail@IRO.UMontreal.CA>
+	(fr)
+Matej Erman		<matej.erman@guest.arnes.si>
+	(sl)
+Xosé Anxo Pereira Torreiro <pereira@iponet.es>
+	(gl)
+Christian Rose		<menthos@menthos.com>
+	(sv)
+Denis Lackovic		<delacko@fly.srk.fer.hr>
+	(hr)
+Keld Simonsen		<keld@dkuug.dk>
+	(da)
+Petter Johan Olsen	<petter.olsen@cc.uit.no>
+	(no)
+Andrej Kacian		<andrej@kacian.sk>
+	(sk)

@@ -1,0 +1,387 @@
+; The Real SoundTracker - Cubically interpolating mixing routines
+;                         with IT style filter support
+; Version for non-gas assemblers by Fabian Giesen, as of ST v0.5.4.
+;
+; Copyright (C) 1999-2000 Tammo Hinrichs
+; Copyright (C) 2000 Michael Krause
+; Copyright (C) 2000 Fabian Giesen
+;
+; This program is free software; you can redistribute it and/or modify
+; it under the terms of the GNU General Public License as published by
+; the Free Software Foundation; either version 2 of the License, or
+; (at your option) any later version.
+;
+; This program is distributed in the hope that it will be useful,
+; but WITHOUT ANY WARRANTY; without even the implied warranty of
+; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+; GNU General Public License for more details.
+;
+; You should have received a copy of the GNU General Public License
+; along with this program; if not, write to the Free Software
+; Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+;
+;
+
+section      .data
+
+_volrl       dd 0
+_volrr       dd 0
+_voll        dd 0
+_volr        dd 0
+magic1       dd 0
+ebpstore     dd 0
+store2       dd 0
+scopebuf     dd 0
+
+ffreq        dd 0.0
+freso        dd 0.0
+fl1          dd 0.0
+fb1          dd 0.0
+
+minampl      dd 0.0001
+cremoveconst dd 0.992
+clampmax     dd 32766.0
+clampmin:    dd -32767.0
+minuseins:   dd -1.0
+
+extern _kb_x86_outbuf
+extern _kb_x86_tempbuf
+extern _kb_x86_nsamples
+extern _kb_x86_amplification
+extern _kb_x86_ct0
+extern _kb_x86_ct1
+extern _kb_x86_ct2
+extern _kb_x86_ct3
+
+section      .text
+
+global _kbasm_prepare_mixer
+_kbasm_prepare_mixer:
+    push    ebp
+    mov     ebp, esp
+
+    push    eax
+
+    ; nothing happening here right now...
+	
+    pop     eax
+
+	leave
+	ret
+
+global _kbasm_post_mixing
+_kbasm_post_mixing:
+    push    ebp
+    mov     ebp, esp
+
+    push    ebx
+    push    ecx
+    push    edx
+    push    esi
+    push    edi
+	
+	finit
+
+    mov     edi,[_kb_x86_outbuf]
+    mov     esi,[_kb_x86_tempbuf]
+    mov     ecx,[_kb_x86_nsamples]
+    shl     ecx,1         ; stereo
+	
+	call	clipstereo
+
+    pop     edi
+    pop     esi
+    pop     edx
+    pop     ecx
+    pop     ebx
+
+	leave
+	ret
+
+clipstereo: ; convert/clip samples, 16bit signed
+    fld     dword [_kb_x86_amplification]
+    fld     dword [clampmin]    ; (min) (amp)
+    fld     dword [clampmax]    ; (max) (min) (amp)
+    mov     bx, 32766
+    mov     dx, -32767
+    mov     [ebpstore],ebp
+    xor     ebp,ebp
+		
+.lp:
+    fld     dword [esi]         ; (ls) (max) (min) (amp)
+    fmul    st3
+    fcom    st1
+    fnstsw  ax
+	sahf
+    ja      .max
+    fcom    st2
+    fstsw   ax
+	sahf
+    jb      .min
+    fistp   word [edi]          ; (max) (min) (amp)
+
+.next:
+    add     esi,4
+    add     edi,2 
+    dec     ecx
+    jnz     .lp
+    jmp     short .ende
+
+.max:
+    fstp    st0     ; (max) (min) (amp)
+    mov     [edi], bx
+    inc     ebp
+    jmp     short .next
+
+.min:
+    fstp    st0     ; (max) (min) (amp)
+    mov     [edi], dx
+    inc     ebp
+    jmp     short .next
+
+.ende:
+    mov     eax, ebp
+    mov     ebp, [ebpstore]
+    fstp    st0     ; (min) (amp)
+    fstp    st0     ; (amp)
+    fstp    st0     ; -
+	ret
+
+global _kbasm_mix
+_kbasm_mix:
+    push    ebp
+    mov     ebp, esp
+
+    push    eax
+    push    ebx
+    push    ecx
+    push    edx
+    push    esi
+    push    edi
+	
+	finit
+
+    mov     [ebpstore],ebp
+    mov     ebp,[ebp+8]
+
+    ; Put data into appropriate places for the real mixer subroutine
+    mov     eax,[ebp]
+    mov     ebx,[ebp+4]
+    mov     [_voll],eax
+    mov     [_volr],ebx
+    mov     eax,[ebp+8]
+    mov     ebx,[ebp+12]
+    mov     [_volrl],eax
+    mov     [_volrr],ebx
+
+    mov     eax,[ebp+44]
+    mov     [ffreq],eax
+    mov     eax,[ebp+48]
+    mov     [freso],eax
+    mov     eax,[ebp+52]
+    mov     [fl1],eax
+    mov     eax,[ebp+56]
+    mov     [fb1],eax
+    mov     ecx,[ebp+60]
+    mov     [scopebuf],ecx
+    mov     ebx,[ebp+24] ; freqi
+    mov     esi,[ebp+28] ; freqf
+    mov     eax,[ebp+16] ; pointer to sample data
+    mov     edx,[ebp+20] ; sample position (fractional part)
+    mov     edi,[ebp+32] ; destination float buffer
+    mov     ecx,[ebp+36] ; number of samples to mix
+
+    mov     ebp,[ebp+64]
+    add     ebp,_kbasm_mixers
+    mov     ebp,[ebp]
+    call    ebp
+	
+    ; Update changed values
+    mov     ebp,[ebpstore]
+    mov     ebp,[ebp+8]
+
+    mov     [ebp+16],eax ; pointer to sample data
+    mov     [ebp+20],edx ; sample position (fractional part)
+    mov     [ebp+32],edi ; destination float buffer
+    mov     eax,[fl1]
+    mov     [ebp+52],eax
+    mov     eax,[fb1]
+    mov     [ebp+56],eax
+	
+    mov     eax,[_voll]
+    mov     ebx,[_volr]
+    mov     [ebp],eax
+    mov     [ebp+4],ebx
+
+    mov     ebp,[ebpstore]
+
+    pop     edi
+    pop     esi
+    pop     edx
+    pop     ecx
+    pop     ebx
+    pop     eax
+
+	leave
+	ret
+
+%macro cubicmixer 4
+    fld     dword [_voll]
+    fld     dword [_volr]
+    mov     ebp,eax
+    shr     ebp,1
+    mov     eax,edx
+%if %3
+    neg     eax
+%endif
+    shr     eax,24
+%if %1
+    mov     [store2],esp
+    mov     esp,[scopebuf]
+%endif
+    align   16
+%%mixlp:
+    fild    word [ebp*2]               
+    fmul    dword [_kb_x86_ct0+eax*4]   
+%if %3
+    fild    word [ebp*2-2]             
+    fmul    dword [_kb_x86_ct1+eax*4]   
+    fild    word [ebp*2-4]             
+    fmul    dword [_kb_x86_ct2+eax*4]   
+    fild    word [ebp*2-6]             
+%else
+    fild    word [ebp*2+2]             
+    fmul    dword [_kb_x86_ct1+eax*4]   
+    fild    word [ebp*2+4]             
+    fmul    dword [_kb_x86_ct2+eax*4]   
+    fild    word [ebp*2+6]             
+%endif
+    fmul    dword [_kb_x86_ct3+eax*4]   
+    fxch    st2
+    faddp   st3,st0
+    add     edx,esi
+    lea     edi,[edi+8]
+    faddp   st2,st0
+    adc     ebp,ebx
+    mov     eax,edx
+    faddp   st1,st0
+%if %3
+    neg     eax
+%endif
+%if %2
+    fsub    dword [fl1]
+    fmul    dword [ffreq]
+    fld     dword [fb1]
+    fmul    dword [freso]
+    faddp   st1,st0
+    fst     dword [fb1]
+    fmul    dword [ffreq]
+    fadd    dword [fl1]
+    fst     dword [fl1]
+%endif
+%if %1
+    fld     st0
+    fmul    st2
+    fld     st1
+    fmul    st4
+    faddp   st1,st0
+    fistp   word [esp]
+    lea     esp,[esp+2]
+%endif
+    shr     eax,24
+%if %4
+    fld     st1
+    fld     st3
+    fmul    st2
+    fxch    st4
+    fadd    dword [_volrl]
+    fxch    st2
+    fmulp   st1
+    fxch    st2
+    fadd    dword [_volrr]
+    fxch    st3
+    fadd    dword [edi-8]
+    fxch    st2
+    fadd    dword [edi-4]
+    fstp    dword [edi-4]
+    fxch    st1
+    fstp    dword [edi-8]
+    fxch    st1
+%else
+    fld     st2
+    fmul    st1
+    fadd    dword [edi-8]
+    fxch    st1
+    fmul    st2
+    fadd    dword [edi-4]
+    fstp    dword [edi-4]
+    fstp    dword [edi-8]
+%endif
+    dec     ecx
+    jz      %%mixend
+    jmp     %%mixlp
+%%mixend:
+%if %4
+    fstp    dword [_volr]
+    fstp    dword [_voll]
+%endif
+    shl     ebp,1
+    mov     eax,ebp
+%if %1
+    mov     esp,[store2]
+%endif
+    ret
+%endmacro
+
+_kbasm_mix_cubic_noscopes_unfiltered_forward_noramp:
+    cubicmixer 0,0,0,0
+_kbasm_mix_cubic_noscopes_unfiltered_backward_noramp:
+    cubicmixer 0,0,1,0
+_kbasm_mix_cubic_noscopes_filtered_forward_noramp:
+    cubicmixer 0,1,0,0
+_kbasm_mix_cubic_noscopes_filtered_backward_noramp:
+    cubicmixer 0,1,1,0
+_kbasm_mix_cubic_scopes_unfiltered_forward_noramp:
+    cubicmixer 1,0,0,0
+_kbasm_mix_cubic_scopes_unfiltered_backward_noramp:
+    cubicmixer 1,0,1,0
+_kbasm_mix_cubic_scopes_filtered_forward_noramp:
+    cubicmixer 1,1,0,0
+_kbasm_mix_cubic_scopes_filtered_backward_noramp:
+    cubicmixer 1,1,1,0
+_kbasm_mix_cubic_noscopes_unfiltered_forward:
+    cubicmixer 0,0,0,1
+_kbasm_mix_cubic_noscopes_unfiltered_backward:
+    cubicmixer 0,0,1,1
+_kbasm_mix_cubic_noscopes_filtered_forward:
+    cubicmixer 0,1,0,1
+_kbasm_mix_cubic_noscopes_filtered_backward:
+    cubicmixer 0,1,1,1
+_kbasm_mix_cubic_scopes_unfiltered_forward:
+    cubicmixer 1,0,0,1
+_kbasm_mix_cubic_scopes_unfiltered_backward:
+    cubicmixer 1,0,1,1
+_kbasm_mix_cubic_scopes_filtered_forward:
+    cubicmixer 1,1,0,1
+_kbasm_mix_cubic_scopes_filtered_backward:
+    cubicmixer 1,1,1,1
+
+section    .data
+global _kbasm_mixers
+_kbasm_mixers:
+    dd _kbasm_mix_cubic_noscopes_unfiltered_forward_noramp
+    dd _kbasm_mix_cubic_noscopes_unfiltered_backward_noramp
+    dd _kbasm_mix_cubic_noscopes_filtered_forward_noramp
+    dd _kbasm_mix_cubic_noscopes_filtered_backward_noramp
+    dd _kbasm_mix_cubic_scopes_unfiltered_forward_noramp
+    dd _kbasm_mix_cubic_scopes_unfiltered_backward_noramp
+    dd _kbasm_mix_cubic_scopes_filtered_forward_noramp
+    dd _kbasm_mix_cubic_scopes_filtered_backward_noramp
+    dd _kbasm_mix_cubic_noscopes_unfiltered_forward
+    dd _kbasm_mix_cubic_noscopes_unfiltered_backward
+    dd _kbasm_mix_cubic_noscopes_filtered_forward
+    dd _kbasm_mix_cubic_noscopes_filtered_backward
+    dd _kbasm_mix_cubic_scopes_unfiltered_forward
+    dd _kbasm_mix_cubic_scopes_unfiltered_backward
+    dd _kbasm_mix_cubic_scopes_filtered_forward
+    dd _kbasm_mix_cubic_scopes_filtered_backward

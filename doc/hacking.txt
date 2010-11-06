@@ -1,0 +1,212 @@
+
+
+General Architecture
+********************
+
+   SoundTracker (short: ST) consists of two threads: the GUI (or main)
+thread, and the audio (or mixer / player) thread. The reason for not
+handling both jobs in one process via select() is obvious: the GUI can
+sometimes block the process for quite a long time. For example when the
+window is resized, widgets have to be redrawn, which can take a while.
+To provide continous sound output, we're using a separate thread.
+
+   Communication between the threads is accomplished using two pipes.
+The communication codes for this pipe are defined in audio.h. When
+messages are received, they are handled in gui.c::read_mixer_pipe() and
+audio.c::audio_thread(), respectively.
+
+   In its current form, the code is limited to dealing with one module
+at the same time, with one editing window. Some of the GUI code has
+already been modularized, since some of the editing facilities have been
+encapsulated in custom GTK+ widgets, for example sample-display.c,
+clavier.c, envelope-box.c, playlist.c and tracker.c. Noteworthy
+exceptions and containers of generous amounts of global variables are
+gui.c, sample-editor.c, instrument-editor.c and xm-player.c.
+
+   For ST to be made fully multi-module capable ("object-oriented"),
+large parts of the GUI will have to be changed. Unfortunately,
+references to the global "tracker" and "xm" variables can be found
+virtually everywhere in the source code.
+
+Synchronization of Audio and GUI
+********************************
+
+   Since mixing buffer sizes can't be turned down as low as under
+primitive operating systems such as DOS, special care must been taken
+to take the audio latency into account.
+
+   The audio thread thus keeps a list of recently reached pattern
+positions and their occurence in the mixed audio output stream. The GUI
+thread then checks periodically (track-editor.c::tracker_timeout(),
+scope-group.c::scope_group_timeout()) for the current position of the
+soundcard in the output stream and calculates which pattern position
+corresponds to that time. The get_play_time() method in output drivers
+is the key for this to work correctly. The lists are handled through the
+time buffer interface, see time-buffer.[ch].
+
+   The oscilloscope monitors are handled in a similar way through some
+ring buffers. This is documented in audio.h, for example. time-buffer
+can't be used here because scope data is continuous and is accessed
+from the GUI thread in more than one location.
+
+   Certain other events are handled through the event waiter interface
+(see event-waiter.h for an overview).
+
+How the audio subsystem works
+*****************************
+
+   Module playing is initialized by the GUI thread sending a message
+AUDIO_CTLPIPE_PLAY_SONG, for example. The audio thread then opens the
+driver module, which in turn installs a callback method, which will be
+called as soon as the sound card is accepting new data. The OSS driver,
+for example, instructs the audio subsystem, through
+audio.c::audio_poll_add(), to call
+oss-output.c::oss_poll_ready_playing() once OSS accepts new data from
+ST.
+
+   After opening the output driver, various other things are
+initialized in audio.c::audio_prepare_for_playing(). After that, an
+acknowledgement message is sent back to the GUI thread, which is in
+playing mode from then on (indicated by the global variable
+gui.c::gui_playing_mode).
+
+   After that, the audio thread goes back into its main poll() loop,
+which also waits for the driver callback action now. Once this callback
+is triggered, it calls audio.c::audio_mix() (defined in driver-out.h) to
+request a new part of the sample output stream in any format and bitrate
+it desires, which is then output.
+
+   Calling the XM player at the right moment and handling the pitch
+bending feature is all done in audio_mix() which should be rather
+straight-forward to read.
+
+   Interesting is also the interaction between xm-player.c and the rest
+of the audio subsystem. There are some routines in audio.c starting with
+driver_*, like driver_startnote, driver_setfreq. xm-player.c calls these
+instead of the corresponding routines in the mixer because this way, a
+modularized mixer system could be installed lateron. You can find more
+about the Mixer API later in this document.
+
+Driver API
+**********
+
+   The driver API is separated into two branches: output and input
+(sampling) drivers. Input drivers are usually simpler, because they
+don't have to include the mechanisms necessary for synchronization of
+the audio output stream with the GUI. Also, currently only 16bit mono
+sampling is supported (though changing this would require only some
+changes to sample-editor.c), so a good amount of the settings widgets
+are missing in input drivers.
+
+   Note that the current API doesn't make any provisions for MIDI input
+/ output. First and foremost, it must be thought about the
+synchronization of MIDI output with mixed (DSP) output as the most
+important aspect; the central audio code in audio.c hasn't been
+designed with this in mind either.
+
+   Also not accounted for, but related to the MIDI issue, are wavetable
+devices like the GUS which can play multiple samples on their own. But
+since hardware like this is more and more becoming extinct and CPU power
+rises, I don't think that supporting this is important any longer,
+especially once ST will be extended to support effect plug-ins which
+can't be rendered by the audio hardware but must be calculated using the
+CPU!
+
+Adding drivers to the source tree
+=================================
+
+   You must add checks for any libs and includes in configure.in, add a
+corresponding driver define to acconfig.h, add the driver to the drivers
+list in main.c, and finally add all the files belonging to your driver
+(should be only one) to drivers/Makefile.am. Now you still have to write
+the code, that's what the two next sections are about.
+
+Output drivers
+==============
+
+   The st_out_driver structure, defined driver-out.h must be globally
+defined in your source file. It must contain valid pointers to all the
+functions and a unique entry in the name field. The rest of the
+variables and functions in your source file should be defined static so
+as to hide them from the rest of the program.
+
+   You can keep the *settings functions empty at first, adding the right
+code here shouldn't be a problem when you compare with oss-output.c.
+
+   The first function you should write is new(), which allocates a new
+object and initializes it with default settings. getwidget() can stay
+empty for as long as you don't want the user to change settings.
+
+   The next function you write should be open(), which opens the device
+according to the settings in the object structure. release() does the
+opposite. open() should install the callback mentioned earlier, which is
+the function you're going to write now. That's it, you should have a
+working minimal driver now.
+
+   The next important function is getplaytime() which is necessary for
+the GUI to synchronize with the audio output. This might require some
+experimentation to get right.
+
+   Now you can start adding the settings widget and add code to the
+load / save settings functions.
+
+Input drivers
+=============
+
+Mixer API
+*********
+
+   To be written. Two mixers are already available; shouldn't be hard to
+understand how it works. Basically it's really independent of the rest
+of the tracker.
+
+Contributing Code
+*****************
+
+   Please follow these rules if you want to donate code to the
+SoundTracker project:
+
+   * Coding Style. I prefer 4-space tabulators, and an indentation style
+     like this:
+
+          	if(something) {
+          	    work();
+          	}
+
+     instead of:
+
+          	if (something)
+          	  {
+          	    work ();
+          	  }
+
+     If you're using Emacs, you can simply use "M-x c-set-style cc-mode"
+
+   * Add yourself to the AUTHORS file.
+
+   * Add a ChangeLog entry.
+
+   * Do a "make dist" in the main directory. This generates a new
+     archive containing your changes. Do NOT send me the whole archive,
+     instead:
+
+   * Generate a patch. Unpack the previously generated archive and the
+     original archive (into some other directory), and use
+
+          	diff -urN {original-directory} {your-directory} > patch
+
+     to generate a file containing only your changes, and no
+     auto-generated files.
+
+   * Remove the `po' directory patches and patches to all auto-generated
+     files (Makefile, Makefile.in, configure.log etc.) from the diff
+     (that's what usually makes the patch unnecessarily large). Or just
+     remove the po directories before generating the diff.
+
+   * Send the patch to the `soundtracker-discuss' mailing-list, if you
+     want feedback from other users. If you're not subscribed, then
+     subscribe first (see README file). Mail it directly to the
+     maintainer (`m.krause@tu-harburg.de') instead of to the list if
+     it's large. Please explain what the patch changes.
+
+

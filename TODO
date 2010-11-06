@@ -1,0 +1,133 @@
+
+[ Sorry for occasional German entries :-) But this is mostly for my
+own personal use. However, feel free to fix bugs you understand. ]
+
+in doku mit rein, daß das setuid-bit gesetzt sein sollte, auch wenn
+manche distros das eventuell abschalten!!
+
+send archive to translation project
+
+> From: Martin Andersson <t3tr1s@yahoo.com>
+> theres a bug in sample_editor_zoom_[in|out]_clicked in
+> soundtracker-0.6.7-pre3. you can only zoom in to
+> minimal of 2 samples. With zoom to selection you can
+> zoom in to 1 sample, but then you cant zoom out again
+> :-) A quick source fix was to double the values of the
+> variables ns,ne,l and divide ns and ne by 2 in the
+> call to sample_display_set_window.
+
+aktuelles pattern während des playbacks ändern?
+Thu Oct  8 22:22:50 1998  Michael Krause  <m.krause@tu-harburg.de>
+	* gui.c (change_current_pattern): Call mixer_set_pattern even when
+ 	we're not in playing_pattern mode. Can now change pattern while
+ 	playing a mod, just like in PT.
+
+buffer overflow patch von ... öh, irgendjemandem da.
+
+final transition to gtk2?
+
+Als v1.0.0 releasen?
+
+
+
+
+
+
+WWW / Doku:
+------------
+
+web-page updaten bzgl. requirements.. alles mal durchgehen
+
+debian-pkgs sind laut junichi aktuell!
+
+jack-link auf die homepage
+libsndfile auf die homepage in requirements
+
+gdk-pixbuf in die requirements
+
+libsndfile in doku erwähnen.
+
+www: united-trackers.org linken (unter dokumentation)
+
+cvs runterfahren
+
+gnome auf homepage erwähnen
+
+gentoo erwähnen
+
+
+***********************
+
+fix playback error in mod.alice d.
+
+3xx bug (Michaël D. <ikari@ifrance.com>)
+
+>   3) I tried to save a file (ie wave file export) to a directory I didn't
+>      have write access to and the program segfaulted. I ran it up in GDB
+>      quickly once or twice and got the backtraces included below.
+
+>   1) The scopes don't seem to work in play mode on PowerPC (comparison made
+>      playing the same module on x86 and PPC machines). They are being redrawn,
+>      but the waveform seems to be all zero. However, if I am not in play mode
+>      and play the current sample from the keyboard, I do see waveform drawn.
+
+mixer: cubic interpolation abschalten
+
+icons von Micha%/1€Œiso8859-15³ Frydryszak <groza@krupsztal.px.pl>
+
+icons von victor javier (die neuen!)
+
+eventuell neue pixmaps von ironya?
+
+> Anyway Soundtracker could chceck if the module was saved and inform that 
+> there could be not enough spce on drive to save module.
+
+protracker-mode als "gimmick" dokumentieren.
+
+> There are modules which also use octaves 2 and 6. They are not
+> created using Protracker, but when they are loaded into ST, they
+> are identified as Protracker modules. The loader even works with
+> these.
+
+> > >  * the RelNote settings also work in PT mode.
+> >
+> > ProTracker has no RelNote.
+>
+> The Soundtracker GUI has it. It is not disabled. (But that is
+> not impotant, just strange.)
+
+> > ProTracker doesn't have a key-off command.
+>
+> There is also no such thing as an H-8 note ;o) (same thing as
+> with the RelNote)
+
+scopes buffer size automatisch ausrechnen.
+
+beim sample neu laden nicht die instrument settings ändern?
+
+> Scopes-Buffer sein. Der Scopes-Buffer speichert ja die gerenderten
+> Sounddaten solange zwischen, bis sie wirklich von der Soundkarte
+> ausgegeben werden -- und das Delay ist ja um so größer, je größer auch
+
+Antoher really helpful solution would be adding size and creation date 
+columns in files list / file tab.
+
+beautify error message dialogs!
+
+Find a workaround for the d->realtimecaps = i & DSP_CAP_REALTIME;
+"bug" in the OSS driver which happened to Jonathan Giles and Jason Simpson
+
+> From: Yury Aliaev <mutab0r@rambler.ru>
+> Yesterdy I've found the dependance between the sound buffer size in the
+> audio settings and the scopes behavior: when the size of the buffer exceed
+> 4096 bytes (I use OSS driver) the scopes showes only zero line, and
+> everything is Ok with buffer size <= 4096 bytes. I write this 'cause it
+> may help the diagnostics of the scopes bug.
+
+[ live recording ]
+> Ein fr%/1€Œiso8859-15üherer Freund, hat damals den
+> Amiga-Soundtracker so gepatcht, dass die Grenze der Tastenabfrage
+> auf die Mitte der Beats gesetzt wurde.  Also wenn ich die Taste nach
+> der Mitte des aktuellen Beats anschlage, wird der Ton in den
+> n%/1€Œiso8859-15ächsten Beat im Pattern geshrieben.
+

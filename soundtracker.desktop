@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=SoundTracker
+Name[pl]=SoundTracker
+Name[de]=SoundTracker
+Comment=Module Player / Editor
+Comment[pl]=Odtwarzacz i edytor modu³ów
+Comment[de]=Modul-Player / -Editor
+Exec=soundtracker
+#Icon=soundtracker.png
+Terminal=0
+Type=Application

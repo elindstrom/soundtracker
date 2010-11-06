@@ -1,0 +1,343 @@
+dnl Process this file with autoconf to produce a configure script.
+dnl
+dnl Written for autoconf-2.57 and automake-1.7.2
+
+AC_INIT(app/endian-conv.h)
+AM_INIT_AUTOMAKE(soundtracker, 0.6.7)
+AM_CONFIG_HEADER(config.h)
+
+dnl -----------------------------------------------------------------------
+dnl Test for GCC
+dnl -----------------------------------------------------------------------
+
+AC_PROG_CC
+AC_PATH_PROG(sedpath, sed)
+
+if test $GCC != yes; then
+	echo "Fatal error: Need gcc"
+	exit 1
+fi
+
+CFLAGS="$CFLAGS -Wall"
+
+dnl -----------------------------------------------------------------------
+dnl Test for GAS
+dnl -----------------------------------------------------------------------
+
+AC_ARG_ENABLE(asm,
+[  --disable-asm           Disable use of assembler optimizations],
+asm_support=no)
+
+AM_CONDITIONAL(NO_ASM, test x$asm_support = xno)
+
+if test x$asm_support != xno; then
+  AM_PROG_AS
+else
+  AC_DEFINE([NO_ASM], 1, [Set if no assembler support is wanted])
+fi
+
+dnl -----------------------------------------------------------------------
+dnl Test for poll()
+dnl -----------------------------------------------------------------------
+
+AC_CHECK_HEADER(sys/poll.h,
+	[AC_CHECK_FUNCS(poll, [], 
+		[AC_CHECK_FUNC(select, [], [AC_MSG_ERROR(no poll and no select?!?)])]
+		)
+	]
+)
+
+dnl -----------------------------------------------------------------------
+dnl Initialize NLS
+dnl -----------------------------------------------------------------------
+
+dnl Also add new catalogs to soundtracker.spec (%build)!
+ALL_LINGUAS="da de es fr gl hr it ja no pl ru sk sl sv"
+AM_GNU_GETTEXT
+
+dnl -----------------------------------------------------------------------
+dnl Test for GTK+ / GNOME
+dnl -----------------------------------------------------------------------
+
+AM_PATH_GTK(1.2.2,
+	    ,
+            AC_MSG_ERROR(Cannot find GTK: Is gtk-config in path?),
+	    "gthread")
+
+gnome=yes
+AC_ARG_ENABLE(gnome,
+[  --disable-gnome         disable use of gnome],
+        gnome=$enableval, gnome=yes)
+
+if test "$gnome" = yes; then
+  AC_PATH_PROG(gnomepath, gnome-config)
+  AC_MSG_CHECKING(for Gnome compile flags)
+  GNOME_CFLAGS=`$gnomepath gnomeui --cflags 2>/dev/null`
+  if test "_$GNOME_CFLAGS" = _ ; then
+    gnome=no
+    AC_MSG_RESULT([Gnome not found, building without it.])
+  else
+    AC_MSG_RESULT(ok)
+    LIBS="$LIBS `$gnomepath gnomeui --libs 2>/dev/null`"
+    CFLAGS="$CFLAGS $GNOME_CFLAGS"
+    AC_DEFINE([USE_GNOME], 1, [Set if GNOME support is compiled in])
+  fi
+fi
+
+LIBS="$LIBS $GTK_LIBS"
+CFLAGS="$CFLAGS $GTK_CFLAGS"
+
+AM_CONDITIONAL(USE_GNOME, test "x$gnome" = "xyes")
+
+dnl -----------------------------------------------------------------------
+dnl Test for gdk-pixbuf
+dnl -----------------------------------------------------------------------
+
+AC_ARG_ENABLE(gdk-pixbuf,
+[  --disable-gdk-pixbuf    Disable use of gdk-pixbuf (default = try)],
+gdkpixbuf_support=no)
+
+no_gdkpixbuf=1;
+if test x$gdkpixbuf_support != xno; then
+  AM_PATH_GDK_PIXBUF(0.8.0,
+		     [CFLAGS="$CFLAGS $GDK_PIXBUF_CFLAGS"
+		      LIBS="$LIBS $GDK_PIXBUF_LIBS"
+		      no_gdkpixbuf=0],
+		     [AC_MSG_RESULT([---> Building without GDK_PIXBUF (ignore error above).])])
+fi
+
+if test "x${no_gdkpixbuf}" = "x1"; then
+  AC_DEFINE(NO_GDK_PIXBUF, 1, [Set to 1 if libgdkpixbuf is not present.])
+fi
+AM_CONDITIONAL(NO_GDK_PIXBUF, test "x${no_gdkpixbuf}" = "x1")
+
+dnl -----------------------------------------------------------------------
+dnl Test for libsndfile
+dnl -----------------------------------------------------------------------
+
+sndfile_support=yes
+AC_ARG_ENABLE(sndfile,
+[  --disable-sndfile       Disable usage of libsndfile (default = try)],
+sndfile_support=no)
+
+ac_cv_sndfile=0
+
+if test x$sndfile_support = xyes ; then
+        PKG_CHECK_MODULES(SNDFILE, sndfile > 1.0.1, ac_cv_sndfile=1, ac_cv_sndfile=0)
+        if test x$ac_cv_sndfile = x1 ; then
+                CFLAGS="$CFLAGS $SNDFILE_CFLAGS"
+                LIBS="$LIBS $SNDFILE_LIBS"
+        fi
+fi
+
+AC_DEFINE_UNQUOTED(USE_SNDFILE,${ac_cv_sndfile},
+	[Set to 1 if you wish to use libsndfile.])
+		
+dnl -----------------------------------------------------------------------
+dnl Test for audiofile library (if libsndfile is not found or disabled)
+dnl -----------------------------------------------------------------------
+
+if test x$ac_cv_sndfile != x1 ; then
+	AM_PATH_AUDIOFILE(0.1.5,
+		[CFLAGS="$CFLAGS $AUDIOFILE_CFLAGS"
+      		 LIBS="$LIBS $AUDIOFILE_LIBS"
+		],
+		[AC_MSG_RESULT([* No sample I/O library found, disabling sample loader (ignore error above).])
+		 AC_DEFINE([NO_AUDIOFILE], 1, [Set if not libaudiofile installed])
+		]
+	)
+fi
+
+dnl -----------------------------------------------------------------------
+dnl Checks for header files
+dnl -----------------------------------------------------------------------
+
+AC_HEADER_STDC
+AC_CHECK_HEADERS(dlfcn.h)
+AC_CHECK_FUNCS(setresuid)
+
+dnl -----------------------------------------------------------------------
+dnl Test for OSS headers
+dnl -----------------------------------------------------------------------
+
+AC_ARG_ENABLE(oss,
+[  --disable-oss           Disable OSS driver (default = try)],
+oss_support=no)
+
+if test x$oss_support != xno; then
+  AC_CHECK_HEADERS(sys/soundcard.h machine/soundcard.h soundcard.h)
+  if test "${ac_cv_header_sys_soundcard_h}" = "yes" || \
+     test "${ac_cv_header_machine_soundcard_h}" = "yes" || \
+     test "${ac_cv_header_soundcard_h}" = "yes"; then
+     oss_support=yes
+     AC_DEFINE([DRIVER_OSS], 1, [Set if OSS driver wanted])
+     case `uname` in
+        OpenBSD*)
+        LIBS="$LIBS -lossaudio"
+        ;;
+	NetBSD*)
+        AC_CHECK_LIB(ossaudio, _oss_ioctl, LIBS="$LIBS -lossaudio")
+	;;
+     esac
+  else
+    oss_support=no
+  fi
+fi
+
+AM_CONDITIONAL(DRIVER_OSS, test x$oss_support = xyes)
+
+dnl -----------------------------------------------------------------------
+dnl Test for ALSA-lib
+dnl ALSA 0.9.x: snd_card_load() in libasound.
+dnl ALSA 0.5.x: snd_pcm_channel_params() in libasound.
+dnl -----------------------------------------------------------------------
+
+AC_ARG_ENABLE(alsa,
+[  --disable-alsa          Disable ALSA driver (default = try)],
+alsa_support=no)
+
+if test x$alsa_support != xno; then
+  AC_CHECK_LIB(asound,snd_pcm_plug_open,
+    [alsa_support=new
+     AC_DEFINE([DRIVER_ALSA_09x], 1, [Set if new (v0.9) ALSA driver wanted])
+     LIBS="$LIBS -lasound"
+     echo "*** ALSA v0.9 found on your system. No audio drivers available"
+     echo "*** for ALSA v0.9. No problem, just use OSS driver or JACK instead."
+    ],
+    [AC_CHECK_LIB(asound,snd_pcm_capture_params,
+       [alsa_support=veryold
+        AC_DEFINE([DRIVER_ALSA], 1, [Set if very old ALSA driver wanted])
+        LIBS="$LIBS -lasound"
+       ]
+     )
+     AC_CHECK_LIB(asound,snd_pcm_channel_params,
+       [alsa_support=old
+        AC_DEFINE([DRIVER_ALSA_050], 1, [Set if old (v0.5) ALSA driver wanted])
+        LIBS="$LIBS -lasound"
+       ]
+     )
+    ]
+  )
+fi
+
+AM_CONDITIONAL(DRIVER_ALSA, test x$alsa_support = xveryold)
+AM_CONDITIONAL(DRIVER_ALSA_050, test x$alsa_support = xold)
+AM_CONDITIONAL(DRIVER_ALSA_09x, test x$alsa_support = xnew)
+
+dnl -----------------------------------------------------------------------
+dnl Test for ESD
+dnl -----------------------------------------------------------------------
+
+AC_ARG_ENABLE(esd,
+[  --disable-esd           Disable ESD driver (default = try)],
+esd_support=no)
+
+if test x$esd_support != xno; then
+  AM_PATH_ESD(0.2.8, have_esd=yes, have_esd=no)
+  AC_CHECK_FUNCS(esd_play_stream)
+  if test x$have_esd = xyes; then
+    AC_DEFINE([DRIVER_ESD], 1, [Set if ESD driver wanted])
+    CFLAGS="$CFLAGS $ESD_CFLAGS"
+    LIBS="$LIBS $ESD_LIBS"
+  fi
+fi
+
+AM_CONDITIONAL(DRIVER_ESD, test x$have_esd = xyes)
+
+dnl -----------------------------------------------------------------------
+dnl Test for JACK
+dnl
+dnl defines: ST_S_JACK_LIBS, ST_S_JACK_INCLUDES, DRIVER_JACK
+dnl -----------------------------------------------------------------------
+
+AC_CHECK_HEADER(jack/jack.h,jack_support=yes,jack_support=no)
+AC_ARG_WITH(jack,
+	    [  --with-jack=DIR	Compile against JACK installed in DIR],
+	    [
+	        ST_S_JACK_LIBS="-L${withval}/lib"
+		ST_S_JACK_INCLUDES="-I${withval}/include"
+		jack_support=yes
+	    ])
+AC_ARG_ENABLE(jack,
+[  --disable-jack	   Disable JACK support (default = try)],
+jack_support=no)
+  
+if test x$jack_support = xyes; then
+    ST_S_JACK_LIBS="${ST_S_JACK_LIBS} -ljack -lpthread -ldl"
+    AC_DEFINE([DRIVER_JACK], 1, [Set if JACK support wanted])
+fi                                     
+  
+AC_SUBST(ST_S_JACK_LIBS)
+AC_SUBST(ST_S_JACK_INCLUDES)
+
+AM_CONDITIONAL(DRIVER_JACK, test x$jack_support = xyes)
+
+dnl -----------------------------------------------------------------------
+dnl Test for SGI audio
+dnl -----------------------------------------------------------------------
+
+AC_ARG_ENABLE(sgi,
+[  --disable-sgi           Disable SGI driver (default = try)],
+sgi_support=no)
+
+case `uname` in
+  IRIX*)
+    if test x$sgi_support != xno; then
+    AC_CHECK_HEADER(dmedia/audio.h)
+    if test $ac_cv_header_dmedia_audio_h = yes
+    then
+      AC_CHECK_LIB(audio,ALseterrorhandler,driver_sgi=yes)
+      if test $driver_sgi = yes
+      then
+        AC_DEFINE([DRIVER_SGI], 1, [Set if SGI driver wanted])
+        LIBS="$LIBS -laudio"
+	irix_support=yes
+      fi
+    fi
+  fi
+  ;;
+esac
+
+AM_CONDITIONAL(DRIVER_IRIX, test x$irix_support = xyes)
+
+dnl -----------------------------------------------------------------------
+dnl Test for Sun audio
+dnl -----------------------------------------------------------------------
+
+AC_ARG_ENABLE(sun,
+[  --disable-sun           Disable Sun driver (default = try)],
+sun_support=no)
+
+if test x$sun_support != xno; then
+  AC_CHECK_HEADERS(sys/audioio.h)
+  if test "${ac_cv_header_sys_audioio_h}" = "yes"; then
+    AC_DEFINE([DRIVER_SUN], 1, [Set if Sun audio driver wanted])
+  fi
+fi
+
+AM_CONDITIONAL(DRIVER_SUN, test "${ac_cv_header_sys_audioio_h}" = "yes")
+
+dnl -----------------------------------------------------------------------
+dnl Other tests
+dnl -----------------------------------------------------------------------
+
+AC_PROG_RANLIB
+
+AC_C_BIGENDIAN
+
+dnl Set PREFIX in config.h.
+if test "x${prefix}" = "xNONE"; then
+  AC_DEFINE_UNQUOTED(PREFIX, "${ac_default_prefix}", [Kein Mensch weiss, warum])
+else
+  AC_DEFINE_UNQUOTED(PREFIX, "${prefix}", [Kein Mensch weiss, warum])
+fi
+
+AC_OUTPUT([
+Makefile
+app/Makefile
+app/drivers/Makefile
+app/mixers/Makefile
+intl/Makefile
+po/Makefile.in
+doc/Makefile
+])

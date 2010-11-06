@@ -1,0 +1,706 @@
+2004-01-11  Michael Krause  <mk@soundtracker.org>
+
+	* Released v0.6.7
+
+	* app/sample-editor.c: When copying a sample and pasting into an
+	empty one, the settings for volume, finetune, panning and relnote
+	are transferred, too.
+
+	* Added patch from Yury for a more general Cut/Copy/Paste
+	handling. Now there's only one such set of functions in the Edit
+	menu, the functionality of which depends on the currently active
+	notebook page (tracker / instrument / sample editor).
+
+	* app/xm.c (xm_load_xm_pattern): Handling non-standard pattern
+	header sizes (yaliaev)
+
+	* app/gui.c (gui_final): Default octave is now 3 instead of 5, so
+	that freshly loaded samples can be triggered at their original
+	speed with the Q key.
+
+	* app/sample-editor.c: Cleaned up sndfile / audiofile code (a lot
+	of stuff was previously duplicated via #if's), fixed saving of
+	8-bit samples via libsndfile. When loading raw samples (when
+	compiled with libsndfile), we ask the user for the sampling
+	frequency now, just like in the case of libaudiofile. Also fixed
+	loading of 8-bit samples (treat_as_8bit is now set correctly).
+
+	* app/gui.c (gui_playlist_position_changed): Fixed handling of the
+	"Lock edited pattern" button (problem reported by yaliaev).
+	
+2004-01-04  Michael Krause  <mk@soundtracker.org>
+
+	* app/track-editor.c (track_editor_do_the_note_key): Added patch
+	from yaliaev which removes cursor horizontal displacement when you
+	try some tune at the keyboard in jazz mode (of course, only if ST
+	not in the editing mode, jazz editing mode works just like
+	before).
+
+	* Added soundtracker-0.6.7pre6-patexpshrink.patch.bz2 from
+	yaliaev, providing vertical pattern expansion / shrinking.
+
+	* app/gui.c, app/keys.c, app/playlist.c: Fix some gcc-3.2
+	warnings (yaliaev).
+
+	* app/cheat-sheet.c, app/gui.c, app/instrument-editor.c: Add some
+	#includes for non-GNOME version, fix for measure selection window
+	(yaliaev).
+
+	* configure.in, app/mixers/Makefile.am, app/mixers/kb-x86-asm.S:
+	Added patch from yaliaev to remove dependency of soundtracker on
+	gasp.
+
+2003-10-27  Michael Krause  <mk@soundtracker.org>
+
+	* po: Updated it, ja, pl, ru translations. Added sk (slovakian)
+	translation.
+
+2003-08-04  Michael Krause  <mk@soundtracker.org>
+
+	* "Released" soundtracker-0.6.7pre6 (without official
+	announcement).
+
+	* app/gui.c, app/gui-settings.c, app/menubar.c, *.xpm: Added patch
+	from yaliaev: Nice icons in the control panel, Direct access to
+	accidentals and row highlighting configuration from the control
+	panel, Option to allow/prevent edited pattern from changing when
+	browsing in the playlist.
+
+	* app/st-subs.c (st_sample_16bit_signed_unsigned): Fixed
+	signed->unsigned conversion (tugruettmueller).
+
+	* app/playlist.c (playlist_insert_pattern): Emitting
+	SONG_LENGTH_CHANGED signal after inserting new pattern. Fixes
+	incorrect XM playlist update handling when inserting
+	patterns. (reported by yaliaev).
+
+2003-07-05  Tomasz Maka  <pasp@ll.pl>
+
+	* app/gui.c, app/file-operations.[ch]: Function for refresh
+	(fileops_refresh_list) file/dir list in file requesters was added.
+
+2003-06-29  Michael Krause  <mk@soundtracker.org>
+
+	* app/gui.c (gui_final): Add tooltips to pitchbend and
+	amplification sliders (yaliaev).
+
+	* app/audio.c (audio_mix): Fix memset at the end of file
+	rendering, clearing the unrendered part of the mixing buffer
+	(yaliaev). This fix might contribute to stabilizing the WAV export
+	which has been reported to be unstable by some people.
+
+	* po: Updated fr, it, sv translations.
+
+2003-05-24  Michael Krause  <mk@soundtracker.org>
+
+	* "Released" soundtracker-0.6.7pre5 (without official
+	announcement).
+	
+	* app/main.c (main): Calling gui_play_stop() before quitting, so
+	that the audio driver is shut down correctly (for JACK).
+
+	* app/keys.c, app/gui.c: Defined two new keys for "increase /
+	decrease jump value" (yaliaev).
+
+	* app/keys.c, app/track-editor.c: Defined quick-jump keys to jump
+	to channels. Can also mute channels with keyboard when these keys
+	are pressed together with SPACE (yaliaev).
+
+	* app/midi-settings.h: Removed #ifdef ALSA_DRIVER_09x around
+	gboolean auto_connect definition in struct midi_input_prefs. Now
+	SoundTracker compiles with alsa 0.5.x again. I have no idea if it
+	works, though.
+
+	* configure.in: Changed GNOME detection code; new code taken from
+	xchat-1.8.8. The old code broke at version detection on some
+	systems.
+
+	* app/st-subs.c (st_is_empty_track): Advance notes pointer in
+	loop. Also, the loop end condition is length > 0 instead of length
+	>= 0. Up to now, this function would only check if the very first
+	row in the pattern is non-empty, leading to patterns left out
+	during saving. Argh. Thanks to Henri Jylkkä <hj@bsdmail.org> for
+	helping to reproduce the bug. Also, CTRL-F and CTRL-G (find / copy
+	to unused pattern) work again now.
+
+ 	* po: Updated ja.po, no.po, it.po.
+
+	* configure.in: Under NetBSD, check if OSS driver needs -lossaudio
+
+2003-05-18  Michael Krause  <mk@soundtracker.org>
+
+	* app/drivers/sun-input.c, app/drivers/sun-output.c: Fixes
+	(wcobb).
+
+	* configure.in: Add -lossaudio to linker options for OpenBSD OSS
+	emulation layer. (wcobb)
+
+	* app/gui.c (file_selected), app/sample-editor.c,
+	app/instrument-editor.c: Check if a file was actually
+	selected. Previously, the gtk+ file selector could return with
+	just a directory name as 'file name', and SoundTracker would treat
+	that as a file to operate on, leading to strange behavior.
+	
+	* "Released" soundtracker-0.6.7pre4 (without official
+	announcement).
+	
+	* app/playlist.c: User can now click on playlist entries to make
+	them the current position (yaliaev).
+
+	* flat.xpm, sharp.xpm: Made a bit larger (yaliaev).
+
+	* po/POTFILES.in: Added some more source files.
+
+	* app/Makefile.am (install-exec-local): On NetBSD and OpenBSD, the
+	root group is called 'wheel' (wcobb, Henri Jylkka
+	<henri.jylkka@mbnet.fi>). On Darwin (MacOS X), it is 'admin'
+	(Mathias Meyer <mathmeye@users.sourceforge.net>).
+
+	* configure.in, app/main.c, app/drivers/Makefile.am: Sun audio
+	driver integration (wcobb)
+
+2003-05-17  Michael Krause  <mk@soundtracker.org>
+
+	* app/drivers/jack-output.c: Added patch for latest JACK CVS (by
+	Anthony <avan@uwm.edu>).
+
+	* po: Updated it.po
+
+	* configure.in: Rewrote some parts of configure.in and several
+	Makefile.am's to use AM_CONDITIONALs where they are guaranteed to
+	be executed. Extended several Makefile.am's to make use of
+	conditional compilation -- this way some '#if defined(XXX)' around
+	complete source files can be removed and compilation is faster.
+
+2003-04-27  Michael Krause  <mk@soundtracker.org>
+
+	* app/track-editor.c (tracker_timeout): Removed
+	g_assert(current_driver_object) and replaced it with a simple
+	check, because the situation tested for can actually occur
+	legally.
+
+	* app/gui.c (gui_editpat_changed): gui_mixer_set_pattern() is
+	called here only when we are in 'playing pattern' mode.
+	(gui_set_current_pattern): Removed call to
+	gui_mixer_set_pattern().
+	(offset_current_pattern): Use gtk_spin_button_set_value() to set
+	new pattern.
+
+2003-04-12  Luc Tanguay  <lucus_at_sympatico.ca>
+
+	* Updated MIDI code to support ALSA 0.9.x.
+
+2003-04-03  Michael Krause  <mk@soundtracker.org>
+
+	* app/drivers/oss-{in|out}put.c: Corrected soundcard.h
+	inclusion. Now compiles under NetBSD (thanks Frank Knappe
+	<knappe@tu-harburg.de> and Henri Jylkka <henri.jylkka@mbnet.fi>).
+
+2003-03-29  Michael Krause  <mk@soundtracker.org>
+
+	* po: Updated ja.po
+
+	* configure.in: Correct detection of ALSA v0.9, v0.5 and <older>.
+	(modified patch from ltanguay).
+
+2003-03-09  Michael Krause  <mk@soundtracker.org>
+
+	* app/gui.c (gui_save_wav_callback, play_song): Removed
+	superfluous calls to gui_set_current_pattern().
+
+	* app/drivers/file-output.c (sndfile_new): Initializing d->sndbuf
+	and d->polltag to NULL. Fixes a crash when trying to save WAV via
+	libsndfile on my machine.
+
+	* Fixed libsndfile detection.
+
+	* "Released" soundtracker-0.6.7pre3 (without official
+	announcement).
+	
+	* Updated ja.po.
+
+2003-03-08  Michael Krause  <mk@soundtracker.org>
+
+	* app/gui.c (gui_playlist_position_changed): Start event waiter
+	first, THEN send "set songpos" request to mixer. Fixes occasional
+	hanging playlist display when changing playlist position manually
+	during playback.
+
+	* app/drivers/sun-input.c, app/drivers/sun-output.c: From Wilbern
+	Cobb. Integration with configure.in is still missing.
+
+	* app/drivers/oss-input.c, app/drivers/oss-output.c, configure.in:
+	Including {sys/|machine/|<nothing>}/soundcard.h depending on which
+	is present (wcobb).
+
+	* app/menubar.c: Added toggleitem for disabling the splash screen
+	(i.e., automatically closing it).
+
+	* app/gui-subs.c (gui_hang_tooltip): Only allocate GtkTooltips
+	once.
+
+	* app/gui.c (gui_insert_free_pattern,
+	gui_insert_free_pattern_and_copy): Cleaned up, checking for
+	maximum playlist length.
+
+	* app/gui-subs.c (gui_update_adjustment): Use gfloat for p instead
+	of int. Fixes some weird position jumping in the new playlist
+	editor when deleting or inserting items. Moved from gui-subs.c to
+	playlist.c, because it is playlist-specific.
+
+	* app/playlist.c: Merged playlist_insert_pattern() and
+	playlist_insert_clicked().
+
+	* app/playlist.[ch], app/gui.[ch]: New FastTracker-style playlist
+	editor by Yury.
+
+2003-03-02  Michael Krause  <mk@soundtracker.org>
+
+	* "Released" soundtracker-0.6.7pre2 (without official
+	announcement).
+	
+	* Added patch from Yury for correcting
+	right-mouse-button-over-scopes semantics to agree with FT2.
+
+	* Added patch from Yury for displaying a pixmap for a muted
+	channel instead of a zero line only. Fixed this for the case when
+	no actual PNG file is installed.
+
+	* Added patch from Yury for B<->H note name switching and
+	flat/sharp notation selection. I downscaled the provided icons to
+	a height of 16 pixels to agree with the standard GNOME stockicon
+	size.
+
+	* Added patch from Yury for handling arbitary XM instrument header
+	sizes in xm.c::xm_load_xm_instrument().
+
+	* Added patch from Yury adding some gettext() calls here and there
+	to actually translate strings.
+
+	* Added patch from Yury for XP pattern import/export.
+
+	* Added patch from Tomasz Maka <pasp@ll.pl>.
+	  + app/tracker.c: Channel numbers are more useful now
+	    (centered above track on a separate line)
+	  + app/tracker.[ch], app/gui.c: Different cursor color
+	    in edit mode.
+
+	* Added norwegian translation by Petter Johan Olsen
+	<petter.olsen@cc.uit.no>. Updated russian translation by Yury.
+
+	* Added latest version of JACK output driver. Changes:
+	  + Multiple clients: soundtracker_0-9
+	  + Output ports renamed: out_1, out_2
+	  + Driver release now waits for declicking to finish
+	  + GUI issues fixed
+	  + no slave transport mode
+	  + master mode is not saved in the config by choice
+	  (by Anthony <avan@uwm.edu>)
+	
+2003-02-02  Michael Krause  <mk@soundtracker.org>
+
+	* "Released" soundtracker-0.6.7pre1 (without official
+	announcement).
+	
+	* New danish translation (da.po) by Keld Simonsen <keld@dkuug.dk>.
+
+	* app/gui.c (gui_update_title): Rewritten using g_strdup_printf()
+	and g_basename(), fixes a crash when starting ST with a module
+	filename as command line argument.
+
+	* Applied patch from Anthony Van Groningen <avan@uwm.edu> adding
+	JACK support to SoundTracker. Some configure.in / Makefile fixes
+	for this by Kai Vehmanen <kai.vehmanen@wakkanet.fi>.
+	
+	* Spent some hours getting the autoconf stuff to work with the
+	latest autoconf-2.57 / automake-1.7.2. I hate this.
+
+	* Applied patch from Erik de Castro Lopo <erikd-100@mega-nerd.com>
+	implementing libsndfile support in addition to
+	libaudiofile. libsndfile is now default, and if it is not found,
+	libaudiofile is used.
+
+2002-10-20  Michael Krause  <mk@soundtracker.org>
+
+	* app/file-operations.c (fileops_filesel_pre_insertion /
+	post_removal): Only hide confirm area (OK and Cancel buttons) if
+	this is a single-click dialog. In the save dialogs, we need these
+	buttons (reported by qmax).
+
+	* app/playlist.c (playlist_delete_clicked): Was buggy when delete
+	the very last playlist entry (garbled the last-but-one playlist
+	entry).
+
+2002-09-18  Michael Krause  <mk@soundtracker.org>
+
+	* app/tracker.c (tracker_button_press): Now you can use your loved
+	mouse wheel to scroll through the patterns, just like Up and Down
+	arrows. But not only. Holding Left Shift and turning the wheel,
+	you can scroll left and right throug the pattern, as if you use
+	the scrollbar below the tracker window. (yaliaev)
+
+	* app/sample-editor.c: When a raw sample is loaded, a combo box
+	shows up and asks for the sampling rate. The default value is set
+	to 8363, but you can also select another predefined value or enter
+	one by hand. Also, the standard note is changed from C-6 to C-4,
+	so a 8363 Hz sample will now result in realnote=0; finetune=0; and
+	a 44100 Hz one in realnote=29; finetune=-28. (tugruettmueller)
+
+	* app/gui.c: Write the name of the module being edited in the main
+	window title. (yaliaev)
+
+2002-08-17  Michael Krause  <mk@soundtracker.org>
+
+	* In various files, added GPOINTER_TO_INT() and GINT_TO_POINTER()
+	macro calls. In the assembler files, added _C_LABEL() macro to
+	handle differing OS conventions for label prefixes. Makes ST work
+	on OpenBSD/sparc64 and OpenBSD/i386 (by wcobb).
+
+	* app/xm.c (xm_freq_note_to_relnote_finetune): Forcing finetune
+	into interval [-63,+63], removed restriction for relnote in
+	[-96,+96] (by tugruettmueller).
+	
+	* app/gui.c (gui_numchans_changed): Round down odd channel numbers
+	when entered manually (by yaliaev).
+	(gui_handle_standard_keys): Shift + Crsr Left / Right browses
+	playlist (by yaliaev).
+
+2002-07-20  Michael Krause  <mk@soundtracker.org>
+
+	* app/playlist.c (playlist_insert_clicked): Fixed a bug that
+	caused "Insert" to destroy the last playlist entry. Also, we're
+	now inserting the current pattern instead of duplicating the
+	playlist entry.
+
+2002-07-18  Michael Krause  <mk@soundtracker.org>
+
+	* app/gui-settings.[ch]: Removed option 'Save XM saves all
+	non-empty patterns' and made this the default behaviour: all
+	non-empty patterns are always saved; if the user wants to have a
+	small, clean file, he can run 'Optimize Module'.
+
+	* app/sample-display.c (sample_display_draw_data): Fixed 'sample
+	was displayed reversed vertically' bug once and for all. Still
+	wasn't working properly.
+
+2002-06-28  Michael Krause  <mk@soundtracker.org>
+
+	* app/sample-display.c (sample_display_draw_data): Yet another fix
+	to the sample display (Mardy <mardy@users.sourceforge.net>).
+
+	* soundtracker.desktop: Changed 'Type' from 'Multimedia' to
+	'Application'. Now SoundTracker appears in the GNOME menu again.
+	Reported by Bastien Nocera <hadess@hadess.net>.
+	
+	* app/mixers/kbfloat-mix.c (CUBICMIXER_LOOP_FORWARD): Moved s0
+	initialization from LOOP_START macro to both LOOP_FORWARD and
+	LOOP_BACKWARD, adding a missing minus sign before positionf in
+	LOOP_BACKWARD. Now backwards mixing is done correctly, without
+	noise (reported by Yury Aliaev <mutabor@catholic.org>).
+
+2002-06-17  Michael Krause  <mk@soundtracker.org>
+
+	* app/gui.c (gui_splash): Calling gdk_rgb_init() after
+	gnome_init(), which is officially required, but the splash screen
+	happened to work on my installation nevertheless, just not on some
+	others..
+
+	* po: Updated fr, ja, sv, ru, it. New croation translation (hr.po)
+	by Denis Lackovic <delacko@fly.srk.fer.hr>.
+
+	* app/transposition.c (transposition_transpose_notes_sub):
+	"Current Instrument" and "All Instruments" modes were swapped
+	(reported by Michal Seta <mis@creazone.com>)
+
+	* app/tips-dialog.c: Actually feeding the tips through _() now
+	(reported by Yuri Bongiorno <yuri.bongiorno@logika.com>)
+
+2002-05-20  Michael Krause  <mk@soundtracker.org>
+
+	* Released v0.6.6
+
+	* Oh, yeah. NLS was completely b0rken. Updated to gettext-0.10.37.
+
+	* Released v0.6.5
+
+	* app/tracker.c (tracker_set_font): Test if font width and height
+	have sane values. Fixes crash with the 'clearlyu' font reported by
+	Trevor Nunes <lutes159@home.com>.
+
+	* app/playlist.c: Hack to set page increment to 5.0 for the
+	current pos and restart pos spinbuttons.
+
+	* app/sample-display.c: Flipped display vertically; now the
+	positive sample values are at the top, and the negative ones at
+	the bottom (patch by Mardy <mardy@users.sourceforge.net>).
+	
+2002-05-17  Michael Krause  <mk@soundtracker.org>
+
+	* app/menubar.c: For non-GNOME SoundTracker, wrote some code that
+	converts the GNOME menu tree structure into GtkItemFactoryEntry's
+	at run-time, so we can finally get rid of the extra GTK+-only menu
+	tree and its associated translation-induced problems (maintenance
+	nightmare).
+
+	* app/track-editor.c (track_editor_copy_selection): When marking a
+	block with CTRL-B, CTRL-C and CTRL-V (copy and cut) stop marking
+	automatically. This should always have been the case, but somehow
+	in v0.6.4 an extra CTRL-B was necessary.
+
+	* app/menubar.c: Added selection transposition stuff.
+
+	* app/transposition.c (transposition_transpose_selection):
+	Backported from CVS.
+
+	* app/track-editor.c (track_editor_editmode_status_idle_function):
+	Using idle function here as well in order to workaround
+	gtk_label_set_text() slowness.
+
+2002-05-16  Michael Krause  <mk@soundtracker.org>
+
+	* app/sample-editor.c (sample_editor_set_selection_label): Moved
+	the actual gtk_label_set_text() to an idle function, because it
+	has become incredibly slow somewhere on the way to gtk+-1.2.10.
+	Fixes sample range selection slowness (see comment).
+
+	* app/menubar.c: Renamed "use backing store" to "flicker-free
+	scrolling", which can actually be understood by non-coders.
+
+	* app/tracker-settings.c (trackersettings_new): Button relayout.
+
+	* app/gui-settings.c: Removed AA canvas option. Removed channel
+	numbering option (hey, removing superfluous preferences is a good
+	thing). Renamed some other options.
+
+	* app/envelope-box.c (envelope_box_new): Always using standard
+	non-antialiased canvas. With GNOME 1.0 and GNOME 1.2, AA canvas is
+	buggy; with GNOME 1.4, it doesn't even work.
+	
+	* po: Updated fr.po.
+
+2002-02-17  Michael Krause  <rawstyle@soundtracker.org>
+
+	* configure.in: Check for gdk-pixbuf >= 0.8.0 (in fact, I don't
+	know which is the minimum version required). Needed for splash
+	screen.
+
+	* app/tips-dialog.c (tips_dialog_get_vbox): Function to create the
+	vbox without a window, for the splash screen.
+
+	* app/gui.c (gui_init): Separated into gui_splash() and
+	gui_final().  The former displays a splash screen, and integrates
+	the tips.
+
+2002-02-09  Michael Krause  <rawstyle@soundtracker.org>
+
+	* app/gui-settings.c (gui_settings_save_config): Moved geometry
+	saving from save_always() to this function.
+
+	* app/file-operations.c (fileops_tmpclean): Removed error checks,
+	especially the ungraceful exit(-1) :-)
+	
+	* po: Updated fr.po (new translation by Michel Robitaille
+	<robitail@IRO.UMontreal.CA>), added sv.po (by Christian Rose
+	<menthos@menthos.com>).
+
+2002-01-15  Tomasz Maka  <pasp@ll.pl>
+
+	* app/file-operations.[ch]: Added fileops_tmpclean function to
+	remove ~/.soundtracker/tmp contents.
+
+	* app/xm.c (xm_check_envelope): Set first envelope point offset to
+	0.
+
+2002-01-13  Michael Krause  <rawstyle@soundtracker.org>
+
+	* Actually putting config.guess and config.sub into the .tar.gz
+	distribution. Last time they were missing, strange.
+
+	* app/gui.[ch]: Moved WELCOME_MESSAGE define to gui.c so that it
+	is internationalized (reported by Yuri Bongiorno
+	<yuri.bongiorno@logika.com>).
+
+	* app/gui-settings.c (gui_settings_save_config): Don't forget to
+	save scopes_buffer_size (reported by Chauk-Mean Proum
+	<chauk-mean.proum@fr.thalesgroup.com>).
+
+	* po: Updated ru.po and it.po.
+
+2001-12-22  Tomasz Maka  <pasp@ll.pl>
+
+	* app/errors.c, sample-display.c, scope-group.c: Added missing
+	'string.h' headers.
+
+	* app/xm.c: Added new st specific tmpnam function (called
+	'st_tmpnam') to avoid gcc warrning. Generates temporary files in
+	~/.soundtracker/tmp/ instead of in /tmp/.
+
+	* app/gui.c (gui_handle_standard_keys): If we are in instrument or
+	sample editor notebook page 'Space' key stops playing without edit
+	mode switching.
+
+2001-12-08  Tomasz Maka  <pasp@ll.pl>
+
+	* app/gui.c, gui-settings.[ch], menubar.c: Added option to save
+	tracker's window geometry.
+
+	* app/module-info.c (modinfo_optimize_module): Module optimize
+	function has small info requester now.
+
+2001-12-07  Tomasz Maka  <pasp@ll.pl>
+
+	* app/sample-editor.c (sample_editor_set_selection_label): When
+	selection exist length label show size of selected block instead
+	of entire sample size.
+
+	* app/sample-editor.c: Ask user for action if saving file
+	(sample or region) already exist.
+
+2001-08-25  Michael Krause  <m.krause@tu-harburg.de>
+
+	* po: Updated de.po and es.po.
+
+2001-08-12  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.6.4
+
+	* app/clavier.c (clavier_init): If "5x8" font can't be found, use
+	"fixed".
+
+	* Added 'config.guess' and 'config.sub' files from automake
+	distribution (reported by Wilbern Cobb <cobb@vedge.com.ar>).
+
+2001-08-04  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/drivers/oss-input.c: Made "/dev/dsp" configurable.
+	(oss_release): Only remove polltag if polltag != 0. Fixes a glib
+	warning.
+
+	* app/audioconfig.c (audioconfig_clist_select): When a different
+	driver is selected, don't just leave the default settings, but
+	load the settings from disk if there are saved settings.
+
+2001-07-31  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/drivers/oss-output.c: Made "/dev/dsp" configurable.
+
+2001-07-25  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/sample-editor.c (sample_editor_init_sample): If instrument
+	is initialized, initialize sample map with current sample number,
+	too.
+
+	* app/tips-dialog.c: Added tip "Is your cursor trapped in a number
+	entry field? Just press Return or Tab to free yourself!".
+
+	* soundtracker.spec: Disable ALSA when building an RPM.
+
+	* po: Added gl.po by Xosé Anxo Pereira Torreiro
+	<pereira@iponet.es>.
+
+2001-06-15  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/main.c (main): On Linux, we use setresuid()/setresgid()
+	instead of seteuid()/setegid() in order to make gtk+-1.2.10 happy.
+	Otherwise, SoundTracker doesn't run if installed suid-root.
+	
+2001-05-24  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.6.3
+
+	* app/audio.c (audio_ctlpipe_stop_playing): If audio_songpos_ew is
+	still active, confirm it. This fixes the crash that occurs when
+	pressing Ctrl directly after changing the playback position
+	(during playback), reported by Aki Kemppainen
+	<kemppaia@assari.cc.tut.fi>
+
+	* app/audioconfig.c (audioconfig_save_config): prefs_open_write()
+	was accidentally called with an argument "rw" instead of a real
+	file-name, so the audio settings never got saved!! I wonder why
+	nobody reported this.
+
+2001-03-05  Michael Krause  <m.krause@tu-harburg.de>
+
+	* po: Updated ru.po, it.po.
+
+2001-01-03  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.6.2
+
+2000-12-27  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/sample-editor.c (sample_editor_save_wav_main): Check for
+	existence of dynamic loader functions, and use audiofile-0.2.0
+	code if not.
+
+2000-12-23  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/sample-editor.c (sample_editor_save_wav_main): Fix sample
+	format initialization for libaudiofile-0.2.0.
+
+2000-12-20  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/tracker-settings.c (trackersettings_read_fontlist),
+	app/tracker.c (tracker_init): Default font is now 'fixed'. 7x13
+	appears not to be present on all X installations (Florian Heinz
+	<sky@sysv.de>) pointed this out.
+	
+2000-12-16  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/fr.po: Updated french translation (XxKarLKoXxX@aol.com)
+
+2000-12-09  Rob Adamson  <r.adamson@hotpop.com>
+
+	* app/xm.c: Escape filenames that are passed to the shell for
+	decompressing.
+
+2000-10-30  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/gui.c (keyevent): Removed old "capture_keys" logic, and
+	replaced it by a simple check if the window's current focus lies
+	on an entry widget. Finally, the spin buttons are editable using
+	the keyboard!
+
+	* app/gui.c: Replaced all gtk_spin_button_new() by
+	extspinbutton_new() plus disabled size hack (in order to get the
+	"changed" callback mentioned below into effect).
+	
+	* app/extspinbutton.c: Added option to disable the horizontal size
+	hack, and added "changed" callback that immediately removes focus
+	from widget if the value has been changed using the mouse.
+
+2000-10-22  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.6.1
+
+2000-10-20  Michael Krause  <m.krause@tu-harburg.de>
+
+	* po/sl.po: Added slovene translation by Matej Erman.
+
+	* app/mixers/midi.c, midi-settings.[ch], midi-utils.c: Updates
+	from Luc Tanguay; The MIDI Settings dialog box now includes a page
+	for Output parameters (for future dev.) and one for Misc
+	parameters. This last page has one parameter for now: debug level
+	(to allow MIDI users to see the MIDI events SoundTracker is
+	receiving). Will be useful when MIDI events will be assignable to
+	SoundTracker commands.
+
+	* app/mixers/kb-x86.c (kb_x86_mix_sub): Remove g_assert(pos >=
+	ch->sample->loopstart). This is simply not true for short loops.
+
+2000-09-28  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.6.0 -- the first officially stable version ever :)
+
+	* po: Updated ja.po
+
+2000-09-27  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/sample-editor.c, app/xm.c: Added various pointer arithmetic
+	changes due to the recent change of sample.data from void* to
+	gint16*. Fixes some crashes..
+
+2000-09-26  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/midi-settings.c (midi_load_config): Yet another compilation
+	fix :)

@@ -1,0 +1,2153 @@
+# Русская локализация для Sound Tracker
+# Copyright (C) 1999, 2000 Free Software Foundation, Inc.
+# Michael Shigorin <mike@odsn.org.ua>, 1999, 2000.
+# Yury Aliaev <mutabor@rambler.ru>, 2002, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: soundtracker-0.6.4\n"
+"POT-Creation-Date: 2004-01-11 17:20+0100\n"
+"PO-Revision-Date: 2000-09-12 20:35+0200\n"
+"Last-Translator: Michael Shigorin <mike@lic145.kiev.ua>\n"
+"Language-Team: Russian <ru@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=koi8-r\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: app/audioconfig.c:63
+msgid "Playback Output"
+msgstr "Выход воспроизведения"
+
+#: app/audioconfig.c:69
+msgid "Editing Output"
+msgstr "Выход редактирования"
+
+#: app/audioconfig.c:75
+msgid "Sampling"
+msgstr "Оцифровка"
+
+#: app/audioconfig.c:261
+msgid "Driver Module"
+msgstr "Модуль драйвера"
+
+#: app/audioconfig.c:262
+msgid "Mixer Module"
+msgstr "Модуль микшера"
+
+#: app/audioconfig.c:263
+msgid "Description"
+msgstr "Описание"
+
+#: app/audioconfig.c:271 app/audioconfig.c:274
+msgid "Audio Configuration"
+msgstr "Конфигурация аудио"
+
+#: app/audioconfig.c:289
+msgid "Drivers"
+msgstr "Драйверы"
+
+#: app/audioconfig.c:326
+msgid "Mixers"
+msgstr "Микшеры"
+
+#: app/audioconfig.c:359 app/gui-settings.c:496 app/gui.c:265
+#: app/sample-editor.c:2207 app/transposition.c:347
+msgid "Close"
+msgstr "Закрыть"
+
+#: app/drivers/alsa-input.c:125 app/drivers/alsa-output.c:134
+#: app/drivers/alsa2-input.c:125 app/drivers/alsa2-output.c:135
+#, c-format
+msgid "(%d bytes)"
+msgstr "(%d байт)"
+
+#: app/drivers/alsa-input.c:128 app/drivers/alsa2-input.c:128
+#, c-format
+msgid "Estimated audio delay: %f microseconds"
+msgstr "Ожидаемая задержка звука: %f микросекунд"
+
+#: app/drivers/alsa-input.c:193 app/drivers/alsa-output.c:199
+#: app/drivers/alsa2-input.c:193 app/drivers/alsa2-output.c:198
+#: app/drivers/oss-output.c:205 app/drivers/sun-output.c:197
+msgid "These changes won't take effect until you restart playing."
+msgstr "Эти изменения вступят в силу при следующем воспроизведении."
+
+#: app/drivers/alsa-input.c:205 app/drivers/alsa-output.c:211
+#: app/drivers/alsa2-input.c:205 app/drivers/alsa2-output.c:210
+#: app/drivers/oss-output.c:233 app/drivers/sun-output.c:225
+#: app/sample-editor.c:1578
+msgid "Resolution:"
+msgstr "Разрядность:"
+
+#: app/drivers/alsa-input.c:215 app/drivers/alsa-output.c:221
+#: app/drivers/alsa2-input.c:215 app/drivers/alsa2-output.c:220
+#: app/drivers/oss-output.c:243 app/drivers/sun-output.c:236
+#: app/sample-editor.c:1608
+msgid "Channels:"
+msgstr "Каналы:"
+
+#: app/drivers/alsa-input.c:225 app/drivers/alsa-output.c:231
+#: app/drivers/alsa2-input.c:225 app/drivers/alsa2-output.c:230
+#: app/drivers/oss-output.c:253 app/drivers/sun-output.c:247
+msgid "Frequency [Hz]:"
+msgstr "Частота [Гц]:"
+
+#: app/drivers/alsa-input.c:235 app/drivers/alsa-output.c:241
+#: app/drivers/alsa2-input.c:235 app/drivers/alsa2-output.c:240
+#: app/drivers/oss-output.c:263 app/drivers/sun-output.c:258
+msgid "Buffer Size:"
+msgstr "Размер буфера:"
+
+#: app/drivers/alsa-input.c:268 app/drivers/alsa-output.c:274
+#: app/drivers/alsa2-input.c:268 app/drivers/alsa2-output.c:273
+msgid "ALSA card number:"
+msgstr "Номер карты ALSA:"
+
+#: app/drivers/alsa-input.c:283 app/drivers/alsa-output.c:289
+#: app/drivers/alsa2-input.c:283 app/drivers/alsa2-output.c:288
+msgid "ALSA device number:"
+msgstr "Номер устройства ALSA:"
+
+#: app/drivers/alsa-input.c:374
+#, c-format
+msgid ""
+"Couldn't open ALSA device for sound input (card:%d, device:%d):\n"
+"%s"
+msgstr ""
+"Невозможно открыть устройство ALSA для ввода звука\n"
+"(карта: %d, устройство: %d):\n"
+"%s"
+
+#: app/drivers/alsa-input.c:426 app/drivers/alsa-output.c:426
+#: app/drivers/oss-input.c:267 app/drivers/oss-output.c:424
+msgid "Required sound output format not supported.\n"
+msgstr "Требуемый формат воспроизведения не поддерживается.\n"
+
+#: app/drivers/alsa-input.c:439 app/drivers/alsa-output.c:441
+msgid "Required sound output parameters not supported.\n"
+msgstr "Требуемые параметры воспроизведения не поддерживаются.\n"
+
+#: app/drivers/alsa-output.c:137 app/drivers/alsa2-output.c:138
+#: app/drivers/oss-output.c:149 app/drivers/sun-output.c:137
+#, c-format
+msgid "Estimated audio delay: %f milliseconds"
+msgstr "Ожидаемая задержка звука: %f миллисекунд"
+
+#: app/drivers/alsa-output.c:377 app/drivers/alsa2-input.c:375
+#: app/drivers/alsa2-output.c:379
+#, c-format
+msgid ""
+"Couldn't open ALSA device for sound output (card:%d, device:%d):\n"
+"%s"
+msgstr ""
+"Невозможно открыть устройство ALSA для вывода звука\n"
+"(карта: %d, устройство: %d):\n"
+"%s"
+
+#: app/drivers/alsa2-input.c:436 app/drivers/alsa2-output.c:440
+msgid "Required output-channel parameters not supported.\n"
+msgstr "Требуемые параметры канала воспроизведения не поддерживаются.\n"
+
+#: app/drivers/alsa2-input.c:441 app/drivers/alsa2-output.c:445
+msgid "Unable to prepare ALSA channel.\n"
+msgstr "Невозможно подготовить канал ALSA.\n"
+
+#: app/drivers/alsa2-input.c:454 app/drivers/alsa2-output.c:458
+msgid "Alsa setup error.\n"
+msgstr "Ошибка настройки ALSA.\n"
+
+#: app/drivers/esd-output.c:96
+msgid ""
+"Note that the ESD output is unusable in\n"
+"interactive mode because of the latency added\n"
+"by ESD. Use the OSS or ALSA output plug-ins\n"
+"for serious work."
+msgstr ""
+"Заметьте, что вывод через ESD непригоден для\n"
+"интерактивного режима из-за задержек, вводимых\n"
+"ESD. Для серьезной работы используйте плагины\n"
+"воспроизведения OSS или ALSA."
+
+#: app/drivers/esd-output.c:161
+#, c-format
+msgid ""
+"Couldn't connect to ESD for sound output:\n"
+"%s"
+msgstr ""
+"Подключение к ESD для вывода звука не удалось:\n"
+"%s"
+
+#: app/drivers/file-output.c:92 app/drivers/file-output.c:297
+msgid "no settings (yet), sorry!"
+msgstr "(пока) нет настроек, sorry!"
+
+#: app/drivers/file-output.c:167 app/drivers/file-output.c:374
+#: app/sample-editor.c:1823
+msgid "Can't open file for writing."
+msgstr "Невозможно открыть файл для записи."
+
+#: app/drivers/oss-input.c:111 app/drivers/sun-input.c:105
+msgid "These changes won't take effect until you restart sampling."
+msgstr ""
+"Эти изменения вступят в силу только после перезапуска процесса оцифровки."
+
+#: app/drivers/oss-input.c:123
+msgid "Input device (e.g. '/dev/dsp'):"
+msgstr "Устройство ввода (например, '/dev/dsp'):"
+
+#: app/drivers/oss-input.c:234
+#, c-format
+msgid ""
+"Couldn't open %s for sampling:\n"
+"%s"
+msgstr ""
+"Невозможно открыть %s для оцифровки:\n"
+"%s"
+
+#: app/drivers/oss-output.c:183 app/drivers/sun-output.c:172
+#, c-format
+msgid "(%d samples)"
+msgstr "(%d сэмплов)"
+
+#: app/drivers/oss-output.c:217
+msgid "Output device (e.g. '/dev/dsp'):"
+msgstr "Устройство вывода (например, '/dev/dsp'):"
+
+#: app/drivers/oss-output.c:391
+#, c-format
+msgid ""
+"Couldn't open %s for sound output:\n"
+"%s"
+msgstr ""
+"Невозможно открыть %s для вывода звука:\n"
+"%s"
+
+#: app/drivers/jack-output.c:254
+msgid "transport master"
+msgstr "Ведущий"
+
+#: app/drivers/jack-output.c:259
+msgid "declick"
+msgstr "Устранение щелчков"
+
+#: app/drivers/jack-output.c:279
+#, c-format
+msgid "Running at %d Hz with %d frames"
+msgstr "Запущен при частоте %d Гц, %d кадров"
+
+#: app/drivers/jack-output.c:283
+msgid "Jack server not running?"
+msgstr "Сервер Jack не запущен?"
+
+#. TODO: this should be improved, both error handling and saving the string
+#. I'm probably not taking advantage of libjack
+#: app/drivers/jack-output.c:327
+msgid "soundtracker"
+msgstr "soundtracker"
+
+#: app/drivers/jack-output.c:347
+msgid "out_1"
+msgstr "out_1"
+
+#: app/drivers/jack-output.c:348
+msgid "out_2"
+msgstr "out_2"
+
+#: app/drivers/sun-output.c:209
+msgid "Output device (e.g. '/dev/audio'):"
+msgstr "Устройство вывода (т.е. '/dev/audio'):"
+
+#: app/drivers/sun-input.c:229 app/drivers/sun-input.c:311
+#: app/drivers/sun-output.c:389 app/drivers/sun-output.c:460
+#, c-format
+msgid "%s: %s"
+msgstr "%s: %s"
+
+#: app/drivers/sun-output.c:395
+#, c-format
+msgid "%s: Cannot play (%s)"
+msgstr "%s: Воспроизведение невозможно (%s)"
+
+#: app/drivers/sun-input.c:250 app/drivers/sun-output.c:402
+#, c-format
+msgid "%s: Cannot handle %dHz (%s)"
+msgstr "%s: Неподдерживаемая частота: %d Гц (%s)"
+
+#: app/drivers/sun-input.c:280 app/drivers/sun-output.c:431
+#, c-format
+msgid "%s: Required sound encoding not supported.\n"
+msgstr "%s Требуемая схема кодирования звука не поддерживается.\n"
+
+#: app/drivers/sun-input.c:305 app/drivers/sun-output.c:454
+#, c-format
+msgid "%s: Cannot set block size (%s)"
+msgstr "%s: Невозможно установить размер блока (%s)"
+
+#: app/drivers/sun-input.c:117
+msgid "Input device (e.g. '/dev/audio'):"
+msgstr "Устройство ввода (т.е. '/dev/audio'):"
+
+#: app/drivers/sun-input.c:242
+#, c-format
+msgid "%s: Cannot record (%s)"
+msgstr "%s: Запись невозможна (%s)"
+
+#: app/envelope-box.c:878
+msgid "Length"
+msgstr "Длина"
+
+#: app/envelope-box.c:879
+msgid "Current"
+msgstr "Текущий"
+
+#: app/envelope-box.c:880
+msgid "Offset"
+msgstr "Смещение"
+
+#: app/envelope-box.c:881
+msgid "Value"
+msgstr "Значение"
+
+# ?
+#: app/envelope-box.c:887 app/playlist.c:524
+msgid "Insert"
+msgstr "Вставить"
+
+# ?
+#: app/envelope-box.c:893 app/playlist.c:533
+msgid "Delete"
+msgstr "Удалить"
+
+#: app/envelope-box.c:985
+msgid ""
+"Graphical\n"
+"Envelope\n"
+"Editor\n"
+"only in\n"
+"GNOME Version"
+msgstr ""
+"Графический\n"
+"редактор\n"
+"огибающей\n"
+"только в\n"
+"GNOME-версии"
+
+#: app/envelope-box.c:1000
+msgid "Sustain"
+msgstr "Удержание"
+
+#: app/envelope-box.c:1008
+msgid "Point"
+msgstr "Точка"
+
+#: app/envelope-box.c:1010
+msgid "Loop"
+msgstr "Цикл"
+
+#: app/envelope-box.c:1018 app/sample-editor.c:261
+msgid "Start"
+msgstr "Начало"
+
+#: app/envelope-box.c:1019 app/sample-editor.c:262
+msgid "End"
+msgstr "Конец"
+
+#: app/file-operations.c:162
+msgid "Load Module"
+msgstr "Загрузить модуль"
+
+#: app/file-operations.c:163
+msgid "Save Module"
+msgstr "Сохранить модуль"
+
+#: app/file-operations.c:164
+msgid "Render WAV"
+msgstr "Создать WAV"
+
+#: app/file-operations.c:165
+msgid "Save Song"
+msgstr "Сохранить песню"
+
+#: app/file-operations.c:166 app/sample-editor.c:369
+msgid "Load Sample"
+msgstr "Загрузить сэмпл"
+
+#: app/file-operations.c:167
+msgid "Save Sample"
+msgstr "Сохранить сэмпл"
+
+#: app/file-operations.c:168
+msgid "Load Instrument"
+msgstr "Загрузить инструмент"
+
+#: app/file-operations.c:169
+msgid "Save Instrument"
+msgstr "Сохранить инструмент"
+
+#: app/file-operations.c:175
+msgid "File"
+msgstr "Файл"
+
+#: app/file-operations.c:226
+msgid "Operation not supported."
+msgstr "Операция не поддерживается."
+
+#: app/gui-settings.c:97
+msgid "Scopes Frequency"
+msgstr "Частота осциллографа"
+
+#: app/gui-settings.c:100
+msgid "Tracker Frequency"
+msgstr "Частота трэкера"
+
+#: app/gui-settings.c:308 app/gui-settings.c:311
+msgid "GUI Configuration"
+msgstr "Конфигурация GUI"
+
+#: app/gui-settings.c:345
+msgid "Hexadecimal row numbers"
+msgstr "Шестнадцатеричная нумерация строк"
+
+#: app/gui-settings.c:352
+msgid "Use upper case letters for hex numbers"
+msgstr "Использовать заглавные буквы для шестнадцатеричных чисел"
+
+#: app/gui-settings.c:359
+msgid "Asynchronous (IT-style) pattern editing"
+msgstr "Асинхронное редактирование паттернов (в стиле IT)"
+
+#: app/gui-settings.c:366
+msgid "Fxx command updates Tempo/BPM sliders"
+msgstr "Команда Fxx изменяет индикаторы темпа и BPM"
+
+#: app/gui-settings.c:373
+msgid "Switch to tracker after loading/saving"
+msgstr "Переключаться в окно трекера после сохранения или загрузки модуля"
+
+#: app/gui-settings.c:380
+msgid "Save window geometry on exit"
+msgstr "Запоминать геометрию окна при выходе"
+
+#: app/gui-settings.c:387
+msgid "Use note name B instead of H"
+msgstr "Обозначать ноту \"Си\" как B, а не H"
+
+#: app/gui-settings.c:401
+msgid "Scopes buffer size [MB]"
+msgstr "Размер буфера осциллографов [Мб]"
+
+#: app/gui-settings.c:420
+msgid "Track line format:"
+msgstr "Формат сторки трэка:"
+
+#. 	    gtk_window_set_transient_for(GTK_WINDOW(gui_splash_window), GTK_WINDOW(mainwindow));
+#. (doesn't do anything on WindowMaker)
+#: app/gui-subs.c:32 app/gui.c:2358
+msgid "Ready."
+msgstr "Готово."
+
+#: app/gui-subs.c:33
+msgid "Playing song..."
+msgstr "Играю песню..."
+
+#: app/gui-subs.c:34
+msgid "Playing pattern..."
+msgstr "Играю паттерн..."
+
+#: app/gui-subs.c:35
+msgid "Loading module..."
+msgstr "Загружаю модуль..."
+
+#: app/gui-subs.c:36
+msgid "Module loaded."
+msgstr "Модуль загружен."
+
+#: app/gui-subs.c:37
+msgid "Saving module..."
+msgstr "Сохраняю модуль..."
+
+#: app/gui-subs.c:38
+msgid "Module saved."
+msgstr "Модуль сохранен."
+
+#: app/gui-subs.c:39
+msgid "Loading sample..."
+msgstr "Загружаю сэмпл..."
+
+#: app/gui-subs.c:40
+msgid "Sample loaded."
+msgstr "Сэмпл загружен."
+
+#: app/gui-subs.c:41
+msgid "Saving sample..."
+msgstr "Сохраняю сэмпл..."
+
+#: app/gui-subs.c:42
+msgid "Sample saved."
+msgstr "Сэмпл сохранен."
+
+#: app/gui-subs.c:43
+msgid "Loading instrument..."
+msgstr "Загружаю инструмент..."
+
+#: app/gui-subs.c:44
+msgid "Instrument loaded."
+msgstr "Инструмент загружен."
+
+#: app/gui-subs.c:45
+msgid "Saving instrument..."
+msgstr "Сохраняю инструмент..."
+
+#: app/gui-subs.c:46
+msgid "Instrument saved."
+msgstr "Инструмент сохранен."
+
+#: app/gui-subs.c:47
+msgid "Saving song..."
+msgstr "Сохраняю песню..."
+
+#: app/gui-subs.c:48
+msgid "Song saved."
+msgstr "Песня сохранена."
+
+#: app/gui-subs.c:483 app/gui-subs.c:554
+msgid "Question"
+msgstr "Вопрос"
+
+#: app/gui-subs.c:492
+msgid "Yes"
+msgstr "Да"
+
+#: app/gui-subs.c:500
+msgid "No"
+msgstr "Нет"
+
+#: app/gui-subs.c:507 app/gui-subs.c:571 app/keys.c:711
+#: app/midi-settings-050.c:637 app/midi-settings-09x.c:640
+#: app/sample-editor.c:1486 app/sample-editor.c:1661 app/sample-editor.c:1985
+msgid "Cancel"
+msgstr "Отмена"
+
+#: app/gui-subs.c:589
+msgid "Warning"
+msgstr "Предупреждение"
+
+#: app/gui-subs.c:615
+msgid "Error!"
+msgstr "Ошибка!"
+
+#: app/gui.c:140
+msgid "Tempo"
+msgstr "Темп"
+
+#: app/gui.c:236 app/gui.c:246 app/gui.c:2069
+msgid "Row highlighting configuration"
+msgstr "Настройка подсветки строк"
+
+#: app/gui.c:292
+msgid "Highlight rows (major / minor):"
+msgstr "Подсвечивать строки (главные / второстепенные):"
+
+#: app/gui.c:469
+#, fuzzy
+msgid ""
+"Odd pattern rows contain data which will be lost after shrinking.\n"
+"Do you want to continue anyway?"
+msgstr ""
+"Нечётные строки содержат данные, которые при сжатии будут потеряны\n"
+"Всё равно продолжить?"
+
+#: app/gui.c:497
+#, fuzzy
+msgid ""
+"The pattern is too long for expanding.\n"
+"Some data at the end of the pattern will be lost.Do you want to continue "
+"anyway?"
+msgstr ""
+"Длина паттерна слишком велика для выполнения операции растягивания,\n"
+"Часть данных в конце паттерна будет утеряна.\n"
+"Всё равно продолжить?"
+
+#. No file was actually selected.
+#: app/gui.c:546 app/instrument-editor.c:212 app/sample-editor.c:1685
+#: app/sample-editor.c:1881 app/sample-editor.c:1925
+msgid "No file selected."
+msgstr "Файл не выбран."
+
+#: app/gui.c:554
+msgid ""
+"Are you sure you want to free the current project?\n"
+"All changes will be lost!"
+msgstr ""
+"Вы уверены, что хотите освободить текущий проект?\n"
+"Все изменения будут потеряны!"
+
+#: app/gui.c:568 app/gui.c:583 app/gui.c:598 app/gui.c:616
+#: app/sample-editor.c:1894 app/sample-editor.c:1943
+msgid "Are you sure you want to overwrite the file?"
+msgstr "Вы уверены, что хотите перезаписать файл?"
+
+#: app/gui.c:629
+msgid "Error when opening pattern file!"
+msgstr "Ошибка при загрузке паттерна."
+
+#: app/gui.c:642
+msgid ""
+"The length of the pattern being loaded doesn't match with that of current "
+"pattern in module.\n"
+"Do you want to change the current pattern length?"
+msgstr ""
+"Длина загружаемого паттерна не совпадает с длиной текущего.\n"
+"Хотите ли Вы скорректировать длину текущего паттерна?"
+
+#: app/gui.c:1710
+msgid "SoundTracker Startup"
+msgstr "Запуск SoundTracker"
+
+#: app/gui.c:1769 app/gui.c:1806
+msgid "Loading..."
+msgstr "Загружаюсь..."
+
+#: app/gui.c:1795
+msgid "Use SoundTracker!"
+msgstr "Вперёд!"
+
+#: app/gui.c:1853
+msgid "Load XM..."
+msgstr "Загрузить XM..."
+
+#: app/gui.c:1855
+msgid "Save XM..."
+msgstr "Сохранить XM..."
+
+#: app/gui.c:1858
+msgid "Render module as WAV..."
+msgstr "Записать модуль как WAV..."
+
+#: app/gui.c:1861
+msgid "Save song as XM..."
+msgstr "Сохранить песню как XM..."
+
+#: app/gui.c:1863
+msgid "Load current pattern..."
+msgstr "_Загрузить паттерн..."
+
+#: app/gui.c:1865
+msgid "Save current pattern..."
+msgstr "_Сохранить текущий паттерн..."
+
+#: app/gui.c:1935
+msgid "Play Song"
+msgstr "Играть песню"
+
+#: app/gui.c:1947
+msgid "Play Pattern"
+msgstr "Играть паттерн"
+
+#: app/gui.c:1959
+msgid "Stop"
+msgstr "Стоп"
+
+#: app/gui.c:1964
+msgid "Pat"
+msgstr "Патт"
+
+#: app/gui.c:1970
+msgid "Edited pattern"
+msgstr "Текущий паттерн"
+
+#: app/gui.c:1983
+msgid "When enabled, browsing the playlist does not change the edited pattern."
+msgstr ""
+"Когда включено, навигация по таблице паттернов не приводит к изменениюномера "
+"редактируемого паттерна"
+
+#: app/gui.c:1999
+msgid "Number of Channels:"
+msgstr "Количество каналов:"
+
+#: app/gui.c:2016
+msgid "Pattern Length"
+msgstr "Длина паттерна"
+
+#: app/gui.c:2051
+msgid "Set preferred accidental type"
+msgstr "Выбор знаков альтерации"
+
+#: app/gui.c:2057
+msgid "Measure"
+msgstr "Размер"
+
+#: app/gui.c:2058
+msgid "Enable row highlighting"
+msgstr "Включает подсветку строк"
+
+#: app/gui.c:2084
+msgid "Other..."
+msgstr "Другой..."
+
+#: app/gui.c:2120
+msgid "Change effect column editing direction"
+msgstr "Выбор направления смещения при редактировании в колонке эффекта"
+
+#: app/gui.c:2151
+msgid "Global amplification"
+msgstr "Общее усиление"
+
+#: app/gui.c:2187
+msgid "Pitchbend"
+msgstr "Расстройка тона"
+
+#: app/gui.c:2195
+msgid "Reset pitchbend to its normal value"
+msgstr "Вернуть расстройку тона к нормальному значению"
+
+#: app/gui.c:2207
+msgid "Editing"
+msgstr "Правка"
+
+#: app/gui.c:2212
+msgid "Octave"
+msgstr "Октава"
+
+#: app/gui.c:2221
+msgid "Jump"
+msgstr "Прыжок"
+
+#: app/gui.c:2230
+msgid "Instr"
+msgstr "Инструмент"
+
+#: app/gui.c:2246
+msgid "Sample"
+msgstr "Сэмпл"
+
+#. Status Bar
+#: app/gui.c:2285
+msgid "Welcome to SoundTracker!"
+msgstr "Добро пожаловать в SoundTracker!"
+
+#: app/gui.c:2312
+msgid "%M:%S"
+msgstr "%M:%S"
+
+#: app/instrument-editor.c:81
+msgid "VolFade"
+msgstr "Спад"
+
+# here a bit tricky...
+#: app/instrument-editor.c:82
+msgid "VibSpeed"
+msgstr "Вибрато: Скорость"
+
+#: app/instrument-editor.c:83
+msgid "VibDepth"
+msgstr "Глубина"
+
+#: app/instrument-editor.c:84
+msgid "VibSweep"
+msgstr "Размах"
+
+#: app/instrument-editor.c:163 app/instrument-editor.c:186
+msgid "Can't open file."
+msgstr "Невозможно открыть файл."
+
+#: app/instrument-editor.c:229
+msgid "Sine"
+msgstr "Синусоида"
+
+#: app/instrument-editor.c:229
+msgid "Square"
+msgstr "Прямоугольник"
+
+#: app/instrument-editor.c:229
+msgid "Saw Down"
+msgstr "Пила (вниз)"
+
+#: app/instrument-editor.c:229
+msgid "Saw Up"
+msgstr "Пила (вверх)"
+
+#: app/instrument-editor.c:233
+msgid "Instrument Editor"
+msgstr "Редактор инструментов"
+
+#: app/instrument-editor.c:242
+msgid "Volume envelope"
+msgstr "Огибающая громкости"
+
+#: app/instrument-editor.c:250
+msgid "Panning envelope"
+msgstr "Огибающая панорамирования"
+
+#: app/instrument-editor.c:267
+msgid "Load Instrument..."
+msgstr "Загрузить инструмент..."
+
+#: app/instrument-editor.c:269
+msgid "Save Instrument..."
+msgstr "Сохранить инструмент..."
+
+#: app/instrument-editor.c:271
+msgid "Load XI"
+msgstr "Загрузить XI"
+
+#: app/instrument-editor.c:277
+msgid "Save XI"
+msgstr "Сохранить XI"
+
+#: app/instrument-editor.c:296
+msgid "Vibrato Type:"
+msgstr "Тип вибрато:"
+
+#: app/instrument-editor.c:368
+msgid "Note:"
+msgstr "Нота:"
+
+#: app/instrument-editor.c:386
+msgid "Initialize"
+msgstr "Инициализировать"
+
+#: app/keys.c:57
+msgid "<none>"
+msgstr "<ничего>"
+
+#. 3 fixed entries,
+#. 32 dynamically generated ones (see keys_generate_channel_explanations()),
+#. 1 NULL terminator
+#: app/keys.c:129
+msgid "The key that inserts the special keyoff note for FastTracker modules."
+msgstr "Клавиша, вставляющая keyoff-ноту в модули FastTracker."
+
+#: app/keys.c:131
+msgid "The key that increases \"jump\" value."
+msgstr "Клавиша, увеличивающая значение отступа"
+
+#: app/keys.c:133
+msgid "The key that decreases \"jump\" value."
+msgstr "Клавиша, увменьшающая значение отступа"
+
+#: app/keys.c:145
+msgid "Upper Octave Keys..."
+msgstr "Клавиши верхней октавы..."
+
+#: app/keys.c:146
+msgid ""
+"These are the keys on the upper half of the keyboard. The c key is normally "
+"the key to the right of the TAB key. The rest of the keys should be ordered "
+"in a piano keyboard fashion, including the number keys row above."
+msgstr ""
+"Это клавиши верхней половины клавиатуры. Клавиша `до' обычно справа от Tab. "
+"Остальные клавиши расположены подобно клавиатуре пианино, включая клавиши с "
+"цифрами в верхнем ряду."
+
+#: app/keys.c:152
+msgid "Lower Octave Keys..."
+msgstr "Клавиши нижней октавы..."
+
+#: app/keys.c:153
+msgid ""
+"These are the keys on the lower half of the keyboard. The c key is normally "
+"the first character key to the right of the left Shift key. The rest of the "
+"keys should be ordered in a piano keyboard fashion, including the row above."
+msgstr ""
+"Это клавиши нижней половины клавиатуры. Клавиша `до' обычно справа от "
+"LShift. Остальные клавиши расположены подобно клавиатуре пианино, включая "
+"клавиши среднего буквенного ряда."
+
+#: app/keys.c:159
+msgid "Other Keys..."
+msgstr "Другие клавиши..."
+
+#: app/keys.c:160
+msgid "Various other keys"
+msgstr "Разнообразные клавиши"
+
+#: app/keys.c:513
+msgid "Function"
+msgstr "Функция"
+
+#: app/keys.c:514
+msgid "Assignment"
+msgstr "Назначенная клавиша"
+
+#: app/keys.c:523 app/keys.c:526
+msgid "Keyboard Configuration"
+msgstr "Конфигурация клавиатуры"
+
+#. Explaining Text
+#: app/keys.c:575
+msgid "Key Group Explanation"
+msgstr "Пояснение групп клавиатуры"
+
+#. Explaining Text
+#: app/keys.c:592
+msgid "Key Explanation"
+msgstr "Пояснение клавиш"
+
+#: app/keys.c:623
+msgid "Modifiers:"
+msgstr "Модификаторы:"
+
+#. Learn-Buttons
+#: app/keys.c:649
+msgid "Learn selected key"
+msgstr "Запомнить выбранную клавишу"
+
+#: app/keys.c:655
+msgid "Learn all keys"
+msgstr "Запомнить все клавиши"
+
+#: app/keys.c:661
+msgid ""
+"Please press the desired key combination!\n"
+"Click into left list to cancel"
+msgstr ""
+"Пожалуйста, нажмите желаемую комбинацию клавиш!\n"
+"Щелкните по списку слева для отмены"
+
+#. Create the buttons.
+#: app/keys.c:691 app/menubar.c:104 app/midi-settings-050.c:635
+#: app/midi-settings-09x.c:638
+msgid "Ok"
+msgstr "ОК"
+
+#: app/keys.c:701 app/midi-settings-050.c:636 app/midi-settings-09x.c:639
+msgid "Apply"
+msgstr "Применить"
+
+#: app/keys.c:771
+msgid ""
+"The keyboard configuration file is defective.\n"
+"Please use the Keyboard Configuration dialog."
+msgstr ""
+"Файл конфигурации клавиатуры поврежден.\n"
+"Пожалуйста, используйте Диалог конфигурации клавиатуры."
+
+#: app/keys.c:1000
+#, c-format
+msgid "CH%02d"
+msgstr "CH%02d"
+
+#: app/keys.c:1001
+#, c-format
+msgid "Fast jump to channel %d"
+msgstr "Быстрый переход к каналу номер %d"
+
+#. Automatic key configuration unsuccessful. Popup requester.
+#: app/keys.c:1076
+msgid ""
+"Automatic key configuration unsuccessful.\n"
+"Please use the Keyboard Configuration dialog\n"
+"in the Settings menu."
+msgstr ""
+"Автоконфигурирование клавиш не удалось.\n"
+"Используйте диалог Конфигурации клавиатуры\n"
+"в меню Настроек, пожалуйста."
+
+#: app/menubar.c:140
+msgid ""
+"Are you sure you want to do this?\n"
+"All changes will be lost!"
+msgstr ""
+"Вы уверены в том, что делаете?\n"
+"Все изменения будут утеряны!"
+
+#: app/menubar.c:162
+msgid ""
+"Are you sure you want to quit?\n"
+"All changes will be lost!"
+msgstr ""
+"Вы уверены, что хотите завершить работу?\n"
+"Все изменения будут утеряны!"
+
+#: app/menubar.c:413
+msgid "_Open..."
+msgstr "_Открыть..."
+
+#: app/menubar.c:415
+msgid "Save _as..."
+msgstr "_Сохранить как..."
+
+#: app/menubar.c:421
+msgid "Save Module as _WAV..."
+msgstr "Сохранить _модуль как WAV..."
+
+#: app/menubar.c:423
+msgid "Save XM without samples..."
+msgstr "Сохранить XM без сэмплов..."
+
+#: app/menubar.c:428
+msgid "_Quit"
+msgstr "_Выход"
+
+#: app/menubar.c:435
+msgid "Clear _All"
+msgstr "Очистить _все"
+
+#: app/menubar.c:437
+msgid "Clear _Patterns Only"
+msgstr "Очистить только _паттерны"
+
+#: app/menubar.c:442
+msgid "_Optimize Module"
+msgstr "_Оптимизировать модуль"
+
+#: app/menubar.c:449 app/menubar.c:460 app/menubar.c:516 app/menubar.c:547
+msgid "C_ut"
+msgstr "Выр_езать"
+
+#: app/menubar.c:451 app/menubar.c:462 app/menubar.c:518 app/menubar.c:549
+msgid "_Copy"
+msgstr "_Копировать"
+
+#: app/menubar.c:453 app/menubar.c:464 app/menubar.c:551
+msgid "_Paste"
+msgstr "_Вставить"
+
+#: app/menubar.c:469
+msgid "_Kill notes"
+msgstr "_Стереть ноты"
+
+#: app/menubar.c:474
+msgid "_Insert track"
+msgstr "Вс_тавить трек"
+
+#: app/menubar.c:476
+msgid "_Delete track"
+msgstr "_Удалить трек"
+
+#: app/menubar.c:481
+msgid "Increment cmd value"
+msgstr "Автоувеличение параметра команды"
+
+#: app/menubar.c:483
+msgid "Decrement cmd value"
+msgstr "Автоуменьшение параметра команды"
+
+#: app/menubar.c:490
+msgid "_Mark mode"
+msgstr "_Режим выделения"
+
+#: app/menubar.c:492 app/menubar.c:545
+msgid "C_lear block marks"
+msgstr "С_нять выделение"
+
+#: app/menubar.c:497 app/menubar.c:553
+msgid "_Interpolate effects"
+msgstr "_Эффекты интерполяции"
+
+#: app/menubar.c:502
+msgid "Transpose half-note up"
+msgstr "Транспонировать на полутон вверх"
+
+#: app/menubar.c:504
+msgid "Transpose half-note down"
+msgstr "Транспонировать на полутон вниз"
+
+#: app/menubar.c:506
+msgid "Transpose octave up"
+msgstr "Транспонировать на октаву вверх"
+
+#: app/menubar.c:508
+msgid "Transpose octave down"
+msgstr "Транспонировать на октаву вниз"
+
+#: app/menubar.c:520
+msgid "P_aste"
+msgstr "В_ставить"
+
+#: app/menubar.c:525
+msgid "_Jazz Edit Mode"
+msgstr "Режим редактирования _Jazz"
+
+#: app/menubar.c:530
+msgid "Transp_osition..."
+msgstr "_Транспозиция"
+
+#: app/menubar.c:535 app/menubar.c:560 app/menubar.c:688
+msgid "_Pattern"
+msgstr "П_аттерн"
+
+#: app/menubar.c:536 app/menubar.c:561
+msgid "_Track"
+msgstr "Тр_эк"
+
+#: app/menubar.c:537 app/menubar.c:562
+msgid "_Selection"
+msgstr "_Выделение"
+
+#: app/menubar.c:569
+msgid "_Find Unused Pattern"
+msgstr "_Найти свободный паттерн"
+
+#: app/menubar.c:571
+msgid "_Copy Current to Unused Pattern"
+msgstr "_Копировать текущий паттерн в свободный"
+
+#: app/menubar.c:576
+msgid "C_lear Unused Patterns"
+msgstr "_Очистить свободные паттерны"
+
+#: app/menubar.c:578
+msgid "_Pack Patterns"
+msgstr "_Упаковать паттерны"
+
+#: app/menubar.c:583
+msgid "_Save Current Pattern"
+msgstr "_Сохранить текущий паттерн"
+
+#: app/menubar.c:585
+msgid "L_oad Pattern"
+msgstr "_Загрузить паттерн"
+
+#: app/menubar.c:590
+msgid "Sh_rink Current Pattern"
+msgstr "С_жать текущий паттерн"
+
+#: app/menubar.c:592
+msgid "_Expand Current Pattern"
+msgstr "Р_астянуть текущий паттерн"
+
+#: app/menubar.c:599
+msgid "_Load XI..."
+msgstr "_Загрузить XI..."
+
+#: app/menubar.c:601
+msgid "_Save XI..."
+msgstr "_Сохранить XI..."
+
+#: app/menubar.c:606
+msgid "_Clear Current"
+msgstr "_Очистить текущий"
+
+#: app/menubar.c:611
+msgid "_Delete Unused Instruments"
+msgstr "_Удалить неиспользуемые инструменты"
+
+#: app/menubar.c:618
+msgid "_Flicker-free scrolling"
+msgstr "_Прокрутка без мерцания"
+
+#: app/menubar.c:621
+msgid "_Previous font"
+msgstr "Пред_ыдущий шрифт"
+
+#: app/menubar.c:623
+msgid "_Next font"
+msgstr "Сл_едующий шрифт"
+
+#: app/menubar.c:628
+msgid "Change preferred _accidental type"
+msgstr "Изменить тип знаков _альтерации"
+
+#: app/menubar.c:630
+msgid "Change effect column editing _direction"
+msgstr "Изменить направление _смещение при редактировании в колонке эффекта"
+
+#: app/menubar.c:638
+msgid "Display _Oscilloscopes"
+msgstr "_Осциллографы"
+
+#: app/menubar.c:641
+msgid "_Tracker"
+msgstr "_Трэкер"
+
+#: app/menubar.c:645
+msgid "_Keyboard Configuration..."
+msgstr "_Конфигурация клавиатуры..."
+
+#: app/menubar.c:647
+msgid "_Audio Configuration..."
+msgstr "Конфигурация _аудио..."
+
+#: app/menubar.c:649
+msgid "_GUI Configuration..."
+msgstr "Кон_фигурация GUI..."
+
+#: app/menubar.c:655
+msgid "_MIDI Configuration..."
+msgstr "Кон_фигурация MIDI..."
+
+#: app/menubar.c:660
+msgid "Disable splash screen"
+msgstr "Автосокрытие заставки"
+
+#: app/menubar.c:662
+msgid "_Save Settings now"
+msgstr "_Сохранить настройки"
+
+#: app/menubar.c:664
+msgid "Save Settings on _Exit"
+msgstr "Сохранять настройки при _выходе"
+
+#: app/menubar.c:671
+msgid "_About..."
+msgstr "_О программе..."
+
+#: app/menubar.c:676
+msgid "Show _Tips..."
+msgstr "_Подсказки..."
+
+#: app/menubar.c:678
+msgid "_XM Effects..."
+msgstr "_Эффекты XM..."
+
+#: app/menubar.c:685
+msgid "_File"
+msgstr "_Файл"
+
+#: app/menubar.c:686
+msgid "_Module"
+msgstr "_Модуль"
+
+#: app/menubar.c:687
+msgid "_Edit"
+msgstr "_Правка"
+
+#: app/menubar.c:689
+msgid "_Instrument"
+msgstr "_Инструмент"
+
+#: app/menubar.c:690
+msgid "_Settings"
+msgstr "_Настройки"
+
+#: app/menubar.c:691
+msgid "_Help"
+msgstr "_Справка"
+
+#: app/mixers/integer32.c:459
+msgid "Integers mixer, no interpolation, no filters, maximum sample length 1M"
+msgstr "Целочисленный микшер, без интерполяции, длина сэмплов не более 1Мб"
+
+#: app/module-info.c:115
+msgid "Instrument Name"
+msgstr "Название инструмента"
+
+#: app/module-info.c:115
+msgid "#smpl"
+msgstr "#смпл"
+
+#: app/module-info.c:116
+msgid "Sample Name"
+msgstr "Название сэмпла"
+
+#: app/module-info.c:117
+msgid "Linear"
+msgstr "Линейно"
+
+#: app/module-info.c:117 app/sample-editor.c:221
+msgid "Amiga"
+msgstr "Amiga"
+
+#: app/module-info.c:124
+msgid "Module Info"
+msgstr "Информация о модуле"
+
+#: app/module-info.c:164
+msgid "Songname:"
+msgstr "Название песни:"
+
+#: app/module-info.c:179
+msgid "Frequencies:"
+msgstr "Частоты:"
+
+#: app/module-info.c:184
+msgid "ProTracker Mode"
+msgstr "Режим ProTracker"
+
+#: app/module-info.c:395
+#, c-format
+msgid ""
+"Unused patterns: %d (used: %d)\n"
+"Unused instruments: %d (used: %d)\n"
+"\n"
+"Clear unused and reorder playlist?\n"
+msgstr ""
+"Неиспользуемых паттернов: %d (используемых: %d)\n"
+"Неиспользуемых инструментов: %d (используемых: %d)\n"
+"\n"
+"Очистить неиспользуемые и скорректировать последовательность паттернов?\n"
+
+#: app/playlist.c:526
+msgid "Insert pattern that is being edited"
+msgstr "Вставить текущий паттерн"
+
+#: app/playlist.c:535
+msgid "Remove current playlist entry"
+msgstr "Удалить текущий пункт таблицы паттернов"
+
+#: app/playlist.c:543
+msgid "Add + Cpy"
+msgstr "Вст + Кпр"
+
+#: app/playlist.c:545
+msgid ""
+"Add a free pattern behind current position, and copy current pattern to it"
+msgstr "Вставить свободный паттерн после текущего и скопировать текущий в него"
+
+#: app/playlist.c:548
+msgid "Add Free"
+msgstr "Вст своб"
+
+#: app/playlist.c:550
+msgid "Add a free pattern behind current position"
+msgstr "Вставить свободный паттерн после текущего"
+
+#: app/playlist.c:574
+msgid "Song length"
+msgstr "Длина песни"
+
+#: app/playlist.c:593
+msgid "Song restart position"
+msgstr "Рестарт песни с указанной позиции"
+
+#: app/preferences.c:74
+msgid ""
+"A directory called '.soundtracker' has been created in your\n"
+"home directory to store configuration files.\n"
+msgstr ""
+"Каталог под названием '.soundtracker' создан в вашем домашнем\n"
+"каталоге для хранения файлов конфигурации.\n"
+
+#: app/sample-editor.c:220
+msgid "No loop"
+msgstr "Без цикла"
+
+#: app/sample-editor.c:222
+msgid "PingPong"
+msgstr "Пинг-понг"
+
+#: app/sample-editor.c:226 app/sample-editor.c:1540
+msgid "8 bits"
+msgstr "8 бит"
+
+#: app/sample-editor.c:227 app/sample-editor.c:1540
+msgid "16 bits"
+msgstr "16 бит"
+
+#: app/sample-editor.c:233
+msgid "Sample Editor"
+msgstr "Редактор сэмплов"
+
+#: app/midi-settings-050.c:504 app/midi-settings-09x.c:507
+#: app/sample-editor.c:273
+msgid "Volume"
+msgstr "Громкость"
+
+#: app/sample-editor.c:274
+msgid "Panning"
+msgstr "Панорамирование"
+
+#: app/sample-editor.c:275
+msgid "Finetune"
+msgstr "Подстройка"
+
+#: app/sample-editor.c:295
+msgid "Selection:"
+msgstr "Выделение:"
+
+#: app/sample-editor.c:299 app/track-editor.c:190 app/track-editor.c:200
+msgid "None"
+msgstr "Ничего"
+
+#: app/sample-editor.c:305
+msgid "All"
+msgstr "Все"
+
+#: app/sample-editor.c:326
+msgid "Length:"
+msgstr "Длина:"
+
+#: app/sample-editor.c:342
+msgid "Set as loop"
+msgstr "Установить цикл"
+
+#: app/sample-editor.c:350
+msgid "RelNote"
+msgstr "Отн. нота"
+
+#: app/sample-editor.c:361
+msgid "Load Sample..."
+msgstr "Загрузить сэмпл..."
+
+#: app/sample-editor.c:363
+msgid "Save WAV..."
+msgstr "Сохранить WAV..."
+
+#: app/sample-editor.c:365
+msgid "Save region as WAV..."
+msgstr "Сохранить участок как WAV..."
+
+#: app/sample-editor.c:378
+msgid "Save WAV"
+msgstr "Сохранить WAV"
+
+#: app/sample-editor.c:388
+msgid "Save Region"
+msgstr "Сохранить участок"
+
+#: app/sample-editor.c:399
+msgid "Monitor"
+msgstr "Оцифровка"
+
+#: app/sample-editor.c:405
+msgid "Volume Ramp"
+msgstr "Спад громкости"
+
+#: app/sample-editor.c:415
+msgid "Zoom to selection"
+msgstr "Показать выделение"
+
+#: app/sample-editor.c:421
+msgid "Show all"
+msgstr "Показать все"
+
+#: app/sample-editor.c:427
+msgid "Zoom in (+50%)"
+msgstr "Увеличить (+50%)"
+
+#: app/sample-editor.c:433
+msgid "Zoom out (-50%)"
+msgstr "Уменьшить (-50%)"
+
+#: app/sample-editor.c:439
+msgid "Reverse"
+msgstr "Обратить"
+
+#: app/sample-editor.c:449
+msgid "Cut"
+msgstr "Вырезать"
+
+#: app/sample-editor.c:455
+msgid "Remove"
+msgstr "Удалить"
+
+#: app/sample-editor.c:461
+msgid "Copy"
+msgstr "Копировать"
+
+#: app/sample-editor.c:467
+msgid "Paste"
+msgstr "Вставить"
+
+#: app/sample-editor.c:473
+msgid "Clear Sample"
+msgstr "Очистить сэмпл"
+
+#: app/sample-editor.c:537
+msgid "(no selection)"
+msgstr "(нет выделения)"
+
+#: app/sample-editor.c:1035
+msgid "Out of memory for copybuffer.\n"
+msgstr "Недостаточно памяти для буфера копирования.\n"
+
+#: app/sample-editor.c:1154
+msgid "<just pasted>"
+msgstr "<только что вставлено>"
+
+#: app/sample-editor.c:1267
+msgid "Out of memory for sample data."
+msgstr "Недостаточно памяти для данных сэмпла."
+
+#: app/sample-editor.c:1283 app/sample-editor.c:1295
+msgid "Read error."
+msgstr "Ошибка чтения."
+
+#: app/sample-editor.c:1442
+msgid "Load stereo sample"
+msgstr "Загрузить стереосэмпл"
+
+#: app/sample-editor.c:1450
+msgid ""
+"You have selected a stereo sample!\n"
+"(SoundTracker can only handle mono samples!)\n"
+"\n"
+"Please choose which channel to load:"
+msgstr ""
+"Вы выбрали стереосэмпл!\n"
+"(SoundTracker обрабатывает только моносэмплы)\n"
+"\n"
+"Выберите, какой из каналов загрузить:"
+
+#: app/sample-editor.c:1461
+msgid "Left"
+msgstr "Левый"
+
+#: app/sample-editor.c:1467
+msgid "Mix"
+msgstr "Объединить"
+
+#: app/sample-editor.c:1473
+msgid "Right"
+msgstr "Правый"
+
+#: app/sample-editor.c:1541
+msgid "Signed"
+msgstr "Знаковый"
+
+#: app/sample-editor.c:1541
+msgid "Unsigned"
+msgstr "Беззнаковый"
+
+#: app/sample-editor.c:1542
+msgid "Little-Endian"
+msgstr "Младший байт в конце (LE)"
+
+#: app/sample-editor.c:1542
+msgid "Big-Endian"
+msgstr "Старший байт в конце (BE)"
+
+#: app/sample-editor.c:1543
+msgid "Mono"
+msgstr "Моно"
+
+#: app/sample-editor.c:1543
+msgid "Stereo"
+msgstr "Стерео"
+
+#: app/sample-editor.c:1555
+msgid "Load raw sample"
+msgstr "Загрузить raw-сэмпл"
+
+#: app/sample-editor.c:1563
+msgid ""
+"You have selected a sample that is not\n"
+"in a known format. You can load the raw data now.\n"
+"\n"
+"Please choose a format:"
+msgstr ""
+"Вы выбрали сэмпл, формат которого неизвестен.\n"
+"Вы можете загрузить его как raw-данные.\n"
+"\n"
+"Выберите формат, пожалуйста:"
+
+#: app/sample-editor.c:1589
+msgid "Word format:"
+msgstr "Формат представления данных:"
+
+#: app/sample-editor.c:1636
+msgid "Sampling Rate:"
+msgstr "Частота дискретизации:"
+
+#: app/sample-editor.c:1647
+msgid "8363"
+msgstr "8363"
+
+#: app/sample-editor.c:1655 app/sample-editor.c:1970
+msgid "OK"
+msgstr "ОК"
+
+#: app/sample-editor.c:1714
+msgid "Can't read sample"
+msgstr "Невозможно прочитать сэмпл"
+
+#: app/sample-editor.c:1727
+msgid "Sample is too long for current mixer module. Loading anyway."
+msgstr "Сэмпл слишком длинный для текущего модуля микшера. Но грузим."
+
+#: app/sample-editor.c:1751
+msgid "Can only handle 8 and 16 bit samples with up to 2 channels"
+msgstr "Поддерживаются только сэмплы 8/16 бит, до 2 каналов"
+
+#: app/sample-editor.c:1934
+msgid "Please select region first."
+msgstr "Пожалуйста, отметьте участок, над которым будут выполняться действия"
+
+#: app/sample-editor.c:1978
+msgid "Start sampling"
+msgstr "Начать оцифровку"
+
+#: app/sample-editor.c:2008
+msgid "No sampling driver available"
+msgstr "Нет драйвера оцифровки "
+
+#: app/sample-editor.c:2018 app/sample-editor.c:2021
+msgid "Sampling Window"
+msgstr "Окно оцифровки"
+
+#: app/sample-editor.c:2070
+msgid "Out of memory while sampling!"
+msgstr "Кончилась память в процессе оцифровки!"
+
+#: app/sample-editor.c:2121
+msgid "<just sampled>"
+msgstr "<только что оцифровано>"
+
+#: app/sample-editor.c:2152
+msgid "Recorded sample is too long for current mixer module. Using it anyway."
+msgstr ""
+"Записанный сэмпл слишком длинный для текущего модуля микшера. Но используем."
+
+#: app/sample-editor.c:2205
+msgid "Normalize"
+msgstr "Нормализовать"
+
+#: app/sample-editor.c:2206
+msgid "Execute"
+msgstr "Выполнить"
+
+#: app/sample-editor.c:2216 app/sample-editor.c:2219
+msgid "Volume Ramping"
+msgstr "Спад громкости"
+
+#: app/sample-editor.c:2235
+msgid "Perform linear volume fade on Selection"
+msgstr "Произвести линейное спадание громкости на выбранном участке"
+
+#: app/sample-editor.c:2247
+msgid "Left [%]:"
+msgstr "Левый [%]:"
+
+# ?
+#: app/sample-editor.c:2250 app/sample-editor.c:2267
+msgid "H"
+msgstr "50%"
+
+# ?
+#: app/sample-editor.c:2256 app/sample-editor.c:2273
+msgid "D"
+msgstr "200%"
+
+#: app/sample-editor.c:2264
+msgid "Right [%]:"
+msgstr "Правый [%]:"
+
+#: app/tips-dialog.c:50
+msgid ""
+"Welcome to SoundTracker!\n"
+"\n"
+"If you are new to this type of program, you will want to get hold of\n"
+"some XM or MOD files first and play with them."
+msgstr ""
+"Добро пожаловать в SoundTracker!\n"
+"\n"
+"Если подобные программы Вам в новинку, вероятно, стоит для начала\n"
+"найти несколько готовых файлов XM или MOD и поиграться с ними."
+
+#: app/tips-dialog.c:55
+msgid ""
+"You can make SoundTracker's edit mode more responsive to keyboard\n"
+"input by decreasing the mixing buffer size of the \"Editing\" object in\n"
+"the Audio Configuration."
+msgstr ""
+"Вы можете сделать режим редактирования SoundTracker более чувствительным\n"
+"к клавиатуре, если уменьшите размер буфера объекта \"Редактирование\" в\n"
+"диалоге конфигурации аудио."
+
+#: app/tips-dialog.c:59
+msgid ""
+"You can adjust the loop points in the sample editor by holding Shift\n"
+"and using the left and right mousebuttons.\n"
+msgstr ""
+"Вы можете уточнить позиции точек зацикливания в редакторе сэмплов\n"
+"при помощи левой и правой кнопок мыши, нажав Shift.\n"
+
+#: app/tips-dialog.c:62
+msgid ""
+"If you want to know more about tracking, and how the various commands\n"
+"work, have a look at http://www.united-trackers.org/"
+msgstr ""
+"Если вы хотите узнать больше о трекерах,\n"
+"загляните на http://www.united-trackers.org/"
+
+#: app/tips-dialog.c:65
+msgid ""
+"You can assign samples of an instrument to the individual keys by\n"
+"activating its sample and then clicking on the keyboard in the\n"
+"instrument editor page."
+msgstr ""
+"Вы можете привязать сэмплы инструмента к определенным клавишам,\n"
+"активировав нужный сэмпл и клацнув по клавиатуре на страничке\n"
+"редактора инструментов."
+
+#: app/tips-dialog.c:69
+msgid ""
+"Is your cursor trapped in a number entry field?\n"
+"Just press Return or Tab to free yourself!"
+msgstr ""
+"Застрял курсор где-нибудь в поле ввода чисел?\n"
+"Просто нажми Return или Tab -- и ты на свободе!"
+
+#: app/tips-dialog.c:81
+msgid "SoundTracker Tip of the day"
+msgstr "Подсказка дня от SoundTracker"
+
+#: app/tips-dialog.c:154
+msgid "Previous Tip"
+msgstr "Предыдущая подсказка"
+
+#: app/tips-dialog.c:162
+msgid "Next Tip"
+msgstr "Следующая подсказка"
+
+#: app/tips-dialog.c:174
+msgid "Show tip next time"
+msgstr "Показывать в дальнейшем"
+
+#: app/track-editor.c:105
+msgid "Arpeggio"
+msgstr "Арпеджио"
+
+#. 0
+#: app/track-editor.c:106
+msgid "Porta up"
+msgstr "Портаменто вверх"
+
+#. 1
+#: app/track-editor.c:107
+msgid "Porta down"
+msgstr "Портаменто вниз"
+
+#. 2
+#: app/track-editor.c:108 app/track-editor.c:172
+msgid "Tone porta"
+msgstr "Двунаправленное портаменто"
+
+#. 3
+#: app/track-editor.c:109 app/track-editor.c:168
+msgid "Vibrato"
+msgstr "Вибрато:"
+
+# ?
+#. 4
+#: app/track-editor.c:110
+msgid "Tone porta + Volume slide"
+msgstr "Портаменто + плавное изменение громкости"
+
+#. 5
+#: app/track-editor.c:111
+msgid "Vibrato + Volume slide"
+msgstr "Вибрато + плавное изменение громкости"
+
+#. 6
+#: app/track-editor.c:112
+msgid "Tremolo"
+msgstr "Тремоло"
+
+#. 7
+#: app/track-editor.c:113 app/track-editor.c:169
+msgid "Set panning"
+msgstr "Установить панорамирование"
+
+#. 8
+#: app/track-editor.c:114 app/track-editor.c:116
+msgid "Position jump"
+msgstr "Переход к выбранной позиции"
+
+#. 9
+#: app/track-editor.c:115 app/track-editor.c:117 app/track-editor.c:193
+msgid "Set volume"
+msgstr "Установить громкость"
+
+#. C
+#: app/track-editor.c:118
+msgid "Pattern break"
+msgstr "Обрыв паттерн"
+
+#. D
+#. E
+#: app/track-editor.c:120
+msgid "Set tempo/bpm"
+msgstr "Установить темп/BPM"
+
+#. F
+#: app/track-editor.c:121
+msgid "Set global volume"
+msgstr "Установить общую громкость"
+
+#. G
+#: app/track-editor.c:122
+msgid "Global volume slide"
+msgstr "Изменение общей громкости"
+
+#. H
+#. I
+#. J
+#: app/track-editor.c:125
+msgid "Key off"
+msgstr "Отпускание клавиши"
+
+# ! envelope
+#. K
+#: app/track-editor.c:126
+msgid "Set envelop position"
+msgstr "Установить позицию огибающей"
+
+#. L
+#. M
+#. N
+#. O
+#: app/track-editor.c:130
+msgid "Panning slide"
+msgstr "Изменение панорамирования"
+
+#. P
+#: app/track-editor.c:131
+msgid "LP filter resonance"
+msgstr "Резонанс НЧ-фильтра"
+
+#. Q
+#: app/track-editor.c:132
+msgid "Multi retrig note"
+msgstr "Многократно повторить ноту"
+
+#. R
+#. S
+#: app/track-editor.c:134
+msgid "Tremor"
+msgstr "Тремор"
+
+#. T
+#. U
+#. V
+#. W
+#. X
+#. Y
+#: app/track-editor.c:140
+msgid "LP filter cutoff"
+msgstr "Срез НЧ-фильтра"
+
+# ?
+#. 0
+#: app/track-editor.c:145
+msgid "Fine porta up"
+msgstr "Точное портаменто вверх"
+
+# ?
+#. 1
+#: app/track-editor.c:146
+msgid "Fine porta down"
+msgstr "Точное портаменто вниз"
+
+# ?
+#. 2
+#: app/track-editor.c:147
+msgid "Set gliss control"
+msgstr "Установить управление глиссандо"
+
+#. 3
+#: app/track-editor.c:148
+msgid "Set vibrato control"
+msgstr "Установить контроль вибрато"
+
+#. 4
+#: app/track-editor.c:149
+msgid "Set finetune"
+msgstr "Установить подстройку"
+
+#. 5
+#: app/track-editor.c:150
+msgid "Set loop begin/loop"
+msgstr "Установить начало цикла/цикл"
+
+#. 6
+#: app/track-editor.c:151
+msgid "Set tremolo control"
+msgstr "Установит контроль тремоло"
+
+# ?
+#. 7
+#. 8
+#: app/track-editor.c:153
+msgid "Retrig note"
+msgstr "Повторить ноту"
+
+#. 9
+#: app/track-editor.c:154 app/track-editor.c:166
+msgid "Fine volume slide up"
+msgstr "Точный подъем громкости"
+
+#. A
+#: app/track-editor.c:155 app/track-editor.c:165
+msgid "Fine volume slide down"
+msgstr "Точный спад громкости"
+
+#. B
+#: app/track-editor.c:156
+msgid "Note cut"
+msgstr "Срез ноты"
+
+#. C
+#: app/track-editor.c:157
+msgid "Note delay"
+msgstr "Задержка ноты"
+
+#. D
+#: app/track-editor.c:158
+msgid "Pattern delay"
+msgstr "Задержка паттерна"
+
+#: app/track-editor.c:163
+msgid "Volume slide down"
+msgstr "Затухание громкости"
+
+#: app/track-editor.c:164
+msgid "Volume slide up"
+msgstr "Нарастание громкости"
+
+#: app/track-editor.c:167
+msgid "Set vibrato speed"
+msgstr "Установить скорость вибрато"
+
+#: app/track-editor.c:170
+msgid "Panning slide left"
+msgstr "Сдвиг панорамирования влево"
+
+#: app/track-editor.c:171
+msgid "Panning slide right"
+msgstr "Сдвиг панорамирования вправо"
+
+#: app/track-editor.c:176
+msgid "sine"
+msgstr "синусоида"
+
+# ?
+#. 0
+#: app/track-editor.c:177
+msgid "ramp down"
+msgstr "затухание"
+
+#. 1
+#: app/track-editor.c:178
+msgid "square"
+msgstr "прямоугольник"
+
+#: app/track-editor.c:223 app/track-editor.c:229 app/track-editor.c:246
+#: app/track-editor.c:252
+msgid "None ]"
+msgstr "Ничего ]"
+
+#: app/track-editor.c:352
+msgid "Jazz Edit:"
+msgstr "Редактирование Jazz:"
+
+#: app/track-editor.c:397
+msgid "Tracker"
+msgstr "Трэкер"
+
+#: app/tracker-settings.c:235
+msgid "Font list"
+msgstr "Список шрифтов"
+
+#: app/tracker-settings.c:255
+msgid "Add font"
+msgstr "Добавить шрифт"
+
+#: app/tracker-settings.c:261
+msgid "Delete font"
+msgstr "Удалить шрифт"
+
+#: app/tracker-settings.c:267
+msgid "Apply font"
+msgstr "Применить шрифт"
+
+#: app/tracker-settings.c:282
+msgid "Up"
+msgstr "Вверх"
+
+#: app/tracker-settings.c:285
+msgid "Down"
+msgstr "Вниз"
+
+#: app/tracker-settings.c:288
+msgid "Select font..."
+msgstr "Выберите шрифт..."
+
+#: app/transposition.c:198
+msgid "Whole Song"
+msgstr "Вся песня"
+
+#: app/transposition.c:199
+msgid "All Patterns"
+msgstr "Все паттерны"
+
+#: app/transposition.c:200
+msgid "Current Pattern"
+msgstr "Текущий паттерн"
+
+#: app/transposition.c:201
+msgid "Current Track"
+msgstr "Текущий трэк"
+
+#: app/transposition.c:205
+msgid "Current Instrument"
+msgstr "Текущий инструмент"
+
+#: app/transposition.c:206
+msgid "All Instruments"
+msgstr "Все инструменты"
+
+#: app/transposition.c:210
+msgid "Half note up"
+msgstr "На полтона выше"
+
+#: app/transposition.c:211
+msgid "Half note down"
+msgstr "На полтона ниже"
+
+#: app/transposition.c:212
+msgid "Octave up"
+msgstr "На октаву выше"
+
+#: app/transposition.c:213
+msgid "Octave down"
+msgstr "На октаву ниже"
+
+#: app/transposition.c:216
+msgid "Exchange 1 <-> 2"
+msgstr "Обменять 1 <-> 2"
+
+#: app/transposition.c:217
+msgid "Change 1 -> 2"
+msgstr "Сменить 1 -> 2"
+
+# or else Tools will mess with Instruments in the translated version :(
+#: app/transposition.c:226 app/transposition.c:229
+msgid "Transposition Tools"
+msgstr "Транспозиторий"
+
+#: app/transposition.c:250
+msgid "Scope of the operation:"
+msgstr "Область действия:"
+
+#: app/transposition.c:257
+msgid "Note Transposition"
+msgstr "Транспозиция нот"
+
+#: app/transposition.c:288
+msgid "Instrument Changing"
+msgstr "Смена инструмента"
+
+#: app/transposition.c:303
+msgid "Instrument 1:"
+msgstr "Инструмент 1:"
+
+#: app/transposition.c:305 app/transposition.c:315
+msgid "Current instrument"
+msgstr "Текущий инструмент"
+
+#: app/transposition.c:313
+msgid "Instrument 2:"
+msgstr "Инструмент 2:"
+
+#: app/xm.c:196
+#, c-format
+msgid "Pattern length out of range: %d.\n"
+msgstr "Длина паттерна вне диапазона: %d.\n"
+
+#: app/xm.c:547
+msgid "File is no XI instrument."
+msgstr "Файл не является инструментом XI."
+
+#: app/xm.c:557
+#, c-format
+msgid "Unknown XI version 0x%x\n"
+msgstr "Неверная версия XI 0x%x\n"
+
+#: app/xm.c:587
+#, c-format
+msgid "Invalid vibtype %d, using Sine.\n"
+msgstr "Неверный тип вибрато %d, использую синусоиду.\n"
+
+#: app/xm.c:859 app/xm.c:984
+msgid "Error while loading patterns."
+msgstr "Ошибка при загрузке паттернов."
+
+#: app/xm.c:927
+msgid "Can't open file"
+msgstr "Невозможно открыть файл"
+
+#: app/xm.c:990
+msgid "Error while loading instruments."
+msgstr "Ошибка при загрузке инструментов."
+
+#: app/xm.c:1001
+#, c-format
+msgid ""
+"Module contains sample(s) that are too long for the current mixer.\n"
+"Maximum sample length is %d."
+msgstr ""
+"Модуль содержит сэмпл(ы) со слишком большой для текущего микшера длиной.\n"
+"Максимальная длина сэмпла -- %d."
+
+#: app/xm.c:1399
+msgid "Not FastTracker XM and not supported MOD format!"
+msgstr "Неподдерживаемый формат MOD или не FastTracker XM!"
+
+#: app/xm.c:1414 app/xm.c:1435
+msgid "Error when file reading or unexpected end of file"
+msgstr "Ошибка при чтении файла или неожиданный его конец."
+
+#: app/xm.c:1418
+msgid "Incorrect or unsupported version of pattern file!"
+msgstr "Неправильная или неподдерживаемая версия файла паттерна!"
+
+#: app/xm.c:1422
+msgid "Incorrect pattern length!"
+msgstr "Неправильная длина паттерна!"
+
+#: app/xm.c:1468
+msgid "Error during saving pattern!"
+msgstr "Ошибка при записи паттерна!"
+
+#: app/midi-settings-050.c:497 app/midi-settings-09x.c:500
+msgid "Auto connect"
+msgstr "Автоматическое соединение"
+
+#: app/midi-settings-050.c:512 app/midi-settings-09x.c:515
+msgid "Channel"
+msgstr "Канал"
+
+#. Create the spin button for the input client number.
+#: app/midi-settings-050.c:521 app/midi-settings-09x.c:524
+msgid "Client number"
+msgstr "Номер клиента"
+
+#. Create the spin button for the input port number.
+#: app/midi-settings-050.c:531 app/midi-settings-09x.c:534
+msgid "Port number"
+msgstr "Номер порта"
+
+#: app/midi-settings-050.c:549 app/midi-settings-09x.c:552
+msgid "Input"
+msgstr "Ввод"
+
+#: app/midi-settings-050.c:558 app/midi-settings-09x.c:561
+msgid "For future development"
+msgstr "Для дальнейшей разработки"
+
+#: app/midi-settings-050.c:564 app/midi-settings-09x.c:567
+msgid "Output"
+msgstr "Выход"
+
+#. Create the spin button for the debug level.
+#: app/midi-settings-050.c:575 app/midi-settings-09x.c:578
+msgid "Debug level"
+msgstr "Уровень отладки"
+
+#: app/midi-settings-050.c:587 app/midi-settings-09x.c:590
+msgid "Misc"
+msgstr "Прочее"
+
+#: app/midi-settings-050.c:631 app/midi-settings-09x.c:634
+msgid "MIDI Configuration"
+msgstr "Конфигурация MIDI..."
+
+#~ msgid "XM Effects Cheat Sheet"
+#~ msgstr "Справка по эффектам XM"
+
+#~ msgid ""
+#~ "Help file doesn't found or file error is occured.\n"
+#~ "No help avaliable."
+#~ msgstr ""
+#~ "Не найден файл справки или произошла ошибка\n"
+#~ "Справка недоступна"
+
+#~ msgid "Len"
+#~ msgstr "Длн"
+
+#~ msgid "Restart"
+#~ msgstr "Рстрт"

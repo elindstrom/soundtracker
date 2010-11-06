@@ -1,0 +1,577 @@
+2000-01-26  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.3.10
+
+2000-01-22  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/gui.c: "Escape" can be used to toggle editing on even if
+	we're in playing mode (patch by Conrad Parker).
+
+	* app/clavier.c, app/playlist.c: Also replace custom marshallers
+	by gtk-provided ones.
+
+	* app/sample-display.c: Replace my_2ints_marshal() by
+	gtk_marshal_NONE__INT_INT (patch by Conrad Parker).
+
+2000-01-21  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/sample-editor.c (sample_editor_page_create): Rename "Clear"
+	to "Clear Sample".
+
+	* app/track-editor.c: "Insert" and "Backspace" key bindings (shift
+	down / pull up track). (patch by Tomasz Maka)
+	(track_editor_find_next_jazz_channel): Jazz edit logic extracted
+	into a new function. Made more intelligent (takes care of channels
+	that are still busy playing a sample).
+
+	* app/sample-editor.c: Added "Save Region" button, which saves
+	only the selected region as a WAV. (Tomasz Maka)
+
+2000-01-19  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/xm.c (XM_Load): setting restart position to song_length - 1
+	if out of range (FT2 does this).
+
+2000-01-18  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/track-editor.c (track_editor_set_num_channels): For the jazz
+	edit mode, only display those buttons for channels that are
+	actually available.
+
+	* app/xm.c (XM_Load): Checking if restart_position is <
+	song_length (setting rp to 0 otherwise).  Encountered a funny XM
+	from my favourite label "Rohformat" that has a bug here and
+	subsequently crashed the tracker due to a failed assertion in the
+	playlist widget. Which shows us that assertions are your
+	friend. Shame on you, Ronny :-)
+
+	* app/menubar.c: Even more menu bar translation hacking code. This
+	really sucks. Thanks to Yuuki Ninomiya for discussing this with
+	me.
+
+	* po: Updated ja.po.
+
+2000-01-15  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/menubar.c (menubar_create): all_translated calculated
+	correctly now (patch by Yuuki NINOMIYA).
+
+	* app/sample-editor.c (sample_editor_copy_cut_common): Adjust loop
+	data after cutting parts of the sample (patch by Conrad Parker).
+
+2000-01-12  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.3.9
+
+2000-01-12  Kai Vehmanen  <kaiv@wakkanet.fi>
+
+	* Added ALSA pcm2 input and output plugins (ALSA 0.5.0 and newer)
+
+2000-01-08  Michael Krause  <m.krause@tu-harburg.de>
+
+	* po: Updated ja.po.
+
+	* app/playlist.c (playlist_insert_clicked):
+	(playlist_delete_clicked): Force emission of "song_length_changed"
+	signal. Fixes crashes due to not updated XM structures (bug
+	reported by globber).
+
+	* app/sample-editor.c: Adds "Sel All" button, renames other
+	buttons, clears up _update_sample() (patch by Conrad Parker).
+
+	* app/keys.c (keys_fixup_xkeymap): Fix strange keymaps. Fixes
+	problem a Polish user was having.
+
+1999-12-26  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.3.8
+
+	* app/track-editor.c (track_editor_handle_keys): Delete key:
+	delete note only if in note column. Otherwise delete corresponding
+	effect column.
+
+	* app/gui.c (current_instrument_changed): Don't set gui_cur*_name
+	here at all.
+
+	* app/sample-editor.c (sample_editor_update): Set gui_cursmpl_name
+	correctly.
+
+	* app/instrument-editor.c (instrument_editor_update): Set
+	gui_curins_name correctly.
+
+	* app/sample-editor.c: Can handle stereo samples now (extracts one
+	channel or mixes left and right). Based on a patch sent in by
+	Stefan Hager on 1999-08-22. Also remember last saved and loaded
+	path.
+
+	* app/gui-subs.c (file_selection_create): Add selection entry to
+	list of text entry widgets to be captured.
+
+	* app/menubar.c (menubar_create):
+	(menubar_init_prefs): If not all menu bar strings could be
+	translated, disable translation of the other menu bar strings
+	completely and issue a warning (all this only for the non-GNOME
+	version).
+
+	* po: Updated ja.po.
+
+1999-12-24  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/file-operations.c (fileops_page_create): Disable certain
+	dialogs in NO_AUDIOFILE case.
+
+	* app/gui-settings.c: Save path for DIALOG_SAVE_MOD_AS_WAV.
+
+	* app/playlist.c (playlist_restartpos_changed,
+	playlist_songpat_changed): Only emit signal if value really
+	changed.
+
+	* app/playlist.[ch]: New functions _freeze_signals() and
+	_thaw_signals().
+
+	* app/playlist.c (playlist_set_nth_pattern): If pos ==
+	current_position, set pattern spinbutton value as well.
+	(playlist_set_restart_position): Set spinbutton value.
+	(playlist_songlength_changed): Adjust limits of restart pos spin.
+
+	* app/audioconfig.c (audioconfig_close_requested): Deinitialize
+	cw_currentobject when closing window. (Conrad Parker striked back
+	again)
+
+1999-12-23  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/sample-editor.c: "Reverse" function (patch by Conrad
+	Parker).
+
+1999-12-22  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.3.7
+
+	* app/gui-settings.[ch]: Added upper/lower case hex number
+	selection.
+
+	* app/tracker.c (note2string): Rewritten. Supports upper/lower
+	case selection now.
+
+	* app/keys.c (keys_load_config): Recognize EOF condition
+	correctly. Fixes the bug magog@mnf.nu reported (keymap loading
+	wouldn't work for people where the automatic key recognition
+	fails).
+	
+	* app/gui.c (gui_init): Initialize notebook_current_page variable
+	so that keyboard works again.
+
+1999-12-20  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/playlist.[ch]: First attempt at creating a Playlist widget.
+	At the moment it looks just like the old stuff in the upper left
+	corner of the main window, but it's easier to modify this way.
+
+	* app/instrument-editor.c (instrument_page_create): "Load XI" and
+	"Save XI" buttons working again instead of crashing.
+	(instrument_editor_clear_current_instrument): Stop playing before
+	clearing the instrument.
+
+1999-12-19  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/file-operations.c: Handy single-click directory browsing and
+	loading of modules, samples and instruments. Also handles the
+	corresponding menu items in a clever way.
+	
+	* app/file-operations.[ch]: New notebook page; embeds the various
+	file requesters we have.
+
+1999-12-10  Michael Krause  <m.krause@tu-harburg.de>
+
+	* po: Updated ja.po. Added ru.po from Michael Shigorin
+	<mike@lic145.kiev.ua>.
+
+1999-11-20  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/menubar.c: "Clear Current" instrument function.
+
+	* app/sample-editor.c (sample_editor_clear_clicked): update
+	modinfo page.
+
+	* app/instrument-editor.c (instrument_editor_save_instrument),
+	app/menubar.c: "Save XI" function.
+
+	* app/xm.h: Use guint16 instead of short for STEnvelopePoint
+	elements.
+
+	* app/xm.c (xm_load_xi): Endianness conversion for some XI header
+	fields. Don't cut first four letters of instrument name.
+	(xm_save_xm_instrument): Save endian-converted volfade. Urgs.
+	(xm_save_xi): New function to save instrument in XI format.
+
+1999-11-14  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.3.6
+
+	* app/xm-player.c: Added "player_looped" variable which indicates
+	to the audio renderer that the song has either looped, the "Bxx"
+	command has been used to jump to another pattern or the "F00"
+	command has been issued in order to stop the song. Should prevent
+	endless saving loops.
+
+1999-11-13  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/audio.c (audio_ctlpipe_render_song_to_file): This is a
+	special version of audio_ctlpipe_play_song(), which always uses
+	the file driver, hacks in the desired filename and does the
+	priority juggling (we don't want to run the rendering at nice
+	-14).
+
+	* app/drivers/file-output.c: This driver uses libaudiofile to
+	render a WAV file. It's not directly accessible from the audio
+	config, use the special menu item in the "File" menu instead.
+
+	* app/scope-group.c (scope_group_timeout): Return immediately if
+	current_driver is NULL. Fixes a crash.
+
+1999-10-30  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/audio.c: Begun work on code to render modules into a WAV
+	file.
+
+	* app/main.c: Initialize effective group ID as well.
+
+	* configure.in: Moved poll()/select() check in front of the
+	library checks.
+
+	* po: Updated it.po and ja.po.
+
+	* app/track-editor.c (track_editor_paste_pattern): Fix pasting of
+	short patterns into long ones (reported by Martin Andersson); also
+	update pattern length spinbutton in that case.
+
+	* app/transposition.c (transposition_transpose_notes_sub): Don't
+	transpose KEYOFF note (reported by Martin Andersson).
+
+1999-10-16  Kai Vehmanen  <kaiv@wakkanet.fi>
+
+	* app/drivers/alsa-output.c: Changed default soundcard id to 0.
+
+1999-10-09  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/drivers/esd-output.c: Quick and dirty implementation of an
+	ESD driver. Note that this will not be supported because of its
+	latency.
+
+	* configure.in: Added ESD check, updated ALSA check to handle
+	--disable-alsa correctly.
+
+1999-10-08  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.3.5
+
+	* app/track-editor.c: Selection handling rewritten for multi-track
+	selections.
+
+	* app/st-subs.c: Several new functions for dealing with parts of a
+	track (duplicating, clearing, pasting).
+	
+	* app/xm-player.c: Replaced sintab[] by sin().
+
+	* app/drivers/oss-output.c: Added code to make use of the
+	high-accuracy SNDCTL_DSP_GETOPTR call when available. Gets rid of
+	all the gettimeofday() calls. The old code is available as a
+	fallback, though.
+
+1999-10-07  Michael Krause  <m.krause@tu-harburg.de>
+
+	* doc/hacking.texi: Old `HACKING' file extended to talk a little
+	bit about ST's internals.
+	
+1999-10-06  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/st-subs.c, app/menubar.c, app/track-editor.c: Insert track /
+	Delete track.
+
+	* app/track-editor.c: Saving jazz edit settings on exit.
+
+	* app/gui-settings.c, app/gui.c, app/sample-editor.c,
+	app/instrument-editor.c: Remember last used paths and store them
+	in a configuration file.
+
+	* configure.in: Continue if sys/poll.h is found, but poll() isn't.
+
+	* po: Updated it.po and ja.po; added es.po from German Jose Gomez
+	Garcia
+
+1999-09-26  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/mixers/integer32-asm.[sh]: i386 Assembly mixing routines for
+	16bit samples. These are only marginally faster than the original
+	C code, though.
+
+	* app/mixers/integer32.c: lqmono renamed; cleaned up reverb code
+	to use arrays.
+
+1999-09-25  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.3.4
+
+	* app/gui-settings.c, app/tracker.c: Added tracker row
+	highlighting.
+
+1999-09-24  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/keys.c: Replace some empty strings by NULL pointers
+	(fixes localization bugs in the keys dialog).
+
+1999-09-23  Michael Krause  <m.krause@tu-harburg.de>
+
+	* soundtracker.desktop: Added pl and de entries.
+	
+	* Added de.po from Colin Marquardt, updated ja.po.
+
+1999-09-10  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.3.3
+
+	* app/audioconfig.c, app/audio.c: Editing and Playback drivers can
+	be selected independently now.
+
+	* app/gui.c (gui_handle_standard_keys): Removed "Shift+Space"
+	special-casing.
+
+	* app/track-editor.c (track_editor_handle_column_input): Returning
+	flag if key was handled.
+
+	* app/menubar.c: Added cut'n'paste functions to the Edit menu,
+	with configurable shortcuts; this should be useful to those using
+	a window manager that maps Alt-F4 to "exit" :-)
+
+	* app/track-editor.c: Split block / pattern / track cut'n'paste
+	handling into simple functions.
+
+1999-09-09  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/tracker.c (tracker_realize): Attach style, just to be sure.
+
+	* app/sample-display.c (sample_display_realize): Attach style to
+	widget, fixes a strange crash when playing with the #chans
+	spinbutton.
+
+	* app/keys.c, app/module-info.c (modinfo_page_create): Call
+	gettext() on some the strings only marked with N_().
+
+	* app/time-buffer.c (time_buffer_get): After g_list_remove_link(),
+	call g_list_free() on the freed node. Fixes the memory leak people
+	were seeing. *sigh*
+
+1999-09-08  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/mixers/lqmono.c (lqmono_mix): Fix mixbufsize setting. Arghl.
+
+1999-09-07  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/mixers/lqmono.c (lqmono_mix): Update mixbufsize after
+	allocating new mixbuf. Use g_new() and g_free().
+
+1999-09-07  Yuuki NINOMIYA  <gm@smn.enjoy.ne.jp>
+ 
+	* app/main.c: Use gtk_set_locale() instead of setlocale().
+
+	* app/menubar.c: The bug is fixed that i18n is invalid in the menu
+	bar when build without GNOME.
+ 
+1999-09-06  Kai Vehmanen  <kaiv@wakkanet.fi>
+ 
+	* app/drivers/alsa-*.[ch]: Fixed some timing bugs and made a few
+ 	improvements to the config widgets.
+ 
+1999-09-06  Michael Krause  <m.krause@tu-harburg.de>
+
+	* soundtracker.desktop: Added GNOME menu entry.
+
+	* Updated ja.po, added it.po from Yuri Bongiorno, added pl.po from
+	Zbigniew Chyla.
+
+1999-09-04  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.3.2
+
+	* app/cheat-sheet.[ch]: Added an overview of all XM effects.
+
+	* app/gui-settings.c: Added "Use anti-aliased envelope editor"
+	option.
+
+	* app/envelope-box.c (envelope_box_canvas_paint_grid): Reduced
+	left X coordinate of long lines from 30000 to 16384 (non-aa canvas
+	would bug here).
+
+	* HACKING: Contains some `rules' for developers.
+
+	* README: Added soundtracker.org homepage and information about
+	the mailing lists.
+
+	* app/tips-dialog.c: The tips are stored in an array inside this
+	file now -- translation is easier this way.
+
+	* app/preferences.c (prefs_get_line): Remove trailing newlines
+	from returned strings.
+
+	* app/audioconfig.c (audioconfig_clist_select): Fix driver
+	selection.
+
+1999-09-03  Michael Krause  <m.krause@tu-harburg.de>
+
+	* FAQ: Removed ALSA-related question.
+
+	* Added ALSA patch from Kai Vehmanen.
+
+1999-09-02  Giles Constant  <gilesc@ftech.net>
+ 
+	* Playback effects menu added
+
+ 	* "Master Reverb" added to playback effects (code ripped and
+	regurgitated from libmikmod)
+
+1999-08-31  Michael Krause  <m.krause@tu-harburg.de>
+
+	* po/ja.po: updated by Atsushi Yamagata.
+
+1999-08-29  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.3.1
+
+	* soundtracker.spec (%build): Initalize LINGUAS variable before
+	building, so that all catalogs get installed.
+
+	* INSTALL, FAQ: Some words about the gtk+ update.
+
+	* app/sample-editor.c: Added horizontal scroll bar under the
+	sample display.
+
+	* app/sample-display.c: Added "window_changed" signal which is
+	triggered whenever win_start / win_length are changed.
+
+	* app/sample-editor.c (sample_editor_perform_ramp): change
+	ABS(*p++) into q=*p++;q=ABS(q); macros suck :-)
+
+	* app/sample-display.c: Middle mouse button pans the display
+	window.
+
+	* configure.in (CFLAGS): Require gtk+-1.2.2. Fixes the popular
+	"GUI freezes if you click the menu bar" bug.
+
+1999-08-25  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/sample-editor.c (sample_editor_ok_clicked): Don't call
+	sampler_page_enable_widgets() (the widgets have already been
+	destroyed).
+
+	* app/gui.c (gui_handle_standard_keys): Handle Shift+Space
+	manually even though it's in the menu; works around a (so I think)
+	gtk+ menu bug.
+
+1999-08-23  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/sample-editor.c: Added "Volume Ramp" dialog, including a
+	normalizing function.
+
+1999-08-22  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/menubar.c: Rewrote non-GNOME menubar code to use
+	GtkItemFactory, because we can handle user-defined accelerators
+	this way. Added underscores to all the menu texts. Added "Edit"
+	menu, with "Jazz Mode Edit" toggle and "Transpositions" dialog
+	launcher.
+
+	* app/gui.c (keyevent): All the key handlers return a flag
+	indicating if the key has been handled or not. If it has not been
+	handled, don't stop the signal, but let gtk+ continue to handle
+	it. We need this to support the menubar correctly.
+
+	* app/track-editor.c (track_editor_handle_keys): Binding "Home"
+	and "End" keys to start and end of current pattern, respectively.
+
+	* app/transposition.[ch]: Added new "Transposition Tools" dialog
+	with a lot of transposition and instrument number related
+	functions.
+
+1999-08-21  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/instrument-editor.c: Capturing clavierkey_enter and _leave
+	signals to display the note the mouse is over in a framed label.
+	Also added the "Initialize" button which fills the whole samplemap
+	with the current sample value.
+
+	* app/clavier.c: Added _enter and _leave signals which are called
+	when the mouse is over a key or when it leaves one.
+
+1999-08-19  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/sample-editor.c (sample_editor_save_wav): Use libaudiofile
+	to save WAVs. If compiling without libaudiofile, disable "Save
+	WAV" widget.
+
+	* po/ja.po: Added japanese translation from Atsushi Yamagata.
+
+1999-08-13  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.3.0
+
+	* app/track-editor.c (track_editor_handle_keys): Shift + Tab goes
+	one channel to the left.
+
+	* app/keys.c (keys_is_key_pressed): New function which finds out
+	if a key is actually physically pressed. We need this hack to deal
+	with X's auto-repeat.
+
+	* app/gui.c (handle_standard_keys): Toggle jazz edit mode with
+	shift-space.
+
+	* app/track-editor.c: Jazz edit stuff -- core handling is in
+	track_editor_do_the_note_key.
+
+	* app/track-editor.c (track_editor_handle_keys): Send keyoff note
+	if a key is released.
+	(track_editor_do_the_note_key): Encapsulated the relevant code for
+	the other notebook pages.
+
+	* app/gui.c (keyevent): Handle key-release events as well. Also,
+	rename some handle_keys() functions all over the source and add
+	the `pressed' argument.
+
+	* app/gui-subs.c (gui_update_range_adjustment): Moved this from
+	track-editor.c
+
+1999-08-12  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/st-subs.c (st_num_save_patterns): Return value based on the
+	recently introduced save_all_patterns setting.
+
+	* app/gui-settings.c: "Save XM saves all non-empty patterns" (as
+	opposed to only the used patterns) option.
+
+	* soundtracker_tips.ja.txt: Added japanese translation of
+	soundtracker_tips.txt from Atsushi Yamagata
+	<yamagata@plathome.co.jp>.
+
+	* app/mixers/lqmono.c (lqmono_updatesample): We don't stop the
+	sample if only the loop has changed. In that case, we bend the
+	current pointer to the loop start!
+
+	* app/sample-editor.c (sampler_page_handle_keys): If a key is
+	pressed, the currently displayed sample is played, not the one
+	from the sample map (using gui_play_note_full /
+	xmplayer_play_note_full).
+
+	* app/gui.c (gui_play_note_full): The same for the GUI thread.
+
+	* app/xm-player.c (xmplayer_play_note_full): Permits more control
+	over what sample gets played and at which position it starts. Man,
+	xm-player.c really is a mess...
+
+	* INSTALL: some more explanations for the binary packages.
+
+	* Bumped version number to v0.3.0
+
+	* soundtracker.spec: Added RPM specfile from Arthibus Gissehel,
+	updated to distribute the NLS stuff as well.
+		
+	* Made the whole application NLS-aware.
+

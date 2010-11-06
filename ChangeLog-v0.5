@@ -1,0 +1,688 @@
+2000-09-25  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.5.9
+
+	* app/tracker.c: Rewrote expose/draw/update handling.
+
+	* app/sample-display.c: Rewrote expose/draw/update handling a
+	little bit (using an idle function).  Now switching notebook pages
+	works without problems.
+
+	* app/sample-editor.c (sample_editor_handle_keys): If we have a
+	selection, play only the selected part of the sample.
+
+	* app/mixer.h: XM Player and mixers can now play part of the
+	sample only. Added new method 'setsmplend' to mixer structure for
+	this.
+
+	* app/sample-editor.c (sample_editor_load_wav_main): Init relnote
+	and finetune such that samples are played at C-6 in original
+	speed.
+	(sample_editor_ok_clicked): Here as well.
+
+	* app/xm.c (xm_freq_note_to_relnote_finetune): If a specified FT
+	note is to be played at a specific frequency, return the needed
+	relnote and finetune settings.
+
+2000-09-24  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/audio.h: Remove #include <pthread.h> -- fixes compiler
+	warnings on IRIX.
+
+	* app/midi-settings.c: Use new prefs_() functions.
+
+	* app/main.c (main): Add dummy drivers if no actual drivers for
+	the architecture are available.
+
+	* app/mixers/kb-x86.c: Cleanups. Changed name appearing to the
+	user to "kbfloat", since it's no longer x86-specific.
+
+	* app/mixers/kb-x86-asm.S (kbasm_mix): val*vl+val*vr =
+	val*(vl+vr). Using basic ring properties can help make your code
+	shorter :)
+
+	* app/mixers/kbfloat-mix.c: Portable C version of the cubically
+	interpolating mixer.
+
+	* configure.in (sgi_support): Added checks for IRIX dmedia
+	library. Cleanups. Added '--disable-asm' option.
+
+	* app/xm.c (xm_load_xm_instrument): Endianness-convert envelope
+	points to host order.
+	(xm_save_xm_instrument): Here as well.
+
+	* app/drivers/irix-output.c: Added IRIX 5.x output driver.
+
+2000-09-19  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.5.8
+	
+	* Preliminary Win32 port by Fabian Giesen. Does not compile
+	out-of-the-box, since I integrated his 0.5.4 work into 0.5.7
+	without being able to test anything. In particular, Makefiles are
+	missing. The easiest way should be to build it with Cygwin. Some
+	notes for the brave:
+
+	  - app/drivers/dsound-output.c (working as is)
+
+	  - app/preferences.c (needs some work done, see comments)
+
+	  - app/poll.c: added Win32 pipe emulation code. Need to replace
+	    all pipe write's and read's in the main program with calls
+	    to these functions.
+
+	  - app/keys.c: This is the only part that actually requires
+	    hard work for a fully functional Tracker. The current
+	    version does not permit pattern editing ;-(
+
+	  - The kb-x86 mixer requires some work if you want to use
+	    an assembler other than gas. A manually translated version
+	    of the assembler source comes with this archive, though
+	    (kb-x86-asmIntel.a).
+
+	  - Non-gcc compilers probably require that some gcc'isms be
+	    removed, such as void* arithmetic and interval case statements.
+
+	  - Look at how the GIMP Win32 port is built up; since GIMP also
+	    uses the gtk+ toolkit, the building process will be similar.
+	
+	* app/preferences.h: Directory structure is now hidden from the
+	caller; access through opaque prefs_node* handle.
+
+	* app/module-info.c: Update XM's 'modified' flag after various
+	operations.
+
+	* app/midi-settings.c: Disable if GNOME is not installed.
+
+	* app/envelope-box.c (envelope_box_canvas_event): Stop point
+	dragging when we receive a button release event on the canvas
+	(sometimes the appropriate event for the respective point does not
+	come - bug in canvas?).
+
+2000-09-18  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/track-editor.c (track_editor_handle_column_input):
+	Instrument column uses decimal values always.
+
+	* app/gui.c: Get rid of 'songpos' variable; use
+	playlist_get_position() instead.
+	(gui_update_player_pos): Some slight reorganization here.
+
+	* app/gui-subs.c (statusbar_update): Run messages through
+	gettext().
+
+	* app/gui.c (playlist_position_changed): Don't update current
+	pattern if we're in playing mode (that will be done at proper time
+	in gui_update_player_pos()).
+	(gui_update_player_pos): Freeze playlist signals while updating
+	song position.
+
+2000-09-17  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/tracker.c (note2string): Always use decimal numbers for
+	instrument numbers.
+
+	* app/gui-settings.c: Automatical Tempo / BPM button update when
+	running through Fxx effect is default now.
+
+	* app/event-waiter.[ch]: New more abstract interface for dealing
+	with the GUI / audio event syncing issue (this is different from
+	time-buffer!). songpos, tempo and bpm updates are handled through
+	this interface now. Code is a lot cleaner now.
+
+	* app/gui.c, app/audio.c: In "tempo / bpm update" mode: If the
+	user changes tempo / bpm using the interface during playing, we
+	use a protective mechanism similar to that used by the "song
+	position changed" function.
+	
+	* po: Updated it.po
+
+2000-08-25  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/envelope-box.c (envelope_box_canvas_event): Insert new point
+	only if insert_after != -1 and y in range.
+
+	* app/tracker.c (print_notes_line): Corrected bounds check.
+
+	* app/sample-editor.c (sample_editor_paste_clicked): Only convert
+	source data to 8bits if destination sample is in treat_as_8bit
+	mode.
+	(sample_editor_perform_ramp): If we are in 8bit mode, call cutoff
+	function after performing the ramp.
+
+2000-08-17  Tomasz Maka  <pasp@members.com.pl>
+ 
+	* app/track-editor.[ch]: command and volume parameter generator
+	(inc/dec) added.
+ 
+	* app/track-editor.c: delete key behaviours like FT2 now.
+ 
+	* app/track-editor.c: set cursor row-step to
+	gui_get_current_jump_value() in command and volume column.
+ 
+	* app/gui.c: spin_jump max value changed to 16.
+ 
+2000-08-16  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/xm-player.c (xmpPlayTick, xmpCmdEnvPos): Check if ch->curins
+	is initialized before accessing it. Fixes another player crash.
+
+2000-08-15  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.5.7
+
+	* app/xm.c (XM_Free): Ehhhh... let's free the sample data as well.
+	Helps a lot if you don't want a full swap after loading some
+	mods. :) (pointed out by (Rikard Bosnjakovic <bos@hack.org>)
+
+	* app/xm.c (xm_load_mod): Close file before returning. (Rikard
+	Bosnjakovic <bos@hack.org>)
+	(XM_Load): dito
+	
+	* app/track-editor.c (track_editor_interpolate_fx): Added effect
+	interpolator. At the moment only for volume and panning
+	effects. Support for other effects is easily added. See README for
+	instructions.
+	
+	* app/gui.c, app/playlist.c: After using spin buttons with mouse,
+	the main window focus is immediately reset in order to enable menu
+	shortcuts again. Rather hacky, but very useful for keyboard-only
+	tracking.
+
+	* app/xm-player.c (xm_player_playnote_fasttracker): If ch->cursamp
+	is unitialized, do nothing. Fixes edX crash bug.
+
+	* app/sample-display.c (XPOS_TO_OFFSET): Use temporary guint64
+	calcs to prevent overflow in case of large samples. Large samples
+	are now edited without problems in SoundTracker.
+	(sample_display_startoffset_to_xpos):
+	(sample_display_endoffset_to_xpos): dito
+	(sample_display_set_mixer_position): Move code that decides which
+	parts of the widget to redraw to sample_display_draw().
+
+	* app/gui.c (playlist_position_changed): Choice of current song
+	position changes currently edited pattern as well.
+	(keyevent): Stop GDK_Tab and GDK_Return key press event signal
+	from propagating to the entry widgets.
+
+	* app/sample-display.c (sample_display_set_mixer_position): area.x
+	+ area.width must not exceed width of widget.
+
+	* app/sample-editor.c: We load raw samples now (8/16 bits,
+	signed/unsigned, little-endian/big-endian, mono/stereo).
+
+	* app/xm.c (xm_save_xm_samples): Endianness conversion on saving.
+
+	* INSTALL: Some words about the dangers of suid root installation.
+
+	* app/Makefile.am (install-exec-local): Added warning due to suid
+	root installation.
+
+	* app/gui.c: Call statusbar functions while loading/saving
+	modules.
+
+	* app/xm.c: Don't call statusbar functions from this file. That's
+	the job of app/gui.c.
+
+	* app/xm.c (xm_load_xm_pattern): Accept length 0 patterns (create
+	a dummy 1-length pattern for it).
+
+2000-08-14  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/gui-settings.c: "Save unused patterns" is default now.
+
+	* app/gui.c (gui_free_xm): Clear xm pointer after freeing.
+
+2000-08-12  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/tracker.c (print_notes_line): Added color for selection
+	background to colors array.
+	(tracker_draw): Reordered drawing calls; less flickering during
+	scrolling.
+	(tracker_init): Added baselineskip variable, 0 for now.
+
+2000-08-11  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.5.6
+
+	* app/menubar.c (menubar_block_mode_set): Disable menu bar
+	callback when setting this in the program.
+
+2000-08-08  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/menubar.c: Renamed "Save Song" to "Save without samples".
+
+2000-08-07  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/gui-settings.c: Removed "show zeroes" option.
+
+2000-08-02  Olivier Glorieux <sglorzlinux@netcourrier.com>
+
+	* Context menu in track editor (only Gnome)
+
+	* Track line format in Config/GUI
+
+	* Track editor: shift + del clears entire line (note + ins + vol +
+	effect)
+
+2000-07-30  Michael Krause  <m.krause@tu-harburg.de>
+
+	* po: Updated it.po
+	
+2000-07-29  Olivier Glorieux <sglorzlinux@netcourrier.com>
+	
+	* Block selection enhanced and mouse support.
+	
+2000-06-12  Michael Krause  <m.krause@tu-harburg.de>
+
+	* po: Updated ja.po
+
+2000-06-04  Tomasz Maka  <pasp@members.com.pl>
+
+	* app/sample-editor.c: added "set as loop" function.
+
+	* app/sample-editor.c: added "half" and "double" buttons in volume
+	ramp dialog to set 50% or 200% for left and right spinbuttons.
+
+	* app/track-editor.[ch]: added track_editor_kill_notes_track
+	function which kill all notes from cursor position to the end of
+	pattern.
+ 
+2000-05-27  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.5.5
+
+	* app/sample-editor.c (sample_editor_close_volume_ramp_dialog):
+	Remember last used values.
+	(sample_editor_open_volume_ramp_dialog): Allow negative values as
+	well.
+
+2000-05-20  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/xm.c (xm_load_xm_instrument): Handling instrument header
+	size correctly. ST loads a few more XMs where it complained about
+	"instrument header size != 40" before.
+
+2000-05-13  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/sample-display.c (sample_display_set_mixer_position):
+	Correct expose/draw behaviour now; calculating widget areas are
+	redrawn in this function rather than in _draw() now. This was what
+	I thought to be a bug in gtk+, but it wasn't :)
+
+2000-05-08  Luc Tanguay  <luc.tanguay@bell.ca>
+ 
+	* app/xm.h: added constant for XM min/max note volume.
+
+	* app/midi.c: fixed problem when MIDI velocity is out of the range
+	of the volume of a XM note.
+ 
+2000-05-03  Luc Tanguay  <luc.tanguay@bell.ca>
+ 
+	* app/midi-settings.[ch]: MIDI settings dialog box and load/save
+	functions.
+ 
+	* app/menubar.c: updated to add MIDI settings item in Settings
+	menu.  Save MIDI settings when "Save settings now" is clicked.
+ 
+	* app/midi.c: updated to use new MIDI settings.  The volume and/or
+	channel info from the MIDI event can be turned on and off.  The
+	input client number or port can be changed.
+ 
+	* app/main.c: load/save MIDI configuration settings.
+
+2000-05-05  Tijs van Bakel  <smoke@casema.net>
+
+	* Added minor row highlighting feature.
+
+2000-05-02  Tomasz Maka  <pasp@members.com.pl>
+
+	* Added option to update tempo/bpm spin buttons upon appearance of
+	the Fxx command.
+
+	* Added option to switch back to tracker page after loading /
+	saving.
+	
+2000-05-01  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/drivers/*-output.c (prefs_update_estimate): Use
+	"milliseconds" instead of "microseconds", that's nearer to the
+	truth (Rob Adamson).
+
+	* po: Updated ja.po
+
+2000-04-29  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.5.4
+
+	* Applied patch from Tomasz Maka ("save song" option).
+
+2000-04-15  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/scope-group.c (scope_group_new): Initialize update frequency
+	from gui_settings structure.
+
+	* app/track-editor.c (tracker_page_create): Initialize update
+	frequency from gui_settings structure.
+
+	* app/audio.c (mixer_mix_and_handle_scopes): Clipflag handling
+	improved; keeps the flag on for a moment before switching it off
+	again, so that clippings get visible, even if they are short.
+
+	* app/sample-editor.c: Has its own timeout function to display
+	current mixer position.
+
+	* app/audio.c (mixer_mix_and_handle_scopes): Get mixer_position
+	dumps at regular, configurable intervals. Defaulting to 50 updates
+	per second for now.
+
+	* app/file-operations.c (file_selection_dir_button): Check if
+	something has been selected actually. Fixes occasional segfault
+	when doing double-clicks in the directory list (reported by
+	Giles).
+
+2000-04-09  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/mixers/kb-x86-asm.S: Added non-volramping version of mixer
+	(gives another 15% speedup).
+
+	* app/module-info.c (modinfo_pack_patterns): Reinitialize playlist
+	widget after changing the pattern order table.
+
+	* app/main.c (main): Print error message if no output driver is
+	available and exit.
+	(sigsegv_handler): Capture segmentation faults and try to rescue
+	currently edited XM.
+
+	* app/sample-editor.c (sample_editor_monitor_clicked): Return if
+	no input driver available.
+
+	* app/audioconfig.c (audioconfig_load_config): Works without input
+	drivers.
+
+	* app/main.c (main): Don't require input drivers.
+
+2000-04-08  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/xm-player.c (xmplayer_play_note):
+	(xmplayer_play_note_full): Stop old sample before starting new one
+	(prevents clicks when playing live on the keyboard).
+
+	* app/mixers/kb-x86.c (kb_x86_setsmplpos): Declick this situation
+	as well.
+	
+2000-04-01  Luc Tanguay  <tanguay@asterix>
+ 
+	* app/midi.c: MIDI input recorded only if track editor visible and
+	edit mode enabled.
+
+2000-03-30  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/mixers/kb-x86*: removed unused code.
+
+2000-03-29  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.5.3
+
+	* app/mixers/kb-x86.c (kb_x86_stopnote): Rewrote sample-change
+	declicking to use a virtual second channel for each logical
+	channel. See comments in the source code.
+	(kb_x86_mix_sub): Disabled sample-end exponential declicking,
+	because it sounds like shit on white-noise samples
+	(i.e. hi-hats). See comments in kb-x86.c for why.
+
+	* configure.in: Changed the autoconf stuff in order to check for
+	gasp and disable build of the kb_x86 mixer if it's not available.
+	We should now build on non-i386 platforms again.
+
+	* app/mixers/kb-x86-asm.S: Fix for newer gasp (remove \(.data) and
+	use .section .data instead). (kbasm_declick_postproc): Fix an
+	assembler warning only issued by newer binutils than mine (there
+	is no faddp %st(1),%st; only faddp %st,%st(1)).
+	(kbasm_mix): Fixed the other related warning (changed call %ebp to
+	call *%ebp, whatever sense that has).
+
+2000-03-28  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/mixers/kb-x86.c: Added linear ramp declicking upon sample
+	change on channel (not only when the sample ends, but also when a
+	new one is started immediately). Also making use of the asm
+	routines' volume ramping functions to smoothen volume changes.
+	Using 1ms ramps. Seems to be okay for all the mods I've listened
+	to so far.
+
+	* app/mixers/kb-x86.c (kb_x86_mix_sub): Reordered some 64bit
+	calculations to optimize gcc output. Also fixed a typo bug in
+	pingpong handling.
+
+	* po: Updated ja.po
+
+2000-03-27  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/mixers/integer32.c: Fix non-i386 code (declare some
+	variables properly).
+
+	* app/sample-editor.c: Removed #include <sys/soundcard.h> (hint by
+	Nicolas Leveille)
+
+	* Released v0.5.2
+
+	* po: Updated ja.po
+
+2000-03-27  Luc Tanguay  <luc.tanguay@bell.ca>
+	
+	* app/midi.[ch], app/midi-utils.[ch]: code to add MIDI input.
+
+2000-03-26  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/gui.c (gui_init): Status bar is in a GNOME dock item now and
+	can be moved around. Non-GNOME bar is at the bottom of the window
+	by default.
+
+	* app/gui-subs.c (statusbar_update): Added new argument
+	"force_update" which forces a GUI update in order to make the
+	"Loading XXX..."  messages actually visible.
+
+	* app/envelope-box.c (envelope_box_point_event): If a point is
+	dragged out of sight, the canvas scrolls to the new location as
+	soon as the button has been released.
+
+2000-03-25  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/envelope-box.c (envelope_box_canvas_event): Middle mouse
+	button scrolls the canvas (just like the sample display widget).
+	(envelope_box_canvas_event): Middle mouse button plus Shift zooms
+	in and out.
+	(spin_offset_changed):
+	(envelope_box_delete_point): Adjust canvas max x.
+
+	* Released v0.5.1
+
+	* po: Updated it.po. Added fr.po from Saïd Bougribate
+	<Linus4@caramail.com>.
+
+	* app/instrument-editor.c (instrument_editor_update): Disable
+	"Save XI" button if no instrument loaded.
+
+	* app/sample-editor.c: Remove all references to
+	mixer_sample_word_length(). Assume 16bit.
+
+	* app/sample-editor.c (sample_editor_reverse_clicked): Don't
+	access sample pointed to by sample end, only the one before.
+
+	* app/menubar.c: Added "Tracker" submenu to "Settings" menu,
+	containing the 'cycle font' functions.
+
+	* app/tracker-settings.[ch]: Tracker font selection - you can fill
+	a list with your favourite fonts and then cycle through them with
+	Keypad-Plus/Minus from within the tracker. You should use only
+	fixed-width fonts for now..
+
+2000-03-22  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Applied patch from Tomasz Maka <pasp@look.com.pl> for status
+	bar, timer, "show zeroes" and "channel numbering" options.
+
+2000-03-19  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/mixers/kb-x86.c (kb_x86_mix_sub): Optimizing for the
+	non-filtered case. Gives a speed-up of roughly 15% on plain XMs.
+	I expected more, though :)
+
+	* app/mixers/kb-x86-asm.S: Created a big 'gasp' macro which can
+	generate various versions of the mixer core routine without having
+	to c'n'p eight different versions.
+
+2000-03-14  Michael Krause  <m.krause@tu-harburg.de>
+
+	* po: Updated ja.po.
+
+2000-03-13  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.5.0
+
+	* app/audio.c (mixer_mix): Stereo to mono conversion works now.
+
+	* app/xm.h: Added "treat_as_8bit" variable so that 8bit sample
+	handling can still be faked to the user by the GUI.
+
+	* app/mixer.h: Removed "type" field from st_mixer_sample_info. All
+	samples are stored in 16bit format internally now. Removes a lot
+	of duplicate code in sample-editor.c and in the mixers.
+
+2000-03-12  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/mixers/integer32.c: Adjusted for 16bit scope buffers.
+
+	* app/audio.c: Using 16bit scope buffers now. Makes the mixer
+	routines faster.
+
+	* app/mixers/kb-x86.c, app/mixers/kb-x86-asm.S: Added scopes
+	handling.
+
+	* app/xm.c: Load XM's with odd number of channels as well
+	(generate empty channel in that case).
+
+	* app/mixers/kb-x86.c (kb_x86_updatesample): Can handle updates of
+	loop limits while playing.
+
+	* app/audio.c (driver_startnote): Don't call mixer if sample is
+	empty.
+
+	* app/audioconfig.c, app/audio.c, app/main.c: You can choose a
+	mixer module now.
+
+2000-03-10  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/mixers/kb-x86.c (kb_x86_mix_sub): Added pingpong loop
+	handling. Been listening to some of my favourite modules for quite
+	some time now and I haven't discovered any more mixing bugs. And
+	it sounds just great :-)
+
+	* app/mixers/kb-x86-asm.S: Added backwards mixing function.
+
+2000-03-09  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/cheat-sheet.c: Added new effects.
+
+	* app/mixers/kb-x86-asm.S (kbasm_mix): Enabled IT filter
+	code. Sounds crappy. No wonder, this is a one-tap IIR filter.  But
+	IT just sounds like that.
+
+	* app/audio.c (driver_set_ch_filter_*), app/mixer.h: Added player
+	interface for filter commands.
+
+	* app/xm-player.c (xm_player_playnote_fasttracker, xmpPlayTick):
+	Don't set procins = 0 when procnot==97
+	(xmpPlayTick): Added filter commands.
+	(xmpPlayTick): Some Mxx fixes. (all these changes taken from
+	latest OpenCP CVS).
+
+	* app/mixers/kb-x86.c: Looping code and no-loop code unified. Now
+	bullet-proof with regards to extremely short loop lengths. Added
+	declicking logic for sample ends. Still no ping-pong loop support.
+
+2000-03-08  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/mixers/kb-x86.c: Rewrote complete loop handling code in C
+	and corrected it so as to deal with unmodified samples (the
+	interpolation code would read three invalid sample values after
+	the loop end otherwise). Actually, this required loop prediction
+	logic to be written similar to integer32.c. This thing sounds
+	great :-)
+
+2000-03-06  Jason Nunn  <jsno@downunder.net.au>
+
+	* app/xm.c: Soundtracker can now load compressed zip lzh gz bz2
+	modules.
+
+2000-03-05  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/mixers/kb-x86.c, app/mixers/kb-x86-asm.S: First try at
+	incorporating Tammo Hinrich's brandnew FPU mixer code into
+	SoundTracker. I have ported two versions, one with linear
+	interpolation and one with cubic interpolation (both have code for
+	the IT filters). Support for Ping-Pong loops, 8 bit samples and
+	oscilloscopes is missing, though.
+
+2000-03-03  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/scope-group.c (scope_group_timeout): Add some hackery to
+	deal with too short latencies and the scopes dropping out.
+
+	* app/gui.c: The Win95 Menu key now plays all channels of the
+	current row only. Nice ProTracker feature.
+
+	* app/audio.c (audio_ctlpipe_play_pattern): Support "only1row"
+	argument. Use edit-mode driver for the single row play feature.
+
+	* app/xm-player.c: Hacked support for playing only one row of the
+	current pattern and then stopping.
+
+	* app/gui-settings.c (gui_settings_dialog): Renamed
+	advance_cursor_in_fx_columns to "Advance cursor horizontally in
+	effect columns".
+
+	* app/gui.c, app/track-editor.c, app/gui-settings.[ch]: Added
+	asynchronous IT-style editing where you can still edit patterns
+	while playing them and the patterns don't scroll. Use "Escape"
+	after starting playing the song or pattern to enable editing
+	mode. "Space" still stops the song.
+
+	* po: Updated ru.po.
+
+2000-02-19  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/mixers/integer32.c (integer32_setfreq): If freq is set too
+	low, c->speed can become 0. Force it to be 1 in this case.
+
+	* app/keys.c (keys_dialog): Initializing capturing variables.
+
+	* app/audioconfig.c, app/gui-settings.c, app/transposition.c:
+	Added Close button.
+
+	* app/mixers/integer32.c: Removed ugly reverb effect.
+
+	* app/keys.c: Added standard OK / Cancel / Apply buttons.
+
+2000-02-13  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/sample-editor.c (sample_editor_update): Reordered some
+	initialization functions to avoid some triggered assert's.
+	(sample_editor_page_create): Cleaned up selection widget mess.
+
+2000-02-11  Michael Krause  <m.krause@tu-harburg.de>
+
+	* po: Updated ja.po.
+
+2000-02-09  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/drivers/alsa2-input.c, app/drivers/alsa2-output.c:
+	s/_plugin_/_channel_/ (as requested by Kai Vehmanen).
+
+2000-02-07  Nicolas Leveille  <nicolas.leveille@free.fr>
+
+	* app/track-editor.c: fixed handling of the advance_in_fx_column.
+
+	* doc/hacking.texi: some fixes to make it a well-formed texinfo file.
+	

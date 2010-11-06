@@ -1,0 +1,1438 @@
+1999-08-09  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.1.11
+
+	* app/gui.c (gui_init): Menubar in non-GNOME version doesn't have
+	a 4 pixel gap around it any longer.
+
+	* app/envelope-box.c (envelope_box_set_envelope): Install dummy
+	envelope if env pointer is NULL.
+
+	* app/instrument-editor.c (instrument_editor_update): Initialize
+	empty envelope if instrument is null.
+
+1999-08-08  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/xm-player.c: Replace 1+!linearfreq by
+	1+(!linearfreq&&!ismod) in some commands to fix excessive vibrato
+	depth for ProTracker modules.
+
+	* app/audio.c (audio_prepare_for_playing): Allocating scopebufs[]
+	according to that new GUI option.
+
+	* app/gui-settings.c: Added "Scopes Buffer Size" option.
+
+1999-08-07  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/sample-editor.c (sample_editor_save_wav): Fix "bytes per
+	second" field in saved WAV header (Stefan Hager).
+
+	* app/gui-settings.c: Load / save all settings, move "hexmode" and
+	"advance cursor" options from menubar into this window.
+
+1999-08-06  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/gui-settings.[ch]: New dialog which contains GUI parameters.
+
+	* app/preferences.c: Removed "Preferences" notebook page.
+
+	* app/instrument-editor.c (instrument_editor_set_instrument):
+	Doing most work in _update() instead of here; fixes bug where
+	loading sample into fresh instrument wouldn't initialize the
+	instrument editor page.
+	(instrument_editor_load_instrument): Initialize sample editor.
+
+	* app/scope-group.c (scope_group_timeout): rewritten to use the
+	new scope buffer layout.
+
+	* app/audio.c (audio_prepare_for_playing): renamed from
+	mixer_prepare().
+	(mixer_mix_and_handle_scopes): rewritten to use a different scope
+	buffer layout.
+
+	* app/drivers/oss-output.c (oss_open): Find out number of
+	fragments used by sound driver and make corresponding corrections
+	to get_play_time(). Now the GUI is really synchronized to audio,
+	even with large fragment sizes.
+	
+1999-08-05  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/gui.c (gui_init): Set minimum possible "Jump" value to 0.
+
+	* app/keys.c (keys_dialog): Initialize cw_combostrings (multiple
+	window openings could leave the combo box empty)
+
+	* app/xm.c (xm_load_xi): Bug fix: missing string termination
+	(erikyyy again).
+
+	* app/instrument-editor.c (instrument_editor_load_instrument):
+	Close file after reading (thanks to erikyyy).
+
+1999-08-02  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.1.10
+
+	* configure.in, acconfig.h, app/sample-editor.c: ST can now build
+	without libaudiofile.  In that case, you will not be able to load
+	samples in the sample editor.
+
+	* app/menubar.c: Added "Load XI" menu item to "Instrument" menu.
+
+	* app/xm.c (xm_load_xm_instrument): Fix volfade loading.
+
+	* app/instrument-editor.c: Add "Load Instrument" function.
+
+	* app/xm.c (xm_load_xi): New function that loads an instrument in
+	XI format (funny that it isn't the same instrument format as found
+	in XM modules...)
+
+1999-07-27  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/keys.c (keys_init): Removed unnecessary "symspercode > 4"
+	check.
+
+1999-07-26  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/tips-dialog.c (read_tips_file): Correct "can't find tips
+	file" message.
+
+1999-07-25  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/drivers/oss-output.c (oss_make_config_widgets): Some layout
+	beautification. Added delay estimation.
+	
+1999-07-21  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.1.9
+
+	* app/Makefile.am (soundtracker_SOURCES): Oh I hate it when that
+	happens. I left out a source file from the
+	distribution. Reinserted driver.h ... who said "brown paper bag"?
+
+	* Released v0.1.8
+
+	* app/tracker.c (tracker_expose): Fixed a long-standing bug that
+	an X expose wouldn't redraw the cursor line correctly.
+
+	* soundtracker_tips.txt: Added some useful tips.
+
+	* app/tips-dialog.c: I hope this helps reducing stupid questions.
+	People don't read the README or the FAQ anyway :( This was grabbed
+	from the GIMP source code.
+
+	* app/drivers/oss-output.c: Added configuration widget / loader /
+	saver. Basically the same as the preferences.c code in previous
+	versions. This will need beautification!
+
+	* app/audioconfig.[ch]: Audio configuration dialog.
+
+	* app/preferences.c: Removed all audio-related preferences. These
+	are handled by the drivers themselves now.
+
+1999-07-20  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/sample-editor.c: Rewritten for the new sampling driver
+	interface. Cool feature: SoundTracker can sample while it's
+	playing a module, if your sound card supports full duplex.
+
+	* app/driver.h: Split into driver-out.h and driver-in.h; Sampling
+	drivers are controlled by the main thread now instead of going
+	through the audio thread and a sampling buffer. The "base class"
+	of the driver classes is still in driver.h.
+
+	* app/sample-editor.c (sample_editor_load_wav): Fixed 8 bit sample
+	loading.
+
+1999-07-18  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/scope-group.c (scope_group_timeout), app/track-editor.c
+	(tracker_timeout): Changed to use driver->get_play_time().
+
+	* app/time-buffer.c (time_buffer_get): Return NULL if list is
+	empty.
+
+	* app/drivers/oss-output.c (oss_poll_ready_playing): An OSS
+	playing driver for the new driver concept.
+
+	* app/audio.c (mixer_mix_and_handle_scopes):
+	(mixer_mix): return pointer to end of mixed data.
+	(audio_mix): This routine contains the "main loop", as seen from
+	the driver's view, now. It calls the player and mixer modules.
+
+	* Again some changes to the driver subsystem; this time not as
+	deep as in the 0.0.11 changes, and the resulting code is a bit
+	easier. The driver objects handle configuration on their own now,
+	including own GTK+ widgets. Besides, the driver has a
+	get_play_time(), which handles what audio_time() did before.
+	
+1999-07-15  Michael Krause  <m.krause@tu-harburg.de>
+
+	* README, INSTALL, FAQ: Updated
+
+1999-07-04  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.1.7
+
+	* app/sample-editor.c (sample_editor_update_mixer_position):
+	Update sample display accordingly.
+
+	* app/audio.c (mixer_mix_and_handle_scopes): Added mixer position
+	time buffer.
+
+	* app/scope-group.c (scope_group_scope_event): Right mouse button
+	inverts global channel status.
+
+	* app/xm.c (xm_load_mod): Call xm_init_locks().
+
+	* app/gui.c: Finally added clipping indicator LED again
+
+	* app/audio.c (mixer_mix_and_handle_scopes): Added clipping
+	indicator time buffer.
+
+	* app/track-editor.c (tracker_timeout): Use time_buffer
+
+	* app/audio.c (audio_play): Use time_buffer
+
+	* app/time-buffer.c: New API to handle some audio->gui
+	synchronization (pattern play position, mixer position, clipping
+	indicator etc.) in a more generalized way.
+
+	* Use gthread functions instead of pthread functions everywhere.
+
+1999-06-29  Michael Krause  <m.krause@tu-harburg.de>
+
+	* configure.in: Remove pthread check, add gthread module to gtk
+	check instead. Install some stupid workaround to get the gthread
+	stuff into the command line.
+
+1999-06-28  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/sample-display.c: Added "zero
+	line". (sample_display_do_marker_line): Make marker lines more
+	visible. Fix small bug that would cause the line at the rightmost
+	position not to be displayed.
+
+	* app/gui.c: Added pitchbend reset button.
+
+1999-06-22  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/preferences.c, app/menubar.c, app/track-editor.c: Added
+	"Advance Cursor in FX Columns" toggle.
+
+	* app/track-editor.c, app/gui.c: Some global variables clean-up.
+	
+	* app/tracker.c: Removed tracker_note_typed_advance(), added
+	tracker_redraw_row(), tracker_redraw_current_row(),
+	tracker_step_cursor_row() instead.
+
+	* app/gui.c: Add a "Jump" spin button. Reduce default width of
+	Instrument / Sample entries.
+
+1999-06-13  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.1.6
+
+	* app/xm.c (xm_load_mod): Call st_clean_instrument() for each
+	instrument to initialize it.
+	(xm_check_envelope): Check envelope settings here..
+
+	* app/st-subs.c (st_clean_instrument): Set panning envelope to
+	constant 32 (middle panning).
+
+	* app/envelope-box.c: More work on the envelope editor. Not much
+	code is left from the old version.
+
+1999-06-12  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/envelope-box.c: Using the GNOME canvas widget for the
+	graphical envelope editor. Really easy to use. This is fun.  Now,
+	the very first real reason for a GNOME-only SoundTracker :)
+
+	* app/sample-editor.c (sample_editor_load_wav): Checking for
+	maximum sample length.
+	(sample_editor_ok_clicked): Dito
+
+	* app/xm.c (XM_Load): Add check for correct sample lengths (don't
+	need to add a similar check for MOD's, cause MOD samples are
+	generally limited to 1 << 17 bytes).
+
+	* app/mixers/lqmono.c (lqmono_startnote): Check for maximum sample
+	length.
+
+	* app/mixer.h, app/mixers/lqmono.c: New mixer structure field
+	"max_sample_length".
+
+	* configure.in (gnome): Remove zvt from linker flags.
+
+1999-06-08  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.1.5
+
+	* Makefile.am (bindist): Added rules for automatic generation of
+	my binary distributions. This really saves me some work :)
+
+	* app/xm-player.c: Some fixes from the current OpenCP CVS version:
+	(xm_player_playnote_fasttracker): Set procins to 0 if procnot ==
+	97. (xmpPlayTick): Set procins to 0 if procnot == 97. Vibrato
+	depth is twice as deep in non-linear frequencies mode (replace 1
+	by 1+!linearfreq in some commands). Retrigger command fixes.
+	
+	* app/menubar.c: Synchronized non-GNOME menu with the new version.
+	Optimized mymenu structure a bit.
+
+1999-06-06  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/sample-editor.c (sample_editor_load_wav): Display error if
+	file is unreadable (don't crash).
+
+	* app/drivers/oss.c, app/xm.c, app/preferences.c,
+	app/sample-editor.c: Make use of new error handling functions.
+
+	* app/gui.c (read_mixer_pipe): Handle new backpipe id for errors
+	and warnings
+	(display simple gnome requesters for now).
+
+	* app/errors.[ch] (error_error_common):
+	(error_error):
+	(error_warning): New file, new functions to handle errors and
+	warnings more conveniently for the user.
+
+	* app/gui-subs.c (gui_update_spin_adjustment): Moved here from
+	gui.c
+	(gnome_error_dialog): New function
+
+	* app/drivers/oss.c (oss_open): Added workaround for Linux bug
+	(some sound drivers, when in use by another program, block when
+	opened instead of returning EBUSY). Wrote a mail to Thomas Sailer.
+
+1999-06-04  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/menubar.c (menubar_save_settings_on_exit_toggled):
+	(menubar_save_settings_now): Add "Save Settings now" and "Save
+	Settings on Exit" (default: on) menu items.
+
+	* app/gui.c (gui_init): Remove initialization of scopes display
+	and backing store options. This is handled in
+	menubar.c:menubar_init_prefs() automatically.
+
+	* app/menubar.c: Move "Display Scopes" and "Use Backing Store"
+	toggles from preferences page to the Settings menu. Add these
+	settings to the preferences structure. "Use Backing Store" is off
+	by default now, so that the tracker doesn't use too much CPU time
+	for first-time users.
+
+	* app/track-editor.c (track_editor_handle_column_input):
+	(track_editor_handle_hex_column_input):
+	(track_editor_handle_semidec_column_input): Handling decimal
+	instrument column correctly.
+
+	* app/tracker.c (init_display): 
+	(print_notes_line): Line numbers dec/hex display.
+
+	* app/menubar.c (menubar_hexmode_toggled):
+	(menubar_init_prefs): Added hex/dec switch to menu bar.
+
+	* app/preferences.c (prefs_get_line):
+	(prefs_get_int):
+	(prefs_put_int):
+	(prefs_load_config):
+	(prefs_save_config): Loading and saving preferences on startup and
+	exit now.
+
+	* app/tracker.c (note2string): Instrument numbers can be displayed
+	in decimal or hexadecimal.
+
+1999-05-28  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.1.4
+
+	* app/keys.c (keys_init): Clear unused entries in xkeymap[] (Jon
+	Forsberg <zzed@cyberdude.com>).
+	
+1999-05-26  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.1.3
+
+	* app/menubar.c (mymenu): Adjusted menus for non-GNOME version.
+
+1999-05-16  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Installed glibc-2.1.1pre2 today, and... well, I had to recompile
+	some parts of my system, but the sound pause bug is gone now!
+	Seems like this was really a glibc-2.0.7pre3 bug. Life is fun
+	again, now that I've fixed one of the most disturbing bugs in my
+	system :-)
+
+	* FAQ: Mentioning the problem here as well...
+
+1999-05-11  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Got a new machine today, a 400MHz K6-2. The sound pause bug
+	introduced with kernel 2.2.3 is still present. I really start
+	believing this is not a soundtracker bug. Besides that, the new
+	computer rocks...
+
+1999-05-02  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/instrument-editor.c (instrument_page_create): Add the
+	clavier widget and necessary callback functions.
+	(instrument_editor_clavierkey_press_event): Modify samplemap
+	appropriately.
+
+	* app/clavier.c (clavier_draw_label, clavier_set_key_labels):
+	Added these functions.
+	(clavier_expose): Clear before drawing.
+	(clavier_realize): Initializing color GC's.
+	(clavier_init): Initializing font.
+
+	* app/clavier.[ch]: This is Simon Kågedal's Clavier widget, taken
+	from clavier-0.1.3.
+
+	* app/st-subs.c (st_clear_pattern): Clear all the allocated track
+	space, not just the visible part.
+	(st_clear_track): optimized
+
+	* app/menubar.c: Added "Delete unused instruments", "Find unused
+	pattern", "Copy current to unused pattern", "Clear unused
+	patterns", "Pack patterns" and "Optimize module" functions to the
+	menu. Menu structure changed. Some key shortcuts added.
+	(menubar_handle_keys): Handling key shortcuts here.
+	
+	* app/gui.c (change_current_pattern): Renamed to
+	gui_change_current_pattern() and made public.
+
+	* app/st-subs.c (st_copy_pattern, st_is_empty_track,
+	st_is_empty_pattern, st_find_first_unused_and_empty_pattern,
+	st_is_pattern_used_in_song): New functions.
+	(st_dup_pattern): Using st_copy_pattern(). Initializing
+	alloc_length field.
+
+	* app/module-info.c: Removed "Delete unused instruments" button.
+	(modinfo_copy_to_empty_pattern, modinfo_find_empty_pattern,
+	modinfo_clear_unused_patterns, modinfo_reorder_patterns,
+	modinfo_pack_patterns, modinfo_optimize_module): New functions.
+
+	* Released v0.1.2
+
+1999-05-01  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/gui-subs.c (gnome_warning_dialog): Pure GTK+ implementation.
+
+	* app/gui.c (gui_enable_sampler_mode): Fixes for the new GUI
+	layout in 0.1.1.
+
+	* app/menubar.c: Added menubar_enable() and menubar_disable()
+
+	* app/gui-subs.c (gnome_app_ok_cancel_modal): Moved from menubar.c
+	to this file.
+
+	* app/gtkspinbutton.[ch]: Removed.
+
+	* app/gui-subs.c (gui_subs_create_slider):
+	(gui_put_labelled_spin_button): Use extspinbutton_new() instead of
+	gtk_spin_button_new()
+
+	* app/extspinbutton.[ch]: New widget which inherits from
+	GtkSpinButton. The old gtkspinbutton size adjustment hack has been
+	implemented in a clean object-oriented fashion now.
+
+	* app/track-editor.c (tracker_page_handle_keys): Added support for
+	keyoff note.
+
+	* app/keys.c: Added keyoff note key.
+
+1999-04-30  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/xm.c (XM_Load): Trap xm_load_xm_instruments errors
+	(xm_load_xm_instrument): Return error codes instead of doing
+	exit(1).
+
+	* app/instrument-editor.c (instrument_page_handle_keys),
+	app/module-info.c (modinfo_page_handle_keys), app/sample-editor.c
+	(sampler_page_handle_keys): Adjusted for new keys handling
+
+	* app/gui.c (gui_play_note): Signature changed; takes note number
+	instead of KeySym now.
+
+	* app/track-editor.c (tracker_page_handle_keys): Adjusted for new
+	keys handling.
+	(track_editor_handle_column_input): Renamed from insert_note();
+	the note column is handled at the beginning of
+	tracker_page_handle_keys() directly.
+
+	* app/keys.[ch]: New file name of notekeys.[ch]. Some fixes to
+	handle more key combinations.
+
+1999-04-28  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/st-subs.c (st_clean_song): Initialize xm->flags to zero.
+
+1999-04-27  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/notekeys.c: Nearly rewritten for the configuration
+	dialog. Still a little bit buggy, and it can't save the settings,
+	but better than nothing for now.
+
+	* app/gui-subs.c (build_option_menu): Taken from testgtk.c
+	(get_clist_in_scrolled_window): Moved from module-info.c
+
+1999-04-23  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/notekeys.c: Start designing notekeys configuration dialog.
+
+	* app/menubar.c: Added "Settings" / "Keyboard Configuration".
+
+1999-04-22  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/audio.c: Added #include <string.h> for glibc 2.1.1
+
+1999-04-19  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/track-editor.c (insert_note):
+	(tracker_page_handle_keys): accept capital letters as key
+	accelerators as well. Don't worry about additional modifiers.
+
+	* app/sample-editor.c: Use mixer_sample_word_length instead of
+	accessing type field directly.
+	(sample_editor_copy_cut_common): remove_clicked() extended to
+	handle the copy'n'paste buffer. Cut, Remove and Copy call this
+	one.
+	(sample_editor_convert_sample): added
+	(sample_editor_resolution_changed): use convert_sample()
+	(sample_editor_paste_clicked): implemented
+	(sample_editor_page_create): enable cut, copy and paste buttons.
+	(sample_editor_resolution_changed),
+	(sample_editor_copy_cut_common),
+	(sample_editor_paste_clicked): remove set_sample(NULL) calls; fixes
+	crashes while unlock()ing (oops :D).
+	(sample_editor_init_sample): added
+
+	* app/mixer.h (mixer_sample_word_length): New helper function.
+
+1999-04-18  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/gui.c (programlist_initialize): This function could destroy
+	the restart position value. Fixed.
+
+1999-04-13  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/audio.c (audio_raise_priority): Replace nice() call by
+	sched_setscheduler() call to get realtime priority. Now
+	soundtracker crashes the whole machine randomly while playing :(
+	Using nice() only for now. You can remove the "&& 0" condition to
+	test the realtime scheduler if you want.
+
+	* app/audio.c: Added #include <errno.h>
+	
+1999-03-22  Michael Krause  <m.krause@tu-harburg.de>
+
+	* configure.in, INSTALL: audiofile 0.1.5 is sufficient.
+
+1999-03-21  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.1.1
+
+	* INSTALL: Updated requirements.
+
+	* app/module-info.c (get_clist_in_scrolled_window),
+	app/gtkspinbutton.c: Remove gtk+-1.0 special-casing.
+
+	* configure.in: Require gtk+-1.2.0. I really need some new
+	functions like gtk_table_resize() and gtk_window_set_modal().
+
+1999-03-20  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/envelope-box.c (envelope_box_new): Removed
+	put_labelled_spin_button in favour of
+	gui-subs.c/gui_put_labelled_spin_button()
+
+	* app/gui-subs.c (gui_put_labelled_spin_button): Additional
+	argument 'callbackdata'
+
+	* app/menubar.c: Added non-GNOME implementations of the menu bar
+	and the dialog functions; this is based on Peter Zelezny's
+	xchat-0.9.2/menu.c.
+
+	* app/scope-group.c: ScopeGroup is now a GTK+ widget and uses a
+	table to layout the scopes in two rows. Hmm, yes. Much better :-)
+
+	* app/sample-display.c (sample_display_size_request): Reduced
+	minimum height to 32 pixels.
+
+	* app/gui.c (gui_init): Reworked layout of the upper part of the
+	main window. Hmm, yes. Much better :-)
+
+	* app/gui-subs.c (gui_subs_create_slider): Returns GtkWidget
+	instead of adding it to a destbox.
+
+	* app/gui-subs.h: Added type field to gui_subs_slider through
+	which you can disable the hscale in addition to the spinbutton.
+
+	* app/preferences.c (prefs_page_create), app/instrument-editor.c
+	(instrument_editor_update): Use gui_subs_set_slider().
+
+	* app/gui-subs.c (gui_subs_set_slider_value):
+	(gui_subs_get_slider_value): Added new functions for opaque
+	handling of "gui_subs_slider"s.
+
+	* app/preferences.c: Moved Doublebuffer and Scopes toggles to the
+	preferences page.
+
+1999-03-19  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/sample-editor.c (sample_editor_loopradio_changed): Only
+	update sample.looptype if it has really changed.
+
+	* app/track-editor.c, app/sample-editor.c,
+	app/instrument-editor.c, app/envelope-box.c, app/gui.c,
+	app/module-info.c: Update xm->modified at all relevant places.
+
+	* app/xm.h (xm_get_modified, xm_set_modified): Helper functions to
+	access the modified flag.
+
+	* app/gui.c (file_selected), app/menubar.c
+	(menubar_clear_clicked): Implemented confirmation dialogs.
+
+	* app/menubar.c: Added menu bar containing functions which don't
+	have to be available as buttons. Moved some stuff from gui.c here.
+	(menubar_quit_requested): This was gui_quit_requested(), and now
+	it asks the user before actually quitting (in case the module has
+	been modified).
+
+	* app/gui.c (gui_init): Added GNOME code (some the above GNOME
+	stuff is also inspired by Greg S. Hayes' work).
+	
+	* configure.in: Added GNOME check; copied from xchat-0.9.2 because
+	it includes a --disable-gnome option which is essential for me.
+	
+	* app/xm.c (xm_load_mod): Add some more sanity checks to the loop
+	point initialization.
+
+1999-03-16  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/sample-editor.c (sample_editor_load_wav): Sample loader uses
+	the audiofile library now. Kinda works, but I didn't really
+	understand the audiofile API.
+
+	* configure.in: Added check for audiofile library.
+
+1999-03-07  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/audio.c (mixer_mix_and_handle_scopes): Call mixer->mix with
+	scopebufs == NULL when scopes are disabled in the GUI.
+
+	* app/mixers/lqmono.c (lqmono_mix): Only write scope data if
+	scopebufs != NULL.
+
+	* app/scope-group.c: Made scopes_on variable global.
+
+1999-03-02  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/audio.c (audio_thread): Don't die if poll() returns EINTR.
+
+	* app/Makefile.am: Added install-exec-local rule which sets the
+	setuid bit on the soundtracker executable.
+
+	* app/main.c (main): Handle user ID's correctly. SoundTracker can
+	now safely run setuid root; the mixer thread will run at a high
+	priority then.
+
+	* The audio subsystem is now automatically informed of loop
+	setting changes; you don't have to play the song to initialize the
+	sample settings any longer. You can also load, edit and save
+	samples without having to stop playing.
+
+	* app/xm-player.c (xmplayer_play_note): Don't modify
+	channel->nextsamp (fixes segfault).
+
+	* app/sample-editor.c: Lock the sample before changing it in any
+	way and tell the mixer about it.
+
+	* app/mixers/lqmono.c (lqmono_mix): Lock the sample we are
+	currently mixing.
+
+	* app/xm-player.c (channel): Removed nextsampid and cursampid
+
+	* app/xm.c, app/sample-editor.c, app/xm-player.c: Update for new
+	sample structure
+
+	* app/lqmono.c: Updated; removed the big sample info array.
+	
+	* app/audio.c (driver_startnote): Changed signature to use pointer
+	to st_mixer_sample_info
+
+	* app/xm-player.c (xmplayer_init_playing): Removed sample
+	initialization, it's not needed any longer
+
+	* app/audio.c: Removed driver_setsample
+
+	* app/mixer.h, app/xm.h et al: Sample structure updated;
+	encapsulated mixer relevant data.  Added synchronization mutex.
+
+	* app/audio.c (mixer_mix): Removed some stupid debugging code.
+
+	* app/driver.h, app/drivers/oss.c: Removed some superfluous code
+	that I've prepared to handle self-mixing soundcards. I'm not going
+	to implement this feature in the near future, and it needs more
+	code changes anyway, so I'm removing it completely.
+
+	* app/xm.c (xm_load_mod): Load more module formats (patch by Maik
+	Naeher)
+
+1999-02-17  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.1.0
+
+	* app/preferences.c: Added sliders adjusting the update frequency
+	of the scopes and the pattern scrolling.
+	* app/scope-group.c (scope_group_set_update_freq):
+	* app/track-editor.c (tracker_set_update_freq): New functions
+
+	* app/xm-player.c: * app/audio.c: * app/scope-group.c: Channels
+	can be muted again by toggling its scope button.
+
+	* app/module-info.c (modinfo_page_handle_keys): Added Linear/Amiga
+	frequency choices, and ProTracker mode toggle. Besides that, you
+	can play notes on the keyboard in the module info page now.
+
+	* app/gui.c: Added Tempo and BPM sliders.
+
+	* app/gui-subs.c (gui_subs_create_slider): Generic
+	slider/spinbutton combination.
+
+	* app/gui.c: Moved general GUI helper functions to gui-subs.c
+
+	* app/xm-player.c (xmplayer_init_play_song): When starting playing
+	at song position 0, reinitialize tempo and bpm.
+
+	* app/audio.c (audio_play):
+	(audio_ctlpipe_set_songpos): * app/gui.c (gui_update_player_pos):
+	(read_mixer_pipe): Proper "set song position" synchronization.
+	(read_mixer_pipe): gui_enable(1) when playing has stopped.
+	(gui_enable): Handling some more widgets here.
+
+1999-02-11  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/gui.c (init_xm): Call tracker_set_num_channels().
+
+	* app/tracker.c (tracker_set_num_channels): New
+	function. tracker.c is independent of the global xm pointer now.
+
+1999-02-06  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/xm-player.c (xmplayer_final_channel_ops): Don't handle
+	envelopes, vibrato and volfade in ProTracker mode.
+	(PlayNote): Split function into two, one for PT and one for FT, to
+	avoid excessive ismod checks.
+	(xm_player_playnote_protracker): Remove unnecessary statements,
+	dealing with keyoff, sustain and so on..
+
+1999-02-05  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/xm-player.c (PlayNote): Moved note initialization to
+	xm_player_start_note().
+	(xmpPlayTick): Moved glissando handling to
+	xm_player_handle_glissando().
+	(PlayNote): Moved frq initialization to xm_player_get_note_freq().
+	(channel): Renamed ArpNotes to ArpOffsets.
+	(xmpPlayTick): Arpeggios for ProTracker modules use curtick % 3 as
+	arpeggio index.
+	(xm_player_get_note_frq): For ProTracker modules we fetch the
+	correct period value from the new table 'protracker_periods',
+	which was taken from the original ProTracker replayer.
+	(xmplayer_final_channel_ops): For ProTracker modules we calculate
+	the frequency out of the period according to the Amiga
+	Manuals. All these changes result in a perfect mod replay: long
+	samples no longer get out of sync as they do in most
+	(all?) other PC module players.
+	(xmpPlayTick): E10 and E20 are no-ops in ProTracker (they don't
+	take the last-used value and slide around).
+	(freqrange): Fixed frequency range check for ProTracker modules.
+
+1999-01-30  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/envelope-box.c: Removed frame
+
+1999-01-28  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/instrument-editor.c: Added volfade and vibrato widgets
+
+	* app/xm.c (xm_load_xm_instrument): vibtype sanity check
+
+	* app/gui.c: Moved some GUI helper functions from preferences.c
+
+1999-01-21  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.0.13
+
+1999-01-20  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/gui.c (gui_update_player_pos): Moved gdk_flush() call from
+	the beginning of read_mixer_pipe() to the end of this function.
+
+1999-01-16  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/gui.c: Disabled clipping LED.
+
+1999-01-15  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/preferences.c: Preferences page for main window
+	notebook. Playing parameters can be set independently for editing
+	and playing mode. Added necessary extensions to the audio
+	subsystem (driver->setprefs() function). We don't load & save the
+	preferences yet.
+
+	* app/scope-group.c, app/track-editor.c, app/audio.c (audio_time),
+	app/gui.c (gui_audio_tick): Don't let audio subsystem issue ticks
+	into the backpipe; use time stamps in public variables
+	(audio_playerpos_*) instead.
+
+	* app/gui.c (gui_update_player_pos): Return if set_songpos_count
+	!= 0.
+
+	* app/audio.c (audio_play): Using last_synctime_driver instead of
+	player time as time stamp.
+
+1999-01-14  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/drivers/oss.c (oss_open): fragsize is returned as a byte
+	count by OSS, but was used as a sample count in the code (this
+	resulted in oss_poll_ready_playing() blocking at the write()
+	call). Fixed. Playback should be smoother now.
+
+1999-01-11  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/track-editor.c (tracker_timeout):
+	(tracker_start_updating):
+	(tracker_stop_updating):
+	(tracker_set_time): New functions, mostly c'n'p from
+	scope-group.c.  Pattern and song position are updated independent
+	of audio player ticks now; this should give smoother and more
+	exact display updates when using large fragment sizes.
+
+	* app/gui.c (gui_update_player_pos): This is not done from
+	track-editor.c since some of the variables should belong to gui.c
+	only.
+
+	* app/audio.c (audio_play): Added ring buffer for player position.
+
+1998-12-29  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/xm-player.c (xmpPlayTick): Did the same change to the Fine
+	VolSlide effects.
+
+1998-12-26  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/xm-player.c (xmpPlayTick): Bug fix: The A00 effect (VolSlide
+	with argument 0) in ProTracker modules does nothing, in
+	FastTracker modules it uses the previously used argument
+	(mod.Stardust Memories by Jester).
+
+1998-12-19  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/xm.c (XM_Load): A failed header length checking doesn't
+	prevent loading the rest of the module. SoundTracker versions
+	earlier than 0.0.12 could save the wrong value in here and 0.0.12
+	couldn't load those modules.
+
+	* app/xm-player.c: Ported KB's OpenCP fixes from 981126. This
+	mostly affects PlayNote(), vibrato and some strange envelope
+	sustain handling fix.
+
+1998-12-13  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.0.12
+
+	* app/sample-display.c (sample_display_draw_main): Removed
+	assertion check against s->width, which was frequently triggered
+	when changing the number of channels. We're just returning
+	immediately now.
+
+	* app/gui.c (read_mixer_pipe): PLAYING_STOPPED case: enabling GUI
+	and setting pattern position only if GUI was disabled.
+
+1998-12-12  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/module-info.c (modinfo_delete_unused_instruments): This
+	function is triggered by the new button "Delete unused
+	instruments" and deletes all unused instrument in the current XM.
+
+	* app/st-subs.c (st_instrument_used_in_song): New function, finds
+	out if an instrument is used in an XM.
+
+	* app/gui.c (programlist_songpos_changed): Don't change editing
+	pattern when browsing in the playlist.
+
+	* app/gtkspinbutton.c (gtk_spin_button_insert_text),
+	app/module-info.c: gtk+-1.1.7 compatibility fixes.
+
+	* app/xm-player.c (xmplayer_play_note): Clear channel data before
+	initializing new note.
+
+	* app/sample-editor.c (sample_editor_update): Check current_sample
+	against NULL and disable the editor if there's no sample.
+
+	* app/xm.c (XM_Save): Saving amiga frequencies flag if set.
+
+	* app/sample-editor.c: Sampling is working again. Enabled
+	'Monitor' button.
+
+1998-12-11  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/drivers/oss.c (oss_open): Added sampling support.
+
+	* app/audio.c (audio_lock, audio_unlock): Added locking
+	primitives. (audio_sampled): Added basic support for sampling;
+	limited to 16bit 44.1kHz mono sampling currently.
+
+1998-12-10  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/xm-player.c (xmplayer_final_channel_ops): If ismod is set,
+	pan channels 0 and 3 to the left and channels 1 and 2 to the right
+	(Amiga stereo support is very digital: left or right :D)
+
+	* app/mixers/lqmono.c: Support stereo mixing.
+
+	* app/audio.c (mixer_mix): Fixed stereo-to-mono conversion.
+
+	* app/xm-player.c (xmplayer_final_channel_ops): ch->chFinalPitch
+	== 0 is only wrong for Amiga frequencies.
+
+	* app/gui.c (play_song, play_pattern): Moved GUI disabling calls
+	to read_mixer_pipe(). (gui_enable): renamed from
+	gui_enable_widgets_for_play_mode().
+
+	* app/gui.h: New convenience macros (GUI_ENABLED, GUI_EDITING).
+	Renamed playing to gui_playing_mode and exported enum's.
+
+	* app/gui.c (read_mixer_pipe), app/track-editor.c, app/audio.c:
+	Note playing and editing fixed.
+
+1998-12-09  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/scope-group.c (scope_group_create): Setting group spacing to
+	0. Making buttons insensitive.
+
+	* app/xm-player.c (xmplayer_final_channel_ops): Test
+	ch->chFinalPitch against 0 before setting sample frequency.  Fixes
+	crashes on a lot of modules.
+
+	* app/xm.c (xm_save_xm_pattern): Empty patterns are saved with
+	data length 0.
+
+1998-12-08  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/xm.c: Various bug fixes and note saving compression:
+	(xm_save_xm_instrument): Always use 40 as sample header size.
+	(xm_put_xm_note): xm_save_xm_note() renamed, renders into a buffer
+	now instead of into a file. Added note compression.
+	(xm_save_xm_pattern): Rewritten for xm_put_xm_note().
+	(XM_Save): put_le_32(xh + 60, ...) instead of put_le_16(). XM's
+	saved by ST can be loaded into MikIT and FastTracker now :)
+	(XM_Load): get_le_32(xh + 60, ...) instead of get_le_16().
+
+1998-12-03  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.0.11-fixes patch
+	
+	* app/audio.c: #include <sys/time.h> needed for glibc2.
+
+	* app/module-info.c: Replaced GTK_HAVE_FEATURES_1_1_5 check by
+	explicit check of gtk version.
+	
+1998-12-01  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.0.11
+	
+	* app/audio.c, app/gui.c: Clipping indicator working again.
+
+	* app/audio.c (driver_sync): Pitchbend can now be changed while
+	playing without crashing.
+
+	* app/gui.c (gui_init): Added pitchbend slider.
+
+	* app/gui.c (gui_adj_amplification_changed): Updated for the new
+	audio.c.
+
+	* app/audio.c, app/xm-player.c: Added keyboard note playing.
+	Entered notes are played on the channel the cursor is positioned
+	in, not in a hidden internal 33rd one as v0.0.10 and earlier did
+	it.
+
+1998-11-30  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/scope-group.c (scope_group_timeout): Fixed the remaining
+	bugs (rewritten).
+
+	* app/sample-display.c (sample_display_set_data): These functions
+	can copy the provided sample into their own buffer now.
+
+1998-11-29  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/scope-group.c, app/audio.c, app/mixer.h: I finally have
+	working scopes again. The new code updates the scopes
+	independently of the audio thread, so the scopes are updated
+	frequently even if the audio fragment size is large.  There are
+	still some bugs in here, and the code needs cleanup, but that
+	doesn't matter at the moment.
+
+	* app/sample-display.c (sample_display_new): Widget can be created
+	without the loop and selection editing properties; it is basically
+	the scope widget in that case.
+
+	* Removed scope.c and scope.h; sample-display.c offers the same
+	functionality.
+
+1998-11-28  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/xm-player.c, app/audio.c, app/drivers/oss.c: Updated to use
+	the new polling scheme.
+
+	* app/driver.h: Added general fd poll() functions for the driver
+	modules.
+
+1998-11-25  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Whoo. I see that my just recently updated Emacs has a new date
+	style. And I always wondered who's interested in the exact day
+	time in a ChangeLog :)
+
+	* app/module-info.c (get_clist_in_scrolled_window): New function
+	to accomodate to the new clist handling in gtk+-1.1.5
+
+Mon Nov 23 16:59:20 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/drivers/oss.c (oss_open): Rewrote to use the new mixer
+	interface.  Tries more playback formats now (unsigned and signed
+	16 bits little endian / big endian as well as unsigned / signed 8
+	bit formats) and can also play stereo (there's just the mixer
+	which has to make use of this :D)
+
+	* app/sample-display.c (sample_display_realize):
+ 	* app/scope.c (scope_realize):
+	* app/tracker.c (tracker_realize): Removed gtk_style_detach()
+	calls. They caused a crash on some people's machines and were
+	useless anyway.
+
+	* app/audio.c: Added sound format conversion layer between driver
+	and mixer. Also added extra layer between XM player and the driver
+	so we can handle things like pitchbending and balancing
+	transparently. Pitchbending variable works perfectly.
+
+Thu Nov 19 19:48:28 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/xm-player.c (xmpPlayTick): Added some last changes to make
+ 	amiga frequencies work.
+
+	* app/xm.c (xm_load_mod): Set xm->flags to IS_MOD and AMIGA_FREQ.
+	(XM_Load): Set xm->flags to AMIGA_FREQ if necessary.
+
+	* app/xm.h: Add flags field
+
+Wed Nov 18 17:44:23 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/poll.c: poll() emulation via select(). Cleans up the #ifdef
+ 	mess in some of the other files.
+
+	* app/sample-editor.c: Sampling temporarily disabled until support
+ 	for that is in the driver module layer.
+
+	* app/endian-conv.h: Using direct memory access on i386 machines.
+
+	* app/xm.c (xm_save_xm_instrument): Save vibrato and volfade
+ 	settings
+
+Sat Nov 14 17:33:15 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/xm.c (xm_load_xm_instrument): Loading vibrato and volfade
+ 	settings.
+
+	* app/xm.h: New fields for vibrato settings and volume fadeout.
+
+	* I've just finished a first working version of the new player
+ 	system. Also I've decided to replace my own XM player by the one
+ 	from OpenCP. The following is a rough description of the changes:
+
+	* app/audio.c: This file contains the audio handler thread (it
+ 	will also handle sampling). It controls the driver and player
+ 	(Note that the player is not (yet) modularized) and the mechanism
+ 	for communicating with the main thread.
+
+	* app/driver.h: Contains driver module definitions. The driver is
+ 	the primary interface which audio.c deals with. I've written it
+ 	with auto-sequencer devices like GUS and AWE in mind, but this
+ 	might still need some tuning, as I don't own such a card.
+
+	* app/drivers/: Contains available driver modules. A driver module
+ 	supplies functions for playing and sampling data.
+
+	* app/mixer.h: Mixer module definitions. Mixer functions are
+ 	usually only called by the driver module which needs the
+ 	mixer. The rest of SoundTracker doesn't care whether a mixer is
+ 	needed or not.
+
+	* app/mixers/: The available mixer modules. lqmono.c contains the
+ 	mixer routines as found in 0.0.10.
+	
+	* app/xm-player.c: XM player routines. xmplayer_play() calls the
+ 	driver functions directly and returns when driver->sync()
+ 	blocks. Alright, this is the new OpenCP player.  It's supposed to
+ 	be the most FastTracker compatible player out there, despite of
+ 	the chaotic source code :) Had to rewrite all the envelope
+ 	handling and note / effect retrieval.
+
+	* app/main.c (main): The former mixer communication pipe is
+ 	allocated here; also we currently initialize the audio thread with
+ 	the OSS driver and the lqmono mixer.
+	
+	* app/mixer.c: Is now obsolete.
+	
+Sat Nov  7 14:19:40 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Starting to think about a modular audio driver and mixer system.
+
+Sun Nov  1 12:37:39 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.0.10
+
+	* app/xm.c: Doing charset conversion in the XM loader and saver.
+
+	* app/recode.c: New file; converts characters between IBM PC and
+ 	ISO Latin1 encodings (derived from the recode source code).
+
+	* app/mixer.c (mixer_fill_buffer): Changed some loop calculations.
+  	I'm not yet completely happy with this piece of code.
+	
+	* app/gui.c: Added amplification slider and clipping indicator.
+
+	* app/xm.c (xm_load_mod): Initialize sample only if length > 0.
+  	Check for correct loop parameters.
+
+	* app/track-editor.c (vscrollbar_changed): Block patpos signal
+ 	handler before tracker_set_patpos().
+
+Fri Oct 30 20:13:58 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/sample-editor.c: WAV loader and saver do endianness
+ 	conversion and handle 8 and 16 bit samples. Added relnote spin
+ 	button, resolution display and sample length display. Telling the
+ 	mixer to stop playing before doing destructive sample operations.
+	(sample_editor_ok_clicked): Initialize sample type.
+
+Thu Oct 29 18:30:29 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/mixer.c (mixer_fill_buffer): Added amplification and signal
+ 	clipping.
+
+	* app/xm.c (xm_load_mod): Initialize s->panning to 128.
+
+	* app/mixer.c (mixer_fill_buffer): Added support for 8 bit
+ 	samples.
+
+	* app/xm.c: Added support for 8 bit samples in XM loader/saver and
+ 	MOD loader.
+
+	* app/sample-display.c (sample_display_draw_data): Added support
+ 	for 8 bit sample data.
+
+	* app/xm.h (struct STSample): renamed 'type' to 'loop' and added
+ 	new field 'type' which indicates 16 or 8 bit sample.
+
+	* app/sample-display.c (handle_motion): Bug fixed: end points
+ 	could be equal to the starting points.
+
+Wed Oct 28 15:11:43 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/sample-editor.c: Added some assertions to make sure that the
+ 	loop and selection ends are always to the right of the start
+ 	points.
+
+	* app/sample-display.c: Made the whole source a lot more readable
+ 	and fixed a good number of bugs. Thanks to Darin Ohashi for
+ 	finding one of them.
+
+	* configure.in: Check for select() only if poll() is not found.
+
+	* app/gtkspinbutton.c (gtk_spin_button_configure): Fixed some
+	compatibility #ifdef's and compiler warnings.
+
+	* app/mixer.c: Use poll() instead of select() when available.
+
+	* gui.c, sample-editor.c, configure.in: Doesn't fail when poll()
+ 	is not available -- falling back to select().
+
+Mon Oct 26 11:51:14 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/xm.c: Cleaned up and made all routines endianness- and
+ 	typesize-safe.
+
+	* app/st-subs.c: New file; moved some of the more general
+ 	functions from xm.c to this place.
+
+	* configure.in (CFLAGS): Added -Wall. And I always wondered why I
+ 	got so few compiler warnings in the last few days :)
+
+	* app/xm.h: Got rid of the num_patterns and num_instruments
+ 	fields. These were only relevant to xm.c anyway.
+
+Sun Oct 25 18:18:05 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/mixer.c (player_tick): Instrument without note retriggers
+ 	volume and envelope now.
+
+	* Released v0.0.9
+
+	* TODO: Added a lot of things.
+
+	* README: Added a list of keyboard mappings.
+
+	* app/mixer.c (player_tick): Added ea* and eb* effects.
+
+	* app/xm.c (MOD_Load): Hacked together a ProTracker module
+ 	loader. The finetune conversion is not really okay I think.
+
+	* app/endian-conv.h (get_be_16): Added.
+
+	* app/tracker.c (tracker_draw): only draw when widget is visible.
+
+	* app/gui.c (read_mixer_pipe): case STOPPED: tracker_set_pos().
+	(play_song): change_current_pattern().
+
+	* app/mixer.c (stop_playing): Set player_songpos and
+ 	player_patpos.
+
+Wed Oct 21 20:02:24 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/gtkspinbutton.c: Hacked in some #if's to make it compile
+ 	with gtk+ 1.0.x.
+
+Sun Oct 18 12:40:01 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/xm.c (XM_load_pattern): Do endianness conversion (whoops,
+ 	forgot that yesterday :D) and clear allocated channels.
+	(XM_load_note): optimized.
+
+Sat Oct 17 14:43:35 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.0.8
+
+	* app/mixer.c (mixer_main): PLAY_NOTE: reset globalvolume and
+ 	smplcount only if we aren't playing the module.
+
+	* app/sample-editor.c: Added "Clear", "Show All", "Zoom in" and
+ 	"Zoom out" operations.
+	(remove_clicked): fix loop positions after cutting.
+
+	* app/sample-display.c: Unified semantics of the loop, selection
+ 	and window end: The loop, selection and window end offsets point
+ 	to the first sample that is not to be played in the loop / that is
+ 	not victim of a forthcoming sample operation / that is not to be
+ 	displayed.
+
+	* app/xm.h: Replaced STSample.looplen by loopend and changed the
+ 	rest of the source code accordingly.
+
+	* app/mixer.c (init_note_freq): Don't reset sample when
+ 	initializing 3xx effect.
+
+	* app/sample-editor.c (load_wav, save_wav): Do endianness
+ 	conversion.
+
+	* app/endian-conv.h: Moved the endianness routines from xm.c to
+ 	this place.
+
+	* configure.in: Remove checks for 'const' and 'inline'. We only
+ 	compile on gcc anyway.
+
+	* app/xm.c (byteswap_le_16_array): Actually implemented this
+ 	routine. Untested.
+	(XM_Load): Amiga frequencies are ignored but loading continues.
+  	Do endianness conversion.
+ 	(XM_save_samples): Clear sh[] before working.
+ 	(XM_load_instrument): Issueing a warning if vibrato or volume
+ 	fadeout are used. Do endianness conversion.
+
+	* app/sample-editor.c: Displaying selection data; reset button
+ 	added.
+
+Fri Oct 16 14:46:44 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/sample-display.c (handle_motion): Almost rewritten. Should
+ 	be working as expected now.
+
+	* app/sample-editor.c (sample_editor_display_loop_changed):
+ 	Handling the 'loop_change' signal.
+
+	* app/sample-display.c: The loop points can be set with
+ 	SHIFT-button1/3. Added signals 'selection_changed' and
+ 	'loop_changed'.
+
+	* app/sample-editor.c: Added loop type/start/end controls.
+
+	* app/gtkspinbutton.c: Modified version of the original GTK+
+ 	spinbutton widget which adjusts its width so that the number is
+ 	always displayed completely.
+
+	* app/xm.c (XM_load_samples): Initialize loopstart/-end if the
+ 	loop flag is off.
+	(st_clean_sample): Initialize looplen to 1.
+
+	* app/gui.c (gui_put_labelled_spin_button,
+ 	gui_update_spin_adjustment): made non-static.
+
+	* app/sample-editor.c (sample_editor_update): After sampling into
+ 	an empty sample slot, all the editing widgets are enabled now.
+
+Wed Oct 13 12:00:00 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/sample-display.c: Started to restructure this thing so that
+ 	the drawing speed is optimized. Still a bit buggy.
+
+Mon Oct 12 12:36:37 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/xm.c (XM_Save): Save real module name instead of
+ 	"<untitled>".
+
+	* app/module-info.c: Added "Module Info" page to the main window
+ 	notebook, containing a list of all the instruments and samples and
+ 	the song name.
+
+	* app/xm.c (XM_new_pattern): Initialize p->alloc_length. Stupid
+ 	bug.
+
+	* app/sample-editor.c (ok_clicked, load_wav): exchange calls to
+ 	st_clean_sample() and st_clean_instrument(); add extra call to
+ 	st_clean_sample() to set sample name.
+	(sample_editor_update): Set sample name text entry to new value.
+
+	* app/gui.c (offset_current_sample, handle_standard_keys): Added
+ 	ctrl-GDK_Up and ctrl-GDK_Down for sample switching.
+
+	* app/track-editor.c (tracker_page_handle_keys): Check modifier keys
+	in GDK_Up and GDK_Down.
+
+	* app/gui.c (gui_init): Moved current_instrument_create() and
+ 	editing_status_create() into this function. Added sample selector.
+	(gui_get_text_entry): new function, automatically installs the
+ 	keyboard capture handling on a newly created text entry.
+
+Sat Oct 10 11:22:25 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* app/gui.c (read_mixer_pipe): Checking startstop_fifo against 0
+ 	before decrementing. Prevents a crash when the mixer stops playing
+ 	via the F00 command.
+
+	* Released v0.0.7
+
+	* Using autoconf/automake for configuration now. Moved all the
+ 	sources into the 'app' subdirectory.
+
+	* mixer.c: Using explicit gint32's instead of int's in some fields
+ 	of struct channel.
+
+	* gui.c (play_song), (play_pattern): Call play_stop() first.
+
+	* mixer.c (player_tick): Don't handle more than xm->num_channels
+ 	channels.
+
+	* gui.c, xm.c (st_set_num_channels): Number of channels is
+ 	adjustable now.
+
+	* gui.c (init_xm): Call change_current_pattern() instead of
+ 	tracker_set_pattern(). New parameter 'new_xm'.
+
+	* gui.c, xm.c (st_set_pattern_length): Pattern length can be
+ 	changed now.
+
+	* mixer.c: Replaced all occurences of the word 'period' by
+ 	'pitch'.  A period is inversely proportional to the frequency; the
+ 	value called period in the XM docs is not. 'Pitch' isn't exactly
+ 	the right word either, but 'period' is worse because it has
+ 	another meaning in the Amiga context.
+
+	* gui.c (handle_standard_keys): Added GDK_Multi_key as a synonym
+	for GDK_Control_R.
+
+Fri Oct  9 00:15:22 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* mixer.c (period_to_speed): Checking for integer overflow. Very
+ 	short periods (very high frequencies) can't be rendered
+ 	currently. The mixer code should be using long longs I guess. Some
+ 	crashes are prevented for now.
+
+Thu Oct  8 22:22:50 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* gui.c (wait_for_player): Using new startstop_fifo variable to
+ 	synchronize with the mixer thread. Fixes crash when loading XM
+ 	after playing notes with the keyboard.
+
+	* gui.c (free_xm): New routine which resets all subsystems of the
+ 	tracker before calling XM_Free(). Fixes crash when loading XM
+ 	while in sample editor with samples playing.
+
+	* mixer.c (mixer_fill_buffer): Fixed loop handling again; first
+ 	sample is now loopstart << ACCURACY, last sample is loopend <<
+ 	ACCURACY - 1.
+
+	* gui.c (change_current_pattern): Call mixer_set_pattern even when
+ 	we're not in playing_pattern mode. Can now change pattern while
+ 	playing a mod, just like in PT.
+
+	* mixer.c (mixer_main), gui.c (read_mixer_pipe):
+	(programlist_songpos_changed): Added set_songpos_fifo variable to
+ 	avoid GUI feedbacks when fast-forwarding the song position.
+
+Wed Oct  7 20:03:35 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* gui.c (programlist_songpos_changed): change_current_pattern()
+ 	called even if playing. (change_current_pattern): Change
+ 	editing_pat first, then call the other routines. Call
+ 	mixer_set_pattern() only if in playing pattern mode.
+
+Tue Oct  6 17:37:14 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* gui.c (spin_editpat_changed): Call change_current_pattern() even
+ 	if playing.
+
+	* gui.c, xm.c: Added "Clear Song" and "Clear All" operations.
+
+	* gui.c: Added restart position widget to the program list.
+
+	* gui.c: Instrument name changes are stored.
+
+	* mixer.c, gui.c: Position updates are handled together with the
+ 	scopes in MSG2MAIN_TICK. Visual updates are a bit smoother on my
+ 	slow machine now. And the scope buffers are double-buffered, so
+ 	the scope is more in time with the sound.
+
+	* mixer.c: Fixed period range checking to use OpenCP's values.
+
+	* Makefile: Moved $(LDFLAGS) to the end of the line; some people's
+ 	compilers complain otherwise.
+
+Mon Oct  5 17:10:03 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* mixer.c (player_tick): Handling playlist restart position now,
+	adding support for position jumps. Added dxx effect.
+
+	* xm.c: Added the framework for endianness conversion. Rewrote
+ 	load_samples and save_samples to use the new "length" semantics.
+
+	* xm.h: STSample.length / loopstart / looplen are measured in
+ 	samples now, not in bytes. This removes the necessity for a lot of
+ 	">> 1" in the rest of the code.
+
+Sun Oct  4 17:29:10 1998  Michael Krause  <m.krause@tu-harburg.de>
+
+	* Released v0.0.6
+
+	* sample-editor.c (daemon_thread): renamed daemon() to
+ 	daemon_thread() so that we can compile on glibc2 systems :)
+
+	* xm.c (XM_load_samples): if an XM has samples with loop length 0,
+ 	disable the loop completely.
+
+	* mixer.c (mixer_fill_buffer): fixed loop handling so that it
+ 	works on very short loops, too. New routine is not yet optimized.
+
+	* Released v0.0.5 today (first public release)

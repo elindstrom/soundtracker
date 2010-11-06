@@ -1,0 +1,285 @@
+
+	      Back to the roots -- this is the Real SoundTracker
+	--------------------------------------------------------------
+			http://www.soundtracker.org/
+	--------------------------------------------------------------
+
+	v0.6.7
+
+	Written and (C) 1998-2004
+	by Michael Krause [ raw style ^ farbrausch & lego ]
+	mk@soundtracker.org, http://www.soundtracker.org/raw/
+
+
+WHAT IS IT?
+============
+
+short answer:
+-------------
+
+SoundTracker is a pattern-oriented music editor (similar to the DOS
+program 'FastTracker'). Samples are lined up on tracks and patterns
+which are then arranged to a song. Supported module formats are XM and
+MOD; the player code is the one from OpenCP. A basic sample recorder
+and editor is also included.
+
+long answer:
+------------
+
+If you've heard of ProTracker or FastTracker before, you will be
+familiar with the concept of 'SoundTracker'. The name of my program
+has been taken from the very first program of this type, which was
+written by Karsten Obarski for the Amiga in 1987.
+
+The basic concept is simple: you have a number of "sound samples", and
+you can arrange them on so-called "tracks". A track (or channel) can
+not play more than one sample at the same time. While the original
+Amiga trackers only provided four tracks (this was the hardware
+limit), trackers for PC's can mix a theoretically unlimited number of
+channels (typically up to 32) into one sound stream.
+
+A set of tracks which are played at the same time is called a
+"pattern".  A pattern typically has 64 entries per track; these
+entries are cycled through at equidistant time intervals. A basic drum
+set could thus be arranged by putting a bass drum at entries 0, 4, 8,
+12 etc.  of one track and putting some hihat at entries 2, 6, 10, 14
+etc. of a second track. Of course you can also interleave bass and
+hats on the same track, if the samples are short enough -- they can't
+overlap, otherwise the previous sample is stopped when the next one
+sets in.
+
+And to make this introduction complete: A "module" is a compact file
+containing various patterns and samples, including a "position list"
+which specifies playback order of the patterns, forming a "song". A
+word about file names: Original ProTracker modules are /prefixed/ with
+"mod." when they come from an Amiga -- ignorant PC users, however,
+shamelessly save PT-compatible modules with a ".MOD"
+/suffix/. FastTracker modules have the ".XM" suffix.  These both are
+the most important module types out there and SoundTracker loads them
+both.
+
+
+USING
+======
+
+Note that some functions are only accessible using the keyboard. These
+are all important key combinations, mostly inspired by the great Amiga
+ProTracker (most alphanumeric keys are mapped to a piano keyboard):
+
+	TRACK EDITOR
+	------------
+
+Right Ctrl		Play Song
+Right Alt		Play Pattern
+Right WinMenu Key	Just play current pattern row
+Space			Stop Playing; edit mode on/off
+Escape			Edit mode on/off without stopping playing
+Shift - Space           Toggle "jazz edit" mode
+
+F1 ... F7		Change editing octave
+Left Ctrl-1 ... -8	Change jump value
+Two configurable keys   Increase/decrease jump value (see Settings->Keyboard->
+			other keys)
+
+CrsrUp / Down		Walk around in current pattern
+PgUp / Down		Walk around in current pattern, quickly
+F9			Jump to position 0
+F10			Jump to position L / 4
+F11			Jump to position L / 2
+F12			Jump to position 3 * L / 4
+
+Ctrl + 1 ... 8		Change "jump" value
+
+CrsrLeft / Right	Change pattern column and/or channel
+Tab			Skip to same column in next channel
+
+Left Shift + first 8	Fast jump to channels 1..8
+keys in the first
+alphabetical row
+(UC-0 ... UC-1)
+
+Left Shift + Ctrl +	Fast jump to channels 17..24
+above mentioned keys
+
+Left Shift + first 8	Fast jump to channels 9..16
+keys in the second
+alphabetical row
+
+Left Shift + Ctrl +	Fast jump to channels 25..32
+above mentioned keys
+
+Holding fast jump keys	Mute/unmute selected channel
+and pressing SPACE  
+
+Left Ctrl - CrsrLeft	Previous Instrument (faster with Left Shift)
+Left Ctrl - CrsrRight	Next Instrument (faster with Left Shift)
+
+Left Ctrl - CrsrDown	Previous Sample (faster with Left Shift)
+Left Ctrl - CrsrUp	Next Sample (faster with Left Shift)
+
+Left Alt - CrsrLeft	Previous Pattern (faster with Left Shift)
+Left Alt - CrsrRight	Next Pattern (faster with Left Shift)
+
+Left Shift - CrsrLeft	Previous Position in the pattern order table
+Left Shift - CrsrRight	Next Position in the pattern order table
+
+Left Shift - CrsrLeft	Previous Position in the pattern order table
+Left Shift - CrsrRight	Next Position in the pattern order table
+
+Left Ctrl - B		Start marking a block
+Left Ctrl - C		Copy block
+Left Ctrl - X		Cut block
+Left Ctrl - V		Paste block and advance to end
+
+Left Alt - Q		Transpose block by one half-tone up
+Left Alt - A		Transpose block by one half-tone down
+Left Alt + Shift - Q	Transpose block by one octave up
+Left Alt + Shift - A	Transpose block by one octave down
+
+Left Shift - F3		Cut track
+Left Shift - F4		Copy track
+Left Shift - F5		Paste track
+
+Left Alt - F3		Cut pattern
+Left Alt - F4		Copy pattern
+Left Alt - F5		Paste pattern
+
+Delete			Clear part of the channel the cursor is over
+Shift - Delete		Clear all of current track row
+Backspace		Delete current position and pull rest of track upwards
+Insert			Shift rest of track downwards and insert a row
+
+Left Shift + Esc        Move cusror to Note column (from any other column:
+                        instrument, volume, effect) in current track
+
+Any other keys		Play notes on the keyboard.
+
+Mouse Wheel		Scroll up and down through pattern (just like Crsr Up /
+			Down)
+Left Shift + M. Weel	Scroll left and right through pattern (like a scrollbar
+			under the tracker window)
+
+If SoundTracker is unable to configure the notes on your keyboard on
+its own, you must use the "Keyboard Configuration" dialog to set up
+your keyboard. In any case, there you will also have to configure the
+key that inserts the "key off" note into a pattrern.
+
+Most of the short cuts can be changed in the usual GTK+ way - go to
+the relevant menu entry, put the mouse over it, and just before
+releasing the mouse button, hit the desired key combination! The new
+key combinations will be automatically saved when quitting
+SoundTracker and reloaded the next time you start it.
+
+	effects interpolation
+	---------------------
+
+Suppose you want to do a volume slide from C00 to C40 within 16
+steps. What you do is, you enter the C00 effect at row 0, the C40
+effect at row 15, mark the track from row 0 to 15, put the cursor into
+the effects column, and hit Ctrl-I. This key combo interpolates every
+supported effect between block start and block end. Supported at the
+moment are volume column and effect column volume slides, and volume
+column panning slides.
+
+A similar job is done by the "increment / decrement cmd value"
+functions found in the Edit / Track menu. Enter C40, go one row down
+(stay in the effects column) and hit Ctrl-minus ("decrement cmd
+value") to automatically insert a 3f there.
+
+
+	INSTRUMENT EDITOR
+	-----------------
+
+In the Envelope editor, use Ctrl + middle mouse button in order to
+zoom in and out of the envelope. Use middle mouse button alone to pan
+the display.  Use left mouse button to move and add points.
+
+	SAMPLE EDITOR
+	-------------
+
+Hold Shift and use left / right mouse buttons to set the loop points
+in the sample display.
+
+
+REPORTING BUGS
+===============
+
+If you want to report a bug, please check first if you are running the
+latest version of SoundTracker. If the bug is still present there,
+send a bug report to the soundtracker-discuss mailing list (see below)
+if you want feedback from other users, or send it to me directly
+(m.krause@tu-harburg.de).
+
+
+MORE DOCUMENTATION
+===================
+
+SoundTracker has JACK support. Instructions on how to connect ST with
+JACK can be found at the URL
+http://www3.sympatico.ca/lucus/Soundtracker_and_JACK.html
+
+I know that there's no documentation available as of yet.  If you just
+want to know more about tracking in general,
+http://www.united-trackers.org/ has a lot of resources. There are some
+general tracking tutorials on that site that apply to a variety of
+trackers.
+
+SoundTracker still needs a detailed documentation. If you want to help
+out with this, you should become familiar with DocBook or similar SGML
+tools first. I'd like to have the documentation in a format that makes
+it easy to generate both printed output (read: "TeX") and online
+documentation.
+
+You may of course ask for help in the mailing list (see below)!
+
+
+MAILING LISTS
+=============
+
+There are currently two mailing lists:
+
+* soundtracker-announce:
+  -> http://lists.sourceforge.net/lists/listinfo/soundtracker-announce
+
+  This is a read-only, low-volume mailing-list in which I post
+  announcements of new versions.
+
+* soundtracker-discuss:
+  -> http://lists.sourceforge.net/lists/listinfo/soundtracker-discuss
+
+  A non-moderated list open for ST-related discussions of any kind, for
+  both users and developers.
+
+Note that if you have joined `soundtracker-discuss', there's no need
+to join `soundtracker-announce', as I crosspost all the announcements
+to both lists.
+
+Once you have joined `soundtracker-discuss', you can send mails to the
+list by writing to `soundtracker-discuss@soundtracker.org'.
+
+A searchable archive of the list, starting from 06-Jul-2000, is
+available at
+http://sourceforge.net/mailarchive/forum.php?forum=soundtracker-discuss
+
+
+CVS REPOSITORY
+==============
+
+The CVS tree has been updated last in mid-2001; not much development
+is going on right now! In particular, the version in CVS is absolutely
+unusable right now.
+
+So, if you want to give it a try (from SourceForge CVS howto):
+
+	cvs -d:pserver:anonymous@cvs.soundtracker.sourceforge.net:/cvsroot/soundtracker login 
+
+After anonymously logging in: 
+
+	cvs -z8 -d:pserver:anonymous@cvs.soundtracker.sourceforge.net:/cvsroot/soundtracker co soundtracker
+
+After the initial checkout, you can change into this directory and
+execute cvs commands without the -d option. For example:
+
+	cvs update 
+
+Watch the ChangeLog for detailed information about what has changed.

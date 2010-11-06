@@ -1,0 +1,470 @@
+
+This file lists only major user-visible changes; the ChangeLog file
+contains more details. Letters in parentheses indicate the person
+responsible for having coded a particular feature (full names in
+AUTHORS file).
+
+What is new in soundtracker-0.6.7 (11-Jan-2004):
+
+* General copy/cut/paste handling depending on active notebook page
+  (yaliaev)
+* Vertical pattern shrinking / expansion (yaliaev)
+* Cleaned up libsndfile code, fixed handling of 8-bit samples
+* Pasting samples transfers volume, finetune, panning and relnote
+* Fixed handling of "lock edited pattern" button (yaliaev)
+* Removed dependency on 'gasp' assembler preprocessor (yaliaev)
+* Updated it, ja, pl, ru translations; added sk translation
+
+What is new in soundtracker-0.6.7-pre6 (04-Aug-2003):
+
+* Fixed a weird bug in the playlist editor where the player would play
+  something different from what is actually shown in the playlist
+  (yaliaev)
+* Nice icons in the control panel (yaliaev)
+* Direct access to accidentals and row highlighting configuration from
+  the control panel (yaliaev)
+* Option to allow/prevent edited pattern from changing when
+  browsing in the playlist (yaliaev)
+* Loading raw unsigned 16 bit samples works again (tugruettmueller)
+* File dialog listings are refreshed after each operation (tmaka)
+* Fixed another potential crash in the WAV export (yaliaev)
+* Updated French, Italian and Slovenian translations
+
+What is new in soundtracker-0.6.7-pre5 (24-May-2003):
+
+* Fixed the 'missing patterns after saving' bug
+* As a consequence, CTRL-F and CTRL-G work again
+* Channel quick-jump keys (yaliaev)
+* MIDI stuff compiles with ALSA 0.5 again (don't know if
+  it actually works, though -- somebody please check :D)
+* Should really compile on NetBSD and OpenBSD now
+* Shutting down audio driver before quitting (good for JACK)
+* Check for non-empty filename in saving dialogs and refuse
+  to save if no filename entered
+* Updated ja, no, it translations
+
+What is new in soundtracker-0.6.7-pre4 (18-May-2003):
+
+* Updated MIDI code to support ALSA 0.9.x, corrected ALSA version
+  detection (ltanguay)
+* Fixed occasional crash when exporting module as WAV
+* Should compile out-of-the-box on OpenBSD, NetBSD and Darwin now
+* Latest JACK updates (avgroningen)
+* Playlist widget updates (yaliaev)
+* Fixed libsndfile detection
+* Updated italian and japanese translations
+* Made some more strings translatable
+
+What is new in soundtracker-0.6.7-pre3 (09-Mar-2003):
+
+* New FastTracker style playlist editor (yaliaev)
+* Splash screen can be disabled in menu
+* Bug fixed where playlist wouldn't advance during playback
+* Added Sun audio driver source files to the tree, autoconf
+  stuff is still missing, though (wcobb)
+* Updated japanese translation (juekawa)
+
+What is new in soundtracker-0.6.7-pre2 (02-Mar-2003):
+
+* Updated JACK support (avgroningen)
+* New norwegian translation, updated russian translation
+* Better channel number display (tmaka)
+* XP pattern import/export (yaliaev)
+* B<->H note name preferences (yaliaev)
+* Muted scope channel pixmap (yaliaev)
+* Some minor bug fixes (yaliaev)
+
+What is new in soundtracker-0.6.7-pre1 (02-Feb-2003):
+
+* Preliminary JACK support (avgroningen)
+* libsndfile support (edclopo)
+* Mouse wheel support (yaliaev)
+* OpenBSD fixes (wcobb)
+* Better finetune / relnote settings and sample rate selection
+  when loading raw samples (tugruettmueller)
+* Playlist "insert / delete at the end" fixes
+* Various other bug fixes
+* New danish and croatian translations. Updated french, japanese,
+  swedish, russian and italian translations.
+
+What is new in soundtracker-0.6.6 (20-May-2002):
+
+* NLS (internationalization) support was completely broken.
+
+What is new in soundtracker-0.6.5 (20-May-2002):
+
+* GUI fixes and clean-ups, including a workaround for
+  responsivity problems that occured with recent GTK+ versions
+* "Transpose selection" function with key bindings ((Shift+)Alt-Q/A,
+  just like in Impulse Tracker)
+* XM loader repairs a couple of popular XM errors on the fly, fixing
+  some player crashes (tmaka)
+* New french and swedish translations, other translations updated
+* New menu bar code for the non-GNOME version, removing translation
+  problems
+* Can remember the window size and position
+* A splash screen logo :-) (mandersson)
+
+What is new in soundtracker-0.6.4 (12-Aug-2001):
+
+* Fixed to work with gtk+-1.2.10
+* Input/output devices configurable in OSS drivers
+* Cleaned up audio settings handling
+* Added preliminary Galician translation (xtorreiro)
+* Fixed instrument initialization when loading a sample into
+  a clean instrument and not into sample slot 0.
+
+What is new in soundtracker-0.6.3 (24-May-2001):
+
+* Fixed crash that occured when changing the playback position
+  and playing with the Ctrl key at the same time.
+* Fixed bug in audio settings saver (the settings _are_ actually
+  saved now!)
+* Updated russian and italian translation
+
+What is new in soundtracker-0.6.2 (03-Jan-2001):
+
+* All spin buttons can be edited with the keyboard now,
+  and some weird situations in which the widget focus was "trapped" in
+  these widgets are prevented
+* Fixes for libaudiofile-0.2
+* Filename escaping for the archive loader (radamson)
+* Updated french translation
+* Default font is 'fixed' instead of '7x13' which is not
+  present everywhere
+
+What is new in soundtracker-0.6.1 (22-Oct-2000):
+
+* MIDI updates (doesn't require GNOME any longer) (ltanguay)
+* Mixer crash (on very short loops) fixed
+* Slovenian translation
+
+What is new in soundtracker-0.6.0 (28-Sep-2000):
+
+* Fixed crash that occured when loading a MOD or doing
+  cut'n'paste in the sample editor
+* MIDI really compiles again now
+
+What is new in soundtracker-0.5.9 (25-Sep-2000):
+
+* MIDI compiles again
+* Sample editor now plays selected region of sample only
+* After loading a WAV, initialize relnote and finetune so that
+  the sample is played at the original speed on C-6
+* High-quality mixer available on all platforms now
+* Widget exposure fixes
+* Some endianness fixes
+* SGI / IRIX port (no sampling driver, though)
+  (use --disable-nls during configuration)
+
+What is new in soundtracker-0.5.8 (19-Sep-2000):
+
+* Inc/Dec command value function (tmaka)
+* Delete key modifiers (tmaka)
+* Pasting leaves 16bit samples intact
+* Tempo/BPM update works correctly now
+* Show instrument numbers in tracker always in decimal
+* Several other bug fixes
+* Nearly-finished Win32 port
+
+What is new in soundtracker-0.5.7 (15-Aug-2000):
+
+* Effect interpolation (see README file)
+* Support for loading of raw samples in various formats
+* Sample editor can edit much larger samples now
+* Less flickering while pattern scrolls
+* Choice of current song position changes currently edited
+  pattern as well.
+* Various other bug fixes
+
+What is new in soundtracker-0.5.6 (11-Aug-2000):
+
+* Cut/Copy/Paste with mouse (oglorieux)
+* Move pattern cursor with mouse clicks (oglorieux)
+* Empty track row format editable (oglorieux)
+* Ctrl-K kills track column until end of pattern (tmaka)
+* Volume ramping dialog enhancements (tmaka)
+
+What is new in soundtracker-0.5.5 (27-May-2000):
+
+* GUI dialog for MIDI settings (ltanguay)
+* Optional automatic update of Tempo/BPM spin buttons when
+  player executes Fxx command (tmaka)
+* Minor row highlighting (tbakel)
+* Allow negative values in sample editor volume dialog
+* Fixed the popular XM loader 'instrument header size != 40' bug
+
+What is new in soundtracker-0.5.4 (29-Apr-2000):
+
+* Much smoother display of sample position and clipping indicators
+* Another 15% mixer speedup
+* "Save-on-crash" feature
+* ST can be used without input driver now
+* Bug fixes
+
+What is new in soundtracker-0.5.3 (29-Mar-2000):
+
+* The HQ mixer is now click-free
+* Compiles on non-i386 platforms again
+
+What is new in soundtracker-0.5.2 (27-Mar-2000):
+
+* Simple MIDI input support for ALSA (ltanguay)
+* Improved and debugged envelope editor (see README)
+* Draggable status bar
+
+What is new in soundtracker-0.5.1 (25-Mar-2000):
+
+* Status bar with online tracker command help and a
+  playing time display (tmaka)
+* Tracker can optionally show hyphens instead of zeroes (tmaka)
+* Channel numbering can be switched off (tmaka)
+* Font selection for the Tracker widget - you can fill
+  a list with your favourite fonts and then cycle through them with
+  Keypad-Plus/Minus from within the tracker.
+* Mixer is 15% faster (when not using filters)
+* French translation (sboug)
+
+What is new in soundtracker-0.5.0 (13-Mar-2000):
+
+* High-quality cubically interpolating floating-point mixer, based on
+  work by Tammo Hinrichs; only available on i386 machines
+* Per-channel IT-style lowpass filters
+* Asynchronous pattern editing (like in ImpulseTracker)
+* Loads modules from zip, lha, gz and bzip2 archives
+* Win95 menu key plays all channels of the current row
+* Various bug fixes, and possibly some new ones due to the
+  new mixer module. So watch out :-)
+
+What is new in soundtracker-0.3.10 (26-Jan-2000):
+
+* New "Insert" and "Backspace" key bindings in track editor
+* "Escape" toggles editing mode even if we're playing
+* Jazz edit mode more intelligent
+* "Save region" function in sample editor
+* Menu bar translation fixes
+* Various other fixes
+
+What is new in soundtracker-0.3.9 (12-Jan-2000):
+
+* ALSA updates for v0.5.0
+* Keyboard mapping fixes
+* Other clean-ups
+
+What is new in soundtracker-0.3.8 (26-Dec-1999):
+
+* Can handle stereo WAV's (will be converted to mono)
+* "Reverse" function in sample editor
+* Lots of fixes of stupid bugs
+
+What is new in soundtracker-0.3.7 (22-Dec-1999):
+
+* Built-in single-click file requesters for easy
+  module / sample browsing
+* Can save XI's
+* Effects can be displayed in upper-case letters
+* Bug fixed in the keyboard settings loader
+* Some XI related bugs fixed.
+* Russian translation
+
+What is new in soundtracker-0.3.6 (14-Nov-1999):
+
+* Can render modules into WAV files
+* Quick and dirty ESD driver
+* Some bug fixes
+
+What is new in soundtracker-0.3.5 (08-Oct-1999):
+
+* Multi-track copy and paste
+* Remember file requester paths and jazz edit settings
+* Assembly mixing routines (faster)
+* Spanish translation
+
+What is new in soundtracker-0.3.4 (25-Sep-1999):
+
+* Row highlighting feature in the track editor
+* German translation
+
+What is new in soundtracker-0.3.3 (10-Sep-1999):
+
+* Bug fixes; in particular, the memory leak people were
+  experiencing has been fixed.
+* Updated ALSA driver
+* Copy'n'paste operations are in the menu bar now, and thus
+  the keys are configurable.
+* Appears in the GNOME menu now
+* Polish and Italian translations
+
+What is new in soundtracker-0.3.2 (04-Sep-1999):
+
+* Native ALSA support
+* Master Reverb effect
+* Using non-antialiased canvas in envelope editor by default
+  (page switching is a lot faster now)
+* XM effects reference
+* soundtracker.org is online!
+
+What is new in soundtracker-0.3.1 (29-Aug-1999):
+
+* Transposition and instrument number changing functions
+* Volume ramping for the sample editor
+* Horizontal scroll bar and middle mouse button to move the
+  sample display window
+* Displaying the name of the note the mouse is over in the
+  sample map editor
+* User-defined menu accelerators finally work
+* Japanese translation
+* "Home" and "End" key bindings
+
+What is new in soundtracker-0.3.0 (13-Aug-1999):
+
+* Complete keyoff handling for live playing mode
+* "Jazz edit" mode (enable with Shift-Space)
+* You can change loop points while playing
+* Sample editor plays selected sample instead of the one
+  determined by the instrument's sample map
+* NLS (internationalization) support
+* Shift + Tab finally works
+* "Save XM saves all non-empty patterns" option
+* RPM specfile
+
+What is new in soundtracker-0.1.11 (09-Aug-1999):
+
+* Some small GUI cleanup
+* Quite a few bug fixes (see ChangeLog for details)
+
+What is new in soundtracker-0.1.10 (02-Aug-1999):
+
+* XI loader
+
+What is new in soundtracker-0.1.9 (21-Jul-1999):
+
+* Added a missing source file
+
+What is new in soundtracker-0.1.8 (21-jul-1999):
+
+* Configuration system for drivers has changed
+* Tips dialog
+* Sampling during playback is possible (requires full-duplex
+  capable soundcard)
+* 8 bit sample loading works again
+
+What is new in soundtracker-0.1.7 (04-jul-99):
+
+* Editor jump length configurable
+* Jumping configurability in effects columns
+* Pitchbend reset button
+* Zero line in sample display
+* Audio clipping LED
+* Sample editor indicates current play position
+* Right mouse button over scopes inverts all channels
+
+What is new in soundtracker-0.1.6 (13-jun-99):
+
+* Graphical instrument envelope editor
+* Sample length checking
+* Various bug fixes
+
+What is new in soundtracker-0.1.5 (08-jun-99):
+
+* Error messages in dialogs instead of on the console
+* "Hanging user interface" Linux kernel bug workaround
+* Settings are finally saveable
+* Decimal / hexadecimal choice
+* Latest XM player fixes from OpenCP CVS
+
+What is new in soundtracker-0.1.4 (28-may-99):
+
+* Fix for a potential segfault.
+
+What is new in soundtracker-0.1.3 (26-may-99):
+
+* Sample mapping editor
+* Some module optimization functions
+
+What is new in soundtracker-0.1.2 (02-may-99):
+
+* Keyboard configuration dialog
+* Sample editor supports cut, copy & paste
+* Some compilation fixes
+* Some subtle bug fixes
+
+What is new in soundtracker-0.1.1 (21-mar-99):
+
+* User interface cleanup and improvements; GNOME support.
+* Audio subsystem handles live sample parameter changes again
+* Sample loader uses audiofile library now
+* Installed setuid root (for the mixer thread)
+* More module formats recognized
+* Requires gtk+ 1.2 now
+
+What is new in soundtracker-0.1.0 (17-feb-99):
+
+* Tempo, BPM, ProTracker mode, and frequency table settings
+* Instrument vibrato and volfade settings
+* More ProTracker compatibility
+* Channel muting is back again
+* Fixes for several long-standing bugs
+
+What is new in soundtracker-0.0.13 (21-jan-99):
+
+* Audio playback preferences
+* XM Player fixes
+* Loads XMs from pre-0.0.12 again.
+* Realtime pattern scrolling, independent of mixing buffer size.
+
+What is new in soundtracker-0.0.12 (13-dec-98):
+
+* Sampling
+* Full stereo support
+* Track editor usable again
+* XM saver fixes and pattern compression
+* gtk+ compatibility fixes for 1.1.5 - 1.1.7
+
+What is new in soundtracker-0.0.11 (01-dec-98):
+
+* A new, fantastic, completely FT-compatible XM player (OpenCP/CubicPlayer)
+* Full support for Amiga frequencies
+* Modular drivers and mixers system
+* In short, a completely rewritten audio subsystem!
+* Sampling is *not* working in this version
+* Module pitchbending
+* CList fixes for gtk+-1.1.5
+* A popular segfault fixed
+
+What is new in soundtracker-0.0.10 (01-nov-98):
+
+* Full support for 8 bit samples
+* Audio amplification and clipping
+* DOS character set recoding.
+* Reorganize SampleDisplay, fix bugs there
+* Use select() when poll() isn't available
+* Fix some compiler warnings, enable -Wall
+* Made all I/O typesize- and endianness-safe
+
+What is new in soundtracker-0.0.9 (25-oct-98):
+
+* Should compile with gtk+-1.0.x again
+* ProTracker MOD loader
+* Documentation (list of key mappings)
+* EA* and EB* effects
+* Bug fixes
+
+What is new in soundtracker-0.0.8 (17-oct-98):
+
+* Added module info page (instruments overview)
+* Extended sample editor (loop editing, zooming)
+* Endianness conversion in XM and WAV loaders (means "portability")
+* Bug fixes
+
+What is new in soundtracker-0.0.7 (10-oct-98):
+
+* Using autoconf/automake
+* Number of channels can be set
+* Pattern length can be set
+* Added "clear song" and "clear all" buttons
+* The instrument name can be edited
+* Visual updates are a bit smoother on slow machines
+* Playlist restart position
+* Dxx effect
+* Quite a lot of bugs have been fixed

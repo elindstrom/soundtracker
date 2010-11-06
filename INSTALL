@@ -1,0 +1,145 @@
+
+REQUIREMENTS
+=============
+
+You need at least the following packages in order to successfully
+compile and run the SoundTracker (included are commands which help you
+to find out your installed version, if any):
+
+- gtk+ 1.2.2				gtk-config --version
+  (available from http://www.gtk.org/)
+
+- optionally, sndfile library 1.0.1	pkg-config --modversion sndfile
+  (available from http://www.zip.com.au/~erikd/libsndfile/)
+  You need this library in order to be able to load and save samples.
+  If libsndfile is not present, libaudiofile is searched for as a
+  replacement (see next entry).
+
+- optionally, audiofile library 0.1.5	audiofile-config --version
+  (available from http://www.68k.org/~michael/audiofile/)
+  (versions 0.2.0+ are also supported)
+  If you have neither libsndfile nor libaudiofile installed, you can
+  not load or save samples (loading and saving modules will work,
+  though).
+
+- optionally, GNOME 1.0.1		gnome-config --version
+  (available from http://www.gnome.org/)
+
+- optional: compression utilities zip, lha, zcat (gunzip) and
+  bunzip2. All of them except for bunzip2 have been around for a
+  decade now. As for bunzip2, you might like to check on its
+  version. Should be around 0.9.0b.  Standard Un*x bundles (RedHat
+  etc) will come with all these utilities.
+
+- under Linux, glibc 2.1.x is recommended
+  (available from ftp://ftp.gnu.org/gnu/glibc/)
+
+Installing GNOME is strongly recommended. Some features are only
+available when you compile with GNOME.  You only need the gnome-libs
+distribution, it's really not hard to compile yourself.  RedHat 6.0
+and other recent distributions also carry a recent GNOME installation.
+You do NOT need to run an actual GNOME desktop if you like KDE or
+plain X11 better, but having the libraries installed gives you some
+more features than in the plain GTK+ version.
+
+The ALSA driver supports only the v0.4.x and v0.5.x architectures of
+ALSA. For later versions, please use the OSS emulation included with
+ALSA, and the standard OSS driver from SoundTracker.
+
+If you want to make use of the MIDI input features of SoundTracker,
+please install one of the supported ALSA versions.
+
+FOR LIBC5 SYSTEMS
+==================
+
+This program makes extensive use of threads. This can be troublesome
+if you are using a libc5 system. You need thread-safe X libraries in
+this case. If SoundTracker keeps crashing as soon as you start it
+(with strange X I/O errors), you don't have them.
+
+You can download them from:
+
+ftp://ftp.soundtracker.org/pub/misc/libc5-threadsafe-libX11.tar.gz
+
+Install instructions are in the archive.
+
+
+COMPILING & INSTALLING
+=======================
+
+IF YOU HAVE DOWNLOADED THE SOURCE PACKAGE:
+-------------------------------------------
+
+./configure
+make
+
+If this gives errors or warnings, please report.
+
+If you get errors related to files with "intl" in their path name or
+other NLS trouble, reconfigure with --disable-nls.
+
+If you get errors related to assembly language files, reconfigure with
+--disable-asm.
+
+If it worked (which is highly probable on any i386 Linux system which
+fulfills the requirements listed above), you can now 'make install' as
+root (which also makes the executable setuid root in order to gain
+maximum audio performance).
+
+IF YOU HAVE DOWNLOADED THE .tar.gz BINARY PACKAGE:
+---------------------------------------------------
+
+Note that this binary is compiled without GNOME and NLS support, and
+linked against glibc-2.1, gtk+-1.2 and audiofile-0.1 (it will probably
+work on glibc-2.0 systems as well). If you want GNOME or NLS support,
+compile the package on your own, or get the RPM package.
+
+1. Copy the soundtracker executable to /usr/local/bin.
+
+2. Optionally:
+
+   chown root.root /usr/local/bin/soundtracker
+   chmod 4755 /usr/local/bin/soundtracker
+
+   This will make the audio performance a little bit smoother.
+
+IF YOU HAVE DOWNLOADED THE .rpm BINARY PACKAGE:
+------------------------------------------------
+
+Ah, oh. You already have everything in place, or you wouldn't be able
+to read this :-)
+
+WIN32 PORT:
+------------
+
+Not working at the moment, but code is there. If you want to hack on
+this, see the ChangeLog (2000-09-19).
+
+
+SUID ROOT INSTALLATION
+=======================
+
+By default, SoundTracker is installed suid root. This way, the audio
+rendering part of the program runs under higher system priority and
+because of that, there are less skips and pops in the sound under
+load.
+
+This can be a security risk, however. If you are running this program
+on a multi-user machine -- that is, other users that you don't
+completely trust have access to this machine -- you should think about
+removing the suid flag by doing a
+
+	chmod -s /usr/local/bin/soundtracker
+
+as root.
+
+Problems that can occur due to SoundTracker being suid root:
+
+- "Save Module as WAV" can write files everywhere in the filesystem,
+  it could even overwrite /lib/libc.so.
+- Other audio drivers run with root privileges. What can happen here
+  depends on the types of audio drivers compiled in.
+
++ The rest of the program does NOT run under root privileges. Loading
+  and saving modules, for example, takes place in the environment
+  of the user that started SoundTracker.

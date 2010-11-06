@@ -1,0 +1,21 @@
+--------------------------------------------------------------------------
+                          XP format description
+                   (FastTracker II Extended Pattern)
+    		  reverse engineered by Metamorph0sis
+--------------------------------------------------------------------------
+C = Chars, B = Byte, W = Word, D = Double word
+
+Pos(h) Len(h) Meaning
+-------------------------------------------------------------- file header
+0000   W02    Version Number (current 0x0001)
+0002   W02    Number of rows
+------------------------------------------------------------- pattern data
+All extended patterns are 32-channel (independently on the number of channels
+in module) and unpacked.
+Structure of the row:
+Note, Instrument number, Volume, FX type, FX parameter of first channel,
+5 Unsigned Chars total. Repeat 32 times, for each channel. First row is
+finished. Then second row is following, with the structure identical to the
+first one. And so on, repeated by Number of rows (second Word in the header).
+That's all! :).
+

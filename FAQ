@@ -1,0 +1,99 @@
+
+FAQ
+====
+
+QQQQ: SoundTracker crashes as soon as I start it or as I press a
+button in its window, giving weird X errors.
+
+a: You don't have thread-safe X libraries (you have a libc5
+system). Read the INSTALL file.
+
+------------------------------------------------------------------------
+
+QQQQ: SoundTracker complains about not being able to open /dev/dsp.
+
+a: Either you have not configured a sound driver for your system (you
+could check that by running an MP3 player or something) - or you are
+running GNOME and your soundcard is kept busy by the E Sound Daemon,
+which you can get rid of by using "killall esd" in a shell.
+
+There's also an "ESD" driver in the Audio settings, but it's not
+possible to do any serious tracking work because of the delay
+introduced by it.
+
+------------------------------------------------------------------------
+
+QQQQ: The sound output gets quite choppy under machine load.
+
+a1: Don't run the compiled executable directly, but do a full 'make
+install', this installs the executable setuid root and the audio
+thread gets a much higher priority. Read the notes in the INSTALL file
+about this subject.
+
+a2: Increase size of mixer buffer in the Preferences section.
+
+a3: Disable Double Buffering a.k.a. Flicker-free scrolling. This may
+not look exactly nice, but can relieve your CPU from a lot of hard
+work (this depends on the graphics card and X server you are using).
+
+a4: Switch away from the scrolling patterns page and disable the
+scopes.
+
+a5: Reduce scopes and patterns update frequency in the Preferences
+section.
+
+a6: Install at least glibc2.1.1pre3, this fixed a strange sound bug
+for me.
+
+------------------------------------------------------------------------
+
+QQQQ: What about MIDI support?
+
+a: I don't have any MIDI equipment, so I couldn't test MIDI-related
+code, even if I wrote it. Okay, there is a possibility to receive MIDI
+input from other applications running on the computer, but at the
+moment I have other priorities anyway. Adding MIDI support to the
+program will require a extensions of the file format; in other words,
+this is not an easy project.
+
+------------------------------------------------------------------------
+
+QQQQ: Why did you choose the XM format instead of the IT format?
+
+a: Primarily because XM is all what I need in order to make music.
+But that doesn't mean that the program couldn't be expanded in the
+future towards other formats. The part of the program needing most
+work is the editor (the user interface) anyway. You can basically use
+it to edit any module format, it just needs tuning and (of course) a
+new player routine. But this is not in scope for Version 1.0 of
+SoundTracker.
+
+------------------------------------------------------------------------
+
+QQQQ: The scopes don't work, i.e., they show a flat line no matter how
+loud my music is playing.
+
+a1: Increase the scopes buffer size in the GUI settings.
+
+a2: If that doesn't work, your OSS kernel driver may be buggy. In that
+case, go to the source file app/drivers/oss-output.c, search for the
+line that says
+
+    d->realtimecaps = i & DSP_CAP_REALTIME;
+
+and change it into
+
+    d->realtimecaps = 0;
+
+Please report to mk@soundtracker.org if this fixes the problem, and
+what audio driver you are using.
+
+------------------------------------------------------------------------
+
+QQQQ: When I use the mouse to cycle the current song position during
+playback and when I press 'Ctrl' before releasing the mouse button,
+the spin button keeps cycling, which is rather unintended behaviour
+:-)
+
+a: This is gtk+ bug #56248. A status report is available under
+http://bugzilla.gnome.org/show_bug.cgi?id=56248
