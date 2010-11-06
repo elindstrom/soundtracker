@@ -3,6 +3,7 @@
  * The Real SoundTracker - Audio configuration dialog
  *
  * Copyright (C) 1999-2001 Michael Krause
+ * Copyright (C) 2005 Yury Aliaev (GTK+-2 porting)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +23,7 @@
 #include <config.h>
 
 #include <gtk/gtk.h>
+#include <glib/gprintf.h>
 #ifdef USE_GNOME
 #include <gnome.h>
 #endif
@@ -44,10 +46,7 @@
 GList *drivers[2] = { NULL, NULL };
 GList *mixers = NULL;
 
-static GtkWidget *configwindow = NULL;
-static GtkWidget *cw_clist, *cw_hbox, *audioconfig_mixer_clist;
-static int cw_currentobject = -1;
-static GtkWidget *driverwidget = NULL;
+static GtkWidget *audioconfig_mixer_list;
 static st_mixer *audioconfig_current_mixer = NULL;
 static gboolean audioconfig_disable_mixer_selection = FALSE;
 
@@ -56,7 +55,8 @@ typedef struct audio_object {
     const char *shorttitle;
     int type;
     void **driver_object;
-    void **driver;
+    st_io_driver **driver;
+    GtkWidget *drivernbook;
 } audio_object;
 
 static audio_object audio_objects[] = {
@@ -64,36 +64,41 @@ static audio_object audio_objects[] = {
       "playback",
       DRIVER_OUTPUT,
       &playback_driver_object,
-      (void**)&playback_driver
+      &playback_driver,
+      NULL
     },
     { N_("Editing Output"),
       "editing",
       DRIVER_OUTPUT,
       &editing_driver_object,
-      (void**)&editing_driver
+      &editing_driver,
+      NULL
     },
     { N_("Sampling"),
       "sampling",
       DRIVER_INPUT,
       &sampling_driver_object,
-      (void**)&sampling_driver
+      &sampling_driver,
+      NULL
     }
 };
 
 #define NUM_AUDIO_OBJECTS (sizeof(audio_objects) / sizeof(audio_objects[0]))
 
+static void ***audio_driver_objects[NUM_AUDIO_OBJECTS];
+
 static void
 audioconfig_driver_load_config (audio_object *ao)
 {
-    st_driver *d = *ao->driver;
+    st_io_driver *d = *ao->driver;
     char buf[256];
     prefs_node *f;
 
-    if(d->loadsettings) {
-	sprintf(buf, "audio-object-%s", ao->shorttitle);
+    if(d->common.loadsettings) {
+	g_sprintf(buf, "audio-object-%s", ao->shorttitle);
 	f = prefs_open_read(buf);
 	if(f) {
-	    d->loadsettings(*ao->driver_object, f);
+	    d->common.loadsettings(*ao->driver_object, f);
 	    prefs_close(f);
 	} else {
 	    // set default values
@@ -103,124 +108,58 @@ audioconfig_driver_load_config (audio_object *ao)
 }
 
 static void
-audioconfig_clist_select (GtkCList *list,
-			  gint row,
-			  gint column)
+audioconfig_list_select (GtkTreeSelection *sel, guint page)
 {
-    if(cw_currentobject != -1) {
-	audio_object *object = &audio_objects[cw_currentobject];
-	st_driver *old_driver = *object->driver;
-	void *old_driver_object = *object->driver_object;
-	st_driver *new_driver = g_list_nth_data(drivers[object->type], row);
-	GtkWidget *new_driverwidget;
+    GtkTreeModel *mdl;
+    GtkTreeIter iter;
+    gchar *str;
+    
+    if(gtk_tree_selection_get_selected(sel, &mdl, &iter)) {
+
+	guint row = atoi(str = gtk_tree_model_get_string_from_iter(mdl, &iter));
+	audio_object *object = &audio_objects[page];
+	st_io_driver *old_driver = *object->driver;
+	st_io_driver *new_driver = g_list_nth_data(drivers[object->type], row);
+
+	g_free(str);
 
 	if(new_driver != old_driver) {
-	    prefs_node *f;
-	    char buf[256];
-
 	    // stop playing and sampling here
 	    sample_editor_stop_sampling();
 	    gui_play_stop();
 
 	    // get new driver object
-	    *object->driver_object = new_driver->new();
+	    *object->driver_object = audio_driver_objects[page][row];
 	    *object->driver = new_driver;
-
-	    /* Load object settings, if there are saved settings. */
-	    f = prefs_open_read("audio-objects");
-	    if(f) {
-		if(prefs_get_string(f, object->shorttitle, buf)) {
-		    if(!strcmp(buf, new_driver->name)) {
-			audioconfig_driver_load_config(object);
-		    }
-		}
-		prefs_close(f);
-	    }
 	}
-
-	new_driverwidget = new_driver->getwidget(*object->driver_object);
-
-	if(new_driverwidget != driverwidget) {
-	    if(driverwidget) {
-		gtk_container_remove(GTK_CONTAINER(cw_hbox), driverwidget);
-	    }
-	    driverwidget = new_driverwidget;
-	    gtk_widget_show(driverwidget);
-	    /* we don't want the widget to be destroyed upon removal... */
-	    gtk_object_ref(GTK_OBJECT(driverwidget));
-	    gtk_box_pack_start(GTK_BOX(cw_hbox), driverwidget, TRUE, FALSE, 0);
-	}
-
-	if(new_driver != old_driver) {
-	    // free old driver object
-	    old_driver->destroy(old_driver_object);
-	}
-    } else {
-	// The CList is being updated
+	gtk_notebook_set_current_page(GTK_NOTEBOOK(object->drivernbook), row);
     }
 }
 
 static void
-audioconfig_object_changed (void *a,
-			    void *b)
+audioconfig_close_requested (GtkWidget *window)
 {
-    unsigned n = GPOINTER_TO_INT(b);
-    GList *l;
-    gchar *insertbuf[2] = { NULL };
-    int i, active = -1;
-
-    g_assert(n < NUM_AUDIO_OBJECTS);
-
-    if(n == cw_currentobject)
-	return;
-
-    cw_currentobject = -1; // disable clist select callback
-
-    gtk_clist_freeze(GTK_CLIST(cw_clist));
-    gtk_clist_clear(GTK_CLIST(cw_clist));
-    for(i = 0, l = drivers[audio_objects[n].type]; l; i++, l = l->next) {
-	insertbuf[0] = *((gchar **)l->data);
-	if(l->data == *audio_objects[n].driver)
-	    active = i;
-	gtk_clist_append(GTK_CLIST(cw_clist), insertbuf);
-    }
-    gtk_clist_thaw(GTK_CLIST(cw_clist));
-
-    // Now update the GUI
-    cw_currentobject = n;
-    if(driverwidget) {
-	gtk_container_remove(GTK_CONTAINER(cw_hbox), driverwidget);
-	driverwidget = NULL;
-    }
-
-    if(active != -1) {
-	gtk_clist_select_row(GTK_CLIST(cw_clist), active, 0);
-    }
+    gtk_widget_hide(window);
 }
 
 static void
-audioconfig_close_requested (void)
+audioconfig_mixer_selected (GtkTreeSelection *sel)
 {
-    if(driverwidget) {
-	gtk_container_remove(GTK_CONTAINER(cw_hbox), driverwidget);
-	gtk_widget_hide(driverwidget);
-	driverwidget = NULL;
-    }
-    gtk_widget_destroy(configwindow);
-    configwindow = NULL;
-    cw_currentobject = -1;
-}
+    GtkTreeModel *mdl;
+    GtkTreeIter iter;
+    gchar *str;
+    
+    if(gtk_tree_selection_get_selected(sel, &mdl, &iter)) {
 
-static void
-audioconfig_mixer_selected (GtkCList *list,
-			    gint row,
-			    gint column)
-{
-    st_mixer *new_mixer = g_list_nth_data(mixers, row);
+	guint row = atoi(str = gtk_tree_model_get_string_from_iter(mdl, &iter));
+	st_mixer *new_mixer = g_list_nth_data(mixers, row);
 
-    if(!audioconfig_disable_mixer_selection && new_mixer != audioconfig_current_mixer) {
-	audio_set_mixer(new_mixer);
-	audioconfig_current_mixer = new_mixer;
+	g_free(str);
+
+	if(!audioconfig_disable_mixer_selection && new_mixer != audioconfig_current_mixer) {
+	    audio_set_mixer(new_mixer);
+	    audioconfig_current_mixer = new_mixer;
+	}
     }
 }
 
@@ -228,41 +167,95 @@ static void
 audioconfig_initialize_mixer_list (void)
 {
     GList *l;
-    gchar *insertbuf[2] = { NULL };
     int i, active = -1;
+    GtkListStore *list_store = GUI_GET_LIST_STORE(audioconfig_mixer_list);
+    GtkTreeIter iter;
+    GtkTreeModel *model;
 
     audioconfig_disable_mixer_selection = TRUE;
-    gtk_clist_freeze(GTK_CLIST(audioconfig_mixer_clist));
-    gtk_clist_clear(GTK_CLIST(audioconfig_mixer_clist));
+    model = gui_list_freeze(audioconfig_mixer_list);
+    gui_list_clear_with_model(model);
     for(i = 0, l = mixers; l; i++, l = l->next) {
 	st_mixer *mixer = l->data;
 	if(mixer == audioconfig_current_mixer) {
 	    active = i;
 	}
-	insertbuf[0] = (gchar*)mixer->id;
-	insertbuf[1] = gettext((gchar*)mixer->description);
-	gtk_clist_append(GTK_CLIST(audioconfig_mixer_clist), insertbuf);
+	gtk_list_store_append(list_store, &iter);
+	gtk_list_store_set(list_store, &iter, 0, (gchar*)mixer->id,
+			   1, gettext((gchar*)mixer->description), -1);
     }
-    gtk_clist_thaw(GTK_CLIST(audioconfig_mixer_clist));
+    gui_list_thaw(audioconfig_mixer_list, model);
     audioconfig_disable_mixer_selection = FALSE;
 
-    gtk_clist_select_row(GTK_CLIST(audioconfig_mixer_clist), active, 0);
+    gui_list_select(audioconfig_mixer_list, active);
+}
+
+static void
+audioconfig_notebook_add_page (GtkNotebook *nbook, guint n)
+{
+    GtkWidget	*label, *box1, *list, *widget, *dnbook, *alignment;
+    GList *l;
+    guint i, active = -1;
+    static gchar *listtitles[1];
+    GtkListStore *list_store;
+    GtkTreeIter iter;
+
+    listtitles[0] = gettext("Driver Module");
+
+    box1 = gtk_hbox_new(FALSE, 4);
+    gtk_widget_show(box1);
+
+    // Driver selection list
+    list = gui_stringlist_in_scrolled_window(1, listtitles, box1);
+    gtk_widget_set_size_request(list, 200, -1);
+    list_store = GUI_GET_LIST_STORE(list);
+
+    /* Driver configuration widgets' notebook (with hidden tabs, as multi-layer container) */
+    audio_objects[n].drivernbook = dnbook = gtk_notebook_new();
+    gtk_notebook_set_show_tabs(GTK_NOTEBOOK(dnbook), FALSE);
+    gtk_notebook_set_show_border(GTK_NOTEBOOK(dnbook), FALSE);
+    gtk_widget_show(dnbook);
+    gtk_box_pack_start(GTK_BOX(box1), dnbook, TRUE, TRUE, 0);
+
+    for(i = 0, l = drivers[audio_objects[n].type]; l; i++, l = l->next) {
+	st_io_driver *driver = l->data;
+	gtk_list_store_append(list_store, &iter);
+	gtk_list_store_set(list_store, &iter, 0, *((gchar **)l->data), -1);
+
+	if(driver == *audio_objects[n].driver)
+	    active = i;
+	widget = driver->common.getwidget(audio_driver_objects[n][i]);
+	alignment = gtk_alignment_new(0.4, 0.5, 0.0, 0.0);
+	gtk_container_add(GTK_CONTAINER(alignment), widget);
+	gtk_notebook_append_page(GTK_NOTEBOOK(dnbook), alignment, NULL);
+	gtk_widget_show_all(alignment);
+    }
+    
+    gui_list_handle_selection(list, G_CALLBACK(audioconfig_list_select), (gpointer)n);
+    if(active != -1) {
+	gui_list_select(list, active);
+    }
+
+    label = gtk_label_new(gettext(audio_objects[n].title));
+    gtk_widget_show(label);
+
+    gtk_notebook_append_page(nbook, box1, label);
 }
 
 void
 audioconfig_dialog (void)
 {
-    GtkWidget *mainbox, *thing, *box1, *hbox, *frame, *box2;
-    OptionMenuItem menu1[NUM_AUDIO_OBJECTS];
-    static gchar *listtitles[1];
+    static GtkWidget *configwindow = NULL;
+    GtkWidget *mainbox, *thing, *hbox, *nbook, *box2, *frame;
     static gchar *listtitles2[2];
     int i;
 
-    listtitles[0] = gettext("Driver Module");
     listtitles2[0] = gettext("Mixer Module");
     listtitles2[1] = gettext("Description");
 
     if(configwindow != NULL) {
+	if(!GTK_WIDGET_VISIBLE(configwindow))
+	    gtk_widget_show(configwindow);
 	gdk_window_raise(configwindow->window);
 	return;
     }
@@ -273,8 +266,8 @@ audioconfig_dialog (void)
     configwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(configwindow), _("Audio Configuration"));
 #endif
-    gtk_signal_connect (GTK_OBJECT (configwindow), "delete_event",
-			GTK_SIGNAL_FUNC (audioconfig_close_requested), NULL);
+    g_signal_connect_swapped (configwindow, "delete_event",
+			G_CALLBACK (audioconfig_close_requested), configwindow);
 
     mainbox = gtk_vbox_new(FALSE, 2);
     gtk_container_border_width(GTK_CONTAINER(mainbox), 4);
@@ -285,41 +278,13 @@ audioconfig_dialog (void)
 #endif
     gtk_widget_show(mainbox);
 
-    frame = gtk_frame_new(NULL);
-    gtk_frame_set_label(GTK_FRAME(frame), _("Drivers"));
-    gtk_box_pack_start(GTK_BOX(mainbox), frame, FALSE, TRUE, 0);
-    gtk_widget_show(frame);
-
-    box2 = gtk_vbox_new(FALSE, 2);
-    gtk_widget_show(box2);
-    gtk_container_add (GTK_CONTAINER(frame), box2);
-    gtk_container_border_width(GTK_CONTAINER(box2), 4);
-
-    // Driver type selector
+    // Each driver (playback,capture,editing,etc...) occupies the notebook page
+    nbook = gtk_notebook_new();
+    gtk_box_pack_start(GTK_BOX(mainbox), nbook, FALSE, TRUE, 0);
     for(i = 0; i < NUM_AUDIO_OBJECTS; i++) {
-	menu1[i].name = gettext(audio_objects[i].title);
-	menu1[i].func = audioconfig_object_changed;
+	audioconfig_notebook_add_page(GTK_NOTEBOOK(nbook), i);
     }
-    thing = gui_build_option_menu(menu1, NUM_AUDIO_OBJECTS, 0);
-    gtk_widget_show(thing);
-    gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, FALSE, 0);
-
-    cw_hbox = box1 = gtk_hbox_new(FALSE, 4);
-    gtk_widget_show(box1);
-    gtk_box_pack_start(GTK_BOX(box2), box1, TRUE, TRUE, 0);
-
-    // Driver selection list
-    thing = gui_clist_in_scrolled_window(1, listtitles, box1);
-    gtk_clist_set_selection_mode(GTK_CLIST(thing), GTK_SELECTION_BROWSE);
-    gtk_clist_column_titles_passive(GTK_CLIST(thing));
-    gtk_clist_set_column_justification(GTK_CLIST(thing), 0, GTK_JUSTIFY_LEFT);
-    gtk_widget_set_usize(thing, 200, 50);
-    gtk_signal_connect_after(GTK_OBJECT(thing), "select_row",
-			     GTK_SIGNAL_FUNC(audioconfig_clist_select), NULL);
-    cw_clist = thing;
-
-    audioconfig_object_changed(NULL, (void*)0);
-
+    gtk_widget_show(nbook);
 
     // Mixer selection
     frame = gtk_frame_new(NULL);
@@ -332,13 +297,9 @@ audioconfig_dialog (void)
     gtk_container_add (GTK_CONTAINER(frame), box2);
     gtk_container_border_width(GTK_CONTAINER(box2), 4);
 
-    thing = gui_clist_in_scrolled_window(2, listtitles2, box2);
-    gtk_clist_set_selection_mode(GTK_CLIST(thing), GTK_SELECTION_BROWSE);
-    gtk_clist_column_titles_passive(GTK_CLIST(thing));
-    gtk_clist_set_column_justification(GTK_CLIST(thing), 0, GTK_JUSTIFY_LEFT);
-    gtk_signal_connect_after(GTK_OBJECT(thing), "select_row",
-			     GTK_SIGNAL_FUNC(audioconfig_mixer_selected), NULL);
-    audioconfig_mixer_clist = thing;
+    thing = gui_stringlist_in_scrolled_window(2, listtitles2, box2);
+    gui_list_handle_selection(thing, G_CALLBACK(audioconfig_mixer_selected), NULL);
+    audioconfig_mixer_list = thing;
     audioconfig_initialize_mixer_list();
 
     /* The button area */
@@ -346,27 +307,23 @@ audioconfig_dialog (void)
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
 
-    hbox = gtk_hbutton_box_new ();
-    gtk_button_box_set_spacing (GTK_BUTTON_BOX (hbox), 4);
-    gtk_button_box_set_layout (GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_END);
-    gtk_box_pack_start (GTK_BOX (mainbox), hbox,
+    hbox = gtk_hbutton_box_new();
+    gtk_button_box_set_spacing(GTK_BUTTON_BOX (hbox), 4);
+    gtk_button_box_set_layout(GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_END);
+    gtk_box_pack_start(GTK_BOX (mainbox), hbox,
 			FALSE, FALSE, 0);
-    gtk_widget_show (hbox);
+    gtk_widget_show(hbox);
 
-#ifdef USE_GNOME
-    thing = gnome_stock_button (GNOME_STOCK_BUTTON_CLOSE);
-#else
-    thing = gtk_button_new_with_label (_ ("Close"));
-#endif
+    thing = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
     GTK_WIDGET_SET_FLAGS(thing, GTK_CAN_DEFAULT);
     gtk_window_set_default(GTK_WINDOW(configwindow), thing);
-    gtk_signal_connect (GTK_OBJECT (thing), "clicked",
-			GTK_SIGNAL_FUNC (audioconfig_close_requested), NULL);
-    gtk_box_pack_start (GTK_BOX (hbox), thing, FALSE, FALSE, 0);
-    gtk_widget_show (thing);
+    g_signal_connect_swapped(thing, "clicked",
+			G_CALLBACK(audioconfig_close_requested), configwindow);
+    gtk_box_pack_start(GTK_BOX (hbox), thing, FALSE, FALSE, 0);
+    gtk_widget_show(thing);
 
 
-    gtk_widget_show (configwindow);
+    gtk_widget_show(configwindow);
 }
 
 void
@@ -375,15 +332,18 @@ audioconfig_load_config (void)
     char buf[256];
     prefs_node *f;
     GList *l;
-    int i;
+    guint i, n = 0;
 
     f = prefs_open_read("audio-objects");
     if(f) {
 	for(i = 0; i < NUM_AUDIO_OBJECTS; i++) {
+	    guint j;
+
 	    if(prefs_get_string(f, audio_objects[i].shorttitle, buf)) {
-		for(l = drivers[audio_objects[i].type]; l; l = l->next) {
+		for(j = 0, l = drivers[audio_objects[i].type]; l; l = l->next, j++) {
 		    if(!strcmp(*((gchar **)l->data), buf)) {
 			*audio_objects[i].driver = l->data;
+			n = j;
 			break;
 		    }
 		}
@@ -393,7 +353,15 @@ audioconfig_load_config (void)
     }
 
     for(i = 0; i < NUM_AUDIO_OBJECTS; i++) {
-	st_driver *d = *audio_objects[i].driver;
+	guint j;
+	st_io_driver *d = *audio_objects[i].driver;
+
+	audio_driver_objects[i] = g_new(void**,
+					  g_list_length(drivers[audio_objects[i].type]));
+	for(j = 0, l = drivers[audio_objects[n].type]; l; j++, l = l->next) {
+	    st_io_driver *driver = l->data;
+	    audio_driver_objects[i][j] = driver->common.new();
+	}
 
 	if(!d) {
 	    // set default driver if none has been configured
@@ -404,7 +372,7 @@ audioconfig_load_config (void)
 
 	if(d) {
 	    // create driver instance
-	    *audio_objects[i].driver_object = d->new();
+	    *audio_objects[i].driver_object = audio_driver_objects[i][n];
 	    audioconfig_driver_load_config(&audio_objects[i]);
 	}
     }
@@ -461,7 +429,7 @@ audioconfig_save_config (void)
 	gboolean (*savesettings)(void *, prefs_node *) = ((st_driver*)*(audio_objects[i].driver))->savesettings;
 
 	if(savesettings) {
-	    sprintf(buf, "audio-object-%s", audio_objects[i].shorttitle);
+	    g_sprintf(buf, "audio-object-%s", audio_objects[i].shorttitle);
 	    f = prefs_open_write(buf);
 	    if(f) {
 		savesettings(*audio_objects[i].driver_object, f);

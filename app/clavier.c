@@ -90,18 +90,20 @@ clavier_get_type (void)
 
   if (!clavier_type)
     {
-      GtkTypeInfo clavier_info = {
-	"Clavier",
-	sizeof (Clavier),
+      GTypeInfo clavier_info = {
 	sizeof (ClavierClass),
-	(GtkClassInitFunc) clavier_class_init,
-	(GtkObjectInitFunc) clavier_init,
-	(GtkArgSetFunc) NULL,
-	(GtkArgGetFunc) NULL,
+	(GBaseInitFunc) NULL,
+	(GBaseFinalizeFunc) NULL,
+	(GClassInitFunc) clavier_class_init,
+	(GClassFinalizeFunc) NULL,
+	NULL,
+	sizeof (Clavier),
+	0,
+	(GInstanceInitFunc) clavier_init,	
       };
 
-      clavier_type = gtk_type_unique (gtk_drawing_area_get_type (), 
-				      &clavier_info);
+      clavier_type = g_type_register_static(gtk_drawing_area_get_type (), 
+			 "Clavier", &clavier_info, (GTypeFlags)0);
     }
 
   return clavier_type;
@@ -110,41 +112,49 @@ clavier_get_type (void)
 static void
 clavier_class_init (ClavierClass *class)
 {
-  GtkObjectClass *object_class;
+  GObjectClass *object_class;
+  GtkObjectClass *gtkobject_class;
   GtkWidgetClass *widget_class;
 
-  object_class = (GtkObjectClass *) class;
+  object_class = (GObjectClass *) class;
+  gtkobject_class = (GtkObjectClass *) class;
   widget_class = (GtkWidgetClass *) class;
 
   parent_class = gtk_type_class (gtk_drawing_area_get_type ());
 
   clavier_signals[CLAVIERKEY_PRESS] = 
-    gtk_signal_new ("clavierkey_press", GTK_RUN_FIRST, object_class->type,
-		    GTK_SIGNAL_OFFSET (ClavierClass, clavierkey_press),
-		    gtk_marshal_NONE__INT, GTK_TYPE_NONE, 1, 
-		    GTK_TYPE_INT);
+    g_signal_new ("clavierkey_press", G_TYPE_FROM_CLASS (object_class),
+		   (GSignalFlags) G_SIGNAL_RUN_FIRST,
+		    G_STRUCT_OFFSET (ClavierClass, clavierkey_press),
+		    NULL, NULL,
+		    gtk_marshal_NONE__INT, G_TYPE_NONE, 1, 
+		    G_TYPE_INT);
 
   clavier_signals[CLAVIERKEY_RELEASE] = 
-    gtk_signal_new ("clavierkey_release", GTK_RUN_FIRST, object_class->type,
-		    GTK_SIGNAL_OFFSET (ClavierClass, clavierkey_release),
-		    gtk_marshal_NONE__INT, GTK_TYPE_NONE, 1,
-		    GTK_TYPE_INT);
+    g_signal_new ("clavierkey_release", G_TYPE_FROM_CLASS (object_class),
+		   (GSignalFlags) G_SIGNAL_RUN_FIRST,
+		    G_STRUCT_OFFSET (ClavierClass, clavierkey_release),
+		    NULL, NULL,
+		    gtk_marshal_NONE__INT, G_TYPE_NONE, 1,
+		    G_TYPE_INT);
 
   clavier_signals[CLAVIERKEY_ENTER] = 
-    gtk_signal_new ("clavierkey_enter", GTK_RUN_FIRST, object_class->type,
-		    GTK_SIGNAL_OFFSET (ClavierClass, clavierkey_enter),
-		    gtk_marshal_NONE__INT, GTK_TYPE_NONE, 1,
-		    GTK_TYPE_INT);
+    g_signal_new ("clavierkey_enter", G_TYPE_FROM_CLASS (object_class),
+		   (GSignalFlags) G_SIGNAL_RUN_FIRST,
+		    G_STRUCT_OFFSET (ClavierClass, clavierkey_enter),
+		    NULL, NULL,
+		    gtk_marshal_NONE__INT, G_TYPE_NONE, 1,
+		    G_TYPE_INT);
 
   clavier_signals[CLAVIERKEY_LEAVE] = 
-    gtk_signal_new ("clavierkey_leave", GTK_RUN_FIRST, object_class->type,
-		    GTK_SIGNAL_OFFSET (ClavierClass, clavierkey_leave),
-		    gtk_marshal_NONE__INT, GTK_TYPE_NONE, 1,
-		    GTK_TYPE_INT);
+    g_signal_new ("clavierkey_leave", G_TYPE_FROM_CLASS (object_class),
+		   (GSignalFlags) G_SIGNAL_RUN_FIRST,
+		    G_STRUCT_OFFSET (ClavierClass, clavierkey_leave),
+		    NULL, NULL,
+		    gtk_marshal_NONE__INT, G_TYPE_NONE, 1,
+		    G_TYPE_INT);
 
-  gtk_object_class_add_signals (object_class, clavier_signals, LAST_SIGNAL);
-
-  object_class->destroy = clavier_destroy;
+  gtkobject_class->destroy = clavier_destroy;
 
   widget_class->realize = clavier_realize;
   widget_class->expose_event = clavier_expose;

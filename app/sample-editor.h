@@ -24,7 +24,7 @@
 
 #include <gtk/gtk.h>
 #include "xm.h"
-#include "driver-in.h"
+#include "driver-inout.h"
 
 void         sample_editor_page_create               (GtkNotebook *nb);
 
@@ -45,7 +45,7 @@ void         sample_editor_stop_updating             (void);
 void	     sample_editor_copy_cut_common	     (gboolean copy, gboolean spliceout);
 void	     sample_editor_paste_clicked	     (void);
 
-extern st_in_driver *sampling_driver;
+extern st_io_driver *sampling_driver;
 extern void *sampling_driver_object;
 
 #endif /* _SAMPLE_EDITOR_H */

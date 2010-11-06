@@ -85,7 +85,7 @@ void                 gui_go_to_fileops_page           (void);
 
 void                 gui_set_current_instrument       (int);
 void                 gui_set_current_sample           (int);
-void                 gui_set_current_pattern          (int);
+void                 gui_set_current_pattern          (int, gboolean);
 void                 gui_update_pattern_data          (void);
 
 int                  gui_get_current_instrument       (void);
@@ -99,7 +99,7 @@ void		     gui_set_jump_value		      (int value);
 void                 gui_update_player_pos            (const audio_player_pos *p);
 void                 gui_clipping_indicator_update    (double songtime);
 
-void                 gui_init_xm                      (int new_xm);
+void                 gui_init_xm                      (int new_xm, gboolean updatechspin);
 void                 gui_free_xm                      (void);
 void                 gui_new_xm                       (void);
 void                 gui_load_xm                      (const char *filename);
@@ -112,4 +112,5 @@ void		     gui_accidentals_clicked 	      (GtkWidget *widget,
 void		     gui_shrink_pattern		      (void);
 void		     gui_expand_pattern		      (void);	
 
+GtkStyle*	     gui_get_style		      (void);
 #endif /* _GUI_H */

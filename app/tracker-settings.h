@@ -40,7 +40,7 @@ struct _TrackerSettings
     Tracker *tracker;
     int current_font;
 
-    GtkWidget *clist;
+    GtkWidget *list;
     GtkWidget *add_button, *delete_button, *apply_button;
     GtkWidget *up_button, *down_button;
     GtkWidget *fontsel_dialog;

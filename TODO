@@ -131,3 +131,9 @@ Find a workaround for the d->realtimecaps = i & DSP_CAP_REALTIME;
 > der Mitte des aktuellen Beats anschlage, wird der Ton in den
 > n%/1€Œiso8859-15ächsten Beat im Pattern geshrieben.
 
+--***--
+
+"Sample name" and "Instrument name" as the lists with the ability of choosing
+the instrument/sample
+
+No error message when attempting to write to read-only filesystem/directory

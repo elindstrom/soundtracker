@@ -195,8 +195,8 @@ envelope_box_canvas_add_point (EnvelopeBox *e,
 					  "outline_color", "#ff0000",
 					  "width_pixels", 0,
 					  NULL);
-    gtk_signal_connect (GTK_OBJECT (e->points[n]), "event",
-			(GtkSignalFunc) envelope_box_point_event,
+    g_signal_connect (e->points[n], "event",
+			G_CALLBACK(envelope_box_point_event),
 			e);
 
     // Adjust / Create line connecting to the previous point
@@ -254,17 +254,30 @@ static void
 envelope_box_block_loop_spins (EnvelopeBox *e,
 			       int block)
 {
-    void (*func) (GtkObject*, gpointer);
+    guint (*func) (gpointer,
+           GSignalMatchType    mask,
+		 guint          signal_id,
+		 GQuark         detail,
+		 GClosure           *closure,
+		 gpointer            func,
+		 gpointer            data);
 
-    func = block ? gtk_signal_handler_block_by_data : gtk_signal_handler_unblock_by_data;
+    func = block ? g_signal_handlers_block_matched : g_signal_handlers_unblock_matched;
 
-    func(GTK_OBJECT(e->spin_length), e);
-    func(GTK_OBJECT(e->spin_pos), e);
-    func(GTK_OBJECT(e->spin_offset), e);
-    func(GTK_OBJECT(e->spin_value), e);
-    func(GTK_OBJECT(e->spin_sustain), e);
-    func(GTK_OBJECT(e->spin_loop_start), e);
-    func(GTK_OBJECT(e->spin_loop_end), e);
+    func(G_OBJECT(e->spin_length), 
+	    (GSignalMatchType) G_SIGNAL_MATCH_DATA, 0, 0, NULL, NULL, e);
+    func(G_OBJECT(e->spin_pos),
+	    (GSignalMatchType) G_SIGNAL_MATCH_DATA, 0, 0, NULL, NULL, e);
+    func(G_OBJECT(e->spin_offset),
+	    (GSignalMatchType) G_SIGNAL_MATCH_DATA, 0, 0, NULL, NULL, e);
+    func(G_OBJECT(e->spin_value),
+	    (GSignalMatchType) G_SIGNAL_MATCH_DATA, 0, 0, NULL, NULL, e);
+    func(G_OBJECT(e->spin_sustain),
+	    (GSignalMatchType) G_SIGNAL_MATCH_DATA, 0, 0, NULL, NULL, e);
+    func(G_OBJECT(e->spin_loop_start),
+	    (GSignalMatchType) G_SIGNAL_MATCH_DATA, 0, 0, NULL, NULL, e);
+    func(G_OBJECT(e->spin_loop_end),
+	    (GSignalMatchType) G_SIGNAL_MATCH_DATA, 0, 0, NULL, NULL, e);
 }
 
 static int
@@ -860,8 +873,8 @@ GtkWidget* envelope_box_new(const gchar *label)
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), 0);
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
-    gtk_signal_connect(GTK_OBJECT(thing), "toggled",
-		       GTK_SIGNAL_FUNC(handle_toggle_button), e);
+    g_signal_connect(thing, "toggled",
+		      G_CALLBACK(handle_toggle_button), e);
     e->enable = GTK_TOGGLE_BUTTON(thing);
 
     add_empty_hbox(box2);
@@ -887,14 +900,14 @@ GtkWidget* envelope_box_new(const gchar *label)
     thing = gtk_button_new_with_label(_("Insert"));
     gtk_box_pack_start(GTK_BOX(box4), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(insert_clicked), e);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(insert_clicked), e);
     
     thing = gtk_button_new_with_label(_("Delete"));
     gtk_box_pack_start(GTK_BOX(box4), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(delete_clicked), e);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(delete_clicked), e);
 
     thing = gtk_vseparator_new();
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
@@ -910,8 +923,8 @@ GtkWidget* envelope_box_new(const gchar *label)
 //	gtk_widget_push_colormap (gdk_rgb_get_cmap ());
 //	canvas = gnome_canvas_new_aa ();
 //    } else {
-	gtk_widget_push_visual (gdk_imlib_get_visual ());
-	gtk_widget_push_colormap (gdk_imlib_get_colormap ());
+	gtk_widget_push_visual (gdk_rgb_get_visual ());
+	gtk_widget_push_colormap (gdk_rgb_get_colormap ());
 	canvas = gnome_canvas_new ();
 //    }
     e->canvas = GNOME_CANVAS(canvas);
@@ -932,12 +945,12 @@ GtkWidget* envelope_box_new(const gchar *label)
 							  "y", 0.0,
 							  NULL));
 
-    gtk_signal_connect_after (GTK_OBJECT (canvas), "event",
-			      (GtkSignalFunc) envelope_box_canvas_event,
+    g_signal_connect_after(canvas, "event",
+			      G_CALLBACK(envelope_box_canvas_event),
 			      e);
 
-    gtk_signal_connect_after(GTK_OBJECT(canvas), "size_allocate",
-			     GTK_SIGNAL_FUNC(envelope_box_canvas_size_allocate), e);
+    g_signal_connect_after(canvas, "size_allocate",
+			     G_CALLBACK(envelope_box_canvas_size_allocate), e);
 
     table = gtk_table_new (2, 2, FALSE);
     gtk_table_set_row_spacings (GTK_TABLE (table), 4);
@@ -1001,8 +1014,8 @@ GtkWidget* envelope_box_new(const gchar *label)
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), 0);
     gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
-    gtk_signal_connect(GTK_OBJECT(thing), "toggled",
-		       GTK_SIGNAL_FUNC(handle_toggle_button), e);
+    g_signal_connect(thing, "toggled",
+		       G_CALLBACK(handle_toggle_button), e);
     e->sustain = GTK_TOGGLE_BUTTON(thing);
 
     gui_put_labelled_spin_button(box3, _("Point"), 0, 11, (GtkWidget**)&e->spin_sustain, handle_spin_button, e);
@@ -1011,8 +1024,8 @@ GtkWidget* envelope_box_new(const gchar *label)
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), 0);
     gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
-    gtk_signal_connect(GTK_OBJECT(thing), "toggled",
-		       GTK_SIGNAL_FUNC(handle_toggle_button), e);
+    g_signal_connect(thing, "toggled",
+		       G_CALLBACK(handle_toggle_button), e);
     e->loop = GTK_TOGGLE_BUTTON(thing);
 
     gui_put_labelled_spin_button(box3, _("Start"), 0, 11, (GtkWidget**)&e->spin_loop_start, handle_spin_button, e);
@@ -1026,18 +1039,21 @@ guint envelope_box_get_type()
     static guint envelope_box_type = 0;
     
     if (!envelope_box_type) {
-	GtkTypeInfo envelope_box_info =
+	GTypeInfo envelope_box_info =
 	{
-	    "EnvelopeBox",
-	    sizeof(EnvelopeBox),
 	    sizeof(EnvelopeBoxClass),
-	    (GtkClassInitFunc) NULL,
-	    (GtkObjectInitFunc) NULL,
-	    (GtkArgSetFunc) NULL,
-	    (GtkArgGetFunc) NULL,
+		(GBaseInitFunc) NULL,
+		(GBaseFinalizeFunc) NULL,
+	    (GClassInitFunc) NULL,
+	    (GClassFinalizeFunc) NULL,
+	    NULL,
+	    sizeof(EnvelopeBox),
+	    0,
+	    (GInstanceInitFunc) NULL,
 	};
 	
-	envelope_box_type = gtk_type_unique(gtk_vbox_get_type (), &envelope_box_info);
+	envelope_box_type = g_type_register_static(gtk_vbox_get_type (),"EnvelopeBox",
+			&envelope_box_info, (GTypeFlags)0);
     }
     
     return envelope_box_type;

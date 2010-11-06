@@ -7,7 +7,7 @@ soundtracker_SOURCES = \
 	audioconfig.c audioconfig.h \
 	cheat-sheet.c cheat-sheet.h \
 	clavier.c clavier.h \
-	driver.h driver-in.h driver-out.h \
+	driver.h driver-inout.h \
 	endian-conv.c endian-conv.h \
 	envelope-box.c envelope-box.h \
 	errors.c errors.h \
@@ -39,7 +39,8 @@ soundtracker_SOURCES = \
 	tracker-settings.c tracker-settings.h \
 	transposition.c transposition.h \
 	xm.c xm.h \
-	xm-player.c xm-player.h
+	xm-player.c xm-player.h\
+	entry-workaround.c entry-workaround.h
 
 if !NO_GDK_PIXBUF
   soundtracker_SOURCES += scalablepic.c scalablepic.h

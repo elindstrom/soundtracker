@@ -35,6 +35,7 @@
 #include <glib.h>
 #ifdef USE_GNOME
 #include <gnome.h>
+#include <bonobo.h>
 #endif
 #ifndef NO_GDK_PIXBUF
 #include <gdk-pixbuf/gdk-pixbuf.h>
@@ -64,6 +65,7 @@
 #include "file-operations.h"
 #include "playlist.h"
 #include "extspinbutton.h"
+#include "entry-workaround.h"
 
 int gui_playing_mode = 0;
 int notebook_current_page = NOTEBOOK_PAGE_FILE;
@@ -94,7 +96,6 @@ static Playlist *playlist;
 
 guint statusbar_context_id;
 GtkWidget *status_bar;
-GtkWidget *st_clock;
 
 struct f_n_l
 {
@@ -237,8 +238,8 @@ measure_dialog (gint x, gint y)
 			GNOME_STOCK_BUTTON_CLOSE, NULL);
     gnome_dialog_close_hides(GNOME_DIALOG(measurewindow), TRUE);
     gnome_dialog_set_close(GNOME_DIALOG(measurewindow), TRUE);
-    gtk_signal_connect(GTK_OBJECT(measurewindow), "clicked",
-			GTK_SIGNAL_FUNC (measure_close_requested), NULL);
+    g_signal_connect(measurewindow, "clicked",
+			G_CALLBACK(measure_close_requested), NULL);
     vbox = GNOME_DIALOG(measurewindow)->vbox;
 #else
 /* stolen from Gnome UI code. With Gnome life seemed so easy... (yaliaev) */
@@ -265,8 +266,8 @@ measure_dialog (gint x, gint y)
     button = gtk_button_new_with_label(_("Close"));
     GTK_WIDGET_SET_FLAGS (GTK_WIDGET (button), GTK_CAN_DEFAULT);
     gtk_box_pack_start (GTK_BOX (thing), button, TRUE, TRUE, 0);
-    gtk_signal_connect(GTK_OBJECT(button), "clicked",
-			GTK_SIGNAL_FUNC (measure_close_requested), NULL);
+    g_signal_connect(button, "clicked",
+			G_CALLBACK(measure_close_requested), NULL);
 
     gtk_widget_grab_default (button);
     gtk_widget_show (button);
@@ -282,8 +283,8 @@ measure_dialog (gint x, gint y)
 		      
 #endif
 
-    gtk_signal_connect(GTK_OBJECT (measurewindow), "delete_event",
-			GTK_SIGNAL_FUNC (measure_close_requested), NULL);
+    g_signal_connect(measurewindow, "delete_event",
+			G_CALLBACK(measure_close_requested), NULL);
 
     mainbox = gtk_hbox_new(FALSE, 2);
     
@@ -298,15 +299,15 @@ measure_dialog (gint x, gint y)
     gtk_box_pack_start(GTK_BOX(mainbox), majspin, FALSE, TRUE, 0);
     gtk_widget_show(majspin);
     gtk_spin_button_set_digits(GTK_SPIN_BUTTON(majspin), 0);
-    gtk_signal_connect(GTK_OBJECT(majspin), "changed",
-		       GTK_SIGNAL_FUNC(gui_settings_highlight_rows_changed), NULL);
+    g_signal_connect(majspin, "value-changed",
+		       G_CALLBACK(gui_settings_highlight_rows_changed), NULL);
     adj = gtk_adjustment_new((double)gui_settings.highlight_rows_minor_n, 1, 16, 1, 2, 0.0);
     thing = extspinbutton_new(GTK_ADJUSTMENT(adj), 0, 0);
     gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
     gtk_spin_button_set_digits(GTK_SPIN_BUTTON(thing), 0);
-    gtk_signal_connect(GTK_OBJECT(thing), "changed",
-		       GTK_SIGNAL_FUNC(gui_settings_highlight_rows_minor_changed), NULL);
+    g_signal_connect(thing, "value-changed",
+		       G_CALLBACK(gui_settings_highlight_rows_minor_changed), NULL);
     gtk_widget_set_uposition(measurewindow, x, y);
     
     gtk_box_pack_start(GTK_BOX(vbox), mainbox, TRUE, TRUE, 0);
@@ -645,18 +646,21 @@ file_selected (GtkWidget *w,
 	    }
 	} else fclose (f); }
     }
+    
 }
 
 static void
 current_instrument_changed (GtkSpinButton *spin)
 {
+    int ins;
+    
     int m = xm_get_modified();
-    STInstrument *i = &xm->instruments[gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin))-1];
+    STInstrument *i = &xm->instruments[ins = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin))-1];
     STSample *s = &i->samples[gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(cursmpl_spin))];
 
     instrument_editor_set_instrument(i);
     sample_editor_set_sample(s);
-    modinfo_set_current_instrument(gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin)) - 1);
+    modinfo_set_current_instrument(ins);
     xm_set_modified(m);
 }
 
@@ -674,13 +678,15 @@ current_instrument_name_changed (void)
 static void
 current_sample_changed (GtkSpinButton *spin)
 {
+    int smpl;
+
     int m = xm_get_modified();
     STInstrument *i = &xm->instruments[gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin))-1];
-    STSample *s = &i->samples[gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(cursmpl_spin))];
+    STSample *s = &i->samples[smpl = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(cursmpl_spin))];
 
-    gtk_entry_set_text(GTK_ENTRY(gui_cursmpl_name), s->name);
+    wa_entry_set_text(GTK_ENTRY(gui_cursmpl_name), s->name);
     sample_editor_set_sample(s);
-    modinfo_set_current_sample(gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(cursmpl_spin)));
+    modinfo_set_current_sample(smpl);
     xm_set_modified(m);
 }
 
@@ -874,9 +880,9 @@ keyevent (GtkWidget *widget,
 
 	if(handled) {
 	    if(pressed) {
-		gtk_signal_emit_stop_by_name(GTK_OBJECT(widget), "key_press_event");
+		gtk_signal_emit_stop_by_name(GTK_OBJECT(widget), "key-press-event");
 	    } else {
-		gtk_signal_emit_stop_by_name(GTK_OBJECT(widget), "key_release_event");
+		gtk_signal_emit_stop_by_name(GTK_OBJECT(widget), "key-release-event");
 	    }
 	}
     } else {
@@ -884,14 +890,14 @@ keyevent (GtkWidget *widget,
 	    switch(event->keyval) {
 	    case GDK_Tab:
 	    case GDK_Return:
-		gtk_signal_emit_stop_by_name(GTK_OBJECT(widget), "key_press_event");
+		gtk_signal_emit_stop_by_name(GTK_OBJECT(widget), "key-press-event");
 		gtk_window_set_focus(GTK_WINDOW(mainwindow), NULL);
 		break;
 	    }
 	}
     }
 
-    return TRUE;
+    return handled;
 }
 
 static void
@@ -929,7 +935,7 @@ gui_playlist_entry_changed (Playlist *p,
 	xm->pattern_order_table[pos] = pat;
 	if(pos == playlist_get_position(p)
 	    && !gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(toggle_lock_editpat))) {
-	    gui_set_current_pattern(pat);
+	    gui_set_current_pattern(pat, TRUE);
 	}
     } else {
 	for(i = 0; i < xm->song_length; i++) {
@@ -954,7 +960,7 @@ gui_editpat_changed (GtkSpinButton *spin)
     int n = gtk_spin_button_get_value_as_int(spin);
 
     if(n != editing_pat) {
-	gui_set_current_pattern(n);
+	gui_set_current_pattern(n, FALSE);
 
 	/* If we are in 'playing pattern' mode and asynchronous
 	 * editing is disabled, make the audio thread jump to the new
@@ -995,7 +1001,7 @@ gui_numchans_changed (GtkSpinButton *spin)
 	gui_play_stop();
 	tracker_set_pattern(tracker, NULL);
 	st_set_num_channels(xm, n);
-	gui_init_xm(0);
+	gui_init_xm(0, FALSE);
 	xm_set_modified(1);
     }
 }
@@ -1092,7 +1098,7 @@ gui_update_player_pos (const audio_player_pos *p)
 	}
 	if(!ASYNCEDIT) {
 	    /* The following is a no-op if we're already in the right pattern */
-	    gui_set_current_pattern(xm->pattern_order_table[p->songpos]);
+	    gui_set_current_pattern(xm->pattern_order_table[p->songpos], TRUE);
 	}
     }
 
@@ -1156,9 +1162,6 @@ read_mixer_pipe (gpointer data,
     switch(a) {
     case AUDIO_BACKPIPE_PLAYING_STOPPED:
         statusbar_update(STATUS_IDLE, FALSE);
-#ifdef USE_GNOME
-        gtk_clock_stop(GTK_CLOCK(st_clock));
-#endif
 
         if(gui_ewc_startstop > 0) {
 	    /* can be equal to zero when the audio subsystem decides to stop playing on its own. */
@@ -1178,10 +1181,6 @@ read_mixer_pipe (gpointer data,
     case AUDIO_BACKPIPE_PLAYING_PATTERN_STARTED:
         if(a == AUDIO_BACKPIPE_PLAYING_PATTERN_STARTED)
 	    statusbar_update(STATUS_PLAYING_PATTERN, FALSE);
-#ifdef USE_GNOME
-        gtk_clock_set_seconds(GTK_CLOCK(st_clock), 0);
-        gtk_clock_start(GTK_CLOCK(st_clock));
-#endif
 
         gui_ewc_startstop--;
 	gui_playing_mode = (a == AUDIO_BACKPIPE_PLAYING_STARTED) ? PLAYING_SONG : PLAYING_PATTERN;
@@ -1286,7 +1285,7 @@ gui_play_stop (void)
 }
 
 void
-gui_init_xm (int new_xm)
+gui_init_xm (int new_xm, gboolean updatechspin)
 {
     int m = xm_get_modified();
     audio_ctlpipe_id i;
@@ -1297,7 +1296,7 @@ gui_init_xm (int new_xm)
     if(new_xm) {
 	gui_playlist_initialize();
 	editing_pat = -1;
-	gui_set_current_pattern(xm->pattern_order_table[0]);
+	gui_set_current_pattern(xm->pattern_order_table[0], TRUE);
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(curins_spin), 1);
 	current_instrument_changed(GTK_SPIN_BUTTON(curins_spin));
 	modinfo_set_current_instrument(0);
@@ -1306,12 +1305,13 @@ gui_init_xm (int new_xm)
     } else {
 	i = editing_pat;
 	editing_pat = -1;
-	gui_set_current_pattern(i);
+	gui_set_current_pattern(i, TRUE);
     }
     gui_subs_set_slider_value(&tempo_slider, xm->tempo);
     gui_subs_set_slider_value(&bpm_slider, xm->bpm);
     track_editor_set_num_channels(xm->num_channels);
-    gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_numchans), xm->num_channels);
+    if(updatechspin)
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_numchans), xm->num_channels);
     scope_group_set_num_channels(scopegroup, xm->num_channels);
     xm_set_modified(m);
 }
@@ -1336,7 +1336,7 @@ gui_new_xm (void)
 	fprintf(stderr, "Whooops, having memory problems?\n");
 	exit(1);
     }
-    gui_init_xm(1);
+    gui_init_xm(1, TRUE);
 }
 
 void
@@ -1351,7 +1351,7 @@ gui_load_xm (const char *filename)
 	gui_new_xm();
 	statusbar_update(STATUS_IDLE, FALSE);
     } else {
-	gui_init_xm(1);
+	gui_init_xm(1, TRUE);
 	statusbar_update(STATUS_MODULE_LOADED, FALSE);
 	gui_update_title (filename);
     }
@@ -1411,7 +1411,7 @@ gui_enable (int enable)
 }
 
 void
-gui_set_current_pattern (int p)
+gui_set_current_pattern (int p, gboolean updatespin)
 {
     int m;
 
@@ -1422,7 +1422,8 @@ gui_set_current_pattern (int p)
 
     editing_pat = p;
     tracker_set_pattern(tracker, &xm->patterns[p]);
-    gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_editpat), p);
+    if(updatespin)
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_editpat), p);
     gui_update_pattern_data();
 
     xm_set_modified(m);
@@ -1460,6 +1461,7 @@ void
 gui_set_current_instrument (int n)
 {
     int m = xm_get_modified();
+
     g_return_if_fail(n >= 1 && n <= 128);
     if(n != gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin))) {
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(curins_spin), n);
@@ -1585,10 +1587,11 @@ gui_get_text_entry (int length,
 {
     GtkWidget *thing;
 
-    thing = gtk_entry_new_with_max_length(length);
+    thing = gtk_entry_new();
+    gtk_entry_set_max_length(GTK_ENTRY(thing), length);
 
-    gtk_signal_connect_after(GTK_OBJECT(thing), "changed",
-			     GTK_SIGNAL_FUNC(changedfunc), NULL);
+    g_signal_connect_after(GTK_EDITABLE(thing), "insert-text",
+			     G_CALLBACK(changedfunc), NULL);
 
     *widget = thing;
 }
@@ -1705,7 +1708,7 @@ gui_splash (int argc,
     gdk_rgb_init();
 #endif
 
-    gui_splash_window = gtk_window_new (GTK_WINDOW_DIALOG);
+    gui_splash_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
     gtk_window_set_title (GTK_WINDOW(gui_splash_window), _("SoundTracker Startup"));
 //    gtk_window_set_wmclass (GTK_WINDOW (gui_splash_window), "soundtracker_startup", "SoundTracker");
@@ -1713,8 +1716,8 @@ gui_splash (int argc,
     gtk_window_set_policy (GTK_WINDOW (gui_splash_window), FALSE, FALSE, FALSE);
     gtk_window_set_modal(GTK_WINDOW(gui_splash_window), TRUE);
 
-    gtk_signal_connect(GTK_OBJECT (gui_splash_window), "delete_event",
-		       GTK_SIGNAL_FUNC (gui_splash_close), NULL);
+    g_signal_connect(gui_splash_window, "delete_event",
+		       G_CALLBACK(gui_splash_close), NULL);
 
     vbox = gtk_vbox_new (FALSE, 4);
     gtk_container_add (GTK_CONTAINER (gui_splash_window), vbox);
@@ -1724,7 +1727,8 @@ gui_splash (int argc,
     /* Show splash screen if enabled and image available. */
 
 #ifndef NO_GDK_PIXBUF
-    gui_splash_logo = gdk_pixbuf_new_from_file(PREFIX"/share/soundtracker/soundtracker_splash.png");
+    GError *error = NULL;
+    gui_splash_logo = gdk_pixbuf_new_from_file(PREFIX"/share/soundtracker/soundtracker_splash.png", &error);
     if(gui_splash_logo) {
 	thing = gtk_hseparator_new();
 	gtk_widget_show(thing);
@@ -1747,8 +1751,8 @@ gui_splash (int argc,
 
 	add_empty_vbox(hbox);
 
-	gtk_signal_connect (GTK_OBJECT (logo_area), "expose_event",
-			    GTK_SIGNAL_FUNC (gui_splash_logo_expose),
+	g_signal_connect(logo_area, "expose_event",
+			    G_CALLBACK(gui_splash_logo_expose),
 			    NULL);
 
 	gtk_drawing_area_size (GTK_DRAWING_AREA (logo_area),
@@ -1795,8 +1799,8 @@ gui_splash (int argc,
 	gui_splash_close_button = thing = gtk_button_new_with_label(_("Use SoundTracker!"));
 	gtk_widget_show(thing);
 	gtk_box_pack_start(GTK_BOX(vbox), thing, FALSE, TRUE, 0);
-	gtk_signal_connect(GTK_OBJECT (thing), "clicked",
-			   GTK_SIGNAL_FUNC(gui_splash_close), NULL);
+	g_signal_connect(thing, "clicked",
+			   (gui_splash_close), NULL);
 	gtk_widget_set_sensitive(thing, FALSE);
     }
 
@@ -1806,6 +1810,19 @@ gui_splash (int argc,
     gui_splash_set_label(_("Loading..."), TRUE);
 
     return 1;
+}
+
+GtkStyle*
+gui_get_style(void)
+{
+    static GtkStyle *style = NULL;
+    
+    if(!style) {
+	if(!GTK_WIDGET_REALIZED(mainwindow))
+	    gtk_widget_realize(mainwindow); /* to produce the correct style... */
+	style = gtk_widget_get_style(mainwindow);
+    }
+    return style;
 }
 
 int
@@ -1833,8 +1850,8 @@ gui_final (int argc,
     gtk_window_set_title (GTK_WINDOW (mainwindow), "SoundTracker " VERSION);
 #endif
 
-    gtk_signal_connect (GTK_OBJECT (mainwindow), "delete_event",
-			GTK_SIGNAL_FUNC (menubar_quit_requested), NULL);
+    g_signal_connect(mainwindow, "delete_event",
+			G_CALLBACK(menubar_quit_requested), NULL);
 
     if(gui_splash_window) {
 	gtk_window_set_transient_for(GTK_WINDOW(gui_splash_window),
@@ -1892,18 +1909,18 @@ gui_final (int argc,
     gtk_widget_show(thing);
 
     playlist = PLAYLIST(thing);
-    gtk_signal_connect (GTK_OBJECT (playlist), "current_position_changed",
-			GTK_SIGNAL_FUNC (gui_playlist_position_changed), NULL);
-    gtk_signal_connect (GTK_OBJECT (playlist), "restart_position_changed",
-			GTK_SIGNAL_FUNC (gui_playlist_restart_position_changed), NULL);
-    gtk_signal_connect (GTK_OBJECT (playlist), "song_length_changed",
-			GTK_SIGNAL_FUNC (gui_playlist_song_length_changed), NULL);
-    gtk_signal_connect (GTK_OBJECT (playlist), "entry_changed",
-			GTK_SIGNAL_FUNC (gui_playlist_entry_changed), NULL);
-    gtk_signal_connect (GTK_OBJECT (playlist->ifbutton), "clicked",
-			GTK_SIGNAL_FUNC (gui_add_free_pattern), playlist);
-    gtk_signal_connect (GTK_OBJECT (playlist->icbutton), "clicked",
-			GTK_SIGNAL_FUNC (gui_add_free_pattern_and_copy), playlist);
+    g_signal_connect(playlist, "current_position_changed",
+			G_CALLBACK(gui_playlist_position_changed), NULL);
+    g_signal_connect(playlist, "restart_position_changed",
+			G_CALLBACK(gui_playlist_restart_position_changed), NULL);
+    g_signal_connect(playlist, "song_length_changed",
+			G_CALLBACK(gui_playlist_song_length_changed), NULL);
+    g_signal_connect(playlist, "entry_changed",
+			G_CALLBACK(gui_playlist_entry_changed), NULL);
+    g_signal_connect(playlist->ifbutton, "clicked",
+			G_CALLBACK(gui_add_free_pattern), playlist);
+    g_signal_connect(playlist->icbutton, "clicked",
+			G_CALLBACK(gui_add_free_pattern_and_copy), playlist);
     
     thing = gtk_vseparator_new();
     gtk_box_pack_start(GTK_BOX(mainwindow_upper_hbox), thing, FALSE, TRUE, 0);
@@ -1917,8 +1934,9 @@ gui_final (int argc,
     gtk_box_pack_start(GTK_BOX(mainwindow_upper_hbox), table, FALSE, TRUE, 0);
     gtk_widget_show(table);
 
-    gtk_widget_realize(mainwindow); /* to produce the correct style... */
-    style = gtk_widget_get_style(mainwindow);
+//    gtk_widget_realize(mainwindow); /* to produce the correct style... */
+//    style = gtk_widget_get_style(mainwindow);
+    style = gui_get_style();
     hbox = gtk_hbox_new(FALSE, 4);
     gtk_table_attach_defaults(GTK_TABLE(table), hbox, 0, 2, 0, 1);
     gtk_widget_show(hbox);
@@ -1929,8 +1947,8 @@ gui_final (int argc,
     pmw = gtk_pixmap_new(pm, mask);
     pbutton = thing = gtk_button_new();
     gtk_container_add(GTK_CONTAINER(thing), pmw);
-    gtk_signal_connect (GTK_OBJECT (thing), "clicked",
-			GTK_SIGNAL_FUNC(play_song), NULL);
+    g_signal_connect(thing, "clicked",
+			G_CALLBACK(play_song), NULL);
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, FALSE,0);
     gui_hang_tooltip(thing, _("Play Song"));
     gtk_widget_show_all(thing);
@@ -1941,8 +1959,8 @@ gui_final (int argc,
     pmw = gtk_pixmap_new(pm, mask);
     thing = gtk_button_new();
     gtk_container_add(GTK_CONTAINER(thing), pmw);
-    gtk_signal_connect (GTK_OBJECT (thing), "clicked",
-			GTK_SIGNAL_FUNC(play_pattern), NULL);
+    g_signal_connect(thing, "clicked",
+			G_CALLBACK(play_pattern), NULL);
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, FALSE,0);
     gui_hang_tooltip(thing, _("Play Pattern"));
     gtk_widget_show_all(thing);
@@ -1953,8 +1971,8 @@ gui_final (int argc,
     pmw = gtk_pixmap_new(pm, mask);
     thing = gtk_button_new();
     gtk_container_add(GTK_CONTAINER(thing), pmw);
-    gtk_signal_connect (GTK_OBJECT (thing), "clicked",
-			GTK_SIGNAL_FUNC(gui_play_stop), NULL);
+    g_signal_connect(thing, "clicked",
+			G_CALLBACK(gui_play_stop), NULL);
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, FALSE,0);		
     gui_hang_tooltip(thing, _("Stop"));
     gtk_widget_show_all(thing);
@@ -1965,13 +1983,13 @@ gui_final (int argc,
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
 
-    spin_editpat = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 255, 1.0, 10.0, 0.0)), 0, 0);
+    spin_editpat = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 255, 1.0, 10.0, 0.0)), 1, 0);
     extspinbutton_disable_size_hack(EXTSPINBUTTON(spin_editpat));
     gui_hang_tooltip(spin_editpat, _("Edited pattern"));
     gtk_box_pack_start(GTK_BOX(hbox), spin_editpat, FALSE, TRUE, 0);
     gtk_widget_show(spin_editpat);
-    gtk_signal_connect(GTK_OBJECT(spin_editpat), "changed",
-		       GTK_SIGNAL_FUNC(gui_editpat_changed), NULL);
+    g_signal_connect(spin_editpat, "value-changed",
+		     G_CALLBACK(gui_editpat_changed), NULL);
 		       
     pm = gdk_pixmap_create_from_xpm(mainwindow->window,
 	&mask, &style->bg[GTK_STATE_NORMAL],
@@ -2002,11 +2020,11 @@ gui_final (int argc,
 
     add_empty_hbox(hbox);
 
-    spin_numchans = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(8, 2, 32, 2.0, 8.0, 0.0)), 0, 0);
+    spin_numchans = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(8, 2, 32, 2.0, 8.0, 0.0)), 1, 0);
     extspinbutton_disable_size_hack(EXTSPINBUTTON(spin_numchans));
     gtk_box_pack_start(GTK_BOX(hbox), spin_numchans, FALSE, TRUE, 0);
-    gtk_signal_connect(GTK_OBJECT(spin_numchans), "changed",
-		       GTK_SIGNAL_FUNC(gui_numchans_changed), NULL);
+    g_signal_connect(spin_numchans, "value-changed",
+		       G_CALLBACK(gui_numchans_changed), NULL);
     gtk_widget_show(spin_numchans);
 
     hbox = gtk_hbox_new(FALSE, 4);
@@ -2019,11 +2037,11 @@ gui_final (int argc,
 
     add_empty_hbox(hbox);
 
-    spin_patlen = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(64, 1, 256, 1.0, 16.0, 0.0)), 0, 0);
+    spin_patlen = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(64, 1, 256, 1.0, 16.0, 0.0)), 1, 0);
     extspinbutton_disable_size_hack(EXTSPINBUTTON(spin_patlen));
     gtk_box_pack_start(GTK_BOX(hbox), spin_patlen, FALSE, TRUE, 0);
-    gtk_signal_connect(GTK_OBJECT(spin_patlen), "changed",
-		       GTK_SIGNAL_FUNC(gui_patlen_changed), NULL);
+    g_signal_connect(spin_patlen, "value-changed",
+		       G_CALLBACK(gui_patlen_changed), NULL);
     gtk_widget_show(spin_patlen);
 
     hbox = gtk_hbox_new(FALSE, 4);
@@ -2050,16 +2068,16 @@ gui_final (int argc,
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, FALSE, 0);
     gui_hang_tooltip(thing, _("Set preferred accidental type"));
     gtk_widget_show(thing);
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(gui_accidentals_clicked), NULL);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(gui_accidentals_clicked), NULL);
 
     add_empty_hbox(hbox);
     thing = gtk_toggle_button_new_with_label(_("Measure"));
     gui_hang_tooltip(thing, _("Enable row highlighting"));
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing),gui_settings.highlight_rows);
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, FALSE, 0);
-    gtk_signal_connect(GTK_OBJECT(thing), "toggled",
-		       GTK_SIGNAL_FUNC(gui_highlight_rows_toggled), NULL);
+    g_signal_connect(thing, "toggled",
+		       G_CALLBACK(gui_highlight_rows_toggled), NULL);
     gtk_widget_show(thing);
 
     thing = gtk_combo_new();
@@ -2074,7 +2092,8 @@ gui_final (int argc,
     selected = -1;
     for(i = 0; measure_msr[i].title != NULL; i++) {
 	glist = g_list_append(glist, (gpointer)measure_msr[i].title);
-	if ((cur = gdk_string_width(style->font, measure_msr[i].title)) > wdth)
+	if ((cur = gdk_string_width(gdk_font_from_description(style->font_desc),
+				    measure_msr[i].title)) > wdth)
 	    wdth = cur;
 	if ((measure_msr[i].major == gui_settings.highlight_rows_n) &&
 	    (measure_msr[i].minor == gui_settings.highlight_rows_minor_n))
@@ -2083,16 +2102,17 @@ gui_final (int argc,
     if (selected == -1) selected = i;
     other = _("Other...");
     glist = g_list_append(glist, other);
-    if ((cur = gdk_string_width(style->font,other)) > wdth) wdth = cur;
+    if ((cur = gdk_string_width(gdk_font_from_description(style->font_desc),
+				    other)) > wdth) wdth = cur;
 
     gtk_combo_set_popdown_strings(GTK_COMBO(thing), glist);
     list = GTK_COMBO(thing)->list;
     gtk_list_select_item(GTK_LIST(list), selected);
-    gtk_signal_connect(GTK_OBJECT(list), "select_child",
-		       GTK_SIGNAL_FUNC(measure_changed), NULL);
+    g_signal_connect(list, "select_child",
+		       G_CALLBACK(measure_changed), NULL);
     /* the direct use of combo->popwin is not recommended, but I couldn't find another way... */
-    gtk_signal_connect(GTK_OBJECT(GTK_COMBO(thing)->popwin), "hide",
-		       GTK_SIGNAL_FUNC(popwin_hide), entry);
+    g_signal_connect(GTK_COMBO(thing)->popwin, "hide",
+		       G_CALLBACK(popwin_hide), entry);
     
     gtk_widget_set_usize(entry, wdth + 5, -1);//-1 to suppress the height changing
     gtk_entry_set_editable(GTK_ENTRY(entry), FALSE);
@@ -2119,8 +2139,8 @@ gui_final (int argc,
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, FALSE, 0);
     gui_hang_tooltip(thing, _("Change effect column editing direction"));
     gtk_widget_show(thing);
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(gui_direction_clicked), NULL);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(gui_direction_clicked), NULL);
     
     /* Scopes Group or Instrument / Sample Listing */
 
@@ -2129,7 +2149,8 @@ gui_final (int argc,
     gtk_widget_show(thing);
 
 #ifndef NO_GDK_PIXBUF
-    scopegroup = SCOPE_GROUP(scope_group_new(gdk_pixbuf_new_from_file(PREFIX"/share/soundtracker/muted.png")));
+    GError *error = NULL;
+    scopegroup = SCOPE_GROUP(scope_group_new(gdk_pixbuf_new_from_file(PREFIX"/share/soundtracker/muted.png", &error)));
 #else
     scopegroup = SCOPE_GROUP(scope_group_new());
 #endif
@@ -2152,8 +2173,8 @@ gui_final (int argc,
     gtk_scale_set_draw_value(GTK_SCALE(thing), FALSE);
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(hbox), thing, TRUE, TRUE, 0);
-    gtk_signal_connect (GTK_OBJECT(adj_amplification), "value_changed",
-			GTK_SIGNAL_FUNC(gui_adj_amplification_changed), NULL);
+    g_signal_connect(adj_amplification, "value_changed",
+			G_CALLBACK(gui_adj_amplification_changed), NULL);
 
     frame = gtk_frame_new(NULL);
     gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
@@ -2175,7 +2196,7 @@ gui_final (int argc,
     gui_clipping_led_off.pixel = 0;
     gdk_color_alloc(colormap, &gui_clipping_led_on);
     gdk_color_alloc(colormap, &gui_clipping_led_off);
-    gtk_signal_connect(GTK_OBJECT(thing), "event", GTK_SIGNAL_FUNC(gui_clipping_led_event), thing);
+    g_signal_connect(thing, "event", G_CALLBACK(gui_clipping_led_event), thing);
     gtk_widget_show (thing);
 
     hbox = gtk_vbox_new(FALSE, 2);
@@ -2188,15 +2209,15 @@ gui_final (int argc,
     gtk_scale_set_draw_value(GTK_SCALE(thing), FALSE);
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(hbox), thing, TRUE, TRUE, 0);
-    gtk_signal_connect (GTK_OBJECT(adj_pitchbend), "value_changed",
-			GTK_SIGNAL_FUNC(gui_adj_pitchbend_changed), NULL);
+    g_signal_connect(adj_pitchbend, "value_changed",
+			G_CALLBACK(gui_adj_pitchbend_changed), NULL);
 
     thing = gtk_button_new_with_label("R");
     gui_hang_tooltip(thing, _("Reset pitchbend to its normal value"));
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, TRUE, 0);
-    gtk_signal_connect (GTK_OBJECT (thing), "clicked",
-			GTK_SIGNAL_FUNC(gui_reset_pitch_bender), NULL);
+    g_signal_connect(thing, "clicked",
+			G_CALLBACK(gui_reset_pitch_bender), NULL);
 
     /* Instrument, sample, editing status */
 
@@ -2235,8 +2256,8 @@ gui_final (int argc,
     extspinbutton_disable_size_hack(EXTSPINBUTTON(curins_spin));
     gtk_box_pack_start(GTK_BOX(hbox), curins_spin, FALSE, TRUE, 0);
     gtk_widget_show(curins_spin);
-    gtk_signal_connect (GTK_OBJECT(curins_spin), "changed",
-			GTK_SIGNAL_FUNC(current_instrument_changed), NULL);
+    g_signal_connect(curins_spin, "value-changed",
+			G_CALLBACK(current_instrument_changed), NULL);
 
     gui_get_text_entry(22, current_instrument_name_changed, &gui_curins_name);
     gtk_box_pack_start(GTK_BOX(hbox), gui_curins_name, TRUE, TRUE, 0);
@@ -2251,8 +2272,8 @@ gui_final (int argc,
     extspinbutton_disable_size_hack(EXTSPINBUTTON(cursmpl_spin));
     gtk_box_pack_start(GTK_BOX(hbox), cursmpl_spin, FALSE, TRUE, 0);
     gtk_widget_show(cursmpl_spin);
-    gtk_signal_connect (GTK_OBJECT(cursmpl_spin), "changed",
-			GTK_SIGNAL_FUNC(current_sample_changed), NULL);
+    g_signal_connect(cursmpl_spin, "value-changed",
+			G_CALLBACK(current_sample_changed), NULL);
 
     gui_get_text_entry(22, current_sample_name_changed, &gui_cursmpl_name);
     gtk_box_pack_start(GTK_BOX(hbox), gui_cursmpl_name, TRUE, TRUE, 0);
@@ -2266,8 +2287,8 @@ gui_final (int argc,
     gtk_notebook_set_tab_pos(GTK_NOTEBOOK(notebook), GTK_POS_TOP);
     gtk_widget_show(notebook);
     gtk_container_border_width(GTK_CONTAINER(notebook), 0);
-    gtk_signal_connect(GTK_OBJECT(notebook), "switch_page",
-		       GTK_SIGNAL_FUNC(notebook_page_switched), NULL);
+    g_signal_connect(notebook, "switch_page",
+		       G_CALLBACK(notebook_page_switched), NULL);
 
     fileops_page_create(GTK_NOTEBOOK(notebook));
     tracker_page_create(GTK_NOTEBOOK(notebook));
@@ -2285,8 +2306,9 @@ gui_final (int argc,
 #define WELCOME_MESSAGE _("Welcome to SoundTracker!")
 
 #ifdef USE_GNOME
-    dockitem = gnome_dock_item_new("Status Bar", (GNOME_DOCK_ITEM_BEH_EXCLUSIVE | GNOME_DOCK_ITEM_BEH_NEVER_VERTICAL));
-    gnome_app_add_dock_item(GNOME_APP(mainwindow), GNOME_DOCK_ITEM(dockitem), GNOME_DOCK_BOTTOM, 0, 0, 0);
+    dockitem = bonobo_dock_item_new("Status Bar", (BONOBO_DOCK_ITEM_BEH_EXCLUSIVE | BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL));
+    gnome_app_add_dock_item(GNOME_APP(mainwindow), BONOBO_DOCK_ITEM(dockitem),
+		   BONOBO_DOCK_BOTTOM, 0, 0, 0);
     gtk_widget_show(dockitem);
 
     hbox = gtk_hbox_new(FALSE, 2);
@@ -2305,13 +2327,6 @@ gui_final (int argc,
     gtk_widget_set_usize (thing, 48, 20);
     gtk_frame_set_shadow_type (GTK_FRAME (thing), GTK_SHADOW_IN);
 
-    st_clock = gtk_clock_new (GTK_CLOCK_INCREASING);
-    gtk_widget_show (st_clock);
-    gtk_container_add (GTK_CONTAINER (thing), st_clock);
-    gtk_widget_set_usize (st_clock, 48, 20);
-    gtk_clock_set_format (GTK_CLOCK (st_clock), _("%M:%S"));
-    gtk_clock_set_seconds(GTK_CLOCK (st_clock), 0);
-
     gnome_appbar_set_status(GNOME_APPBAR(status_bar), WELCOME_MESSAGE);
 #else
     thing = gtk_hbox_new(FALSE, 1);
@@ -2329,8 +2344,8 @@ gui_final (int argc,
     
     /* capture all key presses */
     gtk_widget_add_events(GTK_WIDGET(mainwindow), GDK_KEY_RELEASE_MASK);
-    gtk_signal_connect(GTK_OBJECT(mainwindow), "key_press_event", GTK_SIGNAL_FUNC(keyevent), (gpointer)1);
-    gtk_signal_connect(GTK_OBJECT(mainwindow), "key_release_event", GTK_SIGNAL_FUNC(keyevent), (gpointer)0);
+    g_signal_connect(mainwindow, "key-press-event", G_CALLBACK(keyevent), (gpointer)1);
+//    g_signal_connect(mainwindow, "key_release_event", G_CALLBACK(keyevent), (gpointer)0);
 
     if(argc == 2) {
 	gui_load_xm(argv[1]);
@@ -2362,8 +2377,8 @@ gui_final (int argc,
 	    if(gui_splash_logo) {
 		gtk_widget_add_events(gui_splash_logo_area,
 				      GDK_BUTTON_PRESS_MASK);
-		gtk_signal_connect (GTK_OBJECT (gui_splash_logo_area), "button_press_event",
-				    GTK_SIGNAL_FUNC (gui_splash_close),
+		g_signal_connect(gui_splash_logo_area, "button_press_event",
+				    G_CALLBACK(gui_splash_close),
 				    NULL);
 	    }
 #endif

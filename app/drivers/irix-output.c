@@ -40,7 +40,7 @@
 #include <gtk/gtk.h>
 
 #include "i18n.h"
-#include "driver-out.h"
+#include "driver-inout.h"
 #include "mixer.h"
 #include "errors.h"
 #include "gui-subs.h"
@@ -225,7 +225,7 @@ irix_get_play_time (void *dp)
     }
 }
 
-st_out_driver driver_out_irix = {
+st_io_driver driver_out_irix = {
     { "IRIX Output",
 
       irix_new,

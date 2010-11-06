@@ -76,11 +76,11 @@ tips_dialog_open ()
     GtkWidget *thing;
 
     if(!tips_dialog) {
-	tips_dialog = gtk_window_new (GTK_WINDOW_DIALOG);
+	tips_dialog = gtk_dialog_new ();
 	gtk_window_set_wmclass (GTK_WINDOW (tips_dialog), "tip_of_the_day", "SoundTracker");
 	gtk_window_set_title (GTK_WINDOW (tips_dialog), (_("SoundTracker Tip of the day")));
-	gtk_signal_connect (GTK_OBJECT (tips_dialog), "delete_event",
-			    GTK_SIGNAL_FUNC (tips_dialog_hide), NULL);
+	g_signal_connect(tips_dialog, "delete_event",
+			 G_CALLBACK(tips_dialog_hide), NULL);
 	
 	thing = tips_dialog_get_vbox();
 	gtk_container_add(GTK_CONTAINER (tips_dialog), thing);
@@ -121,8 +121,8 @@ tips_dialog_get_vbox (void)
 
     tips_dialog_vbox = vbox = gtk_vbox_new (FALSE, 0);
 
-    gtk_signal_connect(GTK_OBJECT(tips_dialog_vbox), "destroy",
-		       GTK_SIGNAL_FUNC(tips_dialog_vbox_destroy), NULL);
+    g_signal_connect(tips_dialog_vbox, "destroy",
+		       G_CALLBACK(tips_dialog_vbox_destroy), NULL);
 
     hbox1 = gtk_hbox_new (FALSE, 5);
     gtk_container_set_border_width (GTK_CONTAINER (hbox1), 10);
@@ -153,16 +153,16 @@ tips_dialog_get_vbox (void)
 
     button_prev = gtk_button_new_with_label ((_("Previous Tip")));
     GTK_WIDGET_UNSET_FLAGS (button_prev, GTK_RECEIVES_DEFAULT);
-    gtk_signal_connect (GTK_OBJECT (button_prev), "clicked",
-			GTK_SIGNAL_FUNC (tips_show_next),
+    g_signal_connect(button_prev, "clicked",
+			G_CALLBACK(tips_show_next),
 			(gpointer) "prev");
     gtk_container_add (GTK_CONTAINER (bbox2), button_prev);
     gtk_widget_show (button_prev);
 
     button_next = gtk_button_new_with_label ((_("Next Tip")));
     GTK_WIDGET_UNSET_FLAGS (button_next, GTK_RECEIVES_DEFAULT);
-    gtk_signal_connect (GTK_OBJECT (button_next), "clicked",
-			GTK_SIGNAL_FUNC (tips_show_next),
+    g_signal_connect(button_next, "clicked",
+			G_CALLBACK(tips_show_next),
 			(gpointer) "next");
     gtk_container_add (GTK_CONTAINER (bbox2), button_next);
     gtk_widget_show (button_next);
@@ -174,8 +174,8 @@ tips_dialog_get_vbox (void)
     button_check = gtk_check_button_new_with_label ((_("Show tip next time")));
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button_check),
 				  tips_dialog_show_tips);
-    gtk_signal_connect (GTK_OBJECT (button_check), "toggled",
-			GTK_SIGNAL_FUNC (tips_toggle_update),
+    g_signal_connect(button_check, "toggled",
+			G_CALLBACK(tips_toggle_update),
 			(gpointer) &tips_dialog_show_tips);
     gtk_box_pack_start (GTK_BOX (vbox_check), button_check, TRUE, FALSE, 0);
     gtk_widget_show (button_check);

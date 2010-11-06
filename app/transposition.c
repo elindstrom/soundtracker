@@ -228,8 +228,8 @@ transposition_dialog (void)
     transposition_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(transposition_window), _("Transposition Tools"));
 #endif
-    gtk_signal_connect (GTK_OBJECT (transposition_window), "delete_event",
-			GTK_SIGNAL_FUNC (transposition_close_requested), NULL);
+    g_signal_connect(transposition_window, "delete_event",
+			G_CALLBACK(transposition_close_requested), NULL);
 
     gtk_window_set_transient_for(GTK_WINDOW(transposition_window), GTK_WINDOW(mainwindow));
     gtk_window_set_policy(GTK_WINDOW(transposition_window), FALSE, FALSE, FALSE);
@@ -279,8 +279,8 @@ transposition_dialog (void)
 	thing = gtk_button_new_with_label(labels3[i]);
 	gtk_widget_show(thing);
 	gtk_box_pack_start(GTK_BOX(box1), thing, TRUE, TRUE, 0);
-	gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-			   GTK_SIGNAL_FUNC(transposition_transpose_notes),
+	g_signal_connect(thing, "clicked",
+			   G_CALLBACK(transposition_transpose_notes),
 			   GINT_TO_POINTER(i));
     }
 
@@ -305,8 +305,8 @@ transposition_dialog (void)
     thing = gtk_button_new_with_label(_("Current instrument"));
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(transposition_current_instrument_clicked), (gpointer)0);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(transposition_current_instrument_clicked), (gpointer)0);
 
     add_empty_hbox(box1);
 
@@ -315,8 +315,8 @@ transposition_dialog (void)
     thing = gtk_button_new_with_label(_("Current instrument"));
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(transposition_current_instrument_clicked), (gpointer)1);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(transposition_current_instrument_clicked), (gpointer)1);
 
     add_empty_hbox(box1);
 
@@ -328,8 +328,8 @@ transposition_dialog (void)
 	thing = gtk_button_new_with_label(labels4[i]);
 	gtk_widget_show(thing);
 	gtk_box_pack_start(GTK_BOX(box1), thing, TRUE, TRUE, 0);
-	gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-			   GTK_SIGNAL_FUNC(transposition_change_instruments),
+	g_signal_connect(thing, "clicked",
+			   G_CALLBACK(transposition_change_instruments),
 			   GINT_TO_POINTER(i));
     }
 
@@ -341,15 +341,11 @@ transposition_dialog (void)
 			FALSE, FALSE, 0);
     gtk_widget_show (hbox);
 
-#ifdef USE_GNOME
-    thing = gnome_stock_button (GNOME_STOCK_BUTTON_CLOSE);
-#else
-    thing = gtk_button_new_with_label (_ ("Close"));
-#endif
+    thing = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
     GTK_WIDGET_SET_FLAGS(thing, GTK_CAN_DEFAULT);
     gtk_window_set_default(GTK_WINDOW(transposition_window), thing);
-    gtk_signal_connect (GTK_OBJECT (thing), "clicked",
-			GTK_SIGNAL_FUNC (transposition_close_requested), NULL);
+    g_signal_connect(thing, "clicked",
+			G_CALLBACK(transposition_close_requested), NULL);
     gtk_box_pack_start (GTK_BOX (hbox), thing, FALSE, FALSE, 0);
     gtk_widget_show (thing);
 

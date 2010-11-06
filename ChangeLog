@@ -1,3 +1,14 @@
+2006-01-21  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/audioconfig.c rewritten. Less hacks, less size, better
+	gtk+-2 compilance and speed.
+
+2005-12-21  Yury Aliaev  <mutab0r@rambler.ru>
+	* Completed gtk_clist -> gtk_treeview porting.
+
+2005-04-10  Yury Aliaev  <mutab0r@rambler.ru>
+	* Fixed some issues on Gtk+-2 port. Now ST is compilled against
+	gtk+-2.6.4 library, and in general works.
+
 2004-01-11  Michael Krause  <mk@soundtracker.org>
 
 	* Released v0.6.7

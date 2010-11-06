@@ -21,8 +21,10 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <glib.h>
+#include <glib/gprintf.h>
 
-#include <gtk/gtkfeatures.h>
+//#include <gtk/gtkfeatures.h>
 
 #include "i18n.h"
 #include "module-info.h"
@@ -35,6 +37,7 @@
 #include "instrument-editor.h"
 #include "keys.h"
 #include "track-editor.h"
+#include "entry-workaround.h"
 
 static GtkWidget *ilist, *slist, *songname;
 static GtkWidget *freqmode_w[2], *ptmode_toggle;
@@ -72,51 +75,57 @@ songname_changed (GtkEntry *entry)
 }
 
 static void
-ilist_size_allocate (GtkCList *list)
+ilist_select (GtkTreeSelection *sel)
 {
-    gtk_clist_set_column_width(list, 0, 30);
-    gtk_clist_set_column_width(list, 2, 30);
-    gtk_clist_set_column_width(list, 1, list->clist_window_width - 2 * 30 - 2 * 8 - 6);
+    GtkTreeModel *mdl;
+    GtkTreeIter iter;
+    gchar *str;
+    gint row;
+    
+    if(gtk_tree_selection_get_selected(sel, &mdl, &iter)) {
+	row = atoi(str = gtk_tree_model_get_string_from_iter(mdl, &iter));
+	g_free(str);
+	if(row == curi)
+	    return;
+	curi = row;
+	gui_set_current_instrument(row + 1);
+    }
 }
 
 static void
-slist_size_allocate (GtkCList *list)
+slist_select (GtkTreeSelection *sel)
 {
-    gtk_clist_set_column_width(list, 0, 30);
-    gtk_clist_set_column_width(list, 1, list->clist_window_width - 30 - 8 - 7);
-}
-
-static void
-ilist_select (GtkCList *list,
-	      gint row,
-	      gint column)
-{
-    if(row == curi)
-	return;
-    curi = row;
-    gui_set_current_instrument(row + 1);
-}
-
-static void
-slist_select (GtkCList *list,
-	      gint row,
-	      gint column)
-{
-    if(row == curs)
-	return;
-    curs = row;
-    gui_set_current_sample(row);
+    GtkTreeModel *mdl;
+    GtkTreeIter iter;
+    gchar *str;
+    gint row;
+    
+    if(gtk_tree_selection_get_selected(sel, &mdl, &iter)) {
+	row = atoi(str = gtk_tree_model_get_string_from_iter(mdl, &iter));
+	g_free(str);
+	if(row == curs)
+	    return;
+	curs = row;
+	gui_set_current_sample(row);
+    }
 }
 
 void
 modinfo_page_create (GtkNotebook *nb)
 {
     GtkWidget *hbox, *thing, *vbox;
+    GtkListStore *list_store;
+    GtkTreeIter iter;
+    GtkTreeModel *model;
     gchar *ititles[3] = { "n", _("Instrument Name"), _("#smpl") };
     gchar *stitles[2] = { "n", _("Sample Name") };
+    GType itypes[3] = {G_TYPE_INT, G_TYPE_STRING, G_TYPE_INT};
+    GType stypes[2] = {G_TYPE_INT, G_TYPE_STRING};
+    gfloat ialignments[3] = {0.5, 0.0, 0.5};
+    gfloat salignments[2] = {0.5, 0.0};
+    gboolean iexpands[3] = {FALSE, TRUE, FALSE};
+    gboolean sexpands[3] = {FALSE, TRUE};
     static const char *freqlabels[] = { N_("Linear"), N_("Amiga"), NULL };
-    char buf[5];
-    gchar *insertbuf[3] = { buf, "", "0" };
     int i;
 
     hbox = gtk_hbox_new(TRUE, 10);
@@ -124,38 +133,32 @@ modinfo_page_create (GtkNotebook *nb)
     gtk_notebook_append_page(nb, hbox, gtk_label_new(_("Module Info")));
     gtk_widget_show(hbox);
 
-    ilist = gui_clist_in_scrolled_window(3, ititles, hbox);
-    gtk_clist_set_selection_mode(GTK_CLIST(ilist), GTK_SELECTION_BROWSE);
-    gtk_clist_column_titles_passive(GTK_CLIST(ilist));
-    gtk_clist_set_column_justification(GTK_CLIST(ilist), 0, GTK_JUSTIFY_CENTER);
-    gtk_clist_set_column_justification(GTK_CLIST(ilist), 1, GTK_JUSTIFY_LEFT);
-    gtk_clist_set_column_justification(GTK_CLIST(ilist), 2, GTK_JUSTIFY_CENTER);
+    ilist = gui_list_in_scrolled_window(3, ititles, hbox, itypes, ialignments,
+					iexpands, GTK_SELECTION_BROWSE);
+    list_store = GUI_GET_LIST_STORE(ilist);
+    model = gui_list_freeze(ilist);
     for(i = 1; i <= 128; i++) {
-	sprintf(buf, "%d", i);
-	gtk_clist_append(GTK_CLIST(ilist), insertbuf);
+	gtk_list_store_append(list_store, &iter);
+	gtk_list_store_set(list_store, &iter, 0, i, 1, "", 2, 0, -1);
     }
-    gtk_signal_connect_after(GTK_OBJECT(ilist), "size_allocate",
-			     GTK_SIGNAL_FUNC(ilist_size_allocate), NULL);
-    gtk_signal_connect_after(GTK_OBJECT(ilist), "select_row",
-			     GTK_SIGNAL_FUNC(ilist_select), NULL);
+    gui_list_thaw(ilist, model);
+
+    gui_list_handle_selection(ilist, G_CALLBACK(ilist_select), NULL);
 
     vbox = gtk_vbox_new(FALSE, 2);
     gtk_box_pack_start(GTK_BOX(hbox), vbox, TRUE, TRUE, 0);
     gtk_widget_show(vbox);
 
-    slist = gui_clist_in_scrolled_window(2, stitles, vbox);
-    gtk_clist_set_selection_mode(GTK_CLIST(slist), GTK_SELECTION_BROWSE);
-    gtk_clist_column_titles_passive(GTK_CLIST(slist));
-    gtk_clist_set_column_justification(GTK_CLIST(slist), 0, GTK_JUSTIFY_CENTER);
-    gtk_clist_set_column_justification(GTK_CLIST(slist), 1, GTK_JUSTIFY_LEFT);
-    for(i = 0; i < 16; i++) {
-	sprintf(buf, "%d", i);
-	gtk_clist_append(GTK_CLIST(slist), insertbuf);
+    slist = gui_list_in_scrolled_window(2, stitles, vbox, stypes, salignments,
+					sexpands, GTK_SELECTION_BROWSE);
+    list_store = GUI_GET_LIST_STORE(slist);
+    model = gui_list_freeze(slist);
+    for(i = 1; i <= 16; i++) {
+	gtk_list_store_append(list_store, &iter);
+	gtk_list_store_set(list_store, &iter, 0, i, 1, "", -1);
     }
-    gtk_signal_connect_after(GTK_OBJECT(slist), "size_allocate",
-			     GTK_SIGNAL_FUNC(slist_size_allocate), NULL);
-    gtk_signal_connect_after(GTK_OBJECT(slist), "select_row",
-			     GTK_SIGNAL_FUNC(slist_select), NULL);
+    gui_list_thaw(slist, model);
+    gui_list_handle_selection(slist, G_CALLBACK(slist_select), NULL);
 
     hbox = gtk_hbox_new(FALSE, 4);
     gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
@@ -167,8 +170,8 @@ modinfo_page_create (GtkNotebook *nb)
 
     gui_get_text_entry(20, songname_changed, &songname);
     gtk_box_pack_start(GTK_BOX(hbox), songname, TRUE, TRUE, 0);
-    gtk_signal_connect_after(GTK_OBJECT(songname), "changed",
-			     GTK_SIGNAL_FUNC(songname_changed), NULL);
+    g_signal_connect_after(songname, "changed",
+			     G_CALLBACK(songname_changed), NULL);
     gtk_widget_show(songname);
 
     hbox = gtk_hbox_new(FALSE, 4);
@@ -184,11 +187,10 @@ modinfo_page_create (GtkNotebook *nb)
     ptmode_toggle = gtk_check_button_new_with_label(_("ProTracker Mode"));
     gtk_box_pack_start(GTK_BOX(hbox), ptmode_toggle, FALSE, TRUE, 0);
     gtk_widget_show(ptmode_toggle);
-    gtk_signal_connect (GTK_OBJECT(ptmode_toggle), "toggled",
-			GTK_SIGNAL_FUNC(ptmode_changed), NULL);
+    g_signal_connect(ptmode_toggle, "toggled",
+			G_CALLBACK(ptmode_changed), NULL);
 
     add_empty_hbox(hbox);
-
 }
 
 void
@@ -230,12 +232,13 @@ void
 modinfo_update_instrument (int n)
 {
     int i;
-    GtkCList *list = GTK_CLIST(ilist);
-    char buf[5];
+    GtkTreeIter iter;
+    GtkListStore *list_store = GUI_GET_LIST_STORE(ilist);
 
-    gtk_clist_set_text(list, n, 1, xm->instruments[n].name);
-    sprintf(buf, "%d", st_instrument_num_samples(&xm->instruments[n]));
-    gtk_clist_set_text(list, n, 2, buf);
+    if(!gui_list_get_iter(n, list_store, &iter))
+       return; /* Some bullshit happens :-/ */
+    gtk_list_store_set(list_store, &iter, 1, xm->instruments[n].name,
+		       2, st_instrument_num_samples(&xm->instruments[n]), -1);
 
     if(n == curi) {
 	for(i = 0; i < 16; i++)
@@ -246,9 +249,13 @@ modinfo_update_instrument (int n)
 void
 modinfo_update_sample (int n)
 {
-    GtkCList *list = GTK_CLIST(slist);
+    GtkTreeIter iter;
+    GtkListStore *list_store = GUI_GET_LIST_STORE(slist);
 
-    gtk_clist_set_text(list, n, 1, xm->instruments[curi].samples[n].name);
+    if(!gui_list_get_iter(n, list_store, &iter))
+       return; /* Some bullshit happens :-/ */
+    gtk_list_store_set(list_store, &iter, 1,
+		       xm->instruments[curi].samples[n].name, -1);
 }
 
 void
@@ -260,7 +267,7 @@ modinfo_update_all (void)
     for(i = 0; i < 128; i++)
 	modinfo_update_instrument(i);
 
-    gtk_entry_set_text(GTK_ENTRY(songname), xm->name);
+    wa_entry_set_text(GTK_ENTRY(songname), xm->name);
 
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(ptmode_toggle), xm->flags & XM_FLAGS_IS_MOD);
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(freqmode_w[xm->flags & XM_FLAGS_AMIGA_FREQ]), TRUE);
@@ -274,7 +281,8 @@ modinfo_set_current_instrument (int n)
 
     g_return_if_fail(n >= 0 && n <= 127);
     curi = n;
-    gtk_clist_select_row(GTK_CLIST(ilist), n, 1);
+    gui_list_select(ilist, n);
+
     for(i = 0; i < 16; i++)
 	modinfo_update_sample(i);
 }
@@ -284,7 +292,7 @@ modinfo_set_current_sample (int n)
 {
     g_return_if_fail(n >= 0 && n <= 15);
     curs = n;
-    gtk_clist_select_row(GTK_CLIST(slist), n, 1);
+    gui_list_select(slist, n);
 }
 
 void
@@ -295,7 +303,7 @@ modinfo_find_unused_pattern (void)
     printf("%d\n", n);
 
     if(n != -1)
-	gui_set_current_pattern(n);
+	gui_set_current_pattern(n, TRUE);
 }
 
 void
@@ -308,7 +316,7 @@ modinfo_copy_to_unused_pattern (void)
 	gui_play_stop();
 	st_copy_pattern(&xm->patterns[n], &xm->patterns[c]);
 	xm_set_modified(1);
-	gui_set_current_pattern(n);
+	gui_set_current_pattern(n, TRUE);
     }
 }
 
@@ -392,7 +400,7 @@ modinfo_optimize_module (void)
 	    if(!st_instrument_used_in_song(xm, a + 1)) c++;
     }
 
-    sprintf(infbuf, _("Unused patterns: %d (used: %d)\nUnused instruments: %d (used: %d)\n\nClear unused and reorder playlist?\n"),
+    g_sprintf(infbuf, _("Unused patterns: %d (used: %d)\nUnused instruments: %d (used: %d)\n\nClear unused and reorder playlist?\n"),
 					b, d-b, c, e-c);
 
     gnome_app_ok_cancel_modal(GNOME_APP(mainwindow),

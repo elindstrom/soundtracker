@@ -80,7 +80,6 @@ static void scalable_pic_class_init (ScalablePicClass *klass)
     object_class = (GtkObjectClass *)klass;
     
     widget_class->realize = scalable_pic_realize;
-    widget_class->draw = scalable_pic_draw;
     widget_class->event = scalable_pic_event;
     widget_class->size_request = scalable_pic_size_request;
     widget_class->size_allocate = scalable_pic_size_allocate;

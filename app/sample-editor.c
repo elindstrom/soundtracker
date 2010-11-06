@@ -37,6 +37,7 @@
 #endif
 
 #include <glib.h>
+#include <glib/gprintf.h>
 #include <gtk/gtk.h>
 #ifdef USE_GNOME
 #include <gnome.h>
@@ -61,6 +62,7 @@
 #include "file-operations.h"
 #include "gui-settings.h"
 #include "xm.h"
+#include "entry-workaround.h"
 
 // == GUI variables
 
@@ -131,7 +133,7 @@ static gboolean libaf2 = TRUE;
 static SampleDisplay *monitorscope;
 static GtkWidget *cancelbutton, *okbutton, *startsamplingbutton;
 
-st_in_driver *sampling_driver = NULL;
+st_io_driver *sampling_driver = NULL;
 void *sampling_driver_object = NULL;
 
 static GtkWidget *samplingwindow = NULL;
@@ -236,12 +238,12 @@ sample_editor_page_create (GtkNotebook *nb)
     thing = sample_display_new(TRUE);
     gtk_box_pack_start(GTK_BOX(box), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
-    gtk_signal_connect(GTK_OBJECT(thing), "loop_changed",
-		       GTK_SIGNAL_FUNC(sample_editor_display_loop_changed), NULL);
-    gtk_signal_connect(GTK_OBJECT(thing), "selection_changed",
-		       GTK_SIGNAL_FUNC(sample_editor_display_selection_changed), NULL);
-    gtk_signal_connect(GTK_OBJECT(thing), "window_changed",
-		       GTK_SIGNAL_FUNC(sample_editor_display_window_changed), NULL);
+    g_signal_connect(thing, "loop_changed",
+		       G_CALLBACK(sample_editor_display_loop_changed), NULL);
+    g_signal_connect(thing, "selection_changed",
+		       G_CALLBACK(sample_editor_display_selection_changed), NULL);
+    g_signal_connect(thing, "window_changed",
+		       G_CALLBACK(sample_editor_display_window_changed), NULL);
     sampledisplay = SAMPLE_DISPLAY(thing);
     sample_display_enable_zero_line(SAMPLE_DISPLAY(thing), TRUE);
 
@@ -297,14 +299,14 @@ sample_editor_page_create (GtkNotebook *nb)
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
 
     thing = gtk_button_new_with_label(_("None"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(sample_editor_select_none_clicked), NULL);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(sample_editor_select_none_clicked), NULL);
     gtk_box_pack_start(GTK_BOX(box2), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
 
     thing = gtk_button_new_with_label(_("All"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(sample_editor_select_all_clicked), NULL);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(sample_editor_select_all_clicked), NULL);
     gtk_box_pack_start(GTK_BOX(box2), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
 
@@ -340,8 +342,8 @@ sample_editor_page_create (GtkNotebook *nb)
     add_empty_vbox(vbox);
 
     thing = gtk_button_new_with_label(_("Set as loop"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC( sample_editor_selection_to_loop_clicked), NULL);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(sample_editor_selection_to_loop_clicked), NULL);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
 
@@ -367,8 +369,8 @@ sample_editor_page_create (GtkNotebook *nb)
 #endif
 
     thing = gtk_button_new_with_label(_("Load Sample"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(fileops_open_dialog), (void*)DIALOG_LOAD_SAMPLE);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(fileops_open_dialog), (void*)DIALOG_LOAD_SAMPLE);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
 #if USE_SNDFILE == 0 && defined (NO_AUDIOFILE)
@@ -376,8 +378,8 @@ sample_editor_page_create (GtkNotebook *nb)
 #endif
 
     thing = gtk_button_new_with_label(_("Save WAV"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(fileops_open_dialog), (void*)DIALOG_SAVE_SAMPLE);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(fileops_open_dialog), (void*)DIALOG_SAVE_SAMPLE);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
     savebutton = thing;
@@ -386,8 +388,8 @@ sample_editor_page_create (GtkNotebook *nb)
 #endif
 
     thing = gtk_button_new_with_label(_("Save Region"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(fileops_open_dialog), (void*)DIALOG_SAVE_RGN_SAMPLE);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(fileops_open_dialog), (void*)DIALOG_SAVE_RGN_SAMPLE);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
     savebutton_rgn = thing;
@@ -397,14 +399,14 @@ sample_editor_page_create (GtkNotebook *nb)
 
     
     thing = gtk_button_new_with_label(_("Monitor"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(sample_editor_monitor_clicked), NULL);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(sample_editor_monitor_clicked), NULL);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
 
     thing = gtk_button_new_with_label(_("Volume Ramp"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(sample_editor_open_volume_ramp_dialog), NULL);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(sample_editor_open_volume_ramp_dialog), NULL);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
 
@@ -413,32 +415,32 @@ sample_editor_page_create (GtkNotebook *nb)
     gtk_box_pack_start(GTK_BOX(hbox), vbox, TRUE, TRUE, 0);
 
     thing = gtk_button_new_with_label(_("Zoom to selection"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(sample_editor_zoom_to_selection_clicked), NULL);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(sample_editor_zoom_to_selection_clicked), NULL);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
 
     thing = gtk_button_new_with_label(_("Show all"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(sample_editor_show_all_clicked), NULL);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(sample_editor_show_all_clicked), NULL);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
 
     thing = gtk_button_new_with_label(_("Zoom in (+50%)"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(sample_editor_zoom_in_clicked), NULL);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(sample_editor_zoom_in_clicked), NULL);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
 
     thing = gtk_button_new_with_label(_("Zoom out (-50%)"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(sample_editor_zoom_out_clicked), NULL);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(sample_editor_zoom_out_clicked), NULL);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
 
     thing = gtk_button_new_with_label(_("Reverse"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(sample_editor_reverse_clicked), NULL);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(sample_editor_reverse_clicked), NULL);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
 
@@ -447,32 +449,32 @@ sample_editor_page_create (GtkNotebook *nb)
     gtk_box_pack_start(GTK_BOX(hbox), vbox, TRUE, TRUE, 0);
 
     thing = gtk_button_new_with_label(_("Cut"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(sample_editor_cut_clicked), NULL);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(sample_editor_cut_clicked), NULL);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
 
     thing = gtk_button_new_with_label(_("Remove"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(sample_editor_remove_clicked), NULL);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(sample_editor_remove_clicked), NULL);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
 
     thing = gtk_button_new_with_label(_("Copy"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(sample_editor_copy_clicked), NULL);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(sample_editor_copy_clicked), NULL);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
 
     thing = gtk_button_new_with_label(_("Paste"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(sample_editor_paste_clicked), NULL);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(sample_editor_paste_clicked), NULL);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
 
     thing = gtk_button_new_with_label(_("Clear Sample"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(sample_editor_clear_clicked), NULL);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(sample_editor_clear_clicked), NULL);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
 
@@ -496,12 +498,17 @@ sample_editor_page_create (GtkNotebook *nb)
 static void
 sample_editor_block_loop_spins (int block)
 {
-    void (*func) (GtkObject*, GtkSignalFunc, gpointer);
-
-    func = block ? gtk_signal_handler_block_by_func : gtk_signal_handler_unblock_by_func;
-
-    func(GTK_OBJECT(spin_loopstart), sample_editor_loop_changed, NULL);
-    func(GTK_OBJECT(spin_loopend), sample_editor_loop_changed, NULL);
+	if(block){
+		g_signal_handlers_block_by_func(G_OBJECT(spin_loopstart),
+				sample_editor_loop_changed, NULL);
+		g_signal_handlers_block_by_func(G_OBJECT(spin_loopend),
+				sample_editor_loop_changed, NULL);
+	} else {
+		g_signal_handlers_unblock_by_func(G_OBJECT(spin_loopstart),
+				sample_editor_loop_changed, NULL);
+		g_signal_handlers_unblock_by_func(G_OBJECT(spin_loopend),
+				sample_editor_loop_changed, NULL);
+	}
 }
 
 static void
@@ -531,11 +538,11 @@ sample_editor_set_selection_label (int start,
     STSample *sts = current_sample;
 
     if(start > -1) {
-	sprintf(se->label_selection_new_text, ("%d - %d"), start, end);
-	sprintf(se->label_length_new_text, ("%d"), end-start);
+	g_sprintf(se->label_selection_new_text, ("%d - %d"), start, end);
+	g_sprintf(se->label_length_new_text, ("%d"), end-start);
     } else {
 	strcpy(se->label_selection_new_text, _("(no selection)"));
-	sprintf(se->label_length_new_text, ("%d"), sts->sample.length);
+	g_sprintf(se->label_length_new_text, ("%d"), sts->sample.length);
     }
 
     /* Somewhere on the way to gtk+-1.2.10, gtk_label_set_text() has
@@ -585,7 +592,7 @@ sample_editor_update (void)
     if(!sts)
 	return;
 
-    gtk_entry_set_text(GTK_ENTRY(gui_cursmpl_name), sts->name);
+    wa_entry_set_text(GTK_ENTRY(gui_cursmpl_name), sts->name);
 
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_volume), sts->volume);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_panning), sts->panning - 128);
@@ -594,7 +601,7 @@ sample_editor_update (void)
 
     s = &sts->sample;
 
-    sprintf(buf, ("%d"), s->length);
+    g_sprintf(buf, ("%d"), s->length);
     gtk_label_set(GTK_LABEL(se->label_length), buf);
 
     sample_editor_block_loop_spins(1);
@@ -1431,12 +1438,12 @@ sample_editor_open_stereowav_dialog (void)
     GtkWidget *separator;
     GtkWidget *label;
          
-    window = gtk_window_new (GTK_WINDOW_DIALOG);
+    window = gtk_dialog_new ();
    
     wavload_dialog=window;
 
-    gtk_signal_connect (GTK_OBJECT (window), "delete_event",
-			GTK_SIGNAL_FUNC (sample_editor_wavload_dialog_hide), NULL); 
+    g_signal_connect(window, "delete_event",
+			G_CALLBACK(sample_editor_wavload_dialog_hide), NULL); 
 
     gtk_window_set_position (GTK_WINDOW(window), GTK_WIN_POS_CENTER);
     gtk_window_set_title (GTK_WINDOW(window), _("Load stereo sample"));
@@ -1459,20 +1466,20 @@ sample_editor_open_stereowav_dialog (void)
     box2 = gtk_hbox_new(TRUE, 4);
     
     button = gtk_button_new_with_label (_("Left"));
-    gtk_signal_connect (GTK_OBJECT (button), "clicked", 
-			GTK_SIGNAL_FUNC (sample_editor_wavload_dialog_left), NULL);
+    g_signal_connect(button, "clicked", 
+			G_CALLBACK(sample_editor_wavload_dialog_left), NULL);
     gtk_box_pack_start (GTK_BOX (box2), button, TRUE, TRUE, 0);
     gtk_widget_show (button);
  
     button = gtk_button_new_with_label (_("Mix"));
-    gtk_signal_connect (GTK_OBJECT (button), "clicked", 
-			GTK_SIGNAL_FUNC (sample_editor_wavload_dialog_mix), NULL);
+    g_signal_connect(button, "clicked", 
+			G_CALLBACK(sample_editor_wavload_dialog_mix), NULL);
     gtk_box_pack_start (GTK_BOX (box2), button, TRUE, TRUE, 0);
     gtk_widget_show (button);
  
     button = gtk_button_new_with_label (_("Right"));
-    gtk_signal_connect (GTK_OBJECT (button), "clicked", 
-			GTK_SIGNAL_FUNC (sample_editor_wavload_dialog_right), NULL);
+    g_signal_connect(button, "clicked", 
+			G_CALLBACK(sample_editor_wavload_dialog_right), NULL);
     gtk_box_pack_start (GTK_BOX (box2), button, TRUE, TRUE, 0);
     gtk_widget_show (button);
 
@@ -1484,8 +1491,8 @@ sample_editor_open_stereowav_dialog (void)
     gtk_widget_show (separator);
      
     button = gtk_button_new_with_label (_("Cancel"));
-    gtk_signal_connect (GTK_OBJECT (button), "clicked", 
-			GTK_SIGNAL_FUNC (sample_editor_wavload_dialog_hide), NULL);   
+    g_signal_connect(button, "clicked", 
+			G_CALLBACK(sample_editor_wavload_dialog_hide), NULL);   
     gtk_box_pack_start (GTK_BOX (box1), button, FALSE, FALSE, 0);
     gtk_widget_show (button);
     
@@ -1544,12 +1551,12 @@ sample_editor_open_raw_sample_dialog (const gchar *filename)
 
     wavload_filename = filename; // store for later usage
 
-    window = gtk_window_new (GTK_WINDOW_DIALOG);
+    window = gtk_dialog_new ();
    
     wavload_dialog = window;
 
-    gtk_signal_connect (GTK_OBJECT (window), "delete_event",
-			GTK_SIGNAL_FUNC (sample_editor_raw_sample_dialog_hide), NULL); 
+    g_signal_connect(window, "delete_event",
+			G_CALLBACK(sample_editor_raw_sample_dialog_hide), NULL); 
 
     gtk_window_set_position (GTK_WINDOW(window), GTK_WIN_POS_CENTER);
     gtk_window_set_title (GTK_WINDOW(window), _("Load raw sample"));
@@ -1644,7 +1651,7 @@ sample_editor_open_raw_sample_dialog (const gchar *filename)
     gtk_box_pack_start(GTK_BOX(box2), combo, FALSE, TRUE, 0);
     gtk_widget_show (combo);    
     wavload_raw_rate = GTK_COMBO (combo)->entry; 
-    gtk_entry_set_text (GTK_ENTRY (wavload_raw_rate), _("8363")); // default
+    wa_entry_set_text (GTK_ENTRY (wavload_raw_rate), _("8363")); // default
     
     // The bottom of the box
 
@@ -1653,14 +1660,14 @@ sample_editor_open_raw_sample_dialog (const gchar *filename)
     gtk_widget_show (separator);
      
     button = gtk_button_new_with_label (_("OK"));
-    gtk_signal_connect (GTK_OBJECT (button), "clicked", 
-			GTK_SIGNAL_FUNC (sample_editor_raw_sample_dialog_ok), NULL);
+    g_signal_connect(button, "clicked", 
+			G_CALLBACK(sample_editor_raw_sample_dialog_ok), NULL);
     gtk_box_pack_start (GTK_BOX (box1), button, FALSE, FALSE, 0);
     gtk_widget_show (button);
     
     button = gtk_button_new_with_label (_("Cancel"));
-    gtk_signal_connect (GTK_OBJECT (button), "clicked", 
-			GTK_SIGNAL_FUNC (sample_editor_raw_sample_dialog_hide), NULL);
+    g_signal_connect(button, "clicked", 
+			G_CALLBACK(sample_editor_raw_sample_dialog_hide), NULL);
     gtk_box_pack_start (GTK_BOX (box1), button, FALSE, FALSE, 0);
     gtk_widget_show (button);
     
@@ -1673,7 +1680,8 @@ sample_editor_open_raw_sample_dialog (const gchar *filename)
 static void
 sample_editor_load_wav (void)
 {
-    const gchar *fn = gtk_file_selection_get_filename(GTK_FILE_SELECTION(fileops_dialogs[DIALOG_LOAD_SAMPLE]));
+    gchar *fn = gtk_file_selection_get_filename(GTK_FILE_SELECTION(fileops_dialogs[DIALOG_LOAD_SAMPLE]));
+
 #if USE_SNDFILE != 1
     int sampleFormat;
 #endif
@@ -1883,18 +1891,19 @@ sample_editor_save_wav (void)
     }
 
     g_return_if_fail(current_sample != NULL);
-    if(current_sample->sample.data == NULL)
+    if(current_sample->sample.data == NULL) {
 	return;
+    }
 
-	f = fopen(fn, "r");
+    f = fopen(fn, "r");
 
-	if(f != NULL) {
-	    fclose(f);
-	    gnome_app_ok_cancel_modal(GNOME_APP(mainwindow),
+    if(f != NULL) {
+	fclose(f);
+	gnome_app_ok_cancel_modal(GNOME_APP(mainwindow),
 				      _("Are you sure you want to overwrite the file?"),
 				      sample_editor_save_wav_callback, fn);
-	} else {
-		sample_editor_save_wav_callback(0, fn);
+    } else {
+	sample_editor_save_wav_callback(0, fn);
     }
 }
 
@@ -1927,9 +1936,10 @@ sample_editor_save_region_wav (void)
     }
 
     g_return_if_fail(current_sample != NULL);
-    if(current_sample->sample.data == NULL)
+    if(current_sample->sample.data == NULL) {
 	return;
-
+    }
+    
     if(sampledisplay->sel_start == -1) {
         error_error(_("Please select region first."));
 	return;
@@ -1968,23 +1978,23 @@ sample_editor_create_sampling_widgets (void)
     gtk_widget_show(box2);
 
     thing = gtk_button_new_with_label(_("OK"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(sample_editor_ok_clicked), NULL);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(sample_editor_ok_clicked), NULL);
     gtk_box_pack_start(GTK_BOX(box2), thing, TRUE, TRUE, 0);
     gtk_widget_set_sensitive(thing, 0);
     gtk_widget_show(thing);
     okbutton = thing;
 
     thing = gtk_button_new_with_label(_("Start sampling"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(sample_editor_start_sampling_clicked), NULL);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(sample_editor_start_sampling_clicked), NULL);
     gtk_box_pack_start(GTK_BOX(box2), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
     startsamplingbutton = thing;
 
     thing = gtk_button_new_with_label(_("Cancel"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(sample_editor_stop_sampling), NULL);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(sample_editor_stop_sampling), NULL);
     gtk_box_pack_start(GTK_BOX(box2), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
     cancelbutton = thing;
@@ -2020,8 +2030,8 @@ sample_editor_monitor_clicked (void)
     samplingwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(samplingwindow), _("Sampling Window"));
 #endif
-    gtk_signal_connect (GTK_OBJECT (samplingwindow), "delete_event",
-			GTK_SIGNAL_FUNC (sample_editor_stop_sampling), NULL);
+    g_signal_connect(samplingwindow, "delete_event",
+			G_CALLBACK(sample_editor_stop_sampling), NULL);
 
     mainbox = gtk_vbox_new(FALSE, 2);
     gtk_container_border_width(GTK_CONTAINER(mainbox), 4);
@@ -2218,8 +2228,8 @@ sample_editor_open_volume_ramp_dialog (void)
     volrampwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(volrampwindow), _("Volume Ramping"));
 #endif
-    gtk_signal_connect (GTK_OBJECT (volrampwindow), "delete_event",
-			GTK_SIGNAL_FUNC (sample_editor_close_volume_ramp_dialog), NULL);
+    g_signal_connect(volrampwindow, "delete_event",
+			G_CALLBACK(sample_editor_close_volume_ramp_dialog), NULL);
 
     gtk_window_set_transient_for(GTK_WINDOW(volrampwindow), GTK_WINDOW(mainwindow));
 
@@ -2250,14 +2260,14 @@ sample_editor_open_volume_ramp_dialog (void)
     thing = gtk_button_new_with_label(_("H"));
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-                       GTK_SIGNAL_FUNC(sample_editor_lrvol), (gpointer)0);
+    g_signal_connect(thing, "clicked",
+                       G_CALLBACK(sample_editor_lrvol), (gpointer)0);
 
     thing = gtk_button_new_with_label(_("D"));
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-                       GTK_SIGNAL_FUNC(sample_editor_lrvol), (gpointer)4);
+    g_signal_connect(thing, "clicked",
+                       G_CALLBACK(sample_editor_lrvol), (gpointer)4);
 
     add_empty_hbox(box1);
 
@@ -2267,14 +2277,14 @@ sample_editor_open_volume_ramp_dialog (void)
     thing = gtk_button_new_with_label(_("H"));
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-                       GTK_SIGNAL_FUNC(sample_editor_lrvol), (gpointer)2);
+    g_signal_connect(thing, "clicked",
+                       G_CALLBACK(sample_editor_lrvol), (gpointer)2);
 
     thing = gtk_button_new_with_label(_("D"));
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-                       GTK_SIGNAL_FUNC(sample_editor_lrvol), (gpointer)8);
+    g_signal_connect(thing, "clicked",
+                       G_CALLBACK(sample_editor_lrvol), (gpointer)8);
 
     thing = gtk_hseparator_new();
     gtk_widget_show(thing);
@@ -2289,8 +2299,8 @@ sample_editor_open_volume_ramp_dialog (void)
 	thing = gtk_button_new_with_label(labels1[i]);
 	gtk_widget_show(thing);
 	gtk_box_pack_start(GTK_BOX(box1), thing, TRUE, TRUE, 0);
-	gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-			   GTK_SIGNAL_FUNC(sample_editor_perform_ramp),
+	g_signal_connect(thing, "clicked",
+			   G_CALLBACK(sample_editor_perform_ramp),
 			   GINT_TO_POINTER(i));
     }
 

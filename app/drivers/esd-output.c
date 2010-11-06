@@ -32,11 +32,12 @@
 #include <sys/time.h>
 
 #include <glib.h>
+#include <glib/gprintf.h>
 #include <gtk/gtk.h>
 #include <esd.h>
 
 #include "i18n.h"
-#include "driver-out.h"
+#include "driver-inout.h"
 #include "mixer.h"
 #include "errors.h"
 #include "gui-subs.h"
@@ -158,7 +159,7 @@ esd_open (void *dp)
     d->out_sock = esd_play_stream_fallback(out_format, d->out_rate, NULL, "SoundTracker ESD Output");
     if(d->out_sock <= 0) {
 	char buf[256];
-	sprintf(buf, _("Couldn't connect to ESD for sound output:\n%s"), strerror(errno));
+	g_sprintf(buf, _("Couldn't connect to ESD for sound output:\n%s"), strerror(errno));
 	error_error(buf);
 	return FALSE;
     }
@@ -217,7 +218,7 @@ esd_savesettings (void *dp,
     return TRUE;
 }
 
-st_out_driver driver_out_esd = {
+st_io_driver driver_out_esd = {
     { "ESD Output",
 
       esd_new,

@@ -49,10 +49,11 @@
 #include <jack/jack.h>
 
 #include <glib.h>
+#include <glib/gprintf.h>
 #include <gtk/gtk.h>
 
 #include "i18n.h"
-#include "driver-out.h"
+#include "driver-inout.h"
 #include "mixer.h"
 #include "errors.h"
 #include "gui.h"
@@ -253,12 +254,12 @@ jack_driver_make_config_widgets (jack_driver *d)
 
  	thing = d->transport_check = gtk_check_button_new_with_label (_("transport master"));
 	gtk_box_pack_start (GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
-	d->transport_check_id = gtk_signal_connect(GTK_OBJECT(thing), "clicked", GTK_SIGNAL_FUNC(jack_driver_prefs_transport_callback),d);
+	d->transport_check_id = g_signal_connect(thing, "clicked", G_CALLBACK(jack_driver_prefs_transport_callback),d);
 	gtk_widget_show (thing);
 
 	thing = d->declick_check = gtk_check_button_new_with_label (_("declick"));
 	gtk_box_pack_start (GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
-	gtk_signal_connect(GTK_OBJECT(thing), "clicked", GTK_SIGNAL_FUNC(jack_driver_prefs_declick_callback),d);
+	g_signal_connect(thing, "clicked", G_CALLBACK(jack_driver_prefs_declick_callback),d);
 	gtk_widget_show (thing);
 }
 
@@ -273,14 +274,14 @@ jack_driver_sample_rate_callback (nframes_t nframes, void *arg)
 static void
 jack_driver_prefs_update (jack_driver *d)
 {
-	char status_buf[64];
+	char status_buf[128];
 
 	if (d->is_active) {
-		sprintf (status_buf, _("Running at %d Hz with %d frames"), (int)d->sample_rate, (int)d->buffer_size);
+		g_sprintf (status_buf, _("Running at %d Hz with %d frames"), (int)d->sample_rate, (int)d->buffer_size);
 		gtk_label_set_text (GTK_LABEL (d->client_name_label), d->client_name);
 	}
 	else 
-		sprintf (status_buf, _("Jack server not running?"));
+		g_sprintf (status_buf, _("Jack server not running?"));
 	gtk_label_set_text (GTK_LABEL (d->status_label), status_buf);
        
 }
@@ -324,7 +325,7 @@ jack_driver_new (void)
 
 	// TODO: this should be improved, both error handling and saving the string
 	// I'm probably not taking advantage of libjack
-	sprintf (d->client_name, _("soundtracker"));
+	g_sprintf (d->client_name, _("soundtracker"));
 	d->client_name[12] = '_';
 	d->client_name[14] = 0;
 	for (i = 0; i < 9; i++) {
@@ -446,7 +447,7 @@ jack_driver_get_play_time (void *dp)
 	return (double)d->position / (double)d->sample_rate;
 }
 
-st_out_driver driver_out_jack = {
+st_io_driver driver_out_jack = {
     { "JACK Output",
       jack_driver_new,             // create new instance of this driver class   
       jack_driver_destroy,         // destroy instance of this driver class

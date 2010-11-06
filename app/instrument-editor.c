@@ -41,6 +41,7 @@
 #include "gui-settings.h"
 #include "module-info.h"
 #include "file-operations.h"
+#include "entry-workaround.h"
 
 static GtkWidget *volenv, *panenv, *disableboxes[4];
 static GtkWidget *instrument_editor_vibtype_w[4];
@@ -271,14 +272,14 @@ instrument_page_create (GtkNotebook *nb)
     thing = gtk_button_new_with_label(_("Load XI"));
     gtk_box_pack_start(GTK_BOX(box2), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(fileops_open_dialog), (void*)DIALOG_LOAD_INSTRUMENT);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(fileops_open_dialog), (void*)DIALOG_LOAD_INSTRUMENT);
 
     disableboxes[3] = thing = gtk_button_new_with_label(_("Save XI"));
     gtk_box_pack_start(GTK_BOX(box2), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(fileops_open_dialog), (void*)DIALOG_SAVE_INSTRUMENT);
+    g_signal_connect(thing, "clicked",
+		       G_CALLBACK(fileops_open_dialog), (void*)DIALOG_SAVE_INSTRUMENT);
 
     thing = gtk_vseparator_new();
     gtk_box_pack_start(GTK_BOX(box), thing, FALSE, TRUE, 0);
@@ -346,17 +347,17 @@ instrument_page_create (GtkNotebook *nb)
     clavier_set_show_middle_c(CLAVIER(clavier), FALSE);
     clavier_set_show_transpose(CLAVIER(clavier), FALSE);
 
-    gtk_signal_connect (GTK_OBJECT (clavier), "clavierkey_press",
-			GTK_SIGNAL_FUNC (instrument_editor_clavierkey_press_event),
+    g_signal_connect(clavier, "clavierkey_press",
+			G_CALLBACK(instrument_editor_clavierkey_press_event),
 			NULL);
-    gtk_signal_connect (GTK_OBJECT (clavier), "clavierkey_release",
-			GTK_SIGNAL_FUNC (instrument_editor_clavierkey_release_event),
+    g_signal_connect(clavier, "clavierkey_release",
+			G_CALLBACK(instrument_editor_clavierkey_release_event),
 			NULL);
-    gtk_signal_connect (GTK_OBJECT (clavier), "clavierkey_enter",
-			GTK_SIGNAL_FUNC (instrument_editor_clavierkey_enter_event),
+    g_signal_connect(clavier, "clavierkey_enter",
+			G_CALLBACK(instrument_editor_clavierkey_enter_event),
 			NULL);
-    gtk_signal_connect (GTK_OBJECT (clavier), "clavierkey_leave",
-			GTK_SIGNAL_FUNC (instrument_editor_clavierkey_leave_event),
+    g_signal_connect(clavier, "clavierkey_leave",
+			G_CALLBACK(instrument_editor_clavierkey_leave_event),
 			NULL);
 
     box3 = gtk_vbox_new(FALSE, 2);
@@ -386,8 +387,8 @@ instrument_page_create (GtkNotebook *nb)
     thing = gtk_button_new_with_label(_("Initialize"));
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
-    gtk_signal_connect (GTK_OBJECT (thing), "clicked",
-			GTK_SIGNAL_FUNC(instrument_editor_init_samplemap), NULL);
+    g_signal_connect(thing, "clicked",
+			G_CALLBACK(instrument_editor_init_samplemap), NULL);
 
     add_empty_vbox(box3);
 
@@ -460,7 +461,7 @@ instrument_editor_update (void)
     }
 
     if(current_instrument)
-	gtk_entry_set_text(GTK_ENTRY(gui_curins_name), current_instrument->name);
+	wa_entry_set_text(GTK_ENTRY(gui_curins_name), current_instrument->name);
 
     if(!o) {
 	envelope_box_set_envelope(ENVELOPE_BOX(volenv), NULL);

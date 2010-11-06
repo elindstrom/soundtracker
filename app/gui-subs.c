@@ -3,6 +3,7 @@
  * The Real SoundTracker - GUI support routines
  *
  * Copyright (C) 1998-2001 Michael Krause
+ * Copyright (C) 2005 Yury Aliaev (GTK+-2 porting)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -109,14 +110,14 @@ make_radio_group_full (const char **labels,
 
     while (*labels) {
 	thing = gtk_radio_button_new_with_label ((thing
-						  ? gtk_radio_button_group (GTK_RADIO_BUTTON (thing))
-						  : 0),
+						  ? gtk_radio_button_get_group (GTK_RADIO_BUTTON (thing))
+						  : NULL),
 						 gettext(*labels++));
 	*saveptr++ = thing;
 	gtk_widget_show (thing);
 	gtk_box_pack_start (GTK_BOX (tobox), thing, t1, t2, 0);
 	if(sigfunc) {
-	    gtk_signal_connect (GTK_OBJECT (thing), "clicked", (GtkSignalFunc) sigfunc, data);
+	    g_signal_connect (thing, "clicked", G_CALLBACK(sigfunc), data);
 	}
     }
 }
@@ -182,7 +183,7 @@ gui_put_labelled_spin_button (GtkWidget *destbox,
     *spin = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(min, min, max, 1.0, 5.0, 0.0)), 0, 0);
     gtk_box_pack_start(GTK_BOX(hbox), *spin, FALSE, TRUE, 0);
     gtk_widget_show(*spin);
-    gtk_signal_connect(GTK_OBJECT(*spin), "changed",
+    g_signal_connect(*spin, "value-changed",
 		       GTK_SIGNAL_FUNC(callback), callbackdata);
 }
 
@@ -195,18 +196,18 @@ file_selection_create (const gchar *title,
     window = gtk_file_selection_new (title);
     gtk_window_position (GTK_WINDOW (window), GTK_WIN_POS_MOUSE);
 	
-    gtk_signal_connect(GTK_OBJECT (window), "destroy",
-		       GTK_SIGNAL_FUNC(gtk_main_quit),
+    g_signal_connect(window, "destroy",
+		       G_CALLBACK(gtk_main_quit),
 		       NULL);
-    gtk_signal_connect(GTK_OBJECT (GTK_FILE_SELECTION (window)->ok_button),
-		       "clicked", GTK_SIGNAL_FUNC(clickfunc),
+    g_signal_connect(GTK_FILE_SELECTION (window)->ok_button,
+		       "clicked", G_CALLBACK(clickfunc),
 		       window);
  
-    gtk_signal_connect(GTK_OBJECT (window), "delete_event",
-		       GTK_SIGNAL_FUNC(gtk_widget_hide),
+    g_signal_connect(window, "delete_event",
+		       G_CALLBACK(gtk_widget_hide),
 		       window);
-    gtk_signal_connect_object(GTK_OBJECT (GTK_FILE_SELECTION (window)->cancel_button),
-			      "clicked", GTK_SIGNAL_FUNC(gtk_widget_hide),
+    g_signal_connect_swapped(GTK_FILE_SELECTION (window)->cancel_button,
+			      "clicked", G_CALLBACK(gtk_widget_hide),
 			      GTK_OBJECT (window));
 
     return window;
@@ -278,8 +279,8 @@ gui_subs_create_slider (gui_subs_slider *s)
 	gtk_scale_set_draw_value(GTK_SCALE(s->slider), FALSE);
 	gtk_widget_show(s->slider);
 	gtk_box_pack_start(GTK_BOX(box), s->slider, TRUE, TRUE, 0);
-	gtk_signal_connect (GTK_OBJECT(s->adjustment1), "value_changed",
-			    GTK_SIGNAL_FUNC(gui_subs_slider_update_1), s);
+	g_signal_connect(s->adjustment1, "value_changed",
+			    G_CALLBACK(gui_subs_slider_update_1), s);
     } else {
 	add_empty_hbox(box);
     }
@@ -288,8 +289,8 @@ gui_subs_create_slider (gui_subs_slider *s)
     thing = extspinbutton_new(s->adjustment2, 0, 0);
     gtk_box_pack_start(GTK_BOX(box), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
-    gtk_signal_connect(GTK_OBJECT(thing), "changed",
-		       GTK_SIGNAL_FUNC(gui_subs_slider_update_2), s);
+    g_signal_connect(thing, "value-changed",
+		       G_CALLBACK(gui_subs_slider_update_2), s);
 
     s->update_without_signal = FALSE;
 
@@ -345,7 +346,7 @@ gui_update_range_adjustment (GtkRange *range,
 	adj = GTK_ADJUSTMENT(gtk_adjustment_new(pos+1, 0, upper, 1, window-2, window));
 	gtk_range_set_adjustment(range, adj); /* old adjustment is freed automagically */
 	gtk_adjustment_set_value(adj, pos);
-	gtk_signal_connect(GTK_OBJECT(adj), "value_changed", GTK_SIGNAL_FUNC(func), NULL);
+	g_signal_connect(adj, "value_changed", G_CALLBACK(func), NULL);
     } else {
 	if((int)(adj->value) != pos)
 	    gtk_adjustment_set_value(adj, pos);
@@ -383,8 +384,8 @@ gui_build_option_menu (OptionMenuItem items[],
   for (i = 0; i < num_items; i++)
     {
       menu_item = gtk_radio_menu_item_new_with_label (group, items[i].name);
-      gtk_signal_connect (GTK_OBJECT (menu_item), "activate",
-			  (GtkSignalFunc) items[i].func, GINT_TO_POINTER(i));
+      g_signal_connect (menu_item, "activate",
+			  G_CALLBACK(items[i].func), GINT_TO_POINTER(i));
       group = gtk_radio_menu_item_group (GTK_RADIO_MENU_ITEM (menu_item));
       gtk_menu_append (GTK_MENU (menu), menu_item);
       if (i == history)
@@ -398,18 +399,99 @@ gui_build_option_menu (OptionMenuItem items[],
   return omenu;
 }
 
-// Create CList in scrolled window, show and add to box
 GtkWidget *
-gui_clist_in_scrolled_window (int n,
-			      gchar **tp,
-			      GtkWidget *hbox)
+gui_stringlist_in_scrolled_window (int n, gchar **tp,  GtkWidget *hbox)
+{
+    GType *types;
+    GtkWidget *list;
+    guint i;
+    
+    types = g_new(GType, n);
+    for(i = 0; i < n; i++)
+	types[i] = G_TYPE_STRING;
+    list = gui_list_in_scrolled_window(n, tp, hbox, types, NULL, NULL, GTK_SELECTION_BROWSE);
+    g_free(types);
+    return list;
+}
+
+void
+gui_list_clear (GtkWidget *list)
+{
+    GtkTreeIter iter;
+    GtkTreeModel *model;
+    gboolean result;
+
+    result = gtk_tree_model_get_iter_from_string(model = gtk_tree_view_get_model(GTK_TREE_VIEW(list)),
+						 &iter, "0");
+    while(result)
+	result = gtk_list_store_remove(GTK_LIST_STORE(model), &iter);
+}
+
+void
+gui_list_clear_with_model (GtkTreeModel *model)
+{
+    GtkTreeIter iter;
+    gboolean result;
+
+    result = gtk_tree_model_get_iter_from_string(model, &iter, "0");
+
+    while(result)
+	result = gtk_list_store_remove(GTK_LIST_STORE(model), &iter);
+}
+
+GtkTreeModel *
+gui_list_freeze (GtkWidget *list)
+{
+    GtkTreeModel *model;
+
+    model = gtk_tree_view_get_model(GTK_TREE_VIEW(list));
+    g_object_ref(model);
+    gtk_tree_view_set_model(GTK_TREE_VIEW(list), NULL);
+
+    return model;
+}
+
+void
+gui_list_thaw (GtkWidget *list, GtkTreeModel *model)
+{
+    gtk_tree_view_set_model(GTK_TREE_VIEW(list), model);
+    g_object_unref(model);
+}
+
+GtkWidget *
+gui_list_in_scrolled_window (int n, gchar **tp,  GtkWidget *hbox,
+			     GType *types, gfloat *alignments, gboolean *expands,
+			     GtkSelectionMode mode)
 {
     GtkWidget *list;
     GtkWidget *sw;
-    list = gtk_clist_new_with_titles(n, tp);
+    guint i;
+    GtkListStore *list_store;
+    GtkTreeViewColumn *column;
+    GtkCellRenderer *renderer;
+    GtkTreeSelection *sel;
+    
+    list_store = gtk_list_store_newv(n, types);
+    list = gtk_tree_view_new_with_model(GTK_TREE_MODEL(list_store));
+    for(i = 0; i < n; i++) {
+	renderer = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(tp[i], renderer, "text", i, NULL);
+	if(alignments) {
+	    g_object_set(G_OBJECT(renderer), "xalign", alignments[i], NULL);
+	    gtk_tree_view_column_set_alignment(column, alignments[i]);
+	}
+	g_object_set(G_OBJECT(renderer), "ypad", 0, NULL);
+	if(expands)
+	    gtk_tree_view_column_set_expand(column, expands[i]);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(list), column);
+    }
+
+    sel = gtk_tree_view_get_selection(GTK_TREE_VIEW(list));
+    gtk_tree_selection_set_mode(sel, mode);
+
     sw = gtk_scrolled_window_new(NULL, NULL);
+    gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(sw), GTK_SHADOW_ETCHED_IN);
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(sw), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-    gtk_clist_set_shadow_type(GTK_CLIST(list), GTK_SHADOW_ETCHED_IN);
     gtk_container_add(GTK_CONTAINER(sw), list);
     gtk_widget_show(sw);
     gtk_box_pack_start(GTK_BOX(hbox), sw, TRUE, TRUE, 0);
@@ -417,39 +499,73 @@ gui_clist_in_scrolled_window (int n,
     return list;
 }
 
+void
+gui_list_handle_selection (GtkWidget *list, GCallback handler, gpointer data)
+{
+    GtkTreeSelection *sel;
+
+    sel = gtk_tree_view_get_selection(GTK_TREE_VIEW(list));
+    g_signal_connect_after(sel, "changed", handler, data);
+}
+
+inline void
+gui_list_moveto (GtkWidget *list, guint n)
+{
+    gchar *path_string;
+    GtkTreePath *path;
+
+    path_string = g_strdup_printf("%u", n);
+    path = gtk_tree_path_new_from_string(path_string);
+    gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(list), path, NULL,
+			         TRUE, 0.5, 0.0);
+    g_free(path_string);
+    gtk_tree_path_free(path);
+}
+
+inline gboolean
+gui_list_get_iter (guint n, GtkListStore *tree_model, GtkTreeIter *iter)
+{
+    gchar *path;
+    gboolean result;
+    
+    path = g_strdup_printf("%u", n);
+    result = gtk_tree_model_get_iter_from_string(GTK_TREE_MODEL(tree_model), iter, path);
+    g_free(path);
+    return result;
+}
+
+inline void
+gui_string_list_set_text (GtkWidget *list, guint row, guint col, const gchar *string)
+{
+    GtkTreeIter iter;
+    GtkListStore *list_store;
+
+    if(gui_list_get_iter(row, list_store = GUI_GET_LIST_STORE(list), &iter))
+	gtk_list_store_set(list_store, &iter, col, string, -1);
+}
+
+inline void
+gui_list_select (GtkWidget *list, guint row)
+{
+    GtkTreeIter iter;
+    GtkTreeSelection *sel = gtk_tree_view_get_selection(GTK_TREE_VIEW(list));
+
+    if(!gui_list_get_iter(row, GUI_GET_LIST_STORE(list), &iter))
+       return;
+    gtk_tree_selection_select_iter(sel, &iter);
+}
+
 GtkWidget *
-gui_button (GtkWidget * win, char *stock, char *labeltext,
+gui_button (GtkWidget * win, char *stock,
 	    void *callback, gpointer userdata, GtkWidget * box)
 {
-   GtkWidget *button, *label, *hbox;
-#ifdef USE_GNOME
-   GtkWidget *pixmap;
-#endif
+   GtkWidget *button;
 
-   hbox = gtk_hbox_new (0, 0);
-   gtk_widget_show (hbox);
-
-   button = gtk_button_new ();
-   gtk_signal_connect (GTK_OBJECT (button), "clicked",
-                       GTK_SIGNAL_FUNC (callback), userdata);
+   button = gtk_button_new_from_stock (stock);
+   g_signal_connect(button, "clicked",
+                    G_CALLBACK(callback), userdata);
    gtk_widget_show (button);
 
-#ifdef USE_GNOME
-   if (stock)
-   {
-      pixmap = gnome_stock_pixmap_widget_at_size (win, stock, 12, 14);
-      gtk_container_add (GTK_CONTAINER (hbox), pixmap);
-      gtk_widget_show (pixmap);
-   }
-#endif
-
-   if (labeltext)
-   {
-      label = gtk_label_new (labeltext);
-      gtk_container_add (GTK_CONTAINER (hbox), label);
-      gtk_widget_show (label);
-   }
-   gtk_container_add (GTK_CONTAINER (button), hbox);
    if (box)
       gtk_container_add (GTK_CONTAINER (box), button);
 
@@ -478,7 +594,7 @@ gui_yes_no_cancel_modal (GtkWidget *window,
     aaccallback = callback;
     aaccallbackdata = data;
     
-    aacdialog = gtk_dialog_new();
+    aacdialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_position (GTK_WINDOW(aacdialog), GTK_WIN_POS_CENTER);
     gtk_window_set_title(GTK_WINDOW(aacdialog), _("Question"));
     gtk_window_set_modal(GTK_WINDOW(aacdialog), TRUE);
@@ -492,23 +608,23 @@ gui_yes_no_cancel_modal (GtkWidget *window,
     button = gtk_button_new_with_label (_("Yes"));
     GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(aacdialog)->action_area), button, TRUE, TRUE, 10);
-    gtk_signal_connect_object (GTK_OBJECT (button), "clicked",
-                               GTK_SIGNAL_FUNC (aacdialog_close), (gpointer)0);
+    g_signal_connect_swapped(button, "clicked",
+                               G_CALLBACK(aacdialog_close), (gpointer)0);
     gtk_widget_grab_default (button);
     gtk_widget_show (button);
     
     button = gtk_button_new_with_label (_("No"));
     GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(aacdialog)->action_area), button, TRUE, TRUE, 10);
-    gtk_signal_connect_object (GTK_OBJECT (button), "clicked",
-                               GTK_SIGNAL_FUNC (aacdialog_close), (gpointer)1);
+    g_signal_connect_swapped (button, "clicked",
+                              G_CALLBACK(aacdialog_close), (gpointer)1);
     gtk_widget_show (button);
     
     button = gtk_button_new_with_label (_("Cancel"));
     GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(aacdialog)->action_area), button, TRUE, TRUE, 10);
-    gtk_signal_connect_object (GTK_OBJECT (button), "clicked",
-                               GTK_SIGNAL_FUNC (aacdialog_close), (gpointer)2);
+    g_signal_connect_swapped (button, "clicked",
+                               G_CALLBACK(aacdialog_close), (gpointer)2);
     gtk_widget_show (button);
     
     gtk_widget_show(aacdialog);
@@ -549,7 +665,7 @@ gnome_app_ok_cancel_modal (GtkWidget *window,
     ccallback = callback;
     ccallbackdata = data;
     
-    cdialog = gtk_dialog_new();
+    cdialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_position (GTK_WINDOW(cdialog), GTK_WIN_POS_CENTER);
     gtk_window_set_title(GTK_WINDOW(cdialog), _("Question"));
     gtk_window_set_modal(GTK_WINDOW(cdialog), TRUE);
@@ -563,16 +679,16 @@ gnome_app_ok_cancel_modal (GtkWidget *window,
     button = gtk_button_new_with_label ("Ok");
     GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(cdialog)->action_area), button, TRUE, TRUE, 10);
-    gtk_signal_connect_object (GTK_OBJECT (button), "clicked",
-                               GTK_SIGNAL_FUNC (cdialog_close), (gpointer)0);
+    g_signal_connect_swapped(button, "clicked",
+                               G_CALLBACK(cdialog_close), (gpointer)0);
     gtk_widget_grab_default (button);
     gtk_widget_show (button);
     
     button = gtk_button_new_with_label (_("Cancel"));
     GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(cdialog)->action_area), button, TRUE, TRUE, 10);
-    gtk_signal_connect_object (GTK_OBJECT (button), "clicked",
-                               GTK_SIGNAL_FUNC (cdialog_close), (gpointer)1);
+    g_signal_connect_swapped(button, "clicked",
+                               G_CALLBACK(cdialog_close), (gpointer)1);
     gtk_widget_show (button);
     
     gtk_widget_show(cdialog);
@@ -584,7 +700,7 @@ gnome_warning_dialog (gchar *text)
     GtkWidget *label, *button;
     GtkWidget *dialog;
 
-    dialog = gtk_dialog_new();
+    dialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_position (GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
     gtk_window_set_title(GTK_WINDOW(dialog), _("Warning"));
 
@@ -596,8 +712,8 @@ gnome_warning_dialog (gchar *text)
     button = gtk_button_new_with_label ("Ok");
     GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), button, TRUE, TRUE, 10);
-    gtk_signal_connect_object (GTK_OBJECT (button), "clicked",
-                               GTK_SIGNAL_FUNC (dialog_close), (gpointer)dialog);
+    g_signal_connect_swapped(button, "clicked",
+                               G_CALLBACK(dialog_close), (gpointer)dialog);
     gtk_widget_grab_default (button);
     gtk_widget_show (button);
     
@@ -610,7 +726,7 @@ gnome_error_dialog (gchar *text)
     GtkWidget *label, *button;
     GtkWidget *dialog;
 
-    dialog = gtk_dialog_new();
+    dialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_position (GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
     gtk_window_set_title(GTK_WINDOW(dialog), _("Error!"));
 
@@ -622,8 +738,8 @@ gnome_error_dialog (gchar *text)
     button = gtk_button_new_with_label ("Ok");
     GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), button, TRUE, TRUE, 10);
-    gtk_signal_connect_object (GTK_OBJECT (button), "clicked",
-                               GTK_SIGNAL_FUNC (dialog_close), (gpointer)dialog);
+    g_signal_connect_swapped(button, "clicked",
+                               G_CALLBACK(dialog_close), (gpointer)dialog);
     gtk_widget_grab_default (button);
     gtk_widget_show (button);
     

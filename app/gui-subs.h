@@ -3,6 +3,7 @@
  * The Real SoundTracker - GUI support routines (header)
  *
  * Copyright (C) 1998-2001 Michael Krause
+ * Copyright (C) 2005 Yury Aliaev (GTK+-2 porting)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -129,7 +130,7 @@ int                  gui_subs_get_slider_value        (gui_subs_slider *s);
 
 typedef struct OptionMenuItem {
   const gchar *name;
-  GtkSignalFunc func;
+  void *func;
 } OptionMenuItem;
 
 GtkWidget *          gui_build_option_menu            (OptionMenuItem items[],
@@ -138,11 +139,44 @@ GtkWidget *          gui_build_option_menu            (OptionMenuItem items[],
 
 GtkWidget *          gui_clist_in_scrolled_window     (int n,
 						       gchar **tp,
+						       GtkWidget *hbox);//!!!
+
+GtkWidget *	     gui_list_in_scrolled_window      (int n, gchar **tp,  GtkWidget *hbox,
+						       GType *types, gfloat *alignments,
+						        gboolean *expands,
+							GtkSelectionMode mode);
+
+GtkWidget *          gui_stringlist_in_scrolled_window(int n,
+						       gchar **tp,
 						       GtkWidget *hbox);
+
+void		     gui_list_clear		      (GtkWidget *list);
+
+void		     gui_list_clear_with_model	      (GtkTreeModel *model);
+
+GtkTreeModel *	     gui_list_freeze		      (GtkWidget *list);
+
+void		     gui_list_thaw		      (GtkWidget *list, GtkTreeModel *model);
+
+#define GUI_GET_LIST_STORE(list) GTK_LIST_STORE(gtk_tree_view_get_model(GTK_TREE_VIEW(list)))
+
+void		     gui_list_handle_selection	      (GtkWidget *list,
+						       GCallback handler,
+						       gpointer data);
+
+inline gboolean	     gui_list_get_iter		      (guint n,
+						       GtkListStore *tree_model,
+						       GtkTreeIter *iter);
+
+inline void	     gui_list_moveto                  (GtkWidget *list, guint n);
+
+inline void	     gui_string_list_set_text	      (GtkWidget *list, guint row,
+						       guint col, const gchar *string);
+
+inline void	     gui_list_select		      (GtkWidget *list, guint row);
 
 GtkWidget *          gui_button                       (GtkWidget * win,
 						       char *stock,
-						       char *labeltext,
 						       void *callback,
 						       gpointer userdata,
 						       GtkWidget *box);

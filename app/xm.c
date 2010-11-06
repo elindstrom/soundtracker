@@ -36,6 +36,7 @@
 #include <time.h>
 
 #include <glib.h>
+#include <glib/gprintf.h>
 
 #include "i18n.h"
 #include "gui-settings.h"
@@ -193,7 +194,7 @@ xm_load_xm_pattern (XMPattern *pat,
     len = get_le_16(ph + 5);
     if(len > 256) {
 	char buf[128];
-	sprintf(buf, _("Pattern length out of range: %d.\n"), len);
+	g_sprintf(buf, _("Pattern length out of range: %d.\n"), len);
 	error_error(buf);
 	return 0;
     }
@@ -508,7 +509,7 @@ xm_load_xm_instrument (STInstrument *instr,
 	if(instr->vibtype >= 4) {
 	    char buf[128];
 	    instr->vibtype = 0;
-	    sprintf(buf, "XM Load Warning: Invalid vibtype %d, using Sine.\n", instr->vibtype);
+	    g_sprintf(buf, "XM Load Warning: Invalid vibtype %d, using Sine.\n", instr->vibtype);
 	    error_warning(buf);
 	}
 	instr->vibrate = b[13];
@@ -554,7 +555,7 @@ xm_load_xi (STInstrument *instr,
 
     fread(a, 1, 23, f);
     if(get_le_16(a + 21) != 0x0102) {
-	sprintf(b, _("Unknown XI version 0x%x\n"), get_le_16(a+21));
+	g_sprintf(b, _("Unknown XI version 0x%x\n"), get_le_16(a+21));
 	error_error(b);
 	return 0;
     }
@@ -584,7 +585,7 @@ xm_load_xi (STInstrument *instr,
     if(instr->vibtype >= 4) {
 	char buf[128];
 	instr->vibtype = 0;
-	sprintf(buf, _("Invalid vibtype %d, using Sine.\n"), instr->vibtype);
+	g_sprintf(buf, _("Invalid vibtype %d, using Sine.\n"), instr->vibtype);
 	error_warning(buf);
     }
     instr->vibrate = b[13];
@@ -883,7 +884,7 @@ xm_load_mod (FILE *f,int *status)
 		s->sample.looptype = 0;
 	    } else if(s->sample.loopstart > s->sample.loopend) {
 		char buf[128];
-		sprintf(buf, "%d: Wrong loop start parameter. Don't know how to handle this. %04x %04x %04x\n", i, get_be_16(sh[i] + 0), get_be_16(sh[i] + 4), get_be_16(sh[i] + 6));
+		g_sprintf(buf, "%d: Wrong loop start parameter. Don't know how to handle this. %04x %04x %04x\n", i, get_be_16(sh[i] + 0), get_be_16(sh[i] + 4), get_be_16(sh[i] + 6));
 		error_warning(buf);
 		s->sample.loopstart = 0;
 		s->sample.loopend = 1;
@@ -998,7 +999,7 @@ XM_Load (const char *filename,int *status)
 	for(j = 0; j < (sizeof(instr->samples) / sizeof(instr->samples[0])); j++) {
 	    if(instr->samples[j].sample.length > mixer->max_sample_length) {
 		char buf[128];
-		sprintf(buf, _("Module contains sample(s) that are too long for the current mixer.\nMaximum sample length is %d."), mixer->max_sample_length);
+		g_sprintf(buf, _("Module contains sample(s) that are too long for the current mixer.\nMaximum sample length is %d."), mixer->max_sample_length);
 		error_warning(buf);
 		goto weiter;
 	    }
@@ -1156,7 +1157,7 @@ int i;
 
     strcpy (tname, prefs_get_prefsdir());
     strcat (tname, "/tmp/");
-    sprintf (tfname, "st%d", getpid());
+    g_sprintf (tfname, "st%d", getpid());
     strcat (tname, tfname);
 
     for(i=0; i < 16; i++)

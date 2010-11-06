@@ -56,20 +56,20 @@ extspinbutton_size_request (GtkWidget      *widget,
     if(EXTSPINBUTTON(widget)->size_hack) {
 	requisition->width = MAX (MIN_SPIN_BUTTON_WIDTH,
 				  extspinbutton_find_display_digits(GTK_SPIN_BUTTON(widget)->adjustment)
-				  * gdk_string_width(widget->style->font, "X"))
+				  * gdk_string_width(gdk_font_from_description(widget->style->font_desc), "X"))
 	    + ARROW_SIZE
-	    + 2 * widget->style->klass->xthickness;
+	    + 2 * widget->style->xthickness;
     } else {
 	// This is the normal size_request() from gtk+-1.2.8
 	requisition->width = MIN_SPIN_BUTTON_WIDTH + ARROW_SIZE 
-	    + 2 * widget->style->klass->xthickness;
+	    + 2 * widget->style->xthickness;
     }
 }
 
 static void
 extspinbutton_value_changed (GtkSpinButton *spin)
 {
-    if(spin->button != 0) {
+    if(gtk_window_get_focus(GTK_WINDOW(mainwindow))) {
 	// Should only do this if this widget is really in the main window.
 	gtk_window_set_focus(GTK_WINDOW(mainwindow), NULL);
     }
@@ -86,8 +86,8 @@ extspinbutton_new (GtkAdjustment *adjustment,
     s->size_hack = TRUE;
     gtk_spin_button_configure(GTK_SPIN_BUTTON(s), adjustment, climb_rate, digits);
 
-    gtk_signal_connect(GTK_OBJECT(s), "changed",
-		       GTK_SIGNAL_FUNC(extspinbutton_value_changed), NULL);
+    g_signal_connect(s, "value-changed",
+		     G_CALLBACK(extspinbutton_value_changed), NULL);
 
     return GTK_WIDGET(s);
 }
@@ -121,18 +121,20 @@ extspinbutton_get_type (void)
     static guint extspinbutton_type = 0;
     
     if (!extspinbutton_type) {
-	GtkTypeInfo extspinbutton_info =
+	GTypeInfo extspinbutton_info =
 	{
-	    "ExtSpinButton",
-	    sizeof(ExtSpinButton),
 	    sizeof(ExtSpinButtonClass),
-	    (GtkClassInitFunc) extspinbutton_class_init,
-	    (GtkObjectInitFunc) extspinbutton_init,
-	    (GtkArgSetFunc) NULL,
-	    (GtkArgGetFunc) NULL,
+	    (GBaseInitFunc) NULL,
+		(GBaseFinalizeFunc) NULL,
+	    (GClassInitFunc) extspinbutton_class_init,
+		(GClassFinalizeFunc) NULL,
+		NULL,
+	    sizeof(ExtSpinButton),
+	    0,
+	    (GInstanceInitFunc) extspinbutton_init,
 	};
 	
-	extspinbutton_type = gtk_type_unique(gtk_spin_button_get_type (), &extspinbutton_info);
+	extspinbutton_type = g_type_register_static(gtk_spin_button_get_type (),"ExtSpinButton", &extspinbutton_info,  (GTypeFlags)0);
     }
     
     return extspinbutton_type;

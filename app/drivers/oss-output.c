@@ -42,14 +42,16 @@
 #include <sys/time.h>
 
 #include <glib.h>
+#include <glib/gprintf.h>
 #include <gtk/gtk.h>
 
 #include "i18n.h"
-#include "driver-out.h"
+#include "driver-inout.h"
 #include "mixer.h"
 #include "errors.h"
 #include "gui-subs.h"
 #include "preferences.h"
+#include "entry-workaround.h"
 
 typedef struct oss_driver {
     GtkWidget *configwidget;
@@ -138,15 +140,15 @@ prefs_init_from_structure (oss_driver *d)
 
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(d->bufsizespin_w), d->p_fragsize);
 
-    gtk_entry_set_text(GTK_ENTRY(d->prefs_devdsp_w), d->p_devdsp);
+    wa_entry_set_text(GTK_ENTRY(d->prefs_devdsp_w), d->p_devdsp);
 }
 
 static void
 prefs_update_estimate (oss_driver *d)
 {
-    char buf[64];
+    char buf[128];
     
-    sprintf(buf, _("Estimated audio delay: %f milliseconds"), (double)(1000 * (1 << d->p_fragsize)) / d->p_mixfreq);
+    g_sprintf(buf, _("Estimated audio delay: %f milliseconds"), (double)(1000 * (1 << d->p_fragsize)) / d->p_mixfreq);
     gtk_label_set_text(GTK_LABEL(d->estimatelabel_w), buf);
 }
 
@@ -176,11 +178,11 @@ static void
 prefs_fragsize_changed (GtkSpinButton *w,
 			oss_driver *d)
 {
-    char buf[30];
+    char buf[64];
 
     d->p_fragsize = gtk_spin_button_get_value_as_int(w);
 
-    sprintf(buf, _("(%d samples)"), 1 << d->p_fragsize);
+    g_sprintf(buf, _("(%d samples)"), 1 << d->p_fragsize);
     gtk_label_set_text(GTK_LABEL(d->bufsizelabel_w), buf);
     prefs_update_estimate(d);
 }
@@ -221,9 +223,9 @@ oss_make_config_widgets (oss_driver *d)
     thing = gtk_entry_new_with_max_length(126);
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
-    gtk_entry_set_text(GTK_ENTRY(thing), d->p_devdsp);
-    gtk_signal_connect_after(GTK_OBJECT(thing), "changed",
-			     GTK_SIGNAL_FUNC(oss_devdsp_changed), d);
+    wa_entry_set_text(GTK_ENTRY(thing), d->p_devdsp);
+    g_signal_connect_after(thing, "changed",
+			     G_CALLBACK(oss_devdsp_changed), d);
     d->prefs_devdsp_w = thing;
 
     box2 = gtk_hbox_new(FALSE, 4);
@@ -272,8 +274,8 @@ oss_make_config_widgets (oss_driver *d)
     d->bufsizespin_w = thing = gtk_spin_button_new(GTK_ADJUSTMENT(gtk_adjustment_new(5.0, 5.0, 15.0, 1.0, 1.0, 0.0)), 0, 0);
     gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
-    gtk_signal_connect (GTK_OBJECT(thing), "changed",
-			GTK_SIGNAL_FUNC(prefs_fragsize_changed), d);
+    g_signal_connect(thing, "value-changed",
+			G_CALLBACK(prefs_fragsize_changed), d);
 
     d->bufsizelabel_w = thing = gtk_label_new("");
     gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
@@ -388,7 +390,7 @@ oss_open (void *dp)
        OSS-conformant (though Thomas Sailer says it's okay). */
     if((d->soundfd = open(d->p_devdsp, O_WRONLY | O_NONBLOCK)) < 0) {
 	char buf[256];
-	sprintf(buf, _("Couldn't open %s for sound output:\n%s"), d->p_devdsp, strerror(errno));
+	g_sprintf(buf, _("Couldn't open %s for sound output:\n%s"), d->p_devdsp, strerror(errno));
 	error_error(buf);
 	goto out;
     }
@@ -523,7 +525,7 @@ oss_savesettings (void *dp,
     return TRUE;
 }
 
-st_out_driver driver_out_oss = {
+st_io_driver driver_out_oss = {
     { "OSS Output",
 
       oss_new,

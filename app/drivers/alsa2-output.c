@@ -36,10 +36,11 @@
 #include <sys/time.h>
 
 #include <glib.h>
+#include <glib/gprintf.h>
 #include <gtk/gtk.h>
 
 #include "i18n.h"
-#include "driver-out.h"
+#include "driver-inout.h"
 #include "mixer.h"
 #include "errors.h"
 #include "gui-subs.h"
@@ -130,12 +131,12 @@ prefs_init_from_structure (alsa_driver *d)
 static void
 prefs_update_estimate (alsa_driver *d)
 {
-    char buf[64];
+    char buf[128];
 
-    sprintf(buf, _("(%d bytes)"), d->p_fragsize * d->p_channels * d->p_resolution / 8);
+    g_sprintf(buf, _("(%d bytes)"), d->p_fragsize * d->p_channels * d->p_resolution / 8);
     gtk_label_set_text(GTK_LABEL(d->bufsizelabel_w), buf);
     
-    sprintf(buf, _("Estimated audio delay: %f milliseconds"), (1000.0 * (double)(d->p_fragsize) / d->p_mixfreq));
+    g_sprintf(buf, _("Estimated audio delay: %f milliseconds"), (1000.0 * (double)(d->p_fragsize) / d->p_mixfreq));
     gtk_label_set_text(GTK_LABEL(d->estimatelabel_w), buf);
 }
 
@@ -249,8 +250,8 @@ alsa_make_config_widgets (alsa_driver *d)
     d->bufsizespin_w = thing = gtk_spin_button_new(GTK_ADJUSTMENT(gtk_adjustment_new(d->fragsize, 64.0, 16384.0, 64.0, 0.0, 0.0)), 0, 0);
     gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
-    gtk_signal_connect (GTK_OBJECT(thing), "changed",
-			GTK_SIGNAL_FUNC(prefs_fragsize_changed), d);
+    g_signal_connect(thing, "value-changed",
+			G_CALLBACK(prefs_fragsize_changed), d);
 
     d->bufsizelabel_w = thing = gtk_label_new("");
     gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
@@ -278,8 +279,8 @@ alsa_make_config_widgets (alsa_driver *d)
     d->alsacardspin_w = alsa_card = gtk_spin_button_new(GTK_ADJUSTMENT(gtk_adjustment_new(d->card_number, 0.0, 256.0, 1.0, 1.0, 0.0)), 0, 0);
     gtk_box_pack_start(GTK_BOX(box2), alsa_card, FALSE, TRUE, 0);
     gtk_widget_show(alsa_card);
-    gtk_signal_connect (GTK_OBJECT(alsa_card), "changed",
-			GTK_SIGNAL_FUNC(prefs_alsacard_changed), d);
+    g_signal_connect(alsa_card, "value-changed",
+			G_CALLBACK(prefs_alsacard_changed), d);
 
     box2 = gtk_hbox_new(FALSE, 4);
     gtk_widget_show(box2);
@@ -293,8 +294,8 @@ alsa_make_config_widgets (alsa_driver *d)
     d->alsadevicespin_w = alsa_device = gtk_spin_button_new(GTK_ADJUSTMENT(gtk_adjustment_new(d->device_number, 0.0, 256.0, 1.0, 1.0, 0.0)), 0, 0);
     gtk_box_pack_start(GTK_BOX(box2), alsa_device, FALSE, TRUE, 0);
     gtk_widget_show(alsa_device);
-    gtk_signal_connect (GTK_OBJECT(alsa_device), "changed",
-			GTK_SIGNAL_FUNC(prefs_alsadevice_changed), d);
+    g_signal_connect(alsa_device, "value-changed",
+			G_CALLBACK(prefs_alsadevice_changed), d);
 
     prefs_init_from_structure(d);
 }
@@ -376,7 +377,7 @@ alsa_open (void *dp)
     err = snd_pcm_open(&(d->soundfd), d->card_number, d->device_number, SND_PCM_OPEN_PLAYBACK);
     if (err != 0) {
 	char buf[256];
-	sprintf(buf, _("Couldn't open ALSA device for sound output (card:%d, device:%d):\n%s"), 
+	g_sprintf(buf, _("Couldn't open ALSA device for sound output (card:%d, device:%d):\n%s"), 
 		d->card_number, d->device_number, snd_strerror(err));
 	error_error(buf);
 	goto out;
@@ -541,7 +542,7 @@ alsa_savesettings (void *dp,
     return TRUE;
 }
 
-st_out_driver driver_out_alsa2 = {
+st_io_driver driver_out_alsa2 = {
     { "ALSA-pcm2 Output",
 
       alsa_new,

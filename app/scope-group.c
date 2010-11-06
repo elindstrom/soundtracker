@@ -29,6 +29,7 @@
 #include <string.h>
 
 #include <glib.h>
+#include <glib/gprintf.h>
 #include <gtk/gtkprivate.h>
 
 #ifndef NO_GDK_PIXBUF
@@ -284,10 +285,10 @@ scope_group_new (void)
     for(i = 0; i < 32; i++) {
 	button = gtk_toggle_button_new();
 	s->scopebuttons[i] = button;
-	gtk_signal_connect(GTK_OBJECT(button), "event",
-			   GTK_SIGNAL_FUNC(scope_group_scope_event), s);
-	gtk_signal_connect(GTK_OBJECT(button), "toggled",
-			   GTK_SIGNAL_FUNC(button_toggled), GINT_TO_POINTER(i));
+	g_signal_connect(button, "event",
+			   G_CALLBACK(scope_group_scope_event), s);
+	g_signal_connect(button, "toggled",
+			   G_CALLBACK(button_toggled), GINT_TO_POINTER(i));
 	gtk_widget_show(button);
 	gtk_widget_ref(button);
 
@@ -307,7 +308,7 @@ scope_group_new (void)
 	gtk_box_pack_start(GTK_BOX(box), thing, TRUE, TRUE, 0);
 	s->scopes[i] = SAMPLE_DISPLAY(thing);
 
-	sprintf(buf, "%02d", i+1);
+	g_sprintf(buf, "%02d", i+1);
 	thing = gtk_label_new(buf);
 	gtk_widget_show(thing);
 	gtk_box_pack_start(GTK_BOX(box), thing, FALSE, TRUE, 0);
@@ -327,18 +328,21 @@ scope_group_get_type (void)
     static guint scope_group_type = 0;
     
     if (!scope_group_type) {
-	GtkTypeInfo scope_group_info =
+	GTypeInfo scope_group_info =
 	{
-	    "ScopeGroup",
-	    sizeof(ScopeGroup),
 	    sizeof(ScopeGroupClass),
-	    (GtkClassInitFunc) NULL,
-	    (GtkObjectInitFunc) NULL,
-	    (GtkArgSetFunc) NULL,
-	    (GtkArgGetFunc) NULL,
+	    (GBaseInitFunc) NULL,
+		(GBaseFinalizeFunc) NULL,
+	    (GClassInitFunc) NULL,
+	    (GClassFinalizeFunc) NULL,
+	    NULL,
+	    sizeof(ScopeGroup),
+	    0,
+	    (GInstanceInitFunc) NULL,
 	};
 	
-	scope_group_type = gtk_type_unique(gtk_hbox_get_type (), &scope_group_info);
+	scope_group_type = g_type_register_static(gtk_hbox_get_type (),
+	    "ScopeGroup", &scope_group_info,  (GTypeFlags)0);
     }
     
     return scope_group_type;
