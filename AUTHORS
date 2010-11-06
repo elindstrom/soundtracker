@@ -76,10 +76,10 @@ Aki Kemppainen		<kemppaia@assari.cc.tut.fi>
 	(reported various GUI bugs)
 Mardy			<mardy@users.sourceforge.net>
 	(sample display vertical flipping bug)
-Yury Aliaev		<mutabor@catholic.org>
+Yury Aliaev		<mutabor@altlinux.org>
 	(pattern import/export in FT2 .xp format, minor
  	bugfixes and improvements, mouse wheel functions,
-	playlist editor)
+	playlist editor, permanent channels implementation)
 Thomas Uwe Gruettmueller <sloyment@gmx.net>
 	(various fixes)
 Wilbern Cobb		<wcobb@openbsd.org>
@@ -93,6 +93,15 @@ Frank Knappe		<knappe@tu-harburg.de>
 	(Help with NetBSD port)
 Mathias Meyer		<mathmeye@users.sourceforge.net>
 	(Darwin fixes)
+David Binderman		<dcb314@hotmail.com>
+	(gcc-4.1 fixes)
+Jaan Pullerits		<jaan@surnuaed.ee>
+	(improved track-editor effect interpolator,
+        improved note recording)
+Olivier Guilyardi	<ml@xung.org>
+	(original crop/trim patch)
+Markku Reunanen		<marq@iki.fi>
+	(SDL output driver)
 
 
 Translations
@@ -131,3 +140,9 @@ Petter Johan Olsen	<petter.olsen@cc.uit.no>
 	(no)
 Andrej Kacian		<andrej@kacian.sk>
 	(sk)
+Steven Michael Murphy	<murf@e-tools.com>
+	(rw)
+Aysun Kiran		<aysunkir@yahoo.com>
+	(tr)
+Clytie Siddall		<clytie@riverland.net.au>
+	(vi)

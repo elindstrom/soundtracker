@@ -307,7 +307,6 @@ void midi_init() {
 
       rc = snd_seq_subscribe_port( midi_handle, port_sub);
       if (rc < 0) {
-	snd_seq_port_subscribe_free(port_sub);
 	close_handle( midi_handle);
 	midi_handle = NULL;
 	g_warning( "error subscribing sequencer port (%s)\n",  snd_strerror(rc));

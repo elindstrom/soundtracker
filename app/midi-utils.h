@@ -27,6 +27,10 @@
 #if defined(DRIVER_ALSA_050)
 #include <sys/asoundlib.h>
 #else
+#include <alsa/version.h>
+#if SND_LIB_MAJOR==1 
+# define ALSA_PCM_OLD_HW_PARAMS_API
+#endif
 #include <alsa/asoundlib.h>
 #endif
 

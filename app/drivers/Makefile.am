@@ -31,6 +31,10 @@ if DRIVER_SUN
   libdrivers_a_SOURCES += sun-output.c sun-input.c
 endif
 
+if DRIVER_SDL
+  libdrivers_a_SOURCES += sdl-output.c
+endif
+
 INCLUDES = -I.. ${ST_S_JACK_INCLUDES}
 
 EXTRA_DIST = dsound-output.c

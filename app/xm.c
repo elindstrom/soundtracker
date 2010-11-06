@@ -185,8 +185,8 @@ xm_load_xm_pattern (XMPattern *pat,
     guint8 ph[9];
     int i, j;
     guint16 len;
-    guint32 hdr_len;
-    unsigned long new_position, position;
+    guint32 hdr_len, datasize;
+    unsigned long position;
 
     fread(ph, 1, sizeof(ph), f);
 
@@ -208,7 +208,7 @@ xm_load_xm_pattern (XMPattern *pat,
 				 (num_channels + 1) & 0xfe))
 	return 0;
 
-    if(get_le_16(ph + 7) == 0)
+    if((datasize = get_le_16(ph + 7)) == 0)
 	return 1;
 
     /* Read channel data */
@@ -218,11 +218,7 @@ xm_load_xm_pattern (XMPattern *pat,
 	}
     }
 
-    /* skip the rest of patterndata, which is really waste, but can exist */
-    new_position = ftell(f);
-    if((new_position - position) < get_le_16(ph + 7))
-	fseek(f, get_le_16(ph + 7) - new_position + position, SEEK_CUR);
-
+    fseek(f, position + datasize, SEEK_SET); /* error-proof positioning to the next pattern */
     return 1;
 }
 
@@ -314,7 +310,11 @@ xm_load_xm_samples (STSample samples[],
     for(i = 0; i < num_samples; i++) {
 	s = &samples[i];
 	if(s->sample.length == 0) {
-	    s->sample.data = NULL;
+	    /* no sample in this slot, delete all info except sample name */
+	    char name[23];
+	    strncpy(name, s->name, 22);
+	    name[22] = 0;
+	    st_clean_sample(s, (const char*)&name);
 	    continue;
 	}
 	s->treat_as_8bit = !(s->sample.looptype & 0x10);
@@ -941,9 +941,9 @@ XM_Load (const char *filename,int *status)
 	error_warning("XM header length != 276. Maybe a pre-0.0.12 SoundTracker module? :-)\n");
     }
 
-    if(get_le_16(xh + 58) != 0x0104) {
-	error_error("Version != 0x0104.");
-	goto fileerr;
+    if(get_le_16(xh + 58) != 0x0104) { /* In future -- replace with confirmation dialog */
+	error_warning("Version != 0x0104. The results may be unpredictable");
+//	goto fileerr;
     }
 
     *status |= LFSTAT_IS_MODULE;  /* see notes in File_Load() about

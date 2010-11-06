@@ -557,7 +557,7 @@ playlist_new (void)
     /* box with songlen and repstart spinbuttons */
     box = gtk_hbox_new(FALSE, 0);
 
-    thing1 = gtk_label_new("Len");
+    thing1 = gtk_label_new(_("Len"));
     gtk_widget_show(thing1);
     gtk_box_pack_start(GTK_BOX(box), thing1, TRUE, TRUE, 0);
     gtk_widget_show(box);
@@ -577,7 +577,7 @@ playlist_new (void)
 			GTK_SIGNAL_FUNC(playlist_songlength_changed),
 			(gpointer)p);
 
-    thing1 = gtk_label_new("Rstrt");
+    thing1 = gtk_label_new(_("Rstrt"));
     gtk_widget_show(thing1);
     gtk_box_pack_start(GTK_BOX(box), thing1, TRUE, TRUE, 0);
 

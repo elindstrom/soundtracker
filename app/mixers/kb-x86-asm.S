@@ -79,7 +79,7 @@ minuseins:	.float -1.0
 	movl	12(%ebp),%edi
 	movl	16(%ebp),%ecx
 	addl	%ecx,%ecx	// stereo
-	flds	20(%ebp)	// amp
+	flds	20(%ebp)	// (amp)
 	
 	call	clipstereo
 

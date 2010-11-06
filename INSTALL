@@ -22,6 +22,9 @@ to find out your installed version, if any):
   not load or save samples (loading and saving modules will work,
   though).
 
+- optionally, gdk-pixbuf library 0.8.0	gdk-pixbuf-config --version
+  For the splash screen and disabled-scope-button graphics
+
 - optionally, GNOME 1.0.1		gnome-config --version
   (available from http://www.gnome.org/)
 
@@ -77,9 +80,6 @@ If this gives errors or warnings, please report.
 
 If you get errors related to files with "intl" in their path name or
 other NLS trouble, reconfigure with --disable-nls.
-
-If you get errors related to assembly language files, reconfigure with
---disable-asm.
 
 If it worked (which is highly probable on any i386 Linux system which
 fulfills the requirements listed above), you can now 'make install' as

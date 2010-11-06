@@ -5,7 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: soundtracker 0.6.5\n"
-"POT-Creation-Date: 2004-01-11 17:20+0100\n"
+"Report-Msgid-Bugs-To: soundtracker-discuss@soundtracker.org\n"
+"POT-Creation-Date: 2006-02-25 14:25+0100\n"
 "PO-Revision-Date: 2002-06-14 14:25-01\n"
 "Last-Translator: Denis Lackovic <delacko@fly.srk.fer.hr>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
@@ -51,8 +52,8 @@ msgstr "Upravljači"
 msgid "Mixers"
 msgstr "Mikseri"
 
-#: app/audioconfig.c:359 app/gui-settings.c:496 app/gui.c:265
-#: app/sample-editor.c:2207 app/transposition.c:347
+#: app/audioconfig.c:359 app/gui-settings.c:512 app/gui.c:274
+#: app/sample-editor.c:2241 app/transposition.c:347
 msgid "Close"
 msgstr "Zatvori"
 
@@ -76,14 +77,14 @@ msgstr "Ove promjene ne utječu sve do ponovnog pokretanja."
 #: app/drivers/alsa-input.c:205 app/drivers/alsa-output.c:211
 #: app/drivers/alsa2-input.c:205 app/drivers/alsa2-output.c:210
 #: app/drivers/oss-output.c:233 app/drivers/sun-output.c:225
-#: app/sample-editor.c:1578
+#: app/sample-editor.c:1612
 msgid "Resolution:"
 msgstr "Rezolucija:"
 
 #: app/drivers/alsa-input.c:215 app/drivers/alsa-output.c:221
 #: app/drivers/alsa2-input.c:215 app/drivers/alsa2-output.c:220
 #: app/drivers/oss-output.c:243 app/drivers/sun-output.c:236
-#: app/sample-editor.c:1608
+#: app/sample-editor.c:1642
 msgid "Channels:"
 msgstr "Kanali:"
 
@@ -182,7 +183,7 @@ msgid "no settings (yet), sorry!"
 msgstr "nema postavki (još), žalim!"
 
 #: app/drivers/file-output.c:167 app/drivers/file-output.c:374
-#: app/sample-editor.c:1823
+#: app/sample-editor.c:1857
 msgid "Can't open file for writing."
 msgstr "Nemogu otvoriti datoteku za snimanje."
 
@@ -235,13 +236,12 @@ msgid "Running at %d Hz with %d frames"
 msgstr ""
 
 #: app/drivers/jack-output.c:283
+#, c-format
 msgid "Jack server not running?"
 msgstr ""
 
-#. TODO: this should be improved, both error handling and saving the string
-#. I'm probably not taking advantage of libjack
 #: app/drivers/jack-output.c:327
-#, fuzzy
+#, fuzzy, c-format
 msgid "soundtracker"
 msgstr "Koristi SoundTracker!"
 
@@ -258,8 +258,8 @@ msgstr ""
 msgid "Output device (e.g. '/dev/audio'):"
 msgstr "Izlazni uređaj (npr. '/dev/dsp'):"
 
-#: app/drivers/sun-input.c:229 app/drivers/sun-input.c:311
 #: app/drivers/sun-output.c:389 app/drivers/sun-output.c:460
+#: app/drivers/sun-input.c:229 app/drivers/sun-input.c:311
 #, c-format
 msgid "%s: %s"
 msgstr ""
@@ -269,17 +269,17 @@ msgstr ""
 msgid "%s: Cannot play (%s)"
 msgstr ""
 
-#: app/drivers/sun-input.c:250 app/drivers/sun-output.c:402
+#: app/drivers/sun-output.c:402 app/drivers/sun-input.c:250
 #, c-format
 msgid "%s: Cannot handle %dHz (%s)"
 msgstr ""
 
-#: app/drivers/sun-input.c:280 app/drivers/sun-output.c:431
+#: app/drivers/sun-output.c:431 app/drivers/sun-input.c:280
 #, fuzzy, c-format
 msgid "%s: Required sound encoding not supported.\n"
 msgstr "Traženi izlazni zvučni format  nije podržan.\n"
 
-#: app/drivers/sun-input.c:305 app/drivers/sun-output.c:454
+#: app/drivers/sun-output.c:454 app/drivers/sun-input.c:305
 #, c-format
 msgid "%s: Cannot set block size (%s)"
 msgstr ""
@@ -343,11 +343,11 @@ msgstr "Točka"
 msgid "Loop"
 msgstr "Kruži"
 
-#: app/envelope-box.c:1018 app/sample-editor.c:261
+#: app/envelope-box.c:1018 app/sample-editor.c:275
 msgid "Start"
 msgstr "Pokreni"
 
-#: app/envelope-box.c:1019 app/sample-editor.c:262
+#: app/envelope-box.c:1019 app/sample-editor.c:276
 msgid "End"
 msgstr "Kraj"
 
@@ -367,7 +367,7 @@ msgstr "Daj WAV"
 msgid "Save Song"
 msgstr "Snimi Pjesmu"
 
-#: app/file-operations.c:166 app/sample-editor.c:369
+#: app/file-operations.c:166 app/sample-editor.c:383
 msgid "Load Sample"
 msgstr "Učitaj Primjer"
 
@@ -391,57 +391,59 @@ msgstr "Spis"
 msgid "Operation not supported."
 msgstr "Operacija nije podržana."
 
-#: app/gui-settings.c:97
+#: app/gui-settings.c:100
 msgid "Scopes Frequency"
 msgstr "Scopes Frekvencija"
 
-#: app/gui-settings.c:100
+#: app/gui-settings.c:103
 msgid "Tracker Frequency"
 msgstr "Traker Frekvencija"
 
-#: app/gui-settings.c:308 app/gui-settings.c:311
+#: app/gui-settings.c:317 app/gui-settings.c:320
 msgid "GUI Configuration"
 msgstr "GUI Podešavanje"
 
-#: app/gui-settings.c:345
+#: app/gui-settings.c:354
 msgid "Hexadecimal row numbers"
 msgstr "Heksadecimalni red brojeva"
 
-#: app/gui-settings.c:352
+#: app/gui-settings.c:361
 msgid "Use upper case letters for hex numbers"
 msgstr "Koristi veća slova za hex brojeve"
 
-#: app/gui-settings.c:359
+#: app/gui-settings.c:368
 msgid "Asynchronous (IT-style) pattern editing"
 msgstr ""
 
-#: app/gui-settings.c:366
+#: app/gui-settings.c:375
 msgid "Fxx command updates Tempo/BPM sliders"
 msgstr "Fxx naredba obnovljena Tempo/BPM klizači"
 
-#: app/gui-settings.c:373
+#: app/gui-settings.c:382
 msgid "Switch to tracker after loading/saving"
 msgstr "Prebaci na traker nakon učitavanja/snimanja"
 
-#: app/gui-settings.c:380
+#: app/gui-settings.c:389
 msgid "Save window geometry on exit"
 msgstr "Snimi geometriju prozora kada izađeš"
 
-#: app/gui-settings.c:387
+#: app/gui-settings.c:396
 msgid "Use note name B instead of H"
 msgstr ""
 
-#: app/gui-settings.c:401
+#: app/gui-settings.c:403
+msgid "Save and restore permanent channels"
+msgstr ""
+
+#: app/gui-settings.c:417
 msgid "Scopes buffer size [MB]"
 msgstr "Scopes buffer veličina [MB]"
 
-#: app/gui-settings.c:420
+#: app/gui-settings.c:436
 msgid "Track line format:"
 msgstr "Traka crta format:"
 
-#. 	    gtk_window_set_transient_for(GTK_WINDOW(gui_splash_window), GTK_WINDOW(mainwindow));
-#. (doesn't do anything on WindowMaker)
-#: app/gui-subs.c:32 app/gui.c:2358
+#: app/gui-subs.c:32 app/gui.c:2369
 msgid "Ready."
 msgstr "Spreman."
 
@@ -523,8 +525,9 @@ msgid "No"
 msgstr "Ništa"
 
 #: app/gui-subs.c:507 app/gui-subs.c:571 app/keys.c:711
-#: app/midi-settings-050.c:637 app/midi-settings-09x.c:640
-#: app/sample-editor.c:1486 app/sample-editor.c:1661 app/sample-editor.c:1985
+#: app/sample-editor.c:1520 app/sample-editor.c:1695 app/sample-editor.c:2019
+#: app/sample-editor.c:2480 app/midi-settings-050.c:637
+#: app/midi-settings-09x.c:640
 msgid "Cancel"
 msgstr "Odustani"
 
@@ -540,35 +543,34 @@ msgstr "Greška!"
 msgid "Tempo"
 msgstr "Tempo"
 
-#: app/gui.c:236 app/gui.c:246 app/gui.c:2069
+#: app/gui.c:245 app/gui.c:255 app/gui.c:2078
 msgid "Row highlighting configuration"
 msgstr ""
 
-#: app/gui.c:292
+#: app/gui.c:301
 #, fuzzy
 msgid "Highlight rows (major / minor):"
 msgstr "Važniji redovi:"
 
-#: app/gui.c:469
+#: app/gui.c:478
 msgid ""
 "Odd pattern rows contain data which will be lost after shrinking.\n"
 "Do you want to continue anyway?"
 msgstr ""
 
-#: app/gui.c:497
+#: app/gui.c:506
 msgid ""
 "The pattern is too long for expanding.\n"
-"Some data at the end of the pattern will be lost.Do you want to continue "
-"anyway?"
+"Some data at the end of the pattern will be lost.\n"
+"Do you want to continue anyway?"
 msgstr ""
 
-#. No file was actually selected.
-#: app/gui.c:546 app/instrument-editor.c:212 app/sample-editor.c:1685
-#: app/sample-editor.c:1881 app/sample-editor.c:1925
+#: app/gui.c:555 app/instrument-editor.c:212 app/sample-editor.c:1719
+#: app/sample-editor.c:1915 app/sample-editor.c:1959
 msgid "No file selected."
 msgstr ""
 
-#: app/gui.c:554
+#: app/gui.c:563
 msgid ""
 "Are you sure you want to free the current project?\n"
 "All changes will be lost!"
@@ -576,155 +578,154 @@ msgstr ""
 "Jesi li siguran da želiš izaći iz trenutnog projekta?\n"
 "Sve promjene biti će izgubljene!"
 
-#: app/gui.c:568 app/gui.c:583 app/gui.c:598 app/gui.c:616
-#: app/sample-editor.c:1894 app/sample-editor.c:1943
+#: app/gui.c:577 app/gui.c:592 app/gui.c:607 app/gui.c:625
+#: app/sample-editor.c:1928 app/sample-editor.c:1977
 msgid "Are you sure you want to overwrite the file?"
 msgstr "Jesi li siguran da želiš preko datoteke snimiti?"
 
-#: app/gui.c:629
+#: app/gui.c:638
 msgid "Error when opening pattern file!"
 msgstr ""
 
-#: app/gui.c:642
+#: app/gui.c:651
 msgid ""
 "The length of the pattern being loaded doesn't match with that of current "
 "pattern in module.\n"
 "Do you want to change the current pattern length?"
 msgstr ""
 
-#: app/gui.c:1710
+#: app/gui.c:1719
 msgid "SoundTracker Startup"
 msgstr "SoundTracker Podizanje"
 
-#: app/gui.c:1769 app/gui.c:1806
+#: app/gui.c:1778 app/gui.c:1815
 msgid "Loading..."
 msgstr "Učitavam..."
 
-#: app/gui.c:1795
+#: app/gui.c:1804
 msgid "Use SoundTracker!"
 msgstr "Koristi SoundTracker!"
 
-#: app/gui.c:1853
+#: app/gui.c:1862
 msgid "Load XM..."
 msgstr "Učitaj XM..."
 
-#: app/gui.c:1855
+#: app/gui.c:1864
 msgid "Save XM..."
 msgstr "Snimi XM..."
 
-#: app/gui.c:1858
+#: app/gui.c:1867
 msgid "Render module as WAV..."
 msgstr "Daj modul kao WAV..."
 
-#: app/gui.c:1861
+#: app/gui.c:1870
 msgid "Save song as XM..."
 msgstr "Snimi pjesmu kao XM..."
 
-#: app/gui.c:1863
+#: app/gui.c:1872
 #, fuzzy
 msgid "Load current pattern..."
 msgstr "Sviranje dijela..."
 
-#: app/gui.c:1865
+#: app/gui.c:1874
 #, fuzzy
 msgid "Save current pattern..."
 msgstr "Sviranje dijela..."
 
-#: app/gui.c:1935
+#: app/gui.c:1944
 msgid "Play Song"
 msgstr "Sviraj Pjesmu"
 
-#: app/gui.c:1947
+#: app/gui.c:1956
 msgid "Play Pattern"
 msgstr "Sviraj uzorak"
 
-#: app/gui.c:1959
+#: app/gui.c:1968
 msgid "Stop"
 msgstr "Zaustavi"
 
-#: app/gui.c:1964
+#: app/gui.c:1973
 #, fuzzy
 msgid "Pat"
 msgstr "Umetni"
 
-#: app/gui.c:1970
+#: app/gui.c:1979
 msgid "Edited pattern"
 msgstr ""
 
-#: app/gui.c:1983
+#: app/gui.c:1992
 msgid "When enabled, browsing the playlist does not change the edited pattern."
 msgstr ""
 
-#: app/gui.c:1999
+#: app/gui.c:2008
 msgid "Number of Channels:"
 msgstr "Broj kanala:"
 
-#: app/gui.c:2016
+#: app/gui.c:2025
 #, fuzzy
 msgid "Pattern Length"
 msgstr "PatTrajanje"
 
-#: app/gui.c:2051
+#: app/gui.c:2060
 msgid "Set preferred accidental type"
 msgstr ""
 
-#: app/gui.c:2057
+#: app/gui.c:2066
 msgid "Measure"
 msgstr ""
 
-#: app/gui.c:2058
+#: app/gui.c:2067
 msgid "Enable row highlighting"
 msgstr ""
 
-#: app/gui.c:2084
+#: app/gui.c:2093
 #, fuzzy
 msgid "Other..."
 msgstr "Ostale tipke..."
 
-#: app/gui.c:2120
+#: app/gui.c:2129
 #, fuzzy
 msgid "Change effect column editing direction"
 msgstr "Horizontalni efekt stupac uređenje"
 
-#: app/gui.c:2151
+#: app/gui.c:2160
 msgid "Global amplification"
 msgstr ""
 
-#: app/gui.c:2187
+#: app/gui.c:2196
 msgid "Pitchbend"
 msgstr ""
 
-#: app/gui.c:2195
+#: app/gui.c:2204
 msgid "Reset pitchbend to its normal value"
 msgstr ""
 
-#: app/gui.c:2207
+#: app/gui.c:2216
 #, fuzzy
 msgid "Editing"
 msgstr "_Uredi"
 
-#: app/gui.c:2212
+#: app/gui.c:2223
 msgid "Octave"
 msgstr "Oktave"
 
-#: app/gui.c:2221
+#: app/gui.c:2232
 msgid "Jump"
 msgstr "Skok"
 
-#: app/gui.c:2230
+#: app/gui.c:2241
 msgid "Instr"
 msgstr "Instr"
 
-#: app/gui.c:2246
+#: app/gui.c:2257
 msgid "Sample"
 msgstr "Uzorak"
 
-#. Status Bar
-#: app/gui.c:2285
+#: app/gui.c:2296
 msgid "Welcome to SoundTracker!"
 msgstr "Dobro došli u SoundTracker!"
 
-#: app/gui.c:2312
+#: app/gui.c:2323
 msgid "%M:%S"
 msgstr ""
 
@@ -808,9 +809,6 @@ msgstr "Inicijaliziraj"
 msgid "<none>"
 msgstr "<nijedan>"
 
-#. 3 fixed entries,
-#. 32 dynamically generated ones (see keys_generate_channel_explanations()),
-#. 1 NULL terminator
 #: app/keys.c:129
 msgid "The key that inserts the special keyoff note for FastTracker modules."
 msgstr ""
@@ -865,12 +863,10 @@ msgstr "Zadatak"
 msgid "Keyboard Configuration"
 msgstr "Podešavanje Tipkovnice"
 
-#. Explaining Text
 #: app/keys.c:575
 msgid "Key Group Explanation"
 msgstr "Tipka Grupe Objašnjenja"
 
-#. Explaining Text
 #: app/keys.c:592
 msgid "Key Explanation"
 msgstr "Tipka Objašnjenja"
@@ -879,7 +875,6 @@ msgstr "Tipka Objašnjenja"
 msgid "Modifiers:"
 msgstr "Modifikacije:"
 
-#. Learn-Buttons
 #: app/keys.c:649
 msgid "Learn selected key"
 msgstr "Nauči odabrane tipke"
@@ -896,9 +891,8 @@ msgstr ""
 "Molim pritisni željenu kombinaciju tipke!\n"
 "Klikni u lijevi ispis za poništavanje!"
 
-#. Create the buttons.
-#: app/keys.c:691 app/menubar.c:104 app/midi-settings-050.c:635
-#: app/midi-settings-09x.c:638
+#: app/keys.c:691 app/menubar.c:104 app/sample-editor.c:2472
+#: app/midi-settings-050.c:635 app/midi-settings-09x.c:638
 msgid "Ok"
 msgstr "U redu"
 
@@ -924,7 +918,6 @@ msgstr ""
 msgid "Fast jump to channel %d"
 msgstr ""
 
-#. Automatic key configuration unsuccessful. Popup requester.
 #: app/keys.c:1076
 msgid ""
 "Automatic key configuration unsuccessful.\n"
@@ -951,269 +944,281 @@ msgstr ""
 "Jesi li siguran da želiš izaći?\n"
 "Sve promjene biti će izgubljene!"
 
-#: app/menubar.c:413
+#: app/menubar.c:419
 msgid "_Open..."
 msgstr "_Otvori..."
 
-#: app/menubar.c:415
+#: app/menubar.c:421
 msgid "Save _as..."
 msgstr "Snimi _kao..."
 
-#: app/menubar.c:421
+#: app/menubar.c:427
 msgid "Save Module as _WAV..."
 msgstr "Snimi Modul kao _WAV..."
 
-#: app/menubar.c:423
+#: app/menubar.c:429
 msgid "Save XM without samples..."
 msgstr "Snimi XM bez primjera..."
 
-#: app/menubar.c:428
+#: app/menubar.c:434
 msgid "_Quit"
 msgstr "_Izlaz"
 
-#: app/menubar.c:435
+#: app/menubar.c:441
 msgid "Clear _All"
 msgstr "Očisti _Sve"
 
-#: app/menubar.c:437
+#: app/menubar.c:443
 msgid "Clear _Patterns Only"
 msgstr "Očisti _Samo Uzorke"
 
-#: app/menubar.c:442
+#: app/menubar.c:448
 msgid "_Optimize Module"
 msgstr "_Optimiziraj Modul"
 
-#: app/menubar.c:449 app/menubar.c:460 app/menubar.c:516 app/menubar.c:547
+#: app/menubar.c:455 app/menubar.c:466 app/menubar.c:522 app/menubar.c:556
 msgid "C_ut"
 msgstr "R_eži"
 
-#: app/menubar.c:451 app/menubar.c:462 app/menubar.c:518 app/menubar.c:549
+#: app/menubar.c:457 app/menubar.c:468 app/menubar.c:524 app/menubar.c:558
 msgid "_Copy"
 msgstr "_Kopiraj"
 
-#: app/menubar.c:453 app/menubar.c:464 app/menubar.c:551
+#: app/menubar.c:459 app/menubar.c:470 app/menubar.c:560
 msgid "_Paste"
 msgstr "_Zaljepi"
 
-#: app/menubar.c:469
+#: app/menubar.c:475
 msgid "_Kill notes"
 msgstr "_Ubij bilješke"
 
-#: app/menubar.c:474
+#: app/menubar.c:480
 msgid "_Insert track"
 msgstr "_Ubaci traku"
 
-#: app/menubar.c:476
+#: app/menubar.c:482
 msgid "_Delete track"
 msgstr "_Izbriši traku"
 
-#: app/menubar.c:481
+#: app/menubar.c:487
 msgid "Increment cmd value"
 msgstr "Prevelik cmd vrijednost"
 
-#: app/menubar.c:483
+#: app/menubar.c:489
 msgid "Decrement cmd value"
 msgstr "Smanjena cmd vrijednost"
 
-#: app/menubar.c:490
+#: app/menubar.c:496
 msgid "_Mark mode"
 msgstr "_Označi mod"
 
-#: app/menubar.c:492 app/menubar.c:545
+#: app/menubar.c:498 app/menubar.c:554
 msgid "C_lear block marks"
 msgstr "O_čisti označeni blok"
 
-#: app/menubar.c:497 app/menubar.c:553
+#: app/menubar.c:503 app/menubar.c:562
 msgid "_Interpolate effects"
 msgstr "Interpolirani efekti"
 
-#: app/menubar.c:502
+#: app/menubar.c:508
 msgid "Transpose half-note up"
 msgstr "Mjenjati pola-oznake gore"
 
-#: app/menubar.c:504
+#: app/menubar.c:510
 msgid "Transpose half-note down"
 msgstr "Mjenjati pola-oznake dolje"
 
-#: app/menubar.c:506
+#: app/menubar.c:512
 msgid "Transpose octave up"
 msgstr "Mjenjati oktavu gore"
 
-#: app/menubar.c:508
+#: app/menubar.c:514
 msgid "Transpose octave down"
 msgstr "Mjenjati oktavu dolje"
 
-#: app/menubar.c:520
+#: app/menubar.c:526
 #, fuzzy
 msgid "P_aste"
 msgstr "Umetni"
 
-#: app/menubar.c:525
+#: app/menubar.c:531
 msgid "_Jazz Edit Mode"
 msgstr "_Jazz Uredi mod"
 
-#: app/menubar.c:530
+#: app/menubar.c:534
+msgid "_Record keyreleases"
+msgstr ""
+
+#: app/menubar.c:539
 msgid "Transp_osition..."
 msgstr "Premj_eštanje..."
 
-#: app/menubar.c:535 app/menubar.c:560 app/menubar.c:688
+#: app/menubar.c:544 app/menubar.c:569 app/menubar.c:707
 msgid "_Pattern"
 msgstr "_Uzorak"
 
-#: app/menubar.c:536 app/menubar.c:561
+#: app/menubar.c:545 app/menubar.c:570 app/menubar.c:708
 msgid "_Track"
 msgstr "_Traka"
 
-#: app/menubar.c:537 app/menubar.c:562
+#: app/menubar.c:546 app/menubar.c:571
 msgid "_Selection"
 msgstr "_Selekcija"
 
-#: app/menubar.c:569
+#: app/menubar.c:578
 msgid "_Find Unused Pattern"
 msgstr "_Nađi nekorištene Uzorke"
 
-#: app/menubar.c:571
+#: app/menubar.c:580
 msgid "_Copy Current to Unused Pattern"
 msgstr "_Kopiraj Trenutni u Nekorišteni Uzorak"
 
-#: app/menubar.c:576
+#: app/menubar.c:585
 msgid "C_lear Unused Patterns"
 msgstr "O_čisti Nekorištene Uzorke"
 
-#: app/menubar.c:578
+#: app/menubar.c:587
 msgid "_Pack Patterns"
 msgstr "_Pakiraj Uzorke"
 
-#: app/menubar.c:583
+#: app/menubar.c:592
 #, fuzzy
 msgid "_Save Current Pattern"
 msgstr "_Kopiraj Trenutni u Nekorišteni Uzorak"
 
-#: app/menubar.c:585
+#: app/menubar.c:594
 #, fuzzy
 msgid "L_oad Pattern"
 msgstr "_Uzorak"
 
-#: app/menubar.c:590
+#: app/menubar.c:599
 #, fuzzy
 msgid "Sh_rink Current Pattern"
 msgstr "_Kopiraj Trenutni u Nekorišteni Uzorak"
 
-#: app/menubar.c:592
+#: app/menubar.c:601
 #, fuzzy
 msgid "_Expand Current Pattern"
 msgstr "_Kopiraj Trenutni u Nekorišteni Uzorak"
 
-#: app/menubar.c:599
+#: app/menubar.c:608
+msgid "_Toggle Current Channel Permanentness"
+msgstr ""
+
+#: app/menubar.c:610
+msgid "Toggle _All Channels Permanentness"
+msgstr ""
+
+#: app/menubar.c:618
 msgid "_Load XI..."
 msgstr "_Učitaj XI..."
 
-#: app/menubar.c:601
+#: app/menubar.c:620
 msgid "_Save XI..."
 msgstr "_Snimi XI..."
 
-#: app/menubar.c:606
+#: app/menubar.c:625
 msgid "_Clear Current"
 msgstr "_Očisti Trenutni"
 
-#: app/menubar.c:611
+#: app/menubar.c:630
 msgid "_Delete Unused Instruments"
 msgstr "_Brisanje Nekorištenih Instrumenata"
 
-#: app/menubar.c:618
+#: app/menubar.c:637
 msgid "_Flicker-free scrolling"
 msgstr ""
 
-#: app/menubar.c:621
+#: app/menubar.c:640
 msgid "_Previous font"
 msgstr "_Prijašnje pismo"
 
-#: app/menubar.c:623
+#: app/menubar.c:642
 msgid "_Next font"
 msgstr "_Slijedeće pismo"
 
-#: app/menubar.c:628
+#: app/menubar.c:647
 msgid "Change preferred _accidental type"
 msgstr ""
 
-#: app/menubar.c:630
+#: app/menubar.c:649
 #, fuzzy
 msgid "Change effect column editing _direction"
 msgstr "Horizontalni efekt stupac uređenje"
 
-#: app/menubar.c:638
+#: app/menubar.c:657
 msgid "Display _Oscilloscopes"
 msgstr "Prikaz _Osciloskopa"
 
-#: app/menubar.c:641
+#: app/menubar.c:660
 msgid "_Tracker"
 msgstr ""
 
-#: app/menubar.c:645
+#: app/menubar.c:664
 msgid "_Keyboard Configuration..."
 msgstr "_Podešavanje Tipkovnice"
 
-#: app/menubar.c:647
+#: app/menubar.c:666
 msgid "_Audio Configuration..."
 msgstr "_Podešavanje Zvuka..."
 
-#: app/menubar.c:649
+#: app/menubar.c:668
 msgid "_GUI Configuration..."
 msgstr "_GUI Podešavanje..."
 
-#: app/menubar.c:655
+#: app/menubar.c:674
 msgid "_MIDI Configuration..."
 msgstr "_MIDI Podešavanje..."
 
-#: app/menubar.c:660
+#: app/menubar.c:679
 msgid "Disable splash screen"
 msgstr ""
 
-#: app/menubar.c:662
+#: app/menubar.c:681
 msgid "_Save Settings now"
 msgstr "_Snimi Opcije sad"
 
-#: app/menubar.c:664
+#: app/menubar.c:683
 msgid "Save Settings on _Exit"
 msgstr "_Snimi Opcije na Izlazu"
 
-#: app/menubar.c:671
+#: app/menubar.c:690
 msgid "_About..."
 msgstr "_O..."
 
-#: app/menubar.c:676
+#: app/menubar.c:695
 msgid "Show _Tips..."
 msgstr "Prikaži _Savjete..."
 
-#: app/menubar.c:678
+#: app/menubar.c:697
 msgid "_XM Effects..."
 msgstr "_XM Efekti..."
 
-#: app/menubar.c:685
+#: app/menubar.c:704
 msgid "_File"
 msgstr "_Datoteka"
 
-#: app/menubar.c:686
+#: app/menubar.c:705
 msgid "_Module"
 msgstr "_Modul"
 
-#: app/menubar.c:687
+#: app/menubar.c:706
 msgid "_Edit"
 msgstr "_Uredi"
 
-#: app/menubar.c:689
+#: app/menubar.c:709
 msgid "_Instrument"
 msgstr "_Instrument"
 
-#: app/menubar.c:690
+#: app/menubar.c:710
 msgid "_Settings"
 msgstr "_Opcije"
 
-#: app/menubar.c:691
+#: app/menubar.c:711
 msgid "_Help"
 msgstr "_Pomoč"
 
-#: app/mixers/integer32.c:459
+#: app/mixers/integer32.c:493
 msgid "Integers mixer, no interpolation, no filters, maximum sample length 1M"
 msgstr ""
 
@@ -1233,7 +1238,7 @@ msgstr "Primjer Imena"
 msgid "Linear"
 msgstr "Linearno"
 
-#: app/module-info.c:117 app/sample-editor.c:221
+#: app/module-info.c:117 app/sample-editor.c:235
 msgid "Amiga"
 msgstr ""
 
@@ -1292,10 +1297,20 @@ msgstr ""
 msgid "Add a free pattern behind current position"
 msgstr ""
 
+#: app/playlist.c:560
+#, fuzzy
+msgid "Len"
+msgstr "Duljina"
+
 #: app/playlist.c:574
 #, fuzzy
 msgid "Song length"
 msgstr "Duljina Pjesme"
+
+#: app/playlist.c:580
+#, fuzzy
+msgid "Rstrt"
+msgstr "Instr"
 
 #: app/playlist.c:593
 #, fuzzy
@@ -1310,156 +1325,165 @@ msgstr ""
 "Mapa nazvana '.soundtracker'je bila napravljena u tvojoj\n"
 "početnoj mapi snimnjena kao datoteka podešavanja.\n"
 
-#: app/sample-editor.c:220
+#: app/sample-editor.c:234
 msgid "No loop"
 msgstr "Ne ponavljaj"
 
-#: app/sample-editor.c:222
+#: app/sample-editor.c:236
 msgid "PingPong"
 msgstr ""
 
-#: app/sample-editor.c:226 app/sample-editor.c:1540
+#: app/sample-editor.c:240 app/sample-editor.c:1574
 msgid "8 bits"
 msgstr "8 bitova"
 
-#: app/sample-editor.c:227 app/sample-editor.c:1540
+#: app/sample-editor.c:241 app/sample-editor.c:1574
 msgid "16 bits"
 msgstr "16 bitova"
 
-#: app/sample-editor.c:233
+#: app/sample-editor.c:247
 msgid "Sample Editor"
 msgstr "Uređivač primjera"
 
-#: app/midi-settings-050.c:504 app/midi-settings-09x.c:507
-#: app/sample-editor.c:273
+#: app/sample-editor.c:287 app/midi-settings-050.c:504
+#: app/midi-settings-09x.c:507
 msgid "Volume"
 msgstr "Jačina zvuka"
 
-#: app/sample-editor.c:274
+#: app/sample-editor.c:288
 msgid "Panning"
 msgstr "Pomicanje"
 
-#: app/sample-editor.c:275
+#: app/sample-editor.c:289
 msgid "Finetune"
 msgstr "Finopodešavanje"
 
-#: app/sample-editor.c:295
+#: app/sample-editor.c:309
 msgid "Selection:"
 msgstr "Izbor:"
 
-#: app/sample-editor.c:299 app/track-editor.c:190 app/track-editor.c:200
+#: app/sample-editor.c:313 app/track-editor.c:198 app/track-editor.c:208
 msgid "None"
 msgstr "Ništa"
 
-#: app/sample-editor.c:305
+#: app/sample-editor.c:319
 msgid "All"
 msgstr "Sve"
 
-#: app/sample-editor.c:326
+#: app/sample-editor.c:340
 msgid "Length:"
 msgstr "Duljina:"
 
-#: app/sample-editor.c:342
+#: app/sample-editor.c:356
 msgid "Set as loop"
 msgstr "Postavi kao ponavljanje"
 
-#: app/sample-editor.c:350
+#: app/sample-editor.c:364
 msgid "RelNote"
 msgstr ""
 
-#: app/sample-editor.c:361
+#: app/sample-editor.c:375
 msgid "Load Sample..."
 msgstr "Učitaj primjer..."
 
-#: app/sample-editor.c:363
+#: app/sample-editor.c:377
 msgid "Save WAV..."
 msgstr "Snimi WAV..."
 
-#: app/sample-editor.c:365
+#: app/sample-editor.c:379
 msgid "Save region as WAV..."
 msgstr "Snimi područje kao WAV..."
 
-#: app/sample-editor.c:378
+#: app/sample-editor.c:392
 msgid "Save WAV"
 msgstr "Snimi WAV"
 
-#: app/sample-editor.c:388
+#: app/sample-editor.c:402
 msgid "Save Region"
 msgstr "Snimi Područje"
 
-#: app/sample-editor.c:399
+#: app/sample-editor.c:413
 msgid "Monitor"
 msgstr ""
 
-#: app/sample-editor.c:405
+#: app/sample-editor.c:419
 msgid "Volume Ramp"
 msgstr "Jačina Nagiba"
 
-#: app/sample-editor.c:415
+#: app/sample-editor.c:425
+msgid "Trim"
+msgstr ""
+
+#: app/sample-editor.c:436
 msgid "Zoom to selection"
 msgstr "Zumiranje izbora"
 
-#: app/sample-editor.c:421
+#: app/sample-editor.c:442
 msgid "Show all"
 msgstr "Prikaži sve"
 
-#: app/sample-editor.c:427
+#: app/sample-editor.c:448
 msgid "Zoom in (+50%)"
 msgstr "Zoom na (+50%)"
 
-#: app/sample-editor.c:433
+#: app/sample-editor.c:454
 msgid "Zoom out (-50%)"
 msgstr "Zoom od (-50%)"
 
-#: app/sample-editor.c:439
+#: app/sample-editor.c:460
 msgid "Reverse"
 msgstr "Obrnuti redoslijed"
 
-#: app/sample-editor.c:449
+#: app/sample-editor.c:470
 msgid "Cut"
 msgstr "Izreži"
 
-#: app/sample-editor.c:455
+#: app/sample-editor.c:476
 msgid "Remove"
 msgstr "Ukloni"
 
-#: app/sample-editor.c:461
+#: app/sample-editor.c:482
 msgid "Copy"
 msgstr "Kopiraj"
 
-#: app/sample-editor.c:467
+#: app/sample-editor.c:488
 msgid "Paste"
 msgstr "Umetni"
 
-#: app/sample-editor.c:473
+#: app/sample-editor.c:494
 msgid "Clear Sample"
 msgstr "Briši Primjer"
 
-#: app/sample-editor.c:537
+#: app/sample-editor.c:500
+#, fuzzy
+msgid "Crop"
+msgstr "Kopiraj"
+
+#: app/sample-editor.c:564
 msgid "(no selection)"
 msgstr "(nema izbora)"
 
-#: app/sample-editor.c:1035
+#: app/sample-editor.c:1069
 msgid "Out of memory for copybuffer.\n"
 msgstr ""
 
-#: app/sample-editor.c:1154
+#: app/sample-editor.c:1188
 msgid "<just pasted>"
 msgstr "<upravo zaljepljeno>"
 
-#: app/sample-editor.c:1267
+#: app/sample-editor.c:1301
 msgid "Out of memory for sample data."
 msgstr ""
 
-#: app/sample-editor.c:1283 app/sample-editor.c:1295
+#: app/sample-editor.c:1317 app/sample-editor.c:1329
 msgid "Read error."
 msgstr "Greška čitanja."
 
-#: app/sample-editor.c:1442
+#: app/sample-editor.c:1476
 msgid "Load stereo sample"
 msgstr "Učitaj stereo primjer"
 
-#: app/sample-editor.c:1450
+#: app/sample-editor.c:1484
 msgid ""
 "You have selected a stereo sample!\n"
 "(SoundTracker can only handle mono samples!)\n"
@@ -1471,49 +1495,49 @@ msgstr ""
 "\n"
 "Birajte koji kanal učitati:"
 
-#: app/sample-editor.c:1461
+#: app/sample-editor.c:1495
 msgid "Left"
 msgstr "Lijevo"
 
-#: app/sample-editor.c:1467
+#: app/sample-editor.c:1501
 msgid "Mix"
 msgstr "Mješanje"
 
-#: app/sample-editor.c:1473
+#: app/sample-editor.c:1507
 msgid "Right"
 msgstr "Desno"
 
-#: app/sample-editor.c:1541
+#: app/sample-editor.c:1575
 #, fuzzy
 msgid "Signed"
 msgstr "Sinus"
 
-#: app/sample-editor.c:1541
+#: app/sample-editor.c:1575
 msgid "Unsigned"
 msgstr ""
 
-#: app/sample-editor.c:1542
+#: app/sample-editor.c:1576
 msgid "Little-Endian"
 msgstr ""
 
-#: app/sample-editor.c:1542
+#: app/sample-editor.c:1576
 msgid "Big-Endian"
 msgstr ""
 
-#: app/sample-editor.c:1543
+#: app/sample-editor.c:1577
 msgid "Mono"
 msgstr ""
 
-#: app/sample-editor.c:1543
+#: app/sample-editor.c:1577
 #, fuzzy
 msgid "Stereo"
 msgstr "Zaustavi"
 
-#: app/sample-editor.c:1555
+#: app/sample-editor.c:1589
 msgid "Load raw sample"
 msgstr "Učitaj raw primjer"
 
-#: app/sample-editor.c:1563
+#: app/sample-editor.c:1597
 msgid ""
 "You have selected a sample that is not\n"
 "in a known format. You can load the raw data now.\n"
@@ -1521,96 +1545,112 @@ msgid ""
 "Please choose a format:"
 msgstr ""
 
-#: app/sample-editor.c:1589
+#: app/sample-editor.c:1623
 msgid "Word format:"
 msgstr "Oblik riječi:"
 
-#: app/sample-editor.c:1636
+#: app/sample-editor.c:1670
 #, fuzzy
 msgid "Sampling Rate:"
 msgstr "Sampliranje"
 
-#: app/sample-editor.c:1647
+#: app/sample-editor.c:1681
 msgid "8363"
 msgstr ""
 
-#: app/sample-editor.c:1655 app/sample-editor.c:1970
+#: app/sample-editor.c:1689 app/sample-editor.c:2004
 msgid "OK"
 msgstr "U redu"
 
-#: app/sample-editor.c:1714
+#: app/sample-editor.c:1748
 msgid "Can't read sample"
 msgstr "Nemohu čitati primjer"
 
-#: app/sample-editor.c:1727
+#: app/sample-editor.c:1761
 msgid "Sample is too long for current mixer module. Loading anyway."
 msgstr "Primjer je previše dug za trenutni mikser modul. Učitaj bilo kako."
 
-#: app/sample-editor.c:1751
+#: app/sample-editor.c:1785
 msgid "Can only handle 8 and 16 bit samples with up to 2 channels"
 msgstr "Mogu hvatati samo 8 i 16 bitne primjere sa po 2 kanala"
 
-#: app/sample-editor.c:1934
+#: app/sample-editor.c:1968
 msgid "Please select region first."
 msgstr "Molim birajte prvo područje."
 
-#: app/sample-editor.c:1978
+#: app/sample-editor.c:2012
 msgid "Start sampling"
 msgstr "Počinjem samplirati"
 
-#: app/sample-editor.c:2008
+#: app/sample-editor.c:2042
 msgid "No sampling driver available"
 msgstr "Upravljački program za sampliranje nedostupan"
 
-#: app/sample-editor.c:2018 app/sample-editor.c:2021
+#: app/sample-editor.c:2052 app/sample-editor.c:2055
 msgid "Sampling Window"
 msgstr "Prozor Primjera (sampling)"
 
-#: app/sample-editor.c:2070
+#: app/sample-editor.c:2104
 msgid "Out of memory while sampling!"
 msgstr ""
 
-#: app/sample-editor.c:2121
+#: app/sample-editor.c:2155
 msgid "<just sampled>"
 msgstr "<upravo samplirano>"
 
-#: app/sample-editor.c:2152
+#: app/sample-editor.c:2186
 msgid "Recorded sample is too long for current mixer module. Using it anyway."
 msgstr ""
 "Snimnjeni primjer je previše dug za trenutni mikser modul. Koristi to bilo "
 "kako."
 
-#: app/sample-editor.c:2205
+#: app/sample-editor.c:2239
 msgid "Normalize"
 msgstr "Normaliziram"
 
-#: app/sample-editor.c:2206
+#: app/sample-editor.c:2240
 msgid "Execute"
 msgstr "Izvrši"
 
-#: app/sample-editor.c:2216 app/sample-editor.c:2219
+#: app/sample-editor.c:2250 app/sample-editor.c:2253
 msgid "Volume Ramping"
 msgstr "Jačina Nagiba"
 
-#: app/sample-editor.c:2235
+#: app/sample-editor.c:2269
 msgid "Perform linear volume fade on Selection"
 msgstr ""
 
-#: app/sample-editor.c:2247
+#: app/sample-editor.c:2281
 msgid "Left [%]:"
 msgstr "Lijevo [%]:"
 
-#: app/sample-editor.c:2250 app/sample-editor.c:2267
+#: app/sample-editor.c:2284 app/sample-editor.c:2301
 msgid "H"
 msgstr ""
 
-#: app/sample-editor.c:2256 app/sample-editor.c:2273
+#: app/sample-editor.c:2290 app/sample-editor.c:2307
 msgid "D"
 msgstr ""
 
-#: app/sample-editor.c:2264
+#: app/sample-editor.c:2298
 msgid "Right [%]:"
 msgstr "Desno [%]:"
+
+#: app/sample-editor.c:2442 app/sample-editor.c:2453
+msgid "Trim parameters"
+msgstr ""
+
+#: app/sample-editor.c:2498
+msgid "Trim at the beginning"
+msgstr ""
+
+#: app/sample-editor.c:2505
+msgid "Trim at the end"
+msgstr ""
+
+#: app/sample-editor.c:2512
+msgid "Threshold (dB)"
+msgstr ""
 
 #: app/tips-dialog.c:50
 msgid ""
@@ -1668,238 +1708,189 @@ msgstr "Slijedeći Savjet"
 msgid "Show tip next time"
 msgstr "Prikaži savjet slijedeći put"
 
-#: app/track-editor.c:105
+#: app/track-editor.c:113
 msgid "Arpeggio"
 msgstr ""
 
-#. 0
-#: app/track-editor.c:106
+#: app/track-editor.c:114
 msgid "Porta up"
 msgstr "Porta gore"
 
-#. 1
-#: app/track-editor.c:107
+#: app/track-editor.c:115
 msgid "Porta down"
 msgstr "Porta dolje"
 
-#. 2
-#: app/track-editor.c:108 app/track-editor.c:172
+#: app/track-editor.c:116 app/track-editor.c:180
 msgid "Tone porta"
 msgstr ""
 
-#. 3
-#: app/track-editor.c:109 app/track-editor.c:168
+#: app/track-editor.c:117 app/track-editor.c:176
 msgid "Vibrato"
 msgstr ""
 
-#. 4
-#: app/track-editor.c:110
+#: app/track-editor.c:118
 msgid "Tone porta + Volume slide"
 msgstr ""
 
-#. 5
-#: app/track-editor.c:111
+#: app/track-editor.c:119
 msgid "Vibrato + Volume slide"
 msgstr ""
 
-#. 6
-#: app/track-editor.c:112
+#: app/track-editor.c:120
 msgid "Tremolo"
 msgstr ""
 
-#. 7
-#: app/track-editor.c:113 app/track-editor.c:169
+#: app/track-editor.c:121 app/track-editor.c:177
 msgid "Set panning"
 msgstr ""
 
-#. 8
-#: app/track-editor.c:114 app/track-editor.c:116
+#: app/track-editor.c:122 app/track-editor.c:124
 msgid "Position jump"
 msgstr ""
 
-#. 9
-#: app/track-editor.c:115 app/track-editor.c:117 app/track-editor.c:193
+#: app/track-editor.c:123 app/track-editor.c:125 app/track-editor.c:201
 msgid "Set volume"
 msgstr ""
 
-#. C
-#: app/track-editor.c:118
+#: app/track-editor.c:126
 msgid "Pattern break"
 msgstr ""
 
-#. D
-#. E
-#: app/track-editor.c:120
+#: app/track-editor.c:128
 msgid "Set tempo/bpm"
 msgstr ""
 
-#. F
-#: app/track-editor.c:121
+#: app/track-editor.c:129
 msgid "Set global volume"
 msgstr ""
 
-#. G
-#: app/track-editor.c:122
+#: app/track-editor.c:130
 msgid "Global volume slide"
 msgstr ""
 
-#. H
-#. I
-#. J
-#: app/track-editor.c:125
+#: app/track-editor.c:133
 msgid "Key off"
 msgstr ""
 
-#. K
-#: app/track-editor.c:126
+#: app/track-editor.c:134
 msgid "Set envelop position"
 msgstr ""
 
-#. L
-#. M
-#. N
-#. O
-#: app/track-editor.c:130
+#: app/track-editor.c:138
 msgid "Panning slide"
 msgstr ""
 
-#. P
-#: app/track-editor.c:131
+#: app/track-editor.c:139
 msgid "LP filter resonance"
 msgstr ""
 
-#. Q
-#: app/track-editor.c:132
+#: app/track-editor.c:140
 msgid "Multi retrig note"
 msgstr ""
 
-#. R
-#. S
-#: app/track-editor.c:134
+#: app/track-editor.c:142
 msgid "Tremor"
 msgstr ""
 
-#. T
-#. U
-#. V
-#. W
-#. X
-#. Y
-#: app/track-editor.c:140
+#: app/track-editor.c:148
 msgid "LP filter cutoff"
 msgstr ""
 
-#. 0
-#: app/track-editor.c:145
+#: app/track-editor.c:153
 msgid "Fine porta up"
 msgstr ""
 
-#. 1
-#: app/track-editor.c:146
+#: app/track-editor.c:154
 msgid "Fine porta down"
 msgstr ""
 
-#. 2
-#: app/track-editor.c:147
+#: app/track-editor.c:155
 msgid "Set gliss control"
 msgstr ""
 
-#. 3
-#: app/track-editor.c:148
+#: app/track-editor.c:156
 msgid "Set vibrato control"
 msgstr ""
 
-#. 4
-#: app/track-editor.c:149
+#: app/track-editor.c:157
 msgid "Set finetune"
 msgstr ""
 
-#. 5
-#: app/track-editor.c:150
+#: app/track-editor.c:158
 msgid "Set loop begin/loop"
 msgstr ""
 
-#. 6
-#: app/track-editor.c:151
+#: app/track-editor.c:159
 msgid "Set tremolo control"
 msgstr ""
 
-#. 7
-#. 8
-#: app/track-editor.c:153
+#: app/track-editor.c:161
 msgid "Retrig note"
 msgstr ""
 
-#. 9
-#: app/track-editor.c:154 app/track-editor.c:166
+#: app/track-editor.c:162 app/track-editor.c:174
 msgid "Fine volume slide up"
 msgstr ""
 
-#. A
-#: app/track-editor.c:155 app/track-editor.c:165
+#: app/track-editor.c:163 app/track-editor.c:173
 msgid "Fine volume slide down"
 msgstr ""
 
-#. B
-#: app/track-editor.c:156
+#: app/track-editor.c:164
 msgid "Note cut"
 msgstr ""
 
-#. C
-#: app/track-editor.c:157
+#: app/track-editor.c:165
 msgid "Note delay"
 msgstr ""
 
-#. D
-#: app/track-editor.c:158
+#: app/track-editor.c:166
 msgid "Pattern delay"
 msgstr ""
 
-#: app/track-editor.c:163
+#: app/track-editor.c:171
 msgid "Volume slide down"
 msgstr ""
 
-#: app/track-editor.c:164
+#: app/track-editor.c:172
 msgid "Volume slide up"
 msgstr ""
 
-#: app/track-editor.c:167
+#: app/track-editor.c:175
 msgid "Set vibrato speed"
 msgstr ""
 
-#: app/track-editor.c:170
+#: app/track-editor.c:178
 msgid "Panning slide left"
 msgstr ""
 
-#: app/track-editor.c:171
+#: app/track-editor.c:179
 msgid "Panning slide right"
 msgstr ""
 
-#: app/track-editor.c:176
+#: app/track-editor.c:184
 msgid "sine"
 msgstr ""
 
-#. 0
-#: app/track-editor.c:177
+#: app/track-editor.c:185
 msgid "ramp down"
 msgstr ""
 
-#. 1
-#: app/track-editor.c:178
+#: app/track-editor.c:186
 msgid "square"
 msgstr ""
 
-#: app/track-editor.c:223 app/track-editor.c:229 app/track-editor.c:246
-#: app/track-editor.c:252
-#, fuzzy
+#: app/track-editor.c:231 app/track-editor.c:237 app/track-editor.c:254
+#: app/track-editor.c:260
+#, fuzzy, c-format
 msgid "None ]"
 msgstr "Ništa"
 
-#: app/track-editor.c:352
+#: app/track-editor.c:360
 msgid "Jazz Edit:"
 msgstr ""
 
-#: app/track-editor.c:397
+#: app/track-editor.c:405
 msgid "Tracker"
 msgstr ""
 
@@ -2074,12 +2065,10 @@ msgstr ""
 msgid "Channel"
 msgstr "Kanali:"
 
-#. Create the spin button for the input client number.
 #: app/midi-settings-050.c:521 app/midi-settings-09x.c:524
 msgid "Client number"
 msgstr ""
 
-#. Create the spin button for the input port number.
 #: app/midi-settings-050.c:531 app/midi-settings-09x.c:534
 #, fuzzy
 msgid "Port number"
@@ -2099,7 +2088,6 @@ msgstr ""
 msgid "Output"
 msgstr "Uređivanje Izlaz"
 
-#. Create the spin button for the debug level.
 #: app/midi-settings-050.c:575 app/midi-settings-09x.c:578
 msgid "Debug level"
 msgstr ""

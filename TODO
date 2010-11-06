@@ -2,6 +2,12 @@
 [ Sorry for occasional German entries :-) But this is mostly for my
 own personal use. However, feel free to fix bugs you understand. ]
 
+Find out why the x86-assembly mixer doesn't work any more.
+
+configure sagt bei "checking for bison": v. ?.??, bad.
+
+non-rpm bindist?
+
 in doku mit rein, daß das setuid-bit gesetzt sein sollte, auch wenn
 manche distros das eventuell abschalten!!
 
@@ -131,3 +137,24 @@ Find a workaround for the d->realtimecaps = i & DSP_CAP_REALTIME;
 > der Mitte des aktuellen Beats anschlage, wird der Ton in den
 > n%/1€Œiso8859-15ächsten Beat im Pattern geshrieben.
 
+Hallo Michael,
+
+hier ein Vorschlag für eine kleine Zusatzfunktion für den Soundtracker:
+Es wäre praktisch, wenn man den Inhalt einer Spur oder eines Patterns 
+markieren und anschließend via Copy & Paste z.B. in einem Textprogramm 
+einfügen könnte, damit man das Pattern ausdrucken kann (wollte letztens 
+die Noten eines Patterns auf meinem Keyboard spielen und war einige Zeit 
+damit beschäftigt, den Patterninhalt mit Füller auf Papier zu bringen). 
+Der ModPlug-Tracker beherrscht dieses Feature schon, den gibt's aber 
+leider net für Linux...
+Alternativ wäre es natürlich auch praktisch, wenn es einen Menüpunkt 
+"Print Pattern" oder "Print Track" gäbe.
+
+MfG,
+
+Dennis Schramm
+www.dennis-schramm.com
+
+
+Subject: 	[Soundtracker-discuss] BUG: E9x and Ryx effects
+Date: 	Fri, 19 Apr 1996 21:29:45 +0400  (19:29 CEST)

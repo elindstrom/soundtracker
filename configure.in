@@ -1,9 +1,9 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl
-dnl Written for autoconf-2.57 and automake-1.7.2
+dnl Written for autoconf-2.59 and automake-1.7.9
 
 AC_INIT(app/endian-conv.h)
-AM_INIT_AUTOMAKE(soundtracker, 0.6.7)
+AM_INIT_AUTOMAKE(soundtracker, 0.6.8)
 AM_CONFIG_HEADER(config.h)
 
 dnl -----------------------------------------------------------------------
@@ -11,7 +11,6 @@ dnl Test for GCC
 dnl -----------------------------------------------------------------------
 
 AC_PROG_CC
-AC_PATH_PROG(sedpath, sed)
 
 if test $GCC != yes; then
 	echo "Fatal error: Need gcc"
@@ -25,7 +24,8 @@ dnl Test for GAS
 dnl -----------------------------------------------------------------------
 
 AC_ARG_ENABLE(asm,
-[  --disable-asm           Disable use of assembler optimizations],
+[  --enable-asm            Enable i386 assembly optimizations (default = off)],
+asm_support=yes,
 asm_support=no)
 
 AM_CONDITIONAL(NO_ASM, test x$asm_support = xno)
@@ -51,9 +51,7 @@ dnl -----------------------------------------------------------------------
 dnl Initialize NLS
 dnl -----------------------------------------------------------------------
 
-dnl Also add new catalogs to soundtracker.spec (%build)!
-ALL_LINGUAS="da de es fr gl hr it ja no pl ru sk sl sv"
-AM_GNU_GETTEXT
+AM_GNU_GETTEXT([external])
 
 dnl -----------------------------------------------------------------------
 dnl Test for GTK+ / GNOME
@@ -259,7 +257,7 @@ AC_ARG_WITH(jack,
 		jack_support=yes
 	    ])
 AC_ARG_ENABLE(jack,
-[  --disable-jack	   Disable JACK support (default = try)],
+[  --disable-jack	  Disable JACK support (default = try)],
 jack_support=no)
   
 if test x$jack_support = xyes; then
@@ -318,6 +316,25 @@ fi
 AM_CONDITIONAL(DRIVER_SUN, test "${ac_cv_header_sys_audioio_h}" = "yes")
 
 dnl -----------------------------------------------------------------------
+dnl Test for SDL audio
+dnl -----------------------------------------------------------------------
+
+AC_ARG_ENABLE(sdl,
+[  --disable-sdl           Disable SDL driver (default = try)],
+sdl_support=no)
+
+if test x$sdl_support != xno; then
+  AM_PATH_SDL(1.2.0, have_sdl=yes, have_sdl=no)
+  if test x$have_sdl = xyes; then
+    AC_DEFINE([DRIVER_SDL], 1, [Set if SDL audio driver wanted])
+    CFLAGS="$CFLAGS $SDL_CFLAGS"
+    LIBS="$LIBS $SDL_LIBS"
+  fi
+fi
+
+AM_CONDITIONAL(DRIVER_SDL, test x$have_sdl = xyes)
+
+dnl -----------------------------------------------------------------------
 dnl Other tests
 dnl -----------------------------------------------------------------------
 
@@ -337,7 +354,6 @@ Makefile
 app/Makefile
 app/drivers/Makefile
 app/mixers/Makefile
-intl/Makefile
 po/Makefile.in
 doc/Makefile
 ])

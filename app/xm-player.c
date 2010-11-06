@@ -39,6 +39,7 @@
 
 int player_songpos, player_patpos;
 int player_tempo, player_bpm;
+guint8 curtick;
 gboolean player_looped;
 static double current_time;
 static int xmplayer_playmode;
@@ -223,7 +224,6 @@ static channel channels[32];
 
 static guint8 globalvol;
 
-static guint8 curtick;
 static guint8 tick0;
 
 static int currow, play_only_row;
@@ -1433,18 +1433,14 @@ xmplayer_init_module (void)
 }
 
 static gboolean
-xmplayer_init_playing ()
+xmplayer_init_playing (gboolean init_all)
 {
     int i;
-
-    memset(channels, 0, sizeof(channels));
 
     driver_setnumch(xm->num_channels);
 
     current_time = 0.0;
 
-    globalvol = 0x40;
-    realgvol = 0x40;
     ninst = 128;
     nord = xm->song_length;
     nsamp = 16;
@@ -1455,9 +1451,16 @@ xmplayer_init_playing ()
     curtick = player_tempo-1;
     patdelay = 0;
 
-    for(i = 0; i < nchan; i++) {
-	channels[i].chCutoff = 0xff;
-	channels[i].chReso = 0;
+    if(init_all) {
+	globalvol = 0x40;
+	realgvol = 0x40;
+
+	memset(channels, 0, sizeof(channels));
+
+	for(i = 0; i < nchan; i++) {
+	    channels[i].chCutoff = 0xff;
+	    channels[i].chReso = 0;
+	}
     }
 
     return TRUE;
@@ -1477,7 +1480,8 @@ xmplayer_set_bpm (int bpm)
 
 gboolean
 xmplayer_init_play_song (int songpos,
-			 int patpos)
+			 int patpos,
+			 gboolean init_all)
 {
     jumptorow = patpos;
     currow = patpos;
@@ -1488,10 +1492,10 @@ xmplayer_init_play_song (int songpos,
     player_looped = FALSE;
     xmplayer_playmode = PLAYING_SONG;
 
-    if(songpos == 0)
+    if(songpos == 0 && init_all)
 	xmplayer_init_module();
 
-    return xmplayer_init_playing();
+    return xmplayer_init_playing(init_all);
 }
 
 gboolean
@@ -1508,7 +1512,7 @@ xmplayer_init_play_pattern (int pattern,
     curpattern = &xm->patterns[pattern];
     xmplayer_playmode = PLAYING_PATTERN;
 
-    return xmplayer_init_playing();
+    return xmplayer_init_playing(TRUE);
 }
 
 void
@@ -1524,7 +1528,7 @@ xmplayer_play_note (int channel,
 {
     if(!xmplayer_playmode) {
 	xmplayer_playmode = PLAYING_NOTE;
-	if(!xmplayer_init_playing())
+	if(!xmplayer_init_playing(TRUE))
 	    return FALSE;
     }
 
@@ -1562,7 +1566,7 @@ xmplayer_play_note_full (int chnr,
 
     if(!xmplayer_playmode) {
 	xmplayer_playmode = PLAYING_NOTE;
-	if(!xmplayer_init_playing())
+	if(!xmplayer_init_playing(TRUE))
 	    return FALSE;
     }
 

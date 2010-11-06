@@ -103,6 +103,9 @@ typedef struct st_mixer {
 
     /* get status information */
     void     (*dumpstatus)   (st_mixer_channel_status array[]);
+    
+    /* load channel settings from tracer */
+    void     (*loadchsettings) (int channel);
 
     guint32 max_sample_length;
 

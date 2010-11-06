@@ -199,6 +199,13 @@ esd_get_play_time (void *dp)
     return d->playtime + curtime - d->outtime - 24 * ((double)d->samples_per_frame / d->out_rate);
 }
 
+static inline int
+esd_get_play_rate (void *d)
+{
+    esd_driver * const dp = d;
+    return dp->out_rate;
+}
+
 static gboolean
 esd_loadsettings (void *dp,
 		  prefs_node *f)
@@ -232,6 +239,7 @@ st_out_driver driver_out_esd = {
     },
 
     esd_get_play_time,
+    esd_get_play_rate
 };
 
 #endif /* DRIVER_ESD */

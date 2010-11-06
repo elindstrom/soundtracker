@@ -516,6 +516,13 @@ sun_get_play_time (void *dp)
     }
 }
 
+static inline int
+sun_get_play_rate (void *d)
+{
+    sun_driver * const dp = d;
+    return dp->playrate;
+}
+
 static gboolean
 sun_loadsettings (void *dp,
 		  prefs_node *f)
@@ -563,4 +570,5 @@ st_out_driver driver_out_sun = {
     },
 
     sun_get_play_time,
+    sun_get_play_rate
 };

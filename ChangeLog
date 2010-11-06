@@ -1,3 +1,104 @@
+2006-02-25  Michael Krause  <rawstyle@raw2004>
+
+	* app/drivers/sdl-output.c: Added SDL output driver by Markku
+	Reunanen <marq@iki.fi>; configure.in: Added SDL detection.
+
+	* app/gui.c (gui_handle_standard_keys): GDK_ISO_Level3_Shift is
+	also interpreted as Alt_R now.
+
+	* app/sample-editor.c: Added oguilyardi's and yaliaev's
+	08_soundtracker-0.6.7-keeptrim.patch.bz2 which adds two new
+	functions: "Trim" removes silence at the beginning and the end of
+	the sample, and "Crop" (called "Keep" in the original patch)
+	deletes the unselected parts of the sample.
+
+	* app/gui.c, app/track-editor.c: added yaliaev's
+	04_soundtracker-0.6.7-editmodefix.patch.bz2,
+	05_soundtracker-0.6.7-multikeyfix.patch,
+	07_soundtracker-0.6.7-spacefix.patch and
+	soundtracker-0.6.7-xmloadfix.patch.
+
+	* po: New Vietnamese translation by Clytie Siddall
+	<clytie@riverland.net.au>, updated ru translation.
+
+2006-01-15  gettextize  <bug-gnu-gettext@gnu.org>
+
+	* Makefile.am (SUBDIRS): Remove intl.
+	(ACLOCAL_AMFLAGS): New variable.
+	(EXTRA_DIST): Add config.rpath, m4/ChangeLog.
+
+2006-01-15  Michael Krause  <rawstyle@raw2004>
+
+	* app/track-editor.c (track_editor_interpolate_fx): Improved
+	effect interpolator by JP <jaan@surnuaed.ee>.
+
+	* app/gui.c (gui_expand_pattern): Fix typo (yaliaev,
+	01_soundtracker-0.6.7-fixmessage.patch).
+
+	* app/playlist.c (playlist_new): Make "Len" and "Rstrt" strings
+	localizable (yaliaev, 00_soundtracker-0.6.7-plcleanup.patch).
+
+	* app/track-editor.c (track_editor_handle_keys): Applied
+	soundtracker-0.6.7-insdel.patch from Yury. (GDK_Insert works only
+	if no modifier keys are pressed).
+
+	* app/st-subs.c (st_sample_{8,16}bit_signed_unsigned): Rewrote
+	undefined code for gcc-4.1 (David Binderman <dcb314@hotmail.com>)
+
+	* configure.in: Removed unnecessary check for 'sed'.
+
+	* po: Updated translations de, es, fr, sv; new Kinyarwanda
+	translation (rw.po) by Steven Michael Murphy <murf@e-tools.com>,
+	new Turkish translation (tr.po) by Aysun Kiran
+	<aysunkir@yahoo.com>.
+
+	* configure.in, app/mixers/Makefile.am: Made x86-assembly mixer
+	code disabled by default. I tried to compile it today, and it
+	totally garbles the samples (gcc 3.4.4).
+
+2005-05-07  Michael Krause  <rawstyle@raw2004>
+
+	* app/xm.c (xm_load_xm_samples): If a sample slot is empty, take
+	care to really clean the sample structure (only keep the
+	name). Otherwise, the sample editor may crash (reported by
+	<thrash@retena.com>)
+
+	* app/midi-09x.c: Removed call to
+	snd_seq_port_subscribe_free(port_sub), because it has been
+	allocated on the stack via _alloca(). Fixes crash on startup.
+
+2004-02-18  Yury Aliaev <mutabor@altlinux.org>
+  
+	* Permanent channels support is implemented. Channels marked as
+	"permanent" work as if they are being played from the very
+	beginning of the module, even if the module is played from any
+	random place (any samples which might have been triggered before
+	the current song position will be started at the right position
+	when clicking "Play Song").
+  
+2004-01-22 Jaan Pullerits  <jaan@surnuaed.ee>
+ 
+	* app/gui.c: Fixed the bug caused by my previous changes which
+	made the space key to work incorrectly... :)
+ 	
+	* app/track-editor.c: Added bugfix by yaliaev which makes the
+	cursor to jump to first jazz enabled channel when trying to insert
+	notes on non-jazz channels.
+ 
+	* app/track-editor.c, gui.c: Now right shift doesn't start module
+	recording. The recording is started by pressing pattern/track play
+	keys (ctrl, altgr) while holding the shift at the same time.
+ 
+2004-01-19  Jaan Pullerits  <jaan@surnuaed.ee>
+ 	
+	* app/track-editor.c, app/track-editor.c: Implemented note
+	recording with support of recording keyrelease notes.
+ 
+	* app/gui.c, app/gui.h: Made play_song() non-static to use it in
+	track-editor.c
+ 
+	* app/menubar.c: Added "Record aftertouch" to edit menu.
+ 	
 2004-01-11  Michael Krause  <mk@soundtracker.org>
 
 	* Released v0.6.7

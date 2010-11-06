@@ -4,6 +4,25 @@ contains more details. Letters in parentheses indicate the person
 responsible for having coded a particular feature (full names in
 AUTHORS file).
 
+What is new in soundtracker-0.6.8 (25-Feb-2006):
+
+* Permanent channels support: any samples which might have been
+triggered before the current song position will be started at the
+right position when clicking "Play Song" (yaliaev)
+* "Trim" in sample editor removes silence at beginning and end of
+samples, "Crop" function removes non-selected parts of the sample
+(oguilyardi / yaliaev)
+* Key-off recording, fixed jazz-edit mode (jpullerits)
+* Improved effect interpolator (jpullerits)
+* Added SDL output driver (mreunanen)
+* i386-assembly optimizations disabled by default (works around
+an unknown mixer bug occuring on some systems)
+* Fixed MIDI-related ALSA startup crash
+* Several small cosmetic updates and bug fixes
+* Updated for latest autoconf, automake and gettext.
+* Updated de, es, fr, ru, sv translations; added rw, tr, vi
+translations
+
 What is new in soundtracker-0.6.7 (11-Jan-2004):
 
 * General copy/cut/paste handling depending on active notebook page

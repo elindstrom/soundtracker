@@ -32,6 +32,7 @@ typedef struct st_out_driver {
 
     // get time offset since first sound output
     double   (*get_play_time) (void *d);
+    int      (*get_play_rate) (void *d);
 } st_out_driver;
 
 /* Install / remove poll() handlers, similar to gdk_input_add() */

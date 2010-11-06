@@ -404,6 +404,13 @@ file_get_play_time (void *dp)
     return d->playtime;
 }
 
+static inline int
+file_get_play_rate (void *d)
+{
+    sndfile_driver * const dp = d;
+    return dp->p_mixfreq;
+}
+
 static gboolean
 file_loadsettings (void *dp,
 		   prefs_node *f)
@@ -437,6 +444,7 @@ st_out_driver driver_out_file = {
     },
 
     file_get_play_time,
+    file_get_play_rate
 };
 
 #endif /* NO_AUDIOFILE */

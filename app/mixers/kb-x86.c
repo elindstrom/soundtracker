@@ -33,6 +33,7 @@
 #include "mixer.h"
 #include "kb-x86-asm.h"
 #include "i18n.h"
+#include "tracer.h"
 
 static int num_channels, mixfreq;
 static int clipflag;
@@ -803,6 +804,40 @@ kb_x86_dumpstatus (st_mixer_channel_status array[])
     }
 }
 
+static void
+kb_x86_loadchsettings (int ch)
+{
+    tracer_channel *tch;
+    kb_x86_channel *kbch;
+
+    g_assert(ch < num_channels);
+    
+    tch = tracer_return_channel(ch);
+    kbch = kb_x86_get_channel_struct(ch);
+    
+    kbch->sample = tch->sample;
+    kbch->data = tch->data;
+    kbch->looptype = tch->looptype;
+    kbch->length = tch->length;
+    kbch->volume = tch->volume;
+    kbch->panning = tch->panning;
+    kbch->direction = tch->direction;
+    kbch->playend = tch->playend;
+    kbch->positionw = tch->positionw;
+    kbch->positionf = tch->positionf;
+    kbch->freqw = tch->freqw;
+    kbch->freqf = tch->freqf;
+    kbch->ffreq = tch->ffreq;
+    kbch->freso = tch->freso;
+    
+    kbch->flags = (kbch->flags & KB_FLAG_UPPER_ACTIVE) | KB_FLAG_JUST_STARTED |
+		  ((tch->flags & TR_FLAG_LOOP_UNIDIRECTIONAL) ? KB_FLAG_LOOP_UNIDIRECTIONAL : 0) |
+		  ((tch->flags & TR_FLAG_LOOP_BIDIRECTIONAL) ? KB_FLAG_LOOP_BIDIRECTIONAL : 0) |
+		  ((tch->flags & TR_FLAG_SAMPLE_RUNNING) ? KB_FLAG_SAMPLE_RUNNING : 0);
+
+    kb_x86_redo_vol_fields(kbch);
+}
+
 st_mixer mixer_kbfloat = {
     "kbfloat",
     N_("High-quality FPU mixer, cubic interpolation, IT filters, unlimited length samples"),
@@ -826,6 +861,7 @@ st_mixer mixer_kbfloat = {
     kb_x86_setchreso,
     kb_x86_mix,
     kb_x86_dumpstatus,
+    kb_x86_loadchsettings,
 
     0x7fffffff,
 

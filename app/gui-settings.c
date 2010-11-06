@@ -71,6 +71,9 @@ gui_prefs gui_settings = {
     0,
     0,
 
+    TRUE,
+    0,
+
     "~/",
     "~/",
     "~/",
@@ -192,6 +195,12 @@ gui_settings_bh_toggled (GtkWidget *widget)
 {
     gui_settings.bh = GTK_TOGGLE_BUTTON(widget)->active;
     tracker_redraw (tracker);
+}
+
+static void
+gui_settings_perm_toggled (GtkWidget *widget)
+{
+    gui_settings.store_perm = GTK_TOGGLE_BUTTON(widget)->active;
 }
 
 void
@@ -391,6 +400,13 @@ gui_settings_dialog (void)
     gtk_signal_connect(GTK_OBJECT(thing), "toggled",
 		       GTK_SIGNAL_FUNC(gui_settings_bh_toggled), NULL);
 
+    thing = gtk_check_button_new_with_label(_("Save and restore permanent channels"));
+    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.store_perm);
+    gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
+    gtk_widget_show(thing);
+    gtk_signal_connect(GTK_OBJECT(thing), "toggled",
+		       GTK_SIGNAL_FUNC(gui_settings_perm_toggled), NULL);
+
     gui_subs_set_slider_value(&prefs_scopesfreq_slider, gui_settings.scopes_update_freq);
     gui_subs_set_slider_value(&prefs_trackerfreq_slider, gui_settings.tracker_update_freq);
 
@@ -537,6 +553,10 @@ gui_settings_load_config (void)
 	prefs_get_int(f, "scopes-buffer-size", &gui_settings.scopes_buffer_size);
   	prefs_get_int(f, "sharp", &gui_settings.sharp);
   	prefs_get_int(f, "bh", &gui_settings.bh);
+	prefs_get_int(f, "store-permanent", &gui_settings.store_perm);
+	
+	if(gui_settings.store_perm)
+	    prefs_get_int(f, "permanent-channels", &gui_settings.permanent_channels);
 
 	prefs_close(f);
     }
@@ -608,6 +628,10 @@ gui_settings_save_config (void)
     prefs_put_int(f, "scopes-buffer-size", gui_settings.scopes_buffer_size);
     prefs_put_int(f, "sharp", gui_settings.sharp);
     prefs_put_int(f, "bh", gui_settings.bh);
+    prefs_put_int(f, "store-permanent", gui_settings.store_perm);
+
+    if(gui_settings.store_perm)
+	prefs_put_int(f, "permanent-channels", gui_settings.permanent_channels);
 
     prefs_close(f);
 }

@@ -225,6 +225,12 @@ irix_get_play_time (void *dp)
     }
 }
 
+static inline int
+irix_get_play_rate (void *d)
+{
+    return 48000;
+}
+
 st_out_driver driver_out_irix = {
     { "IRIX Output",
 
@@ -238,6 +244,7 @@ st_out_driver driver_out_irix = {
     },
 
     irix_get_play_time,
+    irix_get_play_rate
 };
 
 #endif /* DRIVER_IRIX */

@@ -1,6 +1,6 @@
 %define name soundtracker
-%define version 0.6.7
-%define release 29
+%define version 0.6.8
+%define release 30
 %define prefix /usr
 
 Summary: Sound modules editor/player
@@ -29,7 +29,7 @@ interface makes use of GTK+, and, optionally, GNOME.
 %setup
 
 %build
-LINGUAS="da de es fr gl hr it ja no pl ru sk sl sv" CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{prefix} --disable-alsa --disable-sndfile
+LINGUAS="da de es fr gl hr it ja no pl ru rw sk sl sv tr vi" CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{prefix} --disable-alsa --disable-sndfile
 make
 
 %install

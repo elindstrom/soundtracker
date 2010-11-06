@@ -491,6 +491,13 @@ oss_get_play_time (void *dp)
     }
 }
 
+static inline int
+oss_get_play_rate (void *d)
+{
+    oss_driver * const dp = d;
+    return dp->playrate;
+}
+
 static gboolean
 oss_loadsettings (void *dp,
 		  prefs_node *f)
@@ -538,6 +545,7 @@ st_out_driver driver_out_oss = {
     },
 
     oss_get_play_time,
+    oss_get_play_rate
 };
 
 #endif /* DRIVER_OSS */

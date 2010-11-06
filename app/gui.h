@@ -111,5 +111,6 @@ void		     gui_accidentals_clicked 	      (GtkWidget *widget,
 
 void		     gui_shrink_pattern		      (void);
 void		     gui_expand_pattern		      (void);	
+void		     play_song			      (void);
 
 #endif /* _GUI_H */

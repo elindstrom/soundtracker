@@ -56,6 +56,9 @@ typedef struct gui_prefs {
     int st_window_y;
     int st_window_w;
     int st_window_h;
+    
+    gboolean store_perm;
+    guint32 permanent_channels;
 
     gchar loadmod_path[128];
     gchar savemod_path[128];

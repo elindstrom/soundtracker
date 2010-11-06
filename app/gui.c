@@ -168,7 +168,6 @@ static void gui_adj_pitchbend_changed(GtkAdjustment *adj);
 /* mixer / player communication */
 static void read_mixer_pipe(gpointer data, gint source, GdkInputCondition condition);
 static void wait_for_player(void);
-static void play_song(void);
 static void play_pattern(void);
 static void play_current_pattern_row(void);
 
@@ -179,6 +178,16 @@ static void offset_current_instrument(int offset);
 static void offset_current_sample(int offset);
 
 static void gui_auto_switch_page (void);
+
+static void
+editing_toggled (GtkToggleButton *button, gpointer data)
+{
+    tracker_redraw(tracker);
+    if (button->active)
+	show_editmode_status();
+    else
+	statusbar_update(STATUS_IDLE, FALSE);
+}
 
 static void
 gui_highlight_rows_toggled (GtkWidget *widget)
@@ -495,7 +504,7 @@ gui_expand_pattern ()
     if(patt->length > 128) {
 	gnome_app_ok_cancel_modal(GNOME_APP(mainwindow),
 	    _("The pattern is too long for expanding.\n"
-	      "Some data at the end of the pattern will be lost."
+	      "Some data at the end of the pattern will be lost.\n"
 	      "Do you want to continue anyway?"),
 	    gui_expand_callback,
 	    patt);
@@ -784,12 +793,17 @@ gui_handle_standard_keys (int shift,
     case GDK_Super_R:
     case GDK_Hyper_R:
     case GDK_Mode_switch: /* well... this is X :D */
+    case GDK_Multi_key:
+    case GDK_ISO_Level3_Shift:
 	play_pattern();
+	if(shift)
+	    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(editing_toggle), TRUE);
 	handled = TRUE;
 	break;
     case GDK_Control_R:
-    case GDK_Multi_key:
 	play_song();
+	if(shift)
+	    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(editing_toggle), TRUE);
 	handled = TRUE;
 	break;
     case GDK_Menu:
@@ -799,17 +813,17 @@ gui_handle_standard_keys (int shift,
         if(ctrl || alt || shift)
             break;
 	b = GUI_ENABLED;
+	if (!b)
+	    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(editing_toggle), FALSE);
+
 	gui_play_stop();
 	if(notebook_current_page != NOTEBOOK_PAGE_SAMPLE_EDITOR
-	   && notebook_current_page != NOTEBOOK_PAGE_INSTRUMENT_EDITOR) {
+	   && notebook_current_page != NOTEBOOK_PAGE_INSTRUMENT_EDITOR
+	   && notebook_current_page != NOTEBOOK_PAGE_FILE
+	   && notebook_current_page != NOTEBOOK_PAGE_MODULE_INFO) {
 	    if(b) {
 		/* toggle editing mode (only if we haven't been in playing mode) */
 		gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(editing_toggle), !GUI_EDITING);
- 		tracker_redraw(tracker);
-    	        if (GTK_TOGGLE_BUTTON(editing_toggle)->active)
-		    show_editmode_status();
-		else
-		    statusbar_update(STATUS_IDLE, FALSE);
 	    }
 	}
 	handled = TRUE;
@@ -819,11 +833,6 @@ gui_handle_standard_keys (int shift,
             break;
 	/* toggle editing mode, even if we're in playing mode */
 		gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(editing_toggle), !GUI_EDITING);
-	    tracker_redraw(tracker);
-        if (GTK_TOGGLE_BUTTON(editing_toggle)->active)
-	    show_editmode_status();
-        else
-	    statusbar_update(STATUS_IDLE, FALSE);
 	handled = TRUE;
 	break;
     }
@@ -1245,7 +1254,7 @@ wait_for_player (void)
     }
 }
 
-static void
+void
 play_song (void)
 {
     int sp = playlist_get_position(playlist);
@@ -2208,6 +2217,8 @@ gui_final (int argc,
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), 0);
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
+    gtk_signal_connect (GTK_OBJECT(thing), "toggled",
+			GTK_SIGNAL_FUNC(editing_toggled), NULL);
 
     thing = gtk_label_new(_("Octave"));
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, TRUE, 0);

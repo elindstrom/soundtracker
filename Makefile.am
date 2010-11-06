@@ -1,8 +1,8 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = intl po doc app
+SUBDIRS = po doc app
 
-EXTRA_DIST = TODO FAQ ABOUT-NLS soundtracker.spec \
+EXTRA_DIST = config.rpath m4/ChangeLog  TODO FAQ ABOUT-NLS soundtracker.spec \
 	soundtracker.desktop \
 	soundtracker_splash.png flat.xpm sharp.xpm muted.png \
 	downarrow.xpm rightarrow.xpm play.xpm play_cur.xpm stop.xpm lock.xpm \
@@ -35,9 +35,12 @@ bindist:
 disthelp:
 	make dist
 	cp soundtracker-$(VERSION).tar.gz /home/rawstyle/dev/soundtracker-WWW/dl/v0.6/
-	make bindist
-	cp soundtracker-$(VERSION)-bin.tar.gz /home/rawstyle/dev/soundtracker-WWW/dl/v0.6/
+#	make bindist
+#	cp soundtracker-$(VERSION)-bin.tar.gz /home/rawstyle/dev/soundtracker-WWW/dl/v0.6/
 	/home/rawstyle/dev/soundtracker/bin/rpm -tb soundtracker-$(VERSION).tar.gz
 	cp /usr/src/packages/RPMS/i386/soundtracker-$(VERSION)-* /home/rawstyle/dev/soundtracker-WWW/dl/v0.6/
 	chown -R rawstyle.users /home/rawstyle/dev/soundtracker/*
 	chown -R rawstyle.users /home/rawstyle/dev/soundtracker-WWW/*
+
+ACLOCAL_AMFLAGS = -I m4
+EXTRA_DIST += m4

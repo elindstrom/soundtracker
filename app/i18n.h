@@ -12,7 +12,7 @@
 
 #ifndef _
 #if defined(ENABLE_NLS)
-#  include <libintl.h>
+#  include "gettext.h"
 #  define _(x) gettext(x)
 #  ifdef gettext_noop
 #    define N_(String) gettext_noop (String)

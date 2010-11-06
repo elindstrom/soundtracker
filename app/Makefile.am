@@ -17,7 +17,7 @@ soundtracker_SOURCES = \
 	gui-settings.c gui-settings.h \
 	gui-subs.c gui-subs.h \
 	gui.c gui.h \
-	i18n.h \
+	gettext.h i18n.h \
 	instrument-editor.c instrument-editor.h \
 	keys.c keys.h \
 	main.c main.h \
@@ -39,7 +39,8 @@ soundtracker_SOURCES = \
 	tracker-settings.c tracker-settings.h \
 	transposition.c transposition.h \
 	xm.c xm.h \
-	xm-player.c xm-player.h
+	xm-player.c xm-player.h \
+	tracer.c tracer.h
 
 if !NO_GDK_PIXBUF
   soundtracker_SOURCES += scalablepic.c scalablepic.h
@@ -69,7 +70,7 @@ install-exec-local:
 	    chown root:admin $(bindir)/soundtracker; \
 	    ;; \
 	  *) \
-	    chown root.root $(bindir)/soundtracker; \
+	    chown root:root $(bindir)/soundtracker; \
 	    ;; \
 	esac
 	chmod +s $(bindir)/soundtracker

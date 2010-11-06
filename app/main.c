@@ -87,6 +87,9 @@ main (int argc,
 #ifdef DRIVER_SUN
 	driver_out_sun, driver_in_sun,
 #endif
+#ifdef DRIVER_SDL
+	driver_out_sdl,
+#endif
 #if USE_SNDFILE || !defined (NO_AUDIOFILE)
 //	driver_out_file,
 #endif
@@ -200,6 +203,11 @@ main (int argc,
 #ifdef DRIVER_ESD
     drivers[DRIVER_OUTPUT] = g_list_append(drivers[DRIVER_OUTPUT],
 					   &driver_out_esd);
+#endif
+
+#ifdef DRIVER_SDL
+    drivers[DRIVER_OUTPUT] = g_list_append(drivers[DRIVER_OUTPUT],
+					   &driver_out_sdl);
 #endif
 
 #if USE_SNDFILE || !defined (NO_AUDIOFILE)

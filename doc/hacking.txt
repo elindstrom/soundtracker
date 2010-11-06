@@ -1,9 +1,10 @@
+SoundTracker internals
+**********************
 
+1 General Architecture
+**********************
 
-General Architecture
-********************
-
-   SoundTracker (short: ST) consists of two threads: the GUI (or main)
+SoundTracker (short: ST) consists of two threads: the GUI (or main)
 thread, and the audio (or mixer / player) thread. The reason for not
 handling both jobs in one process via select() is obvious: the GUI can
 sometimes block the process for quite a long time. For example when the
@@ -28,12 +29,12 @@ large parts of the GUI will have to be changed. Unfortunately,
 references to the global "tracker" and "xm" variables can be found
 virtually everywhere in the source code.
 
-Synchronization of Audio and GUI
-********************************
+2 Synchronization of Audio and GUI
+**********************************
 
-   Since mixing buffer sizes can't be turned down as low as under
-primitive operating systems such as DOS, special care must been taken
-to take the audio latency into account.
+Since mixing buffer sizes can't be turned down as low as under primitive
+operating systems such as DOS, special care must been taken to take the
+audio latency into account.
 
    The audio thread thus keeps a list of recently reached pattern
 positions and their occurence in the mixed audio output stream. The GUI
@@ -52,10 +53,10 @@ from the GUI thread in more than one location.
    Certain other events are handled through the event waiter interface
 (see event-waiter.h for an overview).
 
-How the audio subsystem works
-*****************************
+3 How the audio subsystem works
+*******************************
 
-   Module playing is initialized by the GUI thread sending a message
+Module playing is initialized by the GUI thread sending a message
 AUDIO_CTLPIPE_PLAY_SONG, for example. The audio thread then opens the
 driver module, which in turn installs a callback method, which will be
 called as soon as the sound card is accepting new data. The OSS driver,
@@ -87,10 +88,10 @@ instead of the corresponding routines in the mixer because this way, a
 modularized mixer system could be installed lateron. You can find more
 about the Mixer API later in this document.
 
-Driver API
-**********
+4 Driver API
+************
 
-   The driver API is separated into two branches: output and input
+The driver API is separated into two branches: output and input
 (sampling) drivers. Input drivers are usually simpler, because they
 don't have to include the mechanisms necessary for synchronization of
 the audio output stream with the GUI. Also, currently only 16bit mono
@@ -112,19 +113,19 @@ especially once ST will be extended to support effect plug-ins which
 can't be rendered by the audio hardware but must be calculated using the
 CPU!
 
-Adding drivers to the source tree
-=================================
+4.1 Adding drivers to the source tree
+=====================================
 
-   You must add checks for any libs and includes in configure.in, add a
+You must add checks for any libs and includes in configure.in, add a
 corresponding driver define to acconfig.h, add the driver to the drivers
 list in main.c, and finally add all the files belonging to your driver
 (should be only one) to drivers/Makefile.am. Now you still have to write
 the code, that's what the two next sections are about.
 
-Output drivers
-==============
+4.2 Output drivers
+==================
 
-   The st_out_driver structure, defined driver-out.h must be globally
+The st_out_driver structure, defined driver-out.h must be globally
 defined in your source file. It must contain valid pointers to all the
 functions and a unique entry in the name field. The rest of the
 variables and functions in your source file should be defined static so
@@ -150,20 +151,20 @@ experimentation to get right.
    Now you can start adding the settings widget and add code to the
 load / save settings functions.
 
-Input drivers
-=============
+4.3 Input drivers
+=================
 
-Mixer API
-*********
+5 Mixer API
+***********
 
-   To be written. Two mixers are already available; shouldn't be hard to
+To be written. Two mixers are already available; shouldn't be hard to
 understand how it works. Basically it's really independent of the rest
 of the tracker.
 
-Contributing Code
-*****************
+6 Contributing Code
+*******************
 
-   Please follow these rules if you want to donate code to the
+Please follow these rules if you want to donate code to the
 SoundTracker project:
 
    * Coding Style. I prefer 4-space tabulators, and an indentation style

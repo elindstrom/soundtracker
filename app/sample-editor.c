@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <sys/ioctl.h>
 #include <dlfcn.h>
+#include <math.h>
 
 #if USE_SNDFILE
 #include <sndfile.h>
@@ -72,6 +73,7 @@ static SampleDisplay *sampledisplay;
 static GtkWidget *sample_editor_hscrollbar;
 static GtkWidget *loopradio[3], *resolution_radio[2];
 static GtkWidget *spin_loopstart, *spin_loopend;
+static GtkWidget *trimdialog = NULL;
 
 static struct SampleEditor { // simplifies future encapsulation of this into a Gtk+ widget
     GtkWidget *label_selection;
@@ -88,6 +90,12 @@ static struct SampleEditor * const se = &sample_editor;
 static GtkWidget *volrampwindow = NULL;
 static GtkWidget *sample_editor_volramp_spin_w[2];
 static int sample_editor_volramp_last_values[2] = { 100, 100 };
+
+// = Trim dialog
+
+static gboolean trimbeg = TRUE;
+static gboolean trimend = TRUE;
+static gfloat threshold = -50.0;
 
 // = Load sample dialog
 
@@ -173,6 +181,7 @@ static void sample_editor_display_window_changed(SampleDisplay *, int start, int
 static void sample_editor_select_none_clicked(void);
 static void sample_editor_select_all_clicked(void);
 static void sample_editor_clear_clicked(void);
+static void sample_editor_crop_clicked(void);
 static void sample_editor_show_all_clicked(void);
 static void sample_editor_zoom_in_clicked(void);
 static void sample_editor_zoom_out_clicked(void);
@@ -197,6 +206,11 @@ static void sample_editor_perform_ramp(GtkWidget *w, gpointer data);
 
 static void sample_editor_reverse_clicked(void);
 
+static void sample_editor_trim_dialog(void);
+static void sample_editor_trim(gboolean beg, gboolean end, gfloat threshold);
+static void sample_editor_crop(void);
+static void sample_editor_delete(STSample *sample,int start, int end);
+    
 static void
 sample_editor_lock_sample (void)
 {
@@ -408,6 +422,13 @@ sample_editor_page_create (GtkNotebook *nb)
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
 
+    thing = gtk_button_new_with_label(_("Trim"));
+    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
+		       GTK_SIGNAL_FUNC(sample_editor_trim_dialog), NULL);
+    gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
+    gtk_widget_show(thing);
+
+
     vbox = gtk_vbox_new(FALSE, 2);
     gtk_widget_show(vbox);
     gtk_box_pack_start(GTK_BOX(hbox), vbox, TRUE, TRUE, 0);
@@ -473,6 +494,12 @@ sample_editor_page_create (GtkNotebook *nb)
     thing = gtk_button_new_with_label(_("Clear Sample"));
     gtk_signal_connect(GTK_OBJECT(thing), "clicked",
 		       GTK_SIGNAL_FUNC(sample_editor_clear_clicked), NULL);
+    gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
+    gtk_widget_show(thing);
+
+    thing = gtk_button_new_with_label(_("Crop"));
+    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
+		       GTK_SIGNAL_FUNC(sample_editor_crop_clicked), NULL);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
 
@@ -582,8 +609,9 @@ sample_editor_update (void)
 	gtk_widget_set_sensitive(savebutton_rgn, 0);
     }
 
-    if(!sts)
+    if(!sts) {
 	return;
+    }
 
     gtk_entry_set_text(GTK_ENTRY(gui_cursmpl_name), sts->name);
 
@@ -943,6 +971,12 @@ sample_editor_clear_clicked (void)
     sample_editor_unlock_sample();
 
     xm_set_modified(1);
+}
+
+static void
+sample_editor_crop_clicked (void)
+{
+    sample_editor_crop();
 }
 
 static void
@@ -2360,4 +2394,325 @@ sample_editor_perform_ramp (GtkWidget *w,
     xm_set_modified(1);
     sample_editor_update();
     sample_display_set_selection(sampledisplay, ss, se);
+}
+
+/* =================== TRIM AND CROP FUNCTIONS ================== */
+static void
+togglebutton_toggled (GtkToggleButton *widget, gboolean *state_var)
+{
+    *state_var = gtk_toggle_button_get_active(widget);
+}
+
+static void
+adjustment_value_changed (GtkAdjustment *adj, gfloat *value)
+{
+    *value = adj->value;
+}
+
+#ifndef USE_GNOME
+static void
+trim_dialog_close_requested ()
+{
+    gtk_widget_hide(trimdialog);
+}
+#endif
+
+static void
+trim_dialog_clicked (GtkWidget *widget, gint button)
+{
+    if(button == 0)
+	sample_editor_trim(trimbeg, trimend, threshold);
+}
+
+static void
+sample_editor_trim_dialog (void)
+{
+    GtkObject *adj;
+    GtkWidget *mainbox, *thing;
+#ifndef USE_GNOME
+    GtkWidget *button, *vbox;
+#endif
+
+    if(trimdialog != NULL) {
+	gtk_widget_show(trimdialog);
+	return;
+    }
+    
+#ifdef USE_GNOME
+    trimdialog = gnome_dialog_new(_("Trim parameters"),
+			GNOME_STOCK_BUTTON_OK, GNOME_STOCK_BUTTON_CANCEL, NULL);
+    gnome_dialog_close_hides(GNOME_DIALOG(trimdialog), TRUE);
+    gnome_dialog_set_close(GNOME_DIALOG(trimdialog), TRUE);
+    gnome_dialog_set_default(GNOME_DIALOG(trimdialog), 0);
+    gtk_signal_connect(GTK_OBJECT(trimdialog), "clicked",
+			GTK_SIGNAL_FUNC (trim_dialog_clicked), NULL);
+    mainbox = GNOME_DIALOG(trimdialog)->vbox;
+#else
+/* stolen from Gnome UI code. With Gnome life seemed so easy... (yaliaev) */
+    trimdialog = gtk_window_new(GTK_WINDOW_DIALOG);
+    gtk_window_set_title(GTK_WINDOW(trimdialog), _("Trim parameters"));
+    gtk_container_border_width(GTK_CONTAINER(trimdialog), 4);
+    
+    vbox = gtk_vbox_new(FALSE, 8);
+    gtk_container_set_border_width (GTK_CONTAINER (vbox), 4);
+    gtk_container_add(GTK_CONTAINER(trimdialog), vbox);
+    gtk_widget_show(vbox);
+
+    gtk_window_set_policy (GTK_WINDOW (trimdialog), FALSE, 
+			 FALSE, FALSE);
+
+    mainbox = gtk_vbox_new(FALSE, 8);
+    gtk_box_pack_start (GTK_BOX (vbox), mainbox, 
+		      TRUE, TRUE, 4);
+		      
+    thing = gtk_hbutton_box_new ();
+
+    gtk_button_box_set_spacing (GTK_BUTTON_BOX (thing), 8);
+    
+    button = gtk_button_new_with_label(_("Ok"));
+    GTK_WIDGET_SET_FLAGS (GTK_WIDGET (button), GTK_CAN_DEFAULT);
+    gtk_box_pack_start (GTK_BOX (thing), button, TRUE, TRUE, 0);
+    gtk_signal_connect(GTK_OBJECT(button), "clicked",
+			GTK_SIGNAL_FUNC (trim_dialog_clicked), (gpointer)0);
+    gtk_widget_grab_default (button);
+    gtk_widget_show (button);
+
+    button = gtk_button_new_with_label(_("Cancel"));
+    gtk_box_pack_start (GTK_BOX (thing), button, TRUE, TRUE, 0);
+    gtk_signal_connect(GTK_OBJECT(button), "clicked",
+			GTK_SIGNAL_FUNC (trim_dialog_clicked), (gpointer)1);
+    gtk_widget_show (button);
+
+    gtk_box_pack_end (GTK_BOX (vbox), thing, 
+		    FALSE, TRUE, 0);
+    gtk_widget_show (thing);
+
+    thing = gtk_hseparator_new ();
+    gtk_box_pack_end (GTK_BOX (vbox), thing, 
+		      FALSE, TRUE, 4);
+    gtk_widget_show (thing);
+		      
+    gtk_signal_connect(GTK_OBJECT (trimdialog), "delete_event",
+			GTK_SIGNAL_FUNC (trim_dialog_close_requested), NULL);
+#endif
+    thing = gtk_check_button_new_with_label(_("Trim at the beginning"));
+    gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, FALSE, 0);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(thing), trimbeg);
+    gtk_signal_connect(GTK_OBJECT(thing), "toggled",
+		       GTK_SIGNAL_FUNC(togglebutton_toggled), &trimbeg);
+    gtk_widget_show(thing);
+
+    thing = gtk_check_button_new_with_label(_("Trim at the end"));
+    gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, FALSE, 0);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(thing), trimend);
+    gtk_signal_connect(GTK_OBJECT(thing), "toggled",
+		       GTK_SIGNAL_FUNC(togglebutton_toggled), &trimend);
+    gtk_widget_show(thing);
+
+    thing = gtk_label_new(_("Threshold (dB)"));
+    gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, FALSE, 0);
+    gtk_widget_show(thing);
+
+    thing = gtk_hscale_new(GTK_ADJUSTMENT(adj = gtk_adjustment_new(threshold, -80.0, -20.0, 1.0, 5.0, 0.0)));
+    gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, FALSE, 0);
+    gtk_signal_connect(GTK_OBJECT(adj), "value_changed",
+		       GTK_SIGNAL_FUNC(adjustment_value_changed), &threshold);
+    gtk_widget_show(thing);
+
+    gtk_widget_show_all(trimdialog);
+}			
+			
+static void 
+sample_editor_trim(gboolean trbeg, gboolean trend, gfloat thrshld)
+{
+    int start = sampledisplay->sel_start, end = sampledisplay->sel_end;
+    int i, c, ofs;
+    int amp = 0, val, bval = 0, maxamp, ground;
+    int on, off;
+    double avg;
+    int reselect = 1; 
+    gint16 *data;
+
+    if(current_sample == NULL) return;
+    if(!trbeg && !trend) return;
+   
+    /* if there's no selection, we operate on the entire sample */
+    if(start == -1) {
+        start = 0;
+        end = current_sample->sample.length;
+        reselect = 0;
+    }
+    
+    data = current_sample->sample.data;
+    /* Finding the maximum amplitude */
+    for(i = 0, maxamp = 0; i < end - start; i++) {
+	val = *(data + i);
+	val = ABS(val);
+	if(val > maxamp)
+	    maxamp = val;
+    }
+  
+    if (maxamp == 0) return;
+   
+    ground = rint((gfloat)maxamp * pow(10.0, thrshld/20));
+    
+    /* Computing the beginning average level until we reach the ground level */
+    for(c = 0, ofs = start, amp = 0, avg = 0; ofs < end && amp < ground ; ofs++) {
+	val = *(data + ofs);
+	if (ofs == start) {
+    	    bval = - val;
+    	    amp = ABS(val);
+	}
+	if ((val < 0 && bval >= 0) || (val >= 0 && bval < 0)) {
+    	    avg += amp;
+    	    c++;
+    	    amp = 0;
+	} else {   
+    	    if (ABS(val) > amp) amp = ABS(val);
+	}   
+	    bval = val;
+    }
+    avg = avg / c;
+    
+    /* Locating when sounds turns on.
+       That is : when we *last* got higher than the average level. */
+    for(amp = maxamp; ofs > start && amp > avg; --ofs) {
+        //fprintf(stderr,"reverse\n");
+        amp = 0;
+        for(val = 1; ofs > start && val > 0; --ofs) {
+            val = *(data + ofs);
+            if (val > amp) amp = val;
+        }
+        for(; ofs > start && val <= 0; --ofs) {
+            val = *(data + ofs);
+            if (-val > amp) amp = -val;
+        }
+    }
+    on = ofs;
+   
+    /* Computing the ending average level until we reach the ground level */
+    for(ofs = end - 1, avg = 0, amp = 0, c = 0; ofs > on && amp < ground ; ofs--) {
+        val = *(data + ofs);
+        if (ofs == end -1) {
+            bval = -val;
+            amp = ABS(val);
+        }
+        if((val < 0 && bval >= 0) || (val >= 0 && bval < 0)) {
+            avg += amp;
+            c++;
+            amp = 0;
+        } else {   
+            if (ABS(val) > amp) amp = ABS(val);
+        }   
+        bval = val;
+    }
+    avg = avg / c;
+    
+    /* Locating when sounds turns off.
+       That is : when we *last* got higher than the average level. */
+    for (amp = maxamp; ofs < end && amp > avg; ++ofs) {
+        amp = 0;
+        for (val = 1; ofs < end && val > 0; ++ofs) {
+            val = *(data + ofs);
+            if (val > amp) amp = val;
+        }
+        for (;ofs < end && val <= 0; ++ofs) {
+            val = *(data + ofs);
+            if (-val > amp) amp = -val;
+        }
+    }
+    off = ofs;
+    
+    // Wiping blanks out
+    if (on < start) on = start;
+    if (off > end) off = end;
+    sample_editor_lock_sample();
+    if (trbeg) {
+	sample_editor_delete(current_sample, start, on);
+	off -= on - start;
+	end -= on - start;
+    }
+    if (trend)
+	sample_editor_delete(current_sample, off, end);
+    st_sample_fix_loop(current_sample);
+    sample_editor_unlock_sample();
+    
+    sample_editor_set_sample(current_sample);
+    xm_set_modified(1);
+    
+    if (reselect == 1 && off > on) 
+	sample_display_set_selection(sampledisplay, start, start + off - on);
+}
+
+static void 
+sample_editor_crop()
+{
+    int start = sampledisplay->sel_start, end = sampledisplay->sel_end;
+
+    if(current_sample == NULL || start == -1) 
+    return;
+
+    int l = current_sample->sample.length;
+    
+    sample_editor_lock_sample();
+    sample_editor_delete(current_sample, 0, start);
+    sample_editor_delete(current_sample, end - start, l - start);
+    sample_editor_unlock_sample();
+    
+    sample_editor_set_sample(current_sample);
+    xm_set_modified(1);
+    
+}
+
+/* deletes the portion of *sample data from start to end-1 */
+void
+sample_editor_delete (STSample *sample,int start, int end)
+{
+    int newlen;
+    gint16 *newdata;
+    
+    if(sample == NULL || start == -1 || start >= end)
+	return;
+    
+    newlen = sample->sample.length - end + start;
+
+    newdata = malloc(newlen * 2);
+    if(!newdata)
+	return;
+
+    memcpy(newdata, sample->sample.data, start * 2);
+    memcpy(newdata + start, sample->sample.data + end, (sample->sample.length - end) * 2);
+
+    free(sample->sample.data);
+
+    sample->sample.data = newdata;
+    sample->sample.length = newlen;
+
+    /* Move loop start and end along with splice */
+    if(sample->sample.loopstart > start &&
+       sample->sample.loopend < end) {
+	/* loop was wholly within selection -- remove it */
+	sample->sample.looptype = ST_MIXER_SAMPLE_LOOPTYPE_NONE;
+	sample->sample.loopstart = 0;
+	sample->sample.loopend = 1;
+    } else {
+	if(sample->sample.loopstart > end) {
+	    /* loopstart was after selection */
+	    sample->sample.loopstart -= (end-start);
+	} else if(sample->sample.loopstart > start) {
+	    /* loopstart was within selection */
+	    sample->sample.loopstart = start;
+	}
+	
+	if(sample->sample.loopend > end) {
+	    /* loopend was after selection */
+	    sample->sample.loopend -= (end-start);
+	} else if(sample->sample.loopend > start) {
+	    /* loopend was within selection */
+	    sample->sample.loopend = start;
+	}
+    }
+
+    st_sample_fix_loop(sample);
+
 }

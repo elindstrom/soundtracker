@@ -396,6 +396,13 @@ dsound_get_play_time (void *dp)
     return (double) d->playpos/(double) d->wbformat->nAvgBytesPerSec;
 }
 
+static inline int
+dsound_get_play_rate (void *d)
+{
+    dsound_driver * const dp = d;
+    return dp->out_rate;
+}
+
 static gboolean
 dsound_loadsettings (void *dp,
 		  prefs_node *f)
@@ -429,6 +436,7 @@ st_out_driver driver_out_dsound = {
     },
 
     dsound_get_play_time,
+    dsound_get_play_rate
 };
 
 #endif /* defined(_WIN32) */

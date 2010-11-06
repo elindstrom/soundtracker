@@ -28,6 +28,7 @@
 
 #include "mixer.h"
 #include "i18n.h"
+#include "tracer.h"
 
 #if defined(__i386__) && !defined(NO_ASM)
 #define MIX_ASM 1
@@ -454,6 +455,39 @@ integer32_dumpstatus (st_mixer_channel_status array[])
     }
 }
 
+static void
+integer32_loadchsettings (int ch)
+{
+    tracer_channel *tch;
+    integer32_channel *c;
+    guint64 tmp64;
+
+    g_assert(ch < num_channels);
+    
+    tch = tracer_return_channel(ch);
+    c = &channels[ch];
+
+    c->sample = tch->sample;
+    c->data = tch->data;
+
+    if (tch->sample){
+	c->loopflags = tch->sample->looptype;
+	c->loopstart = MIN(tch->sample->loopstart, MAX_SAMPLE_LENGTH) << ACCURACY;
+	c->loopend = MIN(tch->sample->loopend, MAX_SAMPLE_LENGTH) << ACCURACY;
+    }
+    c->length = MIN(tch->length, MAX_SAMPLE_LENGTH) << ACCURACY;
+    c->volume = tch->volume * 64;
+    c->panning = tch->panning;
+    c->direction = tch->direction;
+    c->playend = MIN(tch->playend, MAX_SAMPLE_LENGTH) << ACCURACY;
+    tmp64 = (((guint64)tch->positionw << 32) + tch->positionf) >> (32 - ACCURACY);
+    c->current = MIN(tmp64, MAX_SAMPLE_LENGTH << ACCURACY);
+    tmp64 = (((guint64)tch->freqw << 32) + tch->freqf) >> (32 - ACCURACY);
+    c->speed = MIN(tmp64, MAX_SAMPLE_LENGTH << ACCURACY);
+    
+    c->running = tch->flags & TR_FLAG_SAMPLE_RUNNING;
+}
+
 st_mixer mixer_integer32 = {
     "integer32",
     N_("Integers mixer, no interpolation, no filters, maximum sample length 1M"),
@@ -477,6 +511,7 @@ st_mixer mixer_integer32 = {
     NULL,
     integer32_mix,
     integer32_dumpstatus,
+    integer32_loadchsettings,
 
     MAX_SAMPLE_LENGTH,
 

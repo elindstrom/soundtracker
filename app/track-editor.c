@@ -78,6 +78,14 @@ static void update_hscrollbar(Tracker *t, int leftchan, int numchans, int dispch
 static void update_mainmenu_blockmark(Tracker *t, int state);
 static gboolean track_editor_handle_column_input(Tracker *t, int gdkkey);
 
+/* Note recording stuff */
+static struct {
+    guint32 key;
+    int chn;
+    gboolean act;
+} reckey[32];
+static gboolean insert_noteoff;
+
 static gint
 track_editor_editmode_status_idle_function (void)
 {
@@ -461,6 +469,17 @@ track_editor_toggle_jazz_edit (void)
     }
 }
 
+void
+track_editor_toggle_insert_noteoff (void)
+{
+    if(!insert_noteoff)
+	insert_noteoff = TRUE;
+    else
+	insert_noteoff = FALSE;
+}
+
+
+
 static gboolean
 track_editor_is_channel_playing (int ch)
 {
@@ -560,10 +579,10 @@ track_editor_handle_keys (int shift,
 {
     static int current_channel = -1;
 
-    int i, m, tip;
+    int c, i, m, tip;
     Tracker *t = tracker;
     gboolean handled = FALSE;
-
+    
     m = i = keys_get_key_meaning(keyval, ENCODE_MODIFIERS(shift, ctrl, alt));
     tip = KEYS_MEANING_TYPE(i);
 
@@ -573,7 +592,67 @@ track_editor_handle_keys (int shift,
 	    case KEYS_MEANING_NOTE:
 		i += 12 * gui_get_current_octave_value() + 1;
 		if(i < 96) {
-		    if(pressed && GTK_TOGGLE_BUTTON(editing_toggle)->active) {
+		    
+		    if(!GTK_TOGGLE_BUTTON(editing_toggle)->active)
+			goto fin_note;
+		    
+		    if(!jazztoggles[tracker->cursor_ch]->active && jazz_enabled) {
+			int n = track_editor_find_next_jazz_channel(tracker->cursor_ch, m + 12 * 
+			gui_get_current_octave_value() + 1);
+			tracker_step_cursor_channel(tracker, n - tracker->cursor_ch);
+		    }
+		    
+                    if(!GUI_ENABLED && !ASYNCEDIT) { // Recording mode 
+                        if(pressed){ // Insert note
+			    
+                            for(c = 0; c < 32; c++){ // Cleanup
+                                if(!reckey[c].act) 
+                                    continue;
+                                if(reckey[c].key == keyval)
+                                   goto fin_note; // Key is allready down
+                                else if(reckey[c].chn == t->cursor_ch)
+                                   reckey[c].act = 0; // There can be only one sound per channel
+                            }
+                            
+                            // Find free reckey
+                            for(c = 0; c < 32; c++)
+                                if(!reckey[c].act)
+                                    break;
+                                                        
+                            // Fill in the reckey
+                            reckey[c].key = keyval;
+                            reckey[c].chn = t->cursor_ch;
+                            reckey[c].act = TRUE;
+                            
+                            XMNote *note = &t->curpattern->channels[t->cursor_ch][t->patpos];
+                            note->note = i;
+                            note->instrument = gui_get_current_instrument();
+                            tracker_redraw_current_row(t);
+                            xm->modified = 1;
+			    
+                        } else if(!keys_is_key_pressed(keyval, 
+				  ENCODE_MODIFIERS(shift, ctrl, alt))) { // Release key
+			    
+                           // Find right reckey
+                           for(c = 0; c < 32; c++)
+                               if(reckey[c].act && reckey[c].key == keyval)
+                                   break;
+                           if(c == 32)
+                               goto fin_note; // Key was released by other means
+			   
+                           reckey[c].act = FALSE;
+                           
+                           if (!insert_noteoff)
+                               goto fin_note;
+                           
+                           XMNote *note = &t->curpattern->channels[reckey[c].chn][t->patpos];
+                           note->note = 97;
+                           note->instrument = 0;
+                           tracker_redraw_current_row(t);
+                           xm->modified = 1; 
+                        }
+                    } else if (pressed) {
+			
 			XMNote *note = &t->curpattern->channels[t->cursor_ch][t->patpos];
 			note->note = i;
 			note->instrument = gui_get_current_instrument();
@@ -581,6 +660,7 @@ track_editor_handle_keys (int shift,
 			tracker_step_cursor_row(t, gui_get_current_jump_value());
 			xm->modified = 1;
 		    }
+fin_note:
 		    track_editor_do_the_note_key(m, pressed, keyval, ENCODE_MODIFIERS(shift, ctrl, alt));
 		}
 		break;
@@ -595,6 +675,7 @@ track_editor_handle_keys (int shift,
 		}
 		break;
 	    }
+	    if (GTK_TOGGLE_BUTTON(editing_toggle)->active) show_editmode_status();
 	    return TRUE;
 	}
     }
@@ -615,6 +696,7 @@ track_editor_handle_keys (int shift,
 	return TRUE;
     case KEYS_MEANING_CH:
 	tracker_set_cursor_channel (t, current_channel = KEYS_MEANING_VALUE(i));
+	if (GTK_TOGGLE_BUTTON(editing_toggle)->active) show_editmode_status();
 	return TRUE;
     }
 
@@ -699,9 +781,12 @@ track_editor_handle_keys (int shift,
 	tracker_step_cursor_channel(t, shift ? -1 : 1);
 	handled = TRUE;
 	break;
-    case GDK_Shift_R:
-	/* record pattern */
-        break;
+/*    case GDK_Shift_R:
+	play_song();
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(editing_toggle), TRUE);
+	tracker_redraw(tracker);
+	handled = TRUE;
+        break;*/
     case GDK_Delete:
 	if(GTK_TOGGLE_BUTTON(editing_toggle)->active) {
 	    XMNote *note = &t->curpattern->channels[t->cursor_ch][t->patpos];
@@ -745,7 +830,7 @@ track_editor_handle_keys (int shift,
 	}
 	break;
     case GDK_Insert:
-	if(GTK_TOGGLE_BUTTON(editing_toggle)->active) {
+	if(GTK_TOGGLE_BUTTON(editing_toggle)->active && !shift && !alt && !ctrl) {
 	    XMNote *note = &t->curpattern->channels[t->cursor_ch][t->patpos];
 
 	    for(i = t->curpattern->length - 1; i>t->patpos; --i)
@@ -811,7 +896,7 @@ track_editor_handle_keys (int shift,
 	break;
     }
 
-    if (GTK_TOGGLE_BUTTON(editing_toggle)->active) show_editmode_status();
+    if (GTK_TOGGLE_BUTTON(editing_toggle)->active && handled) show_editmode_status();
 
     return handled;
 }
@@ -1133,6 +1218,10 @@ track_editor_interpolate_fx (Tracker *t)
 	}
 
 	for(i = 1; i < height - 1; i++) {
+	    // Skip lines that allready have effect on them
+	    if((note_start + i)->fxtype)
+		continue;
+
 	    // Copy the effect type into all rows in between
 	    (note_start + i)->fxtype = note_start->fxtype;
 	}
@@ -1151,6 +1240,10 @@ track_editor_interpolate_fx (Tracker *t)
 
     for(i = 1; i < height - 1; i++) {
 	int new_value;
+
+        // On effect interpolation, skip lines that allready contain different effects
+        if(t->cursor_item >= 5 && (note_start + i)->fxtype != note_start->fxtype)
+            continue;
 
 	new_value = start_value + (int)((float)i * dy / (height - 1) + (dy >= 0 ? 1.0 : -1.0) * 0.5);
 	new_value &= xmnote_mask;
@@ -1363,4 +1456,17 @@ track_editor_save_config (void)
     }
 
     prefs_close(f);
+}
+
+void
+track_editor_toggle_permanentness (Tracker *t, gboolean all)
+{
+    int i = t->cursor_ch;
+
+    if(!all)
+	gui_settings.permanent_channels ^= 1 << i;
+    else
+	gui_settings.permanent_channels = gui_settings.permanent_channels ? 0 : 0xFFFFFFFF;
+    
+    tracker_redraw(t);
 }

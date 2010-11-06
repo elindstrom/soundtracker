@@ -45,6 +45,7 @@ void      track_editor_do_the_note_key     (int note,
 					    int modifiers);
 
 void      track_editor_toggle_jazz_edit    (void);
+void	  track_editor_toggle_insert_noteoff (void);
 
 void      track_editor_set_num_channels    (int n);
 
@@ -77,4 +78,5 @@ void      track_editor_interpolate_fx      (Tracker *t);
 
 void      track_editor_cmd_mvalue (Tracker *t, gboolean mode);
 
+void	  track_editor_toggle_permanentness	(Tracker *t, gboolean all);
 #endif /* _TRACK_EDITOR_H */

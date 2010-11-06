@@ -364,6 +364,12 @@ menubar_settings_tracker_prev_font (void)
     trackersettings_cycle_font_backward(TRACKERSETTINGS(trackersettings));
 }
 
+static void
+menubar_toggle_perm_wrapper (GtkObject *object, gboolean all)
+{
+    track_editor_toggle_permanentness(tracker, all);
+}
+
 #ifndef USE_GNOME
 
 /* Define GNOME stuff for our GNOME->GtkItemFactory converter. */
@@ -523,8 +529,11 @@ static GnomeUIInfo edit_menu[] = {
     GNOMEUIINFO_SEPARATOR,
 
     { GNOME_APP_UI_TOGGLEITEM, N_("_Jazz Edit Mode"), NULL, track_editor_toggle_jazz_edit, (gpointer)0, NULL,
-      GNOME_APP_PIXMAP_NONE, 0, ' ', GDK_SHIFT_MASK, NULL },
+      GNOME_APP_PIXMAP_NONE, 0, ' ', GDK_SHIFT_MASK, NULL }, 
 
+    { GNOME_APP_UI_TOGGLEITEM, N_("_Record keyreleases"), NULL, track_editor_toggle_insert_noteoff, 
+      (gpointer)0, NULL, GNOME_APP_PIXMAP_NONE, 0, 0, 0, NULL },  
+    
     GNOMEUIINFO_SEPARATOR,
 
     { GNOME_APP_UI_ITEM, N_("Transp_osition..."), NULL, transposition_dialog, (gpointer)0, NULL,
@@ -594,6 +603,16 @@ static GnomeUIInfo pattern_menu[] = {
 
     GNOMEUIINFO_END
 };
+
+static GnomeUIInfo track_menu[] = {
+    { GNOME_APP_UI_ITEM, N_("_Toggle Current Channel Permanentness"), NULL, menubar_toggle_perm_wrapper, (gpointer)FALSE, NULL,
+      GNOME_APP_PIXMAP_NONE, 0, 'P', GDK_CONTROL_MASK, NULL },
+    { GNOME_APP_UI_ITEM, N_("Toggle _All Channels Permanentness"), NULL, menubar_toggle_perm_wrapper, (gpointer)TRUE, NULL,
+      GNOME_APP_PIXMAP_NONE, 0, 'P', GDK_CONTROL_MASK | GDK_SHIFT_MASK, NULL },
+
+    GNOMEUIINFO_END
+};
+
 
 static GnomeUIInfo instrument_menu[] = {
     { GNOME_APP_UI_ITEM, N_("_Load XI..."), NULL, fileops_open_dialog, (gpointer)DIALOG_LOAD_INSTRUMENT, NULL,
@@ -686,6 +705,7 @@ static GnomeUIInfo main_menu[] = {
     GNOMEUIINFO_SUBTREE (N_("_Module"), module_menu),
     GNOMEUIINFO_SUBTREE (N_("_Edit"), edit_menu),
     GNOMEUIINFO_SUBTREE (N_("_Pattern"), pattern_menu),
+    GNOMEUIINFO_SUBTREE (N_("_Track"), track_menu),
     GNOMEUIINFO_SUBTREE (N_("_Instrument"), instrument_menu),
     GNOMEUIINFO_SUBTREE (N_("_Settings"), settings_menu),
     GNOMEUIINFO_SUBTREE (N_("_Help"), help_menu),
@@ -703,6 +723,8 @@ menubar_init_prefs ()
     gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(settings_tracker_menu[0].widget), gui_settings.gui_use_backing_store);
     gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(settings_menu[8].widget), gui_settings.gui_disable_splash);
     gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(settings_menu[10].widget), gui_settings.save_settings_on_exit);
+
+    gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(edit_menu[5].widget), TRUE); // Record aftertouch
 #if USE_SNDFILE == 0 && defined (NO_AUDIOFILE)
     gtk_widget_set_sensitive(file_menu[SAVE_MOD_AS_WAV_POSITION].widget, FALSE);
 #endif

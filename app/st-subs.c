@@ -632,7 +632,7 @@ st_sample_8bit_signed_unsigned (gint8 *data,
 				int count)
 {
     while(count) {
-	*data = *data++ + 128;
+	*data++ += 128;
 	count--;
     }
 }
@@ -642,7 +642,7 @@ st_sample_16bit_signed_unsigned (gint16 *data,
 				 int count)
 {
     while(count) {
-	*data = *data++ + 32768;
+	*data++ += 32768;
 	count--;
     }
 }

@@ -126,6 +126,7 @@ extern event_waiter *audio_songpos_ew;
 extern event_waiter *audio_tempo_ew;
 extern event_waiter *audio_bpm_ew;
 
+extern st_mixer *mixer;
 
 gboolean     audio_init               (int ctlpipe, int backpipe);
 

@@ -650,7 +650,7 @@ print_channel_numbers (GtkWidget *widget,
 		       GdkDrawable *win)
 {
     int x, y, i;
-    char buf[4];
+    char buf[5];
     Tracker *t = TRACKER(widget);
 
     if(0 /* !gui_settings.channel_numbering */) {
@@ -663,7 +663,9 @@ print_channel_numbers (GtkWidget *widget,
     y = t->disp_starty + t->font->ascent + t->baselineskip - t->fonth;
     for(i = 1; i <= t->disp_numchans; i++, x += t->disp_chanwidth) {
 	sprintf(buf, "%2d", i + t->leftchan);
-	gdk_draw_rectangle(win, t->bg_gc, TRUE, x, t->disp_starty - t->fonth, 2*t->fontw, t->fonth);
+	if(gui_settings.permanent_channels & (1 << (i + t->leftchan - 1)))
+	    strcat(buf, "*");
+	gdk_draw_rectangle(win, t->bg_gc, TRUE, x, t->disp_starty - t->fonth, 3*t->fontw, t->fonth);
 	gdk_draw_string(win, t->font, t->misc_gc, x, y, buf);
     }
 }

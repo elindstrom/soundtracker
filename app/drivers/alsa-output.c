@@ -485,6 +485,13 @@ alsa_get_play_time (void *dp)
     return d->playtime + curtime - d->outtime - d->numfrags * ((double) d->fragsize / d->playrate);
 }
 
+static inline int
+alsa_get_play_rate (void *d)
+{
+    alsa_driver * const dp = d;
+    return dp->playrate;
+}
+
 static gboolean
 alsa_loadsettings (void *dp,
 		  prefs_node *f)
@@ -536,6 +543,7 @@ st_out_driver driver_out_alsa = {
     },
 
     alsa_get_play_time,
+    alsa_get_play_rate
 };
 
 #endif /* DRIVER_ALSA */

@@ -50,6 +50,7 @@
 #include "time-buffer.h"
 #include "event-waiter.h"
 #include "gui-settings.h"
+#include "tracer.h"
 
 st_mixer *mixer = NULL;
 st_out_driver *playback_driver = NULL;
@@ -186,7 +187,21 @@ audio_ctlpipe_play_song (int songpos,
 	current_driver_object = playback_driver_object;
 	current_driver = playback_driver;
 	audio_prepare_for_playing();
-	xmplayer_init_play_song(songpos, patpos);
+
+	xmplayer_init_play_song(0, 0, TRUE);
+	
+	if(songpos > 0 || patpos > 0) { /* Tracing!!! */
+	    int i;
+
+	    tracer_setnumch(audio_numchannels);
+	    tracer_trace(playback_driver->get_play_rate(playback_driver_object), songpos, patpos);
+	    xmplayer_init_play_song(songpos, patpos, FALSE);
+	    
+	    for(i = 0; i < audio_numchannels; i++)
+		if(gui_settings.permanent_channels & (1 << i))
+		    mixer->loadchsettings(i);
+	}
+
 	a = AUDIO_BACKPIPE_PLAYING_STARTED;
     } else {
 	a = AUDIO_BACKPIPE_DRIVER_OPEN_FAILED;
@@ -218,7 +233,7 @@ audio_ctlpipe_render_song_to_file (gchar *filename)
 	current_driver = &driver_out_file;
 	audio_prepare_for_playing();
 	playing_noloop = TRUE;
-	xmplayer_init_play_song(0, 0);
+	xmplayer_init_play_song(0, 0, TRUE);
 	a = AUDIO_BACKPIPE_PLAYING_STARTED;
 	audio_restore_priority();
     }

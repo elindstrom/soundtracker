@@ -446,6 +446,13 @@ jack_driver_get_play_time (void *dp)
 	return (double)d->position / (double)d->sample_rate;
 }
 
+static inline int
+jack_driver_get_play_rate (void *d)
+{
+    jack_driver * const dp = d;
+    return (int)dp->sample_rate;
+}
+
 st_out_driver driver_out_jack = {
     { "JACK Output",
       jack_driver_new,             // create new instance of this driver class   
@@ -457,6 +464,7 @@ st_out_driver driver_out_jack = {
       jack_driver_savesettings,    // save configuration to specified prefs_node
     },
     jack_driver_get_play_time,     // get time offset since first sound output
+    jack_driver_get_play_rate
 };
 
 #endif /* DRIVER_JACK */
