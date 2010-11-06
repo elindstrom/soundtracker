@@ -24,6 +24,8 @@
 #include <ctype.h>
 
 #include <gdk/gdkkeysyms.h>
+#include <glib.h>
+#include <glib/gprintf.h>
 
 #include "i18n.h"
 #include "track-editor.h"
@@ -186,7 +188,7 @@ show_editmode_status(void)
         N_("square"),                    /* 2 */
     };
 
-    sprintf(track_editor_editmode_status_ed_buf, "[Chnn: %02d] [Pos: %03d] [Instr: %03d] ", t->cursor_ch+1,
+    g_sprintf(track_editor_editmode_status_ed_buf, "[Chnn: %02d] [Pos: %03d] [Instr: %03d] ", t->cursor_ch+1,
                                                                t->patpos,
                                                                note->instrument);
 
@@ -202,7 +204,7 @@ show_editmode_status(void)
         break;
     default:
         if(note->volume>0xf) {
-            sprintf(tmp_buf,"%s", _(vol_fx_commands[((note->volume&0xf0)-0x60)>>4]));
+            g_sprintf(tmp_buf,"%s", _(vol_fx_commands[((note->volume&0xf0)-0x60)>>4]));
             strcat(track_editor_editmode_status_ed_buf, tmp_buf);
         } else
             strcat(track_editor_editmode_status_ed_buf, _("None"));
@@ -211,11 +213,11 @@ show_editmode_status(void)
 
     if(note->volume&0xf0) {
         if(note->volume>=0x10 && note->volume<=0x50)
-            sprintf(tmp_buf, " => %02d ] ", note->volume-0x10);
+            g_sprintf(tmp_buf, " => %02d ] ", note->volume-0x10);
         else
-            sprintf(tmp_buf, " => %02d ] ", note->volume&0xf);
+            g_sprintf(tmp_buf, " => %02d ] ", note->volume&0xf);
     } else
-         sprintf(tmp_buf, " ] ");
+         g_sprintf(tmp_buf, " ] ");
     strcat(track_editor_editmode_status_ed_buf, tmp_buf);
         
     memset(tmp_buf, 0, strlen(tmp_buf));
@@ -226,18 +228,18 @@ show_editmode_status(void)
     {
     case 0:
         if(note->fxparam)
-            sprintf(tmp_buf, "%s", _(fx_commands[note->fxtype]));
+            g_sprintf(tmp_buf, "%s", _(fx_commands[note->fxtype]));
         else
-            sprintf(tmp_buf, _("None ]"));
+            g_sprintf(tmp_buf, _("None ]"));
         break;
     case 14:
         switch((note->fxparam&0xf0)>>4)
         {
         case 0: case 8: case 15:
-            sprintf(tmp_buf, _("None ]"));
+            g_sprintf(tmp_buf, _("None ]"));
             break;
         default:
-            sprintf(tmp_buf, "%s", _(e_fx_commands[(note->fxparam&0xf0)>>4]));
+            g_sprintf(tmp_buf, "%s", _(e_fx_commands[(note->fxparam&0xf0)>>4]));
             break;
         }
         break;
@@ -245,23 +247,23 @@ show_editmode_status(void)
         switch((note->fxparam&0xf0)>>4)
         {
         case 1:
-            sprintf(tmp_buf, "Extra fine porta up");
+            g_sprintf(tmp_buf, "Extra fine porta up");
             break;
         case 2:
-            sprintf(tmp_buf, "Extra fine porta down");
+            g_sprintf(tmp_buf, "Extra fine porta down");
             break;
         default:
-            sprintf(tmp_buf, _("None ]"));
+            g_sprintf(tmp_buf, _("None ]"));
             break;
         }
         break;
     case 18: case 19: case 22: case 23: case 24:
     case 28: case 30: case 31: case 32: case 34:
-        sprintf(tmp_buf, _("None ]"));
+        g_sprintf(tmp_buf, _("None ]"));
         break;
 
     default:
-        sprintf(tmp_buf, "%s", _(fx_commands[note->fxtype]));
+        g_sprintf(tmp_buf, "%s", _(fx_commands[note->fxtype]));
         break;
     }
     strcat(track_editor_editmode_status_ed_buf, tmp_buf);
@@ -276,39 +278,39 @@ show_editmode_status(void)
     {
     case 0:
         if(note->fxparam)
-            sprintf(tmp_buf, " => %02d %02d ]", cmd_p1, cmd_p2);
+            g_sprintf(tmp_buf, " => %02d %02d ]", cmd_p1, cmd_p2);
         break;
     case 4:  case 7: case 10: case 17: case 25: case 27: case 29:
-        sprintf(tmp_buf, " => %02d %02d ]", cmd_p1, cmd_p2);
+        g_sprintf(tmp_buf, " => %02d %02d ]", cmd_p1, cmd_p2);
         break;
     case 1: case 2: case 3: case 5: case 6: case 8: case 9:
     case 11: case 12: case 13: case 15: case 16: case 21: case 26: case 35:
 
         if(note->fxtype==15)
             if (note->fxparam<32)
-                sprintf(tmp_buf, " => tempo: %02d ]", note->fxparam);
+                g_sprintf(tmp_buf, " => tempo: %02d ]", note->fxparam);
             else
-                sprintf(tmp_buf, " => BPM: %03d ]", note->fxparam);
+                g_sprintf(tmp_buf, " => BPM: %03d ]", note->fxparam);
         else if(note->fxtype==9)
-                sprintf(tmp_buf, " => offset: %d ]", note->fxparam<<8);
+                g_sprintf(tmp_buf, " => offset: %d ]", note->fxparam<<8);
              else
-                sprintf(tmp_buf, " => %03d ]", note->fxparam);
+                g_sprintf(tmp_buf, " => %03d ]", note->fxparam);
 
         break;
     case 14:
         if(cmd_p1!=0 && cmd_p1!=8 && cmd_p1!=15) {
             if((cmd_p1==4 || cmd_p1==7) && (cmd_p2<3))
-                sprintf(tmp_buf, " => %02d (%s) ]", cmd_p2, e47_fx_forms[cmd_p2]);
+                g_sprintf(tmp_buf, " => %02d (%s) ]", cmd_p2, e47_fx_forms[cmd_p2]);
             else
-                sprintf(tmp_buf, " => %02d ]", cmd_p2);
+                g_sprintf(tmp_buf, " => %02d ]", cmd_p2);
         }
         break;
     case 33:
         if (cmd_p1==1 || cmd_p1==2)
-            sprintf(tmp_buf, " => %02d ]", cmd_p2);
+            g_sprintf(tmp_buf, " => %02d ]", cmd_p2);
         break;
     default:
-        sprintf(tmp_buf, "]");
+        g_sprintf(tmp_buf, "]");
         break;
     }
     strcat(track_editor_editmode_status_ed_buf, tmp_buf);
@@ -367,7 +369,7 @@ tracker_page_create (GtkNotebook *nb)
 
     for(i = 0; i < 32; i++) {
 	char buf[10];
-	sprintf(buf, "%02d", i+1);
+	g_sprintf(buf, "%02d", i+1);
 	thing = gtk_toggle_button_new_with_label(buf);
 	jazztoggles[i] = GTK_TOGGLE_BUTTON(thing);
 	gtk_widget_show(thing);
@@ -380,9 +382,9 @@ tracker_page_create (GtkNotebook *nb)
     thing = tracker_new();
     gtk_table_attach_defaults(GTK_TABLE(table), thing, 0, 1, 0, 1);
     gtk_widget_show(thing);
-    gtk_signal_connect(GTK_OBJECT(thing), "patpos", GTK_SIGNAL_FUNC(update_vscrollbar), NULL);
-    gtk_signal_connect(GTK_OBJECT(thing), "xpanning", GTK_SIGNAL_FUNC(update_hscrollbar), NULL);
-    gtk_signal_connect(GTK_OBJECT(thing), "mainmenu_blockmark_set", GTK_SIGNAL_FUNC(update_mainmenu_blockmark), NULL);
+    g_signal_connect(thing, "patpos", G_CALLBACK(update_vscrollbar), NULL);
+    g_signal_connect(thing, "xpanning", G_CALLBACK(update_hscrollbar), NULL);
+    g_signal_connect(thing, "mainmenu_blockmark_set", G_CALLBACK(update_mainmenu_blockmark), NULL);
     tracker = TRACKER(thing);
 
     tracker_set_update_freq(gui_settings.tracker_update_freq);
@@ -1426,7 +1428,7 @@ track_editor_load_config (void)
     f = prefs_open_read("jazz");
     if(f) {
 	for(i = 0; i < 32; i++) {
-	    sprintf(buf, "jazz-toggle-%d", i);
+	    g_sprintf(buf, "jazz-toggle-%d", i);
 	    prefs_get_int(f, buf, &j);
 	    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(jazztoggles[i]), j);
 	}
@@ -1451,7 +1453,7 @@ track_editor_save_config (void)
 	return;
 
     for(i = 0; i < 32; i++) {
-	sprintf(buf, "jazz-toggle-%d", i);
+	g_sprintf(buf, "jazz-toggle-%d", i);
 	prefs_put_int(f, buf, GTK_TOGGLE_BUTTON(jazztoggles[i])->active);
     }
 

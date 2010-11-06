@@ -41,7 +41,7 @@
 #include "i18n.h"
 #include "audio.h"
 #include "mixer.h"
-#include "driver-out.h"
+#include "driver-inout.h"
 #include "main.h"
 #include "xm-player.h"
 #include "endian-conv.h"
@@ -53,9 +53,9 @@
 #include "tracer.h"
 
 st_mixer *mixer = NULL;
-st_out_driver *playback_driver = NULL;
-st_out_driver *editing_driver = NULL;
-st_out_driver *current_driver = NULL;
+st_io_driver *playback_driver = NULL;
+st_io_driver *editing_driver = NULL;
+st_io_driver *current_driver = NULL;
 void *playback_driver_object = NULL;
 void *editing_driver_object = NULL;
 void *current_driver_object = NULL;
@@ -214,7 +214,7 @@ static void
 audio_ctlpipe_render_song_to_file (gchar *filename)
 {
     audio_backpipe_id a = AUDIO_BACKPIPE_DRIVER_OPEN_FAILED;
-    extern st_out_driver driver_out_file;
+    extern st_io_driver driver_out_file;
 
     g_assert(playback_driver != NULL);
     g_assert(mixer != NULL);

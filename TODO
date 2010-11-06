@@ -137,6 +137,7 @@ Find a workaround for the d->realtimecaps = i & DSP_CAP_REALTIME;
 > der Mitte des aktuellen Beats anschlage, wird der Ton in den
 > n%/1€Œiso8859-15ächsten Beat im Pattern geshrieben.
 
+<<<<<<< HEAD
 Hallo Michael,
 
 hier ein Vorschlag für eine kleine Zusatzfunktion für den Soundtracker:
@@ -158,3 +159,11 @@ www.dennis-schramm.com
 
 Subject: 	[Soundtracker-discuss] BUG: E9x and Ryx effects
 Date: 	Fri, 19 Apr 1996 21:29:45 +0400  (19:29 CEST)
+=======
+--***--
+
+"Sample name" and "Instrument name" as the lists with the ability of choosing
+the instrument/sample
+
+No error message when attempting to write to read-only filesystem/directory
+>>>>>>> master

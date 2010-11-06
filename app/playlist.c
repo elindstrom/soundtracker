@@ -44,14 +44,35 @@ enum {
 static guint playlist_signals[LAST_SIGNAL] = { 0 };
 
 static gboolean
+scroll_event (GtkWidget *w, GdkEventScroll *event, Playlist *p)
+{
+    int pos = p->current_position;
+
+    switch(event->direction) {
+    case GDK_SCROLL_UP:
+	pos--;
+	if((pos >= 0) && (pos) < p->length)
+		gtk_adjustment_set_value(GTK_ADJUSTMENT(p->adj_songpos), pos);
+	return TRUE;
+    case GDK_SCROLL_DOWN:
+	pos++;
+	if((pos >= 0) && (pos) < p->length)
+		gtk_adjustment_set_value(GTK_ADJUSTMENT(p->adj_songpos), pos);
+	return TRUE;
+    default:
+	break;
+    }
+    return FALSE;
+}
+
+static gboolean
 label_clicked (GtkWidget *w, GdkEventButton *event, Playlist *p)
 {
     int i;
 
     int pos = p->current_position;
 
-    switch (event->button) {
-    case 1:
+    if (event->button == 1) {
 	// find what label is clicked
 	for (i = -2; i <= 2; i++) {
 	    if ((p->numlabels[i+2] == GTK_BIN(w)->child) ||
@@ -62,19 +83,6 @@ label_clicked (GtkWidget *w, GdkEventButton *event, Playlist *p)
 		return (TRUE);
 	    }
 	}
-	break;
-    case 4:
-	pos--;
-	if ((pos >= 0) && (pos) < p->length)
-		gtk_adjustment_set_value(GTK_ADJUSTMENT(p->adj_songpos), pos);
-	return (TRUE);
-    case 5:
-	pos++;
-	if ((pos >= 0) && (pos) < p->length)
-		gtk_adjustment_set_value(GTK_ADJUSTMENT(p->adj_songpos), pos);
-	return (TRUE);
-    default:
-	break;
     }
     return (FALSE);
 }
@@ -423,11 +431,22 @@ playlist_delete_clicked (GtkWidget *w,
 			pos, p->patterns[pos]);
 }
 
+static void
+is_realized(GtkWidget *algn, gpointer data)
+{
+    guint x, y;
+    
+    gtk_widget_realize(algn);
+    x = (algn->allocation).width;
+    y = (algn->allocation).height;
+    gtk_widget_set_size_request(algn, x, y);
+}
+
 GtkWidget *
 playlist_new (void)
 {
     Playlist *p;
-    GtkWidget *box, *thing, *thing1, *vbox, *frame, *box1, *evbox;
+    GtkWidget *box, *thing, *thing1, *vbox, *frame, *box1, *evbox, *al;
     GtkObject *adj;
     gint i;
 
@@ -451,8 +470,8 @@ playlist_new (void)
 	    evbox = gtk_event_box_new();
 	    gtk_container_add(GTK_CONTAINER(evbox), p->numlabels[i]);
 	    gtk_widget_show(evbox);
-	    gtk_signal_connect(GTK_OBJECT(evbox), "button_press_event",
-			       GTK_SIGNAL_FUNC(label_clicked),
+	    g_signal_connect(evbox, "button_press_event",
+			       G_CALLBACK(label_clicked),
 			       (gpointer)p);
 	    box1 = gtk_hbox_new (FALSE, 0),
 	    gtk_box_pack_start(GTK_BOX(box1), evbox, FALSE, FALSE, 3);
@@ -464,8 +483,8 @@ playlist_new (void)
 	    evbox = gtk_event_box_new();
 	    gtk_container_add(GTK_CONTAINER(evbox), p->patlabels[i]);
 	    gtk_widget_show(evbox);
-	    gtk_signal_connect(GTK_OBJECT(evbox), "button_press_event",
-			       GTK_SIGNAL_FUNC(label_clicked),
+	    g_signal_connect(evbox, "button_press_event",
+			      G_CALLBACK(label_clicked),
 			       (gpointer)p);
 	    box1 = gtk_hbox_new (FALSE, 0),
 	    gtk_box_pack_start(GTK_BOX(box1), evbox, FALSE, FALSE, 0);
@@ -476,7 +495,12 @@ playlist_new (void)
     box1 = gtk_hbox_new(FALSE, 0);
     p->numlabels[2] = gtk_label_new("");
     gtk_widget_show(p->numlabels[2]);
-    gtk_box_pack_start(GTK_BOX(box1), p->numlabels[2], TRUE, TRUE, 0);
+    /* a bit trick to keep label size constant */
+    al = gtk_alignment_new(0.0, 0.5, 0.0, 0.0);
+    gtk_container_add(GTK_CONTAINER(al), p->numlabels[2]);
+    g_signal_connect(al, "realize", G_CALLBACK(is_realized), NULL);
+    gtk_widget_show(al);
+    gtk_box_pack_start(GTK_BOX(box1), al, TRUE, TRUE, 0);
     gtk_widget_show(box1);
 
     /* current pattern */
@@ -484,8 +508,8 @@ playlist_new (void)
     p->spin_songpat = extspinbutton_new(GTK_ADJUSTMENT (adj), 1.0, 0);
     extspinbutton_disable_size_hack(EXTSPINBUTTON(p->spin_songpat));
     gtk_widget_show(p->spin_songpat);
-    gtk_signal_connect(GTK_OBJECT(p->spin_songpat), "changed",
-		    GTK_SIGNAL_FUNC(playlist_songpat_changed),
+    g_signal_connect(p->spin_songpat, "value-changed",
+		    G_CALLBACK(playlist_songpat_changed),
 		    (gpointer)p);
     gtk_box_pack_end(GTK_BOX(box1), p->spin_songpat, TRUE, TRUE, 0);
 
@@ -500,9 +524,12 @@ playlist_new (void)
     evbox = gtk_event_box_new();
     gtk_container_add(GTK_CONTAINER(evbox), thing1);
     gtk_widget_show(evbox);
-    gtk_signal_connect(GTK_OBJECT(evbox), "button_press_event",
-		       GTK_SIGNAL_FUNC(label_clicked),
+    g_signal_connect(evbox, "button_press_event",
+		       G_CALLBACK(label_clicked),
 		       (gpointer)p);
+    g_signal_connect(evbox, "scroll-event",
+			G_CALLBACK(scroll_event),
+			(gpointer)p);
 
     gtk_container_add(GTK_CONTAINER(thing), evbox);
     gtk_widget_show(thing);
@@ -514,8 +541,8 @@ playlist_new (void)
     thing = gtk_vscrollbar_new(GTK_ADJUSTMENT(p->adj_songpos));
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box), thing, FALSE, FALSE, 0);
-    gtk_signal_connect(GTK_OBJECT(p->adj_songpos), "value_changed",
-		    GTK_SIGNAL_FUNC(playlist_songpos_changed),
+    g_signal_connect(p->adj_songpos, "value_changed",
+		    G_CALLBACK(playlist_songpos_changed),
 		    (gpointer)p);
 
     /* buttons */
@@ -526,16 +553,16 @@ playlist_new (void)
     gui_hang_tooltip(thing1, _("Insert pattern that is being edited"));
     gtk_box_pack_start(GTK_BOX(thing), thing1, FALSE, FALSE, 0);
     gtk_widget_show(thing);
-    gtk_signal_connect(GTK_OBJECT(thing1), "clicked",
-		    GTK_SIGNAL_FUNC(playlist_insert_clicked),
+    g_signal_connect(thing1, "clicked",
+		    G_CALLBACK(playlist_insert_clicked),
 		    (gpointer)p);
 
     thing1 = p->dbutton = gtk_button_new_with_label(_("Delete"));
     gtk_widget_show(thing1);
     gui_hang_tooltip(thing1, _("Remove current playlist entry"));
     gtk_box_pack_start(GTK_BOX(thing), thing1, FALSE, FALSE, 0);
-    gtk_signal_connect(GTK_OBJECT(thing1), "clicked",
-		    GTK_SIGNAL_FUNC(playlist_delete_clicked),
+    g_signal_connect(thing1, "clicked",
+		    G_CALLBACK(playlist_delete_clicked),
 		    (gpointer)p);
 
     add_empty_vbox(thing);
@@ -562,7 +589,7 @@ playlist_new (void)
     gtk_box_pack_start(GTK_BOX(box), thing1, TRUE, TRUE, 0);
     gtk_widget_show(box);
 
-    thing1 = gtk_invisible_new();
+    thing1 = gtk_label_new(NULL);
     gtk_widget_set_usize(thing1, 2, 1);
     gtk_widget_show(thing1);
     gtk_box_pack_start(GTK_BOX(box), thing1, TRUE, TRUE, 0);
@@ -573,15 +600,15 @@ playlist_new (void)
     gtk_widget_show(thing1);
     gui_hang_tooltip(thing1, _("Song length"));
     gtk_box_pack_start(GTK_BOX(box), thing1, TRUE, TRUE, 0);
-    gtk_signal_connect(GTK_OBJECT(thing1), "changed",
-			GTK_SIGNAL_FUNC(playlist_songlength_changed),
+    g_signal_connect(thing1, "value-changed",
+			G_CALLBACK(playlist_songlength_changed),
 			(gpointer)p);
 
     thing1 = gtk_label_new(_("Rstrt"));
     gtk_widget_show(thing1);
     gtk_box_pack_start(GTK_BOX(box), thing1, TRUE, TRUE, 0);
 
-    thing1 = gtk_invisible_new();
+    thing1 = gtk_label_new(NULL);
     gtk_widget_set_usize(thing1, 2, 1);
     gtk_widget_show(thing1);
     gtk_box_pack_start(GTK_BOX(box), thing1, TRUE, TRUE, 0);
@@ -592,8 +619,8 @@ playlist_new (void)
     gtk_widget_show(thing1);
     gui_hang_tooltip(thing1, _("Song restart position"));
     gtk_box_pack_start(GTK_BOX(box), thing1, TRUE, TRUE, 0);
-    gtk_signal_connect(GTK_OBJECT(thing1), "changed",
-			GTK_SIGNAL_FUNC(playlist_restartpos_changed),
+    g_signal_connect(thing1, "value-changed",
+			G_CALLBACK(playlist_restartpos_changed),
 			(gpointer)p);
 
     gtk_box_pack_start(GTK_BOX(vbox), box, FALSE, FALSE, 0);
@@ -608,42 +635,40 @@ playlist_new (void)
 static void
 playlist_class_init (PlaylistClass *class)
 {
-    GtkObjectClass *object_class;
+    GObjectClass *g_object_class;
 
-    object_class = (GtkObjectClass*) class;
+    g_object_class = (GObjectClass*) class;
 
-    playlist_signals[SIG_CURRENT_POSITION_CHANGED] = gtk_signal_new ("current_position_changed",
-								     GTK_RUN_FIRST,
-								     object_class->type,
-								     GTK_SIGNAL_OFFSET(PlaylistClass, current_position_changed),
-								     gtk_marshal_NONE__INT,
-								     GTK_TYPE_NONE, 1,
-								     GTK_TYPE_INT);
-    playlist_signals[SIG_RESTART_POSITION_CHANGED] = gtk_signal_new ("restart_position_changed",
-								     GTK_RUN_FIRST,
-								     object_class->type,
-								     GTK_SIGNAL_OFFSET(PlaylistClass, restart_position_changed),
-								     gtk_marshal_NONE__INT,
-								     GTK_TYPE_NONE, 1,
-								     GTK_TYPE_INT);
-    playlist_signals[SIG_SONG_LENGTH_CHANGED] = gtk_signal_new ("song_length_changed",
-								GTK_RUN_FIRST,
-								object_class->type,
-								GTK_SIGNAL_OFFSET(PlaylistClass, song_length_changed),
-								gtk_marshal_NONE__INT,
-								GTK_TYPE_NONE, 1,
-								GTK_TYPE_INT);
-    playlist_signals[SIG_ENTRY_CHANGED] = gtk_signal_new ("entry_changed",
-							  GTK_RUN_FIRST,
-							  object_class->type,
-							  GTK_SIGNAL_OFFSET(PlaylistClass, entry_changed),
-							  gtk_marshal_NONE__INT_INT,
-							  GTK_TYPE_NONE, 2,
-							  GTK_TYPE_INT,
-							  GTK_TYPE_INT);
+    playlist_signals[SIG_CURRENT_POSITION_CHANGED] =
+	   g_signal_new ("current_position_changed",
+			   G_TYPE_FROM_CLASS (g_object_class),
+			   (GSignalFlags)G_SIGNAL_RUN_FIRST,
+   			   G_STRUCT_OFFSET(PlaylistClass, current_position_changed),
+			   NULL, NULL,
+			   gtk_marshal_NONE__INT, G_TYPE_NONE, 1, G_TYPE_INT);
+    playlist_signals[SIG_RESTART_POSITION_CHANGED] =
+	    g_signal_new ("restart_position_changed",
+			   G_TYPE_FROM_CLASS (g_object_class),
+			   (GSignalFlags)G_SIGNAL_RUN_FIRST,
+			   G_STRUCT_OFFSET(PlaylistClass, restart_position_changed),
+			   NULL, NULL,
+			   gtk_marshal_NONE__INT, G_TYPE_NONE, 1, G_TYPE_INT);
+    playlist_signals[SIG_SONG_LENGTH_CHANGED] =
+	    g_signal_new ("song_length_changed",
+			   G_TYPE_FROM_CLASS (g_object_class),
+			   (GSignalFlags)G_SIGNAL_RUN_FIRST,
+			G_STRUCT_OFFSET(PlaylistClass, song_length_changed),
+			   NULL, NULL,
+			gtk_marshal_NONE__INT, G_TYPE_NONE, 1, G_TYPE_INT);
+    playlist_signals[SIG_ENTRY_CHANGED] =
+	    g_signal_new ("entry_changed",
+			   G_TYPE_FROM_CLASS (g_object_class),
+			   (GSignalFlags)G_SIGNAL_RUN_FIRST,
+			G_STRUCT_OFFSET(PlaylistClass, entry_changed),
+			   NULL, NULL,
+			gtk_marshal_NONE__INT_INT, G_TYPE_NONE, 2,
+			G_TYPE_INT, G_TYPE_INT);
 
-    gtk_object_class_add_signals(object_class, playlist_signals, LAST_SIGNAL);
-    
     class->current_position_changed = NULL;
     class->restart_position_changed = NULL;
     class->song_length_changed = NULL;
@@ -674,18 +699,21 @@ playlist_get_type()
     static guint playlist_type = 0;
     
     if (!playlist_type) {
-	GtkTypeInfo playlist_info =
+	GTypeInfo playlist_info =
 	{
-	    "Playlist",
-	    sizeof(Playlist),
 	    sizeof(PlaylistClass),
-	    (GtkClassInitFunc) playlist_class_init,
-	    (GtkObjectInitFunc) playlist_init,
-	    (GtkArgSetFunc) NULL,
-	    (GtkArgGetFunc) NULL,
+	    (GBaseInitFunc) NULL,
+		(GBaseFinalizeFunc) NULL,
+	    (GClassInitFunc) playlist_class_init,
+	    (GClassFinalizeFunc) NULL,
+	    NULL,
+	    sizeof(Playlist),
+	    0,
+	    (GInstanceInitFunc) playlist_init,
 	};
 	
-	playlist_type = gtk_type_unique (gtk_vbox_get_type (), &playlist_info);
+	playlist_type = g_type_register_static(gtk_vbox_get_type (),
+	    "Playlist", &playlist_info, (GTypeFlags)0);
     }
 
     return playlist_type;

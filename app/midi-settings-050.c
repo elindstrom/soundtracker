@@ -498,23 +498,23 @@ create_midi_notebook( GtkDialog* dialog, midi_prefs settings)
   gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing),
                               settings.input.auto_connect);
   gtk_box_pack_start(GTK_BOX(page), thing, FALSE, TRUE, 0);
-  gtk_signal_connect(GTK_OBJECT(thing), "toggled",
-                     GTK_SIGNAL_FUNC(input_auto_connect_toggled), NULL);
+  g_signal_connect(thing, "toggled",
+                     G_CALLBACK(input_auto_connect_toggled), NULL);
 
   thing = gtk_check_button_new_with_label(_("Volume"));
   gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing),
                               settings.input.volume_enabled);
   gtk_box_pack_start(GTK_BOX(page), thing, FALSE, TRUE, 0);
 
-  gtk_signal_connect(GTK_OBJECT(thing), "toggled",
-                     GTK_SIGNAL_FUNC(input_volume_toggled), NULL);
+  g_signal_connect(thing, "toggled",
+                     G_CALLBACK(input_volume_toggled), NULL);
 
   thing = gtk_check_button_new_with_label(_("Channel"));
   gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing),
                               settings.input.channel_enabled);
   gtk_box_pack_start(GTK_BOX(page), thing, FALSE, TRUE, 0);
-  gtk_signal_connect(GTK_OBJECT(thing), "toggled",
-                     GTK_SIGNAL_FUNC(input_channel_toggled), NULL);
+  g_signal_connect(thing, "toggled",
+                     G_CALLBACK(input_channel_toggled), NULL);
 
   /* Create the spin button for the input client number. */
 
@@ -654,17 +654,17 @@ midi_settings_dialog (void)
 
   /* Connect dialog/notebook callbacks. */
 
-  gtk_signal_connect_object( GTK_OBJECT( okay_button),
+  g_signal_connect_swapped(okay_button,
                              "clicked",
-                             GTK_SIGNAL_FUNC (dialog_okay_callback),
+                             G_CALLBACK(dialog_okay_callback),
                              0);
-  gtk_signal_connect_object( GTK_OBJECT( apply_button),
+  g_signal_connect_swapped(apply_button,
                              "clicked",
-                             GTK_SIGNAL_FUNC (dialog_apply_callback),
-                             GTK_OBJECT(midi_notebook));
-  gtk_signal_connect_object( GTK_OBJECT( cancel_button),
+                             G_CALLBACK(dialog_apply_callback),
+                             G_OBJECT(midi_notebook));
+  g_signal_connect_swapped(cancel_button,
                              "clicked",
-                             GTK_SIGNAL_FUNC (dialog_cancel_callback),
+                             G_CALLBACK(dialog_cancel_callback),
                              0);
 
   /* Add the notebook to the upper part of the dialog box. */

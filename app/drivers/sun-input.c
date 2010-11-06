@@ -35,13 +35,15 @@
 #include <sys/time.h>
 
 #include <glib.h>
+#include <glib/gprintf.h>
 #include <gtk/gtk.h>
 
 #include "i18n.h"
-#include "driver-in.h"
+#include "driver-inout.h"
 #include "mixer.h"
 #include "errors.h"
 #include "gui-subs.h"
+#include "entry-workaround.h"
 
 typedef struct sun_driver {
     GtkWidget *configwidget;
@@ -83,7 +85,7 @@ sun_poll_ready_sampling (gpointer data,
 static void
 prefs_init_from_structure (sun_driver *d)
 {
-    gtk_entry_set_text(GTK_ENTRY(d->prefs_devaudio_w), d->p_devaudio);
+    wa_entry_set_text(GTK_ENTRY(d->prefs_devaudio_w), d->p_devaudio);
 }
 
 static void
@@ -121,9 +123,9 @@ sun_make_config_widgets (sun_driver *d)
     thing = gtk_entry_new_with_max_length(126);
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
-    gtk_entry_set_text(GTK_ENTRY(thing), d->p_devaudio);
-    gtk_signal_connect_after(GTK_OBJECT(thing), "changed",
-			     GTK_SIGNAL_FUNC(sun_devaudio_changed), d);
+    wa_entry_set_text(GTK_ENTRY(thing), d->p_devaudio);
+    g_signal_connect_after(thing, "changed",
+			     G_CALLBACK(sun_devaudio_changed), d);
     d->prefs_devaudio_w = thing;
 
     prefs_init_from_structure(d);
@@ -226,7 +228,7 @@ sun_open (void *dp)
 
     d->soundfd = open(d->p_devaudio, O_RDONLY|O_NONBLOCK);
     if(d->soundfd < 0) {
-	sprintf(buf, _("%s: %s"), d->p_devaudio, strerror(errno));
+	g_sprintf(buf, _("%s: %s"), d->p_devaudio, strerror(errno));
 	goto out;
     }
    
@@ -239,7 +241,7 @@ sun_open (void *dp)
    
     d->info.mode = AUMODE_RECORD;
     if(ioctl(d->soundfd, AUDIO_SETINFO, &d->info) != 0) {
-	sprintf(buf, _("%s: Cannot record (%s)"), d->p_devaudio,
+	g_sprintf(buf, _("%s: Cannot record (%s)"), d->p_devaudio,
 	    strerror(errno));
 	goto out;
     }
@@ -247,7 +249,7 @@ sun_open (void *dp)
     d->playrate = d->p_mixfreq;
     d->info.record.sample_rate = d->playrate;
     if(ioctl(d->soundfd, AUDIO_SETINFO, &d->info) != 0) {
-	sprintf(buf, _("%s: Cannot handle %dHz (%s)"), d->p_devaudio,
+	g_sprintf(buf, _("%s: Cannot handle %dHz (%s)"), d->p_devaudio,
 	    d->playrate, strerror(errno));
 	goto out;
     }  
@@ -277,7 +279,7 @@ sun_open (void *dp)
 	    d->bits = 8;
 	    mf = ST_MIXER_FORMAT_U8;
 	} else {
-	    sprintf(buf, _("%s: Required sound encoding not supported.\n"),
+	    g_sprintf(buf, _("%s: Required sound encoding not supported.\n"),
 	        d->p_devaudio);
 	    goto out;
 	}
@@ -302,13 +304,13 @@ sun_open (void *dp)
     	d->info.hiwat = 65536;
     }
     if (ioctl(d->soundfd, AUDIO_SETINFO, &d->info) != 0) {
-	sprintf(buf, _("%s: Cannot set block size (%s)"), d->p_devaudio,
+	g_sprintf(buf, _("%s: Cannot set block size (%s)"), d->p_devaudio,
 	    strerror(errno));
         goto out;
     }
   
   if (ioctl(d->soundfd, AUDIO_GETINFO, &d->info) != 0) {
-	sprintf(buf, _("%s: %s"), d->p_devaudio, strerror(errno));
+	g_sprintf(buf, _("%s: %s"), d->p_devaudio, strerror(errno));
 	goto out;
     }
     d->bufsize = d->info.blocksize;
@@ -361,7 +363,7 @@ sun_savesettings (void *dp,
     return TRUE;
 }
 
-st_in_driver driver_in_sun = {
+st_io_driver driver_in_sun = {
     { "Sun Sampling",
 
       sun_new,
@@ -373,5 +375,6 @@ st_in_driver driver_in_sun = {
       sun_getwidget,
       sun_loadsettings,
       sun_savesettings,
-    }
+    },
+    NULL
 };

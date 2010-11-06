@@ -8,6 +8,7 @@
  *
  * Copyright (C) 1997-2001 Michael Krause
  * Copyright (C) 2000 Fabian Giesen (Win32 stuff)
+ * Copyright (C) 2005 Yury Aliaev (GTK+-2 porting)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +58,7 @@ enum { BLACK, WHITE };
 #define NONE_TEXT _("<none>")
 
 static GtkWidget *configwindow = NULL,
-    *cw_clist,
+    *cw_list,
     *cw_explabel,
     *cw_explabel2,
     *cw_combo,
@@ -322,10 +323,13 @@ static void
 keys_key_group_changed (void *a,
 			void *b)
 {
+    GtkListStore *list_store = GUI_GET_LIST_STORE(cw_list);
+    GtkTreeIter iter;
+    GtkTreeModel *model;
+
     unsigned n = GPOINTER_TO_INT(b);
     keys_key *kpt;
     gchar string[128];
-    gchar * insertbuf[2] = { NULL, string };
 
     g_assert(n < NUM_KEY_GROUPS);
     cw_currentgroup = -1;
@@ -333,59 +337,68 @@ keys_key_group_changed (void *a,
     // Set explanation
     gtk_label_set_text(GTK_LABEL(cw_explabel), gettext(groups[n].explanation));
 
-    gtk_clist_clear(GTK_CLIST(cw_clist));
-    gtk_clist_freeze(GTK_CLIST(cw_clist));
+    model = gui_list_freeze(cw_list);
+    gui_list_clear_with_model(model);
     for(kpt = groups[n].keys_edit; kpt->title; kpt++) {
-	insertbuf[0] = (gchar*)gettext(kpt->title);
 	keys_encode_assignment(string, kpt->modifiers, kpt->xkeysym);
-	gtk_clist_append(GTK_CLIST(cw_clist), insertbuf);
+	gtk_list_store_append(list_store, &iter);
+	gtk_list_store_set(list_store, &iter, 0, (gchar*)gettext(kpt->title),
+			   1, string, -1);
     }
-    gtk_clist_thaw(GTK_CLIST(cw_clist));
+    gui_list_thaw(cw_list, model);
 
     cw_currentgroup = n;
-    gtk_clist_select_row(GTK_CLIST(cw_clist), 0, 0);
+    gui_list_select(cw_list, 0);
 }
 
 static void
-keys_clist_select (GtkCList *list,
-		   gint row,
-		   gint column)
+keys_list_select (GtkTreeSelection *sel)
 {
-    gchar *code;
-    int mod, i, h;
-
-    if(cw_currentgroup == -1)
-	return;
-
-    cw_currentkey = -1;
-
-    // Set explanation
-    gtk_label_set_text(GTK_LABEL(cw_explabel2), gettext(groups[cw_currentgroup].keys_edit[row].explanation));
-
-    // Set combo box list
-    if(cw_combostrings != (0)) {
-	cw_combostrings = (0);
-	gtk_combo_set_popdown_strings(GTK_COMBO(cw_combo), xkeys[cw_combostrings]);
-    }
-
-    // Set modifier toggles
-    mod = groups[cw_currentgroup].keys_edit[row].modifiers;
-    for(i = 0; i <= 2; i++) {
-	gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(cw_modtoggles[i]), mod & (1 << i));
-    }
+    GtkTreeModel *mdl;
+    GtkTreeIter iter;
+    gchar *str;
+    gint row;
     
-    // Set combo box entry
-    code = NONE_TEXT;
-    h = groups[cw_currentgroup].keys_edit[row].xkeysym;
-    for(i = 0; h != 0 && i < xkeymaplen; i++) {
-	if(xkeymap[i].xkeysym == h) {
-	    code = xkeymap[i].xname;
-	    break;
+    if(gtk_tree_selection_get_selected(sel, &mdl, &iter)) {
+	gchar *code;
+	int mod, i, h;
+
+	row = atoi(str = gtk_tree_model_get_string_from_iter(mdl, &iter));
+	g_free(str);
+
+	if(cw_currentgroup == -1)
+	    return;
+
+	cw_currentkey = -1;
+
+	// Set explanation
+	gtk_label_set_text(GTK_LABEL(cw_explabel2), gettext(groups[cw_currentgroup].keys_edit[row].explanation));
+
+	// Set combo box list
+	if(cw_combostrings != (0)) {
+	    cw_combostrings = (0);
+	    gtk_combo_set_popdown_strings(GTK_COMBO(cw_combo), xkeys[cw_combostrings]);
 	}
-    }
-    gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(cw_combo)->entry), code);
+
+	// Set modifier toggles
+	mod = groups[cw_currentgroup].keys_edit[row].modifiers;
+	for(i = 0; i <= 2; i++) {
+	    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(cw_modtoggles[i]), mod & (1 << i));
+	}
     
-    cw_currentkey = row;
+	// Set combo box entry
+	code = NONE_TEXT;
+	h = groups[cw_currentgroup].keys_edit[row].xkeysym;
+	for(i = 0; h != 0 && i < xkeymaplen; i++) {
+	    if(xkeymap[i].xkeysym == h) {
+		code = xkeymap[i].xname;
+		break;
+	    }
+	}
+	gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(cw_combo)->entry), code);
+
+	cw_currentkey = row;
+    }
 }
 
 static void
@@ -414,7 +427,7 @@ keys_assignment_changed (void)
     keys_encode_assignment(string,
 			   groups[cw_currentgroup].keys_edit[cw_currentkey].modifiers,
 			   keysym);
-    gtk_clist_set_text(GTK_CLIST(cw_clist), cw_currentkey, 1, string);
+    gui_string_list_set_text(cw_list, cw_currentkey, 1, string);
 }
 
 static void
@@ -461,25 +474,25 @@ keys_keyevent (GtkWidget *widget,
 	groups[cw_currentgroup].keys_edit[cw_currentkey].xkeysym = keysym;
 	groups[cw_currentgroup].keys_edit[cw_currentkey].modifiers = mod;
 
-	gtk_clist_set_text(GTK_CLIST(cw_clist), cw_currentkey, 1, string);
+	gui_string_list_set_text(cw_list, cw_currentkey, 1, string);
 
 	if(capturing_all) {
 	    int nextkey = cw_currentkey + 1;
 	    if(groups[cw_currentgroup].keys_edit[nextkey].title) {
-		gtk_clist_select_row(GTK_CLIST(cw_clist), nextkey, 0);
-		gtk_clist_moveto(GTK_CLIST(cw_clist), nextkey, 0, 0.5, 0.0);
+		gui_list_select(cw_list, nextkey);
+		gui_list_moveto(cw_list, nextkey);
 	    } else {
-		keys_clist_select(GTK_CLIST(cw_clist), cw_currentkey, 0);
+		keys_list_select(gtk_tree_view_get_selection(GTK_TREE_VIEW(cw_list)));
 		capturing = capturing_all = 0;
 		keys_lb_switch(1);
 	    }
 	} else {
-	    keys_clist_select(GTK_CLIST(cw_clist), cw_currentkey, 0);
+	    keys_list_select(gtk_tree_view_get_selection(GTK_TREE_VIEW(cw_list)));
 	    capturing = capturing_all = 0;
 	    keys_lb_switch(1);
 	}
 
-	gtk_signal_emit_stop_by_name(GTK_OBJECT(widget), "key_press_event");
+	g_signal_stop_emission_by_name(G_OBJECT(widget), "key_press_event");
     }
 
     return 1;
@@ -498,8 +511,8 @@ keys_learn_all_keys_clicked (void)
 {
     capturing = 1;
     capturing_all = 1;
-    gtk_clist_select_row(GTK_CLIST(cw_clist), 0, 0);
-    gtk_clist_moveto(GTK_CLIST(cw_clist), 0, 0, 0.5, 0.0);
+    gui_list_select(cw_list, 0);
+    gui_list_moveto(cw_list, 0);
     keys_lb_switch(0);
 }
 
@@ -525,8 +538,8 @@ keys_dialog (void)
     configwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(configwindow), _("Keyboard Configuration"));
 #endif
-    gtk_signal_connect (GTK_OBJECT (configwindow), "delete_event",
-			GTK_SIGNAL_FUNC (keys_cancel), NULL);
+    g_signal_connect(configwindow, "delete_event",
+			G_CALLBACK(keys_cancel), NULL);
 
     mainbox = gtk_vbox_new(FALSE, 2);
     gtk_container_border_width(GTK_CONTAINER(mainbox), 4);
@@ -556,15 +569,10 @@ keys_dialog (void)
     gtk_box_pack_start(GTK_BOX(mainbox), box1, TRUE, TRUE, 0);
 
     // List at the left side of the window
-    thing = gui_clist_in_scrolled_window(2, listtitles, box1);
-    gtk_clist_set_selection_mode(GTK_CLIST(thing), GTK_SELECTION_BROWSE);
-    gtk_clist_column_titles_passive(GTK_CLIST(thing));
-    gtk_clist_set_column_justification(GTK_CLIST(thing), 0, GTK_JUSTIFY_LEFT);
-    gtk_clist_set_column_justification(GTK_CLIST(thing), 1, GTK_JUSTIFY_LEFT);
-    gtk_widget_set_usize(thing, 200, 50);
-    gtk_signal_connect_after(GTK_OBJECT(thing), "select_row",
-			     GTK_SIGNAL_FUNC(keys_clist_select), NULL);
-    cw_clist = thing;
+    thing = gui_stringlist_in_scrolled_window(2, listtitles, box1);
+    gtk_widget_set_size_request(thing, 200, 50);
+    gui_list_handle_selection(thing, G_CALLBACK(keys_list_select), NULL);
+    cw_list = thing;
 
 
     box2 = gtk_vbox_new(FALSE, 2);
@@ -612,8 +620,8 @@ keys_dialog (void)
     gtk_box_pack_start(GTK_BOX(box2), cw_combo, FALSE, FALSE, 0);
     gtk_combo_set_case_sensitive(GTK_COMBO(cw_combo), TRUE);
     gtk_combo_set_value_in_list(GTK_COMBO(cw_combo), TRUE, TRUE);
-    gtk_signal_connect(GTK_OBJECT(GTK_COMBO(cw_combo)->entry), "changed",
-		       GTK_SIGNAL_FUNC(keys_assignment_changed), NULL);
+    g_signal_connect(GTK_COMBO(cw_combo)->entry, "changed",
+		       G_CALLBACK(keys_assignment_changed), NULL);
 
     // Modifier Group
     box3 = gtk_hbox_new(FALSE, 4);
@@ -629,34 +637,34 @@ keys_dialog (void)
     thing = cw_modtoggles[0] = gtk_check_button_new_with_label("Shift");
     gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
-    gtk_signal_connect(GTK_OBJECT(thing), "toggled",
-		       GTK_SIGNAL_FUNC(keys_assignment_changed), NULL);
+    g_signal_connect(thing, "toggled",
+		       G_CALLBACK(keys_assignment_changed), NULL);
 
     thing = cw_modtoggles[1] = gtk_check_button_new_with_label("Ctrl");
     gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
-    gtk_signal_connect(GTK_OBJECT(thing), "toggled",
-		       GTK_SIGNAL_FUNC(keys_assignment_changed), NULL);
+    g_signal_connect(thing, "toggled",
+		       G_CALLBACK(keys_assignment_changed), NULL);
 
     thing = cw_modtoggles[2] = gtk_check_button_new_with_label("Meta");
     gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
-    gtk_signal_connect(GTK_OBJECT(thing), "toggled",
-		       GTK_SIGNAL_FUNC(keys_assignment_changed), NULL);
+    g_signal_connect(thing, "toggled",
+		       G_CALLBACK(keys_assignment_changed), NULL);
 
 
     // Learn-Buttons
     cw_lb1 = thing = gtk_button_new_with_label(_("Learn selected key"));
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, FALSE, 0);
-    gtk_signal_connect (GTK_OBJECT (thing), "clicked",
-			GTK_SIGNAL_FUNC(keys_learn_key_clicked), NULL);
+    g_signal_connect(thing, "clicked",
+			G_CALLBACK(keys_learn_key_clicked), NULL);
 
     cw_lb2 = thing = gtk_button_new_with_label(_("Learn all keys"));
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, FALSE, 0);
-    gtk_signal_connect (GTK_OBJECT (thing), "clicked",
-			GTK_SIGNAL_FUNC(keys_learn_all_keys_clicked), NULL);
+    g_signal_connect(thing, "clicked",
+			G_CALLBACK(keys_learn_all_keys_clicked), NULL);
 
     cw_label3 = gtk_label_new(_("Please press the desired key combination!\nClick into left list to cancel"));
     gtk_label_set_justify(GTK_LABEL(cw_label3), GTK_JUSTIFY_CENTER);
@@ -664,12 +672,12 @@ keys_dialog (void)
 
 
     keys_key_group_changed(NULL, (void*)0);
-    keys_clist_select(GTK_CLIST(cw_clist), 0, 0);
+    keys_list_select(gtk_tree_view_get_selection(GTK_TREE_VIEW(cw_list)));
 
-    gtk_signal_connect(GTK_OBJECT(configwindow), "key_press_event",
-		       GTK_SIGNAL_FUNC(keys_keyevent), NULL);
-    gtk_signal_connect(GTK_OBJECT(configwindow), "button_press_event",
-		       GTK_SIGNAL_FUNC(keys_buttonevent), NULL);
+    g_signal_connect(configwindow, "key_press_event",
+		       G_CALLBACK(keys_keyevent), NULL);
+    g_signal_connect(configwindow, "button_press_event",
+		       G_CALLBACK(keys_buttonevent), NULL);
 
 
     /* The button area */
@@ -685,33 +693,21 @@ keys_dialog (void)
 			FALSE, FALSE, 0);
     gtk_widget_show (hbox);
 
-#ifdef USE_GNOME
-    thing = gnome_stock_button (GNOME_STOCK_BUTTON_OK);
-#else
-    thing = gtk_button_new_with_label (_ ("Ok"));
-#endif
-    gtk_signal_connect (GTK_OBJECT (thing), "clicked",
-			GTK_SIGNAL_FUNC (keys_ok), NULL);
+    thing = gtk_button_new_from_stock (GTK_STOCK_OK);
+    g_signal_connect(thing, "clicked",
+			G_CALLBACK(keys_ok), NULL);
     gtk_box_pack_start (GTK_BOX (hbox), thing, FALSE, FALSE, 0);
     gtk_widget_show (thing);
 
-#ifdef USE_GNOME
-    thing = gnome_stock_button (GNOME_STOCK_BUTTON_APPLY);
-#else
-    thing = gtk_button_new_with_label (_ ("Apply"));
-#endif
-    gtk_signal_connect (GTK_OBJECT (thing), "clicked",
-			GTK_SIGNAL_FUNC (keys_apply), NULL);
+    thing = gtk_button_new_from_stock (GTK_STOCK_APPLY);
+    g_signal_connect(thing, "clicked",
+			G_CALLBACK(keys_apply), NULL);
     gtk_box_pack_start (GTK_BOX (hbox), thing, FALSE, FALSE, 0);
     gtk_widget_show (thing);
 
-#ifdef USE_GNOME
-    thing = gnome_stock_button (GNOME_STOCK_BUTTON_CANCEL);
-#else
-    thing = gtk_button_new_with_label (_ ("Cancel"));
-#endif
-    gtk_signal_connect (GTK_OBJECT (thing), "clicked",
-			GTK_SIGNAL_FUNC (keys_cancel), NULL);
+    thing = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
+    g_signal_connect(thing, "clicked",
+			G_CALLBACK(keys_cancel), NULL);
     gtk_box_pack_start (GTK_BOX (hbox), thing, FALSE, FALSE, 0);
     gtk_widget_show (thing);
 

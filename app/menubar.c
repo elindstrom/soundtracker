@@ -81,9 +81,9 @@ about_dialog (void)
     GtkWidget *about = gnome_about_new("SoundTracker",
 				       VERSION,
 				       "Copyright (C) 1998-2003 Michael Krause",
-				       authors,
 				       "Includes OpenCP player from Niklas Beisert and Tammo Hinrichs.",
-				       NULL);
+				       authors,
+					  NULL, NULL, NULL);
     gtk_widget_show (about);
 #else
     GtkWidget *label, *button;
@@ -104,8 +104,8 @@ about_dialog (void)
     button = gtk_button_new_with_label (_("Ok"));
     GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG(about)->action_area), button, TRUE, TRUE, 10);
-    gtk_signal_connect_object (GTK_OBJECT (button), "clicked",
-                               GTK_SIGNAL_FUNC (about_close), 0);
+    g_signal_connect_swapped(button, "clicked",
+                               G_CALLBACK(about_close), 0);
     gtk_widget_grab_default (button);
     gtk_widget_show (button);
     
@@ -125,7 +125,7 @@ menubar_clear_callback (gint reply,
 	} else {
 	    gui_play_stop();
 	    st_clean_song(xm);
-	    gui_init_xm(1);
+	    gui_init_xm(1, TRUE);
 	    xm->modified = 0;
 	}
     }

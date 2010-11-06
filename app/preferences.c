@@ -57,7 +57,7 @@ prefs_get_prefsdir (void)
     struct passwd *pw;
 
     pw = getpwuid(getuid());
-    sprintf(xdir, "%s/.soundtracker", pw->pw_dir);
+    sprintf(xdir, "%s/.soundtracker2", pw->pw_dir);
     return(xdir);
 }
 
@@ -71,7 +71,7 @@ prefs_check_prefs_dir (void)
 	mkdir(dir, S_IRUSR | S_IWUSR | S_IXUSR);
     strcat(dir, "/tmp");
 	mkdir(dir, S_IRUSR | S_IWUSR | S_IXUSR);
-	error_warning(_("A directory called '.soundtracker' has been created in your\nhome directory to store configuration files.\n"));
+	error_warning(_("A directory called '.soundtracker2' has been created in your\nhome directory to store configuration files.\n"));
     }
 }
 

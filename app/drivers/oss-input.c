@@ -42,13 +42,15 @@
 #include <sys/time.h>
 
 #include <glib.h>
+#include <glib/gprintf.h>
 #include <gtk/gtk.h>
 
 #include "i18n.h"
-#include "driver-in.h"
+#include "driver-inout.h"
 #include "mixer.h"
 #include "errors.h"
 #include "gui-subs.h"
+#include "entry-workaround.h"
 
 typedef struct oss_driver {
     GtkWidget *configwidget;
@@ -91,7 +93,7 @@ oss_poll_ready_sampling (gpointer data,
 static void
 prefs_init_from_structure (oss_driver *d)
 {
-    gtk_entry_set_text(GTK_ENTRY(d->prefs_devdsp_w), d->p_devdsp);
+    wa_entry_set_text(GTK_ENTRY(d->prefs_devdsp_w), d->p_devdsp);
 }
 
 static void
@@ -127,9 +129,9 @@ oss_make_config_widgets (oss_driver *d)
     thing = gtk_entry_new_with_max_length(126);
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
-    gtk_entry_set_text(GTK_ENTRY(thing), d->p_devdsp);
-    gtk_signal_connect_after(GTK_OBJECT(thing), "changed",
-			     GTK_SIGNAL_FUNC(oss_devdsp_changed), d);
+    wa_entry_set_text(GTK_ENTRY(thing), d->p_devdsp);
+    g_signal_connect_after(thing, "changed",
+			     G_CALLBACK(oss_devdsp_changed), d);
     d->prefs_devdsp_w = thing;
 
     prefs_init_from_structure(d);
@@ -231,7 +233,7 @@ oss_open (void *dp)
        OSS-conformant (though Thomas Sailer says it's okay). */
     if((d->soundfd = open(d->p_devdsp, O_RDONLY | O_NONBLOCK)) < 0) {
 	char buf[256];
-	sprintf(buf, _("Couldn't open %s for sampling:\n%s"), d->p_devdsp, strerror(errno));
+	g_sprintf(buf, _("Couldn't open %s for sampling:\n%s"), d->p_devdsp, strerror(errno));
 	error_error(buf);
 	goto out;
     }
@@ -330,7 +332,7 @@ oss_savesettings (void *dp,
     return TRUE;
 }
 
-st_in_driver driver_in_oss = {
+st_io_driver driver_in_oss = {
     { "OSS Sampling",
 
       oss_new,
@@ -342,7 +344,8 @@ st_in_driver driver_in_oss = {
       oss_getwidget,
       oss_loadsettings,
       oss_savesettings,
-    }
+    },
+    NULL
 };
 
 #endif /* DRIVER_OSS */

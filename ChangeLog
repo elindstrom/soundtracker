@@ -21,6 +21,10 @@
 	* po: New Vietnamese translation by Clytie Siddall
 	<clytie@riverland.net.au>, updated ru translation.
 
+2006-01-21  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/audioconfig.c rewritten. Less hacks, less size, better
+	gtk+-2 compilance and speed.
+
 2006-01-15  gettextize  <bug-gnu-gettext@gnu.org>
 
 	* Makefile.am (SUBDIRS): Remove intl.
@@ -67,38 +71,45 @@
 	snd_seq_port_subscribe_free(port_sub), because it has been
 	allocated on the stack via _alloca(). Fixes crash on startup.
 
+2005-12-21  Yury Aliaev  <mutab0r@rambler.ru>
+	* Completed gtk_clist -> gtk_treeview porting.
+
+2005-04-10  Yury Aliaev  <mutab0r@rambler.ru>
+	* Fixed some issues on Gtk+-2 port. Now ST is compilled against
+	gtk+-2.6.4 library, and in general works.
+
 2004-02-18  Yury Aliaev <mutabor@altlinux.org>
-  
+
 	* Permanent channels support is implemented. Channels marked as
 	"permanent" work as if they are being played from the very
 	beginning of the module, even if the module is played from any
 	random place (any samples which might have been triggered before
 	the current song position will be started at the right position
 	when clicking "Play Song").
-  
+
 2004-01-22 Jaan Pullerits  <jaan@surnuaed.ee>
- 
+
 	* app/gui.c: Fixed the bug caused by my previous changes which
 	made the space key to work incorrectly... :)
- 	
+
 	* app/track-editor.c: Added bugfix by yaliaev which makes the
 	cursor to jump to first jazz enabled channel when trying to insert
 	notes on non-jazz channels.
- 
+
 	* app/track-editor.c, gui.c: Now right shift doesn't start module
 	recording. The recording is started by pressing pattern/track play
 	keys (ctrl, altgr) while holding the shift at the same time.
- 
+
 2004-01-19  Jaan Pullerits  <jaan@surnuaed.ee>
- 	
+
 	* app/track-editor.c, app/track-editor.c: Implemented note
 	recording with support of recording keyrelease notes.
- 
+
 	* app/gui.c, app/gui.h: Made play_song() non-static to use it in
 	track-editor.c
- 
+
 	* app/menubar.c: Added "Record aftertouch" to edit menu.
- 	
+
 2004-01-11  Michael Krause  <mk@soundtracker.org>
 
 	* Released v0.6.7
@@ -128,7 +139,7 @@
 
 	* app/gui.c (gui_playlist_position_changed): Fixed handling of the
 	"Lock edited pattern" button (problem reported by yaliaev).
-	
+
 2004-01-04  Michael Krause  <mk@soundtracker.org>
 
 	* app/track-editor.c (track_editor_do_the_note_key): Added patch
@@ -196,7 +207,7 @@
 
 	* "Released" soundtracker-0.6.7pre5 (without official
 	announcement).
-	
+
 	* app/main.c (main): Calling gui_play_stop() before quitting, so
 	that the audio driver is shut down correctly (for JACK).
 
@@ -241,10 +252,10 @@
 	selected. Previously, the gtk+ file selector could return with
 	just a directory name as 'file name', and SoundTracker would treat
 	that as a file to operate on, leading to strange behavior.
-	
+
 	* "Released" soundtracker-0.6.7pre4 (without official
 	announcement).
-	
+
 	* app/playlist.c: User can now click on playlist entries to make
 	them the current position (yaliaev).
 
@@ -317,7 +328,7 @@
 
 	* "Released" soundtracker-0.6.7pre3 (without official
 	announcement).
-	
+
 	* Updated ja.po.
 
 2003-03-08  Michael Krause  <mk@soundtracker.org>
@@ -359,7 +370,7 @@
 
 	* "Released" soundtracker-0.6.7pre2 (without official
 	announcement).
-	
+
 	* Added patch from Yury for correcting
 	right-mouse-button-over-scopes semantics to agree with FT2.
 
@@ -397,12 +408,12 @@
 	  + no slave transport mode
 	  + master mode is not saved in the config by choice
 	  (by Anthony <avan@uwm.edu>)
-	
+
 2003-02-02  Michael Krause  <mk@soundtracker.org>
 
 	* "Released" soundtracker-0.6.7pre1 (without official
 	announcement).
-	
+
 	* New danish translation (da.po) by Keld Simonsen <keld@dkuug.dk>.
 
 	* app/gui.c (gui_update_title): Rewritten using g_strdup_printf()
@@ -412,7 +423,7 @@
 	* Applied patch from Anthony Van Groningen <avan@uwm.edu> adding
 	JACK support to SoundTracker. Some configure.in / Makefile fixes
 	for this by Kai Vehmanen <kai.vehmanen@wakkanet.fi>.
-	
+
 	* Spent some hours getting the autoconf stuff to work with the
 	latest autoconf-2.57 / automake-1.7.2. I hate this.
 
@@ -460,7 +471,7 @@
 	* app/xm.c (xm_freq_note_to_relnote_finetune): Forcing finetune
 	into interval [-63,+63], removed restriction for relnote in
 	[-96,+96] (by tugruettmueller).
-	
+
 	* app/gui.c (gui_numchans_changed): Round down odd channel numbers
 	when entered manually (by yaliaev).
 	(gui_handle_standard_keys): Shift + Crsr Left / Right browses
@@ -492,7 +503,7 @@
 	* soundtracker.desktop: Changed 'Type' from 'Multimedia' to
 	'Application'. Now SoundTracker appears in the GNOME menu again.
 	Reported by Bastien Nocera <hadess@hadess.net>.
-	
+
 	* app/mixers/kbfloat-mix.c (CUBICMIXER_LOOP_FORWARD): Moved s0
 	initialization from LOOP_START macro to both LOOP_FORWARD and
 	LOOP_BACKWARD, adding a missing minus sign before positionf in
@@ -534,7 +545,7 @@
 	* app/sample-display.c: Flipped display vertically; now the
 	positive sample values are at the top, and the negative ones at
 	the bottom (patch by Mardy <mardy@users.sourceforge.net>).
-	
+
 2002-05-17  Michael Krause  <mk@soundtracker.org>
 
 	* app/menubar.c: For non-GNOME SoundTracker, wrote some code that
@@ -576,7 +587,7 @@
 	* app/envelope-box.c (envelope_box_new): Always using standard
 	non-antialiased canvas. With GNOME 1.0 and GNOME 1.2, AA canvas is
 	buggy; with GNOME 1.4, it doesn't even work.
-	
+
 	* po: Updated fr.po.
 
 2002-02-17  Michael Krause  <rawstyle@soundtracker.org>
@@ -599,7 +610,7 @@
 
 	* app/file-operations.c (fileops_tmpclean): Removed error checks,
 	especially the ungraceful exit(-1) :-)
-	
+
 	* po: Updated fr.po (new translation by Michel Robitaille
 	<robitail@IRO.UMontreal.CA>), added sv.po (by Christian Rose
 	<menthos@menthos.com>).
@@ -704,7 +715,7 @@
 	* app/main.c (main): On Linux, we use setresuid()/setresgid()
 	instead of seteuid()/setegid() in order to make gtk+-1.2.10 happy.
 	Otherwise, SoundTracker doesn't run if installed suid-root.
-	
+
 2001-05-24  Michael Krause  <m.krause@tu-harburg.de>
 
 	* Released v0.6.3
@@ -745,7 +756,7 @@
 	app/tracker.c (tracker_init): Default font is now 'fixed'. 7x13
 	appears not to be present on all X installations (Florian Heinz
 	<sky@sysv.de>) pointed this out.
-	
+
 2000-12-16  Michael Krause  <m.krause@tu-harburg.de>
 
 	* app/fr.po: Updated french translation (XxKarLKoXxX@aol.com)
@@ -765,7 +776,7 @@
 	* app/gui.c: Replaced all gtk_spin_button_new() by
 	extspinbutton_new() plus disabled size hack (in order to get the
 	"changed" callback mentioned below into effect).
-	
+
 	* app/extspinbutton.c: Added option to disable the horizontal size
 	hack, and added "changed" callback that immediately removes focus
 	from widget if the value has been changed using the mouse.

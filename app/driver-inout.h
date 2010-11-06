@@ -27,13 +27,13 @@
 
 #include "driver.h"
 
-typedef struct st_out_driver {
+typedef struct st_io_driver {
     st_driver common;
 
     // get time offset since first sound output
     double   (*get_play_time) (void *d);
     int      (*get_play_rate) (void *d);
-} st_out_driver;
+} st_io_driver;
 
 /* Install / remove poll() handlers, similar to gdk_input_add() */
 gpointer audio_poll_add       (int fd,
@@ -60,5 +60,10 @@ void     audio_mix            (void *dest,
 			       guint32 count,
 			       int mixfreq,
 			       int mixformat);
+
+void     sample_editor_sampled            (void *dest,
+					   guint32 count,
+					   int mixfreq,
+					   int mixformat);
 
 #endif /* _ST_DRIVER_OUT_H */

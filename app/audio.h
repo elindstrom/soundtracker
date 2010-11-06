@@ -27,7 +27,7 @@
 #include <glib.h>
 
 #include "mixer.h"
-#include "driver-out.h"
+#include "driver-inout.h"
 #include "time-buffer.h"
 #include "event-waiter.h"
 
@@ -117,7 +117,7 @@ extern time_buffer *audio_mixer_position_tb;
 /* === Other stuff */
 
 extern st_mixer *mixer;
-extern st_out_driver *playback_driver, *editing_driver, *current_driver;
+extern st_io_driver *playback_driver, *editing_driver, *current_driver;
 extern void *playback_driver_object, *editing_driver_object, *current_driver_object;
 
 extern gint8 player_mute_channels[32];

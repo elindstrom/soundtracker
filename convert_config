@@ -1,0 +1,25 @@
+#!/bin/sh
+pushd ~
+    if [ -a .soundtracker2 ] || [ -d .soundtracker2]; then
+	if [ -n "$1" ]; then
+	    if [ "$1" = "-f" ]; then
+		rm -rf .soundtracker2;
+	    else
+		echo "Warning!!! .soundtracker2 already exists! Use \"convert_config -f\" to override"
+		exit 1;
+	    fi;
+	else
+	    echo "Warning!!! .soundtracker2 already exists! Use \"convert_config -f\" to override"
+	    exit 1;
+	fi;
+    fi;
+    if [ ! -d .soundtracker ]; then
+	echo "Warning!!! .soundtracker is not exist. Nothing to do!"
+	exit 1;
+    fi
+    mkdir .soundtracker2
+    CHARSET=`echo $LANG | sed s/^.*[.]//`
+    for i in `ls .soundtracker`; do
+	iconv -f $CHARSET -t UTF-8 .soundtracker/$i > .soundtracker2/$i;
+    done
+popd

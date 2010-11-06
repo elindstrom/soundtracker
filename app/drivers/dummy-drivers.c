@@ -24,8 +24,7 @@
 #include <gtk/gtk.h>
 
 #include "i18n.h"
-#include "driver-in.h"
-#include "driver-out.h"
+#include "driver-inout.h"
 
 typedef struct dummy_driver {
     GtkWidget *configwidget;
@@ -81,7 +80,7 @@ dummy_open (void *dp)
     return FALSE;
 }
 
-st_out_driver driver_out_dummy = {
+st_io_driver driver_out_dummy = {
     { "No Output",
 
       dummy_new,
@@ -94,7 +93,7 @@ st_out_driver driver_out_dummy = {
     },
 };
 
-st_out_driver driver_in_dummy = {
+st_io_driver driver_in_dummy = {
     { "No Input",
 
       dummy_new,

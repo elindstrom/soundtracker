@@ -25,6 +25,7 @@
 #include <gtk/gtk.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmain.h>
+#include <glib/gprintf.h>
 
 #include "tracker.h"
 #include "main.h"
@@ -579,10 +580,10 @@ print_notes_line (GtkWidget *widget,
 
     /* The row number */
     if(gui_settings.tracker_hexmode) {
-	if(gui_settings.tracker_upcase) sprintf(buf, "%02X", row);
-        else sprintf(buf, "%02x", row);
+	if(gui_settings.tracker_upcase) g_sprintf(buf, "%02X", row);
+        else g_sprintf(buf, "%02x", row);
     } else {
-	sprintf(buf, "%03d", row);
+	g_sprintf(buf, "%03d", row);
     }
 
     gdk_draw_string(win, t->font, t->notes_gc, 5, y, buf);
@@ -662,10 +663,10 @@ print_channel_numbers (GtkWidget *widget,
     x = t->disp_startx + (t->disp_chanwidth - (2 * t->fontw)) / 2; 
     y = t->disp_starty + t->font->ascent + t->baselineskip - t->fonth;
     for(i = 1; i <= t->disp_numchans; i++, x += t->disp_chanwidth) {
-	sprintf(buf, "%2d", i + t->leftchan);
+	g_sprintf(buf, "%2d", i + t->leftchan);
 	if(gui_settings.permanent_channels & (1 << (i + t->leftchan - 1)))
-	    strcat(buf, "*");
-	gdk_draw_rectangle(win, t->bg_gc, TRUE, x, t->disp_starty - t->fonth, 3*t->fontw, t->fonth);
+	  strcat(buf, "*");
+	gdk_draw_rectangle(win, t->bg_gc, TRUE, x, t->disp_starty - t->fonth, 2*t->fontw, t->fonth);
 	gdk_draw_string(win, t->font, t->misc_gc, x, y, buf);
     }
 }
@@ -768,10 +769,9 @@ tracker_draw_clever (GtkWidget *widget,
 	if(dist > 0) {
 	    /* go down in pattern -- scroll up */
 	    redrawcnt = absdist;
-	    gdk_window_copy_area(win, t->bg_gc,
-				 0, y, win,
-				 0, y + (absdist * fonth),
-				 widget->allocation.width, (t->disp_rows - absdist) * fonth);
+	    gdk_draw_drawable(win, t->bg_gc, win,
+			      0, y + (absdist * fonth), 0, y,
+			      widget->allocation.width, (t->disp_rows - absdist) * fonth);
 	    y += (t->disp_rows - absdist) * fonth;
 	} else if(dist < 0) {
 	    /* go up in pattern -- scroll down */
@@ -782,9 +782,9 @@ tracker_draw_clever (GtkWidget *widget,
 				     widget->allocation.width, fonth, t->oldpos - dist);
 	    }
 	    redrawcnt = absdist;
-	    gdk_window_copy_area(win, t->bg_gc,
-				 0, y + (absdist * fonth), win, 0, y,
-				 widget->allocation.width, (t->disp_rows - absdist) * fonth);
+	    gdk_draw_drawable(win, t->bg_gc, win,
+			      0, y, 0, y + (absdist * fonth),
+			      widget->allocation.width, (t->disp_rows - absdist) * fonth);
 	}
     }
 
@@ -815,13 +815,6 @@ tracker_draw_stupid (GtkWidget *widget,
 
     t->oldpos = -666;
     tracker_draw_clever(widget, area);
-}
-
-static void
-tracker_draw (GtkWidget *widget,
-	      GdkRectangle *area)
-{
-    tracker_draw_stupid(widget, area);
 }
 
 static gint
@@ -1037,30 +1030,68 @@ tracker_set_font (Tracker *t,
     return FALSE;
 }
 
-static void
-my_3ints_marshal (GtkObject *object,
-		  GtkSignalFunc func,
-		  gpointer func_data,
-		  GtkArg *args)
-{
-    typedef void (*my_3ints_marshal_func)(Tracker *, int, int, int);
-    my_3ints_marshal_func rfunc = (my_3ints_marshal_func) func;
-    (*rfunc) (TRACKER(object),
-	      GTK_VALUE_INT(args[0]),
-	      GTK_VALUE_INT(args[1]),
-	      GTK_VALUE_INT(args[2]));
-}
+typedef void  (*___Sig1) (Tracker *, gint , gint , gint , gpointer);
 
 static void
-my_1int_marshal(GtkObject *object,
-		  GtkSignalFunc func,
-		  gpointer func_data,
-		  GtkArg *args)
+___marshal_Sig1 (GClosure *closure,
+	GValue *return_value,
+	guint n_param_values,
+	const GValue *param_values,
+	gpointer invocation_hint,
+	gpointer marshal_data)
 {
-    typedef void (*my_1ints_marshal_func)(Tracker *, int);
-    my_1ints_marshal_func rfunc = (my_1ints_marshal_func) func;
-    (*rfunc) (TRACKER(object),
-	      GTK_VALUE_INT(args[0]));
+	register ___Sig1 callback;
+	register GCClosure *cc = (GCClosure*) closure;
+	register gpointer data1, data2;
+
+	g_return_if_fail (n_param_values == 4);
+
+	if (G_CCLOSURE_SWAP_DATA (closure)) {
+		data1 = closure->data;
+		data2 = g_value_peek_pointer (param_values + 0);
+	} else {
+		data1 = g_value_peek_pointer (param_values + 0);
+		data2 = closure->data;
+	}
+
+	callback = (___Sig1) (marshal_data != NULL ? marshal_data : cc->callback);
+
+	callback ((Tracker *)data1,
+		(gint ) g_value_get_int (param_values + 1),
+		(gint ) g_value_get_int (param_values + 2),
+		(gint ) g_value_get_int (param_values + 3),
+		data2);
+}
+
+typedef void  (*___Sig2) (Tracker *, gint , gpointer);
+
+static void
+___marshal_Sig2 (GClosure *closure,
+	GValue *return_value,
+	guint n_param_values,
+	const GValue *param_values,
+	gpointer invocation_hint,
+	gpointer marshal_data)
+{
+	register ___Sig2 callback;
+	register GCClosure *cc = (GCClosure*) closure;
+	register gpointer data1, data2;
+
+	g_return_if_fail (n_param_values == 2);
+
+	if (G_CCLOSURE_SWAP_DATA (closure)) {
+		data1 = closure->data;
+		data2 = g_value_peek_pointer (param_values + 0);
+	} else {
+		data1 = g_value_peek_pointer (param_values + 0);
+		data2 = closure->data;
+	}
+
+	callback = (___Sig2) (marshal_data != NULL ? marshal_data : cc->callback);
+
+	callback ((Tracker *)data1,
+		(gint ) g_value_get_int (param_values + 1),
+		data2);
 }
 
 /* If selecting, mouse is used to select in pattern */
@@ -1129,6 +1160,38 @@ tracker_mouse_to_cursor_pos (Tracker *t,
 	*patpos = t->curpattern->length - 1;
 }
 
+static gboolean
+tracker_scroll (GtkWidget      *widget,
+		GdkEventScroll *event)
+{
+    Tracker	*t;
+    t = TRACKER(widget);
+
+    switch(event->direction) {
+    case GDK_SCROLL_UP:
+	if(event->state & GDK_SHIFT_MASK) {
+	    if(t->leftchan > 0) tracker_set_xpanning(t, t->leftchan - 1);
+	} else
+	    if(t->patpos > 0) tracker_step_cursor_row(t, -1);
+	return TRUE;
+    case GDK_SCROLL_DOWN:
+	if(event->state & GDK_SHIFT_MASK) {
+	    if(t->leftchan + t->disp_numchans < t->num_channels) tracker_set_xpanning(t, t->leftchan + 1);
+	} else
+	    if(t->patpos < t->curpattern->length - 1) tracker_step_cursor_row(t, 1);
+	return TRUE;
+    case GDK_SCROLL_LEFT:/* For happy folks with 2-scroller mice :-) */
+	if(t->leftchan > 0) tracker_set_xpanning(t, t->leftchan - 1);
+	return TRUE;
+    case GDK_SCROLL_RIGHT:
+	if(t->patpos < t->curpattern->length - 1) tracker_step_cursor_row(t, 1);
+	return TRUE;
+    default:
+	break;
+    }
+    return FALSE;
+}
+
 static gint
 tracker_button_press (GtkWidget      *widget,
 		      GdkEventButton *event)
@@ -1144,8 +1207,7 @@ tracker_button_press (GtkWidget      *widget,
     t = TRACKER(widget);
     gdk_window_get_pointer (event->window, &x, &y, &state);
 
-    if(t->mouse_selecting && event->button != 1 && event->button != 5
-       && event->button != 4) { /* Wheel buttons must work independently on selection */
+    if(t->mouse_selecting && event->button != 1) {
 	t->mouse_selecting = 0;
     } else if(!t->mouse_selecting) {
 	t->button = event->button;		
@@ -1184,22 +1246,6 @@ tracker_button_press (GtkWidget      *widget,
 		gtk_widget_queue_draw(GTK_WIDGET(t));
 	    }
 	}
-    }
-    if (event->button == 4)
-    {
-	if  (event->state & GDK_SHIFT_MASK)
-	{
-	    if (t->leftchan > 0) tracker_set_xpanning (t, t->leftchan - 1);
-	} else
-	    if (t->patpos > 0) tracker_step_cursor_row (t, -1);
-    }
-    if (event->button == 5)
-    {
-	if  (event->state & 0x1)
-	{
-	    if (t->leftchan + t->disp_numchans < t->num_channels) tracker_set_xpanning (t, t->leftchan + 1);
-	} else
-	    if (t->patpos < t->curpattern->length - 1) tracker_step_cursor_row (t, 1);
     }
     return TRUE;
 }
@@ -1268,49 +1314,51 @@ tracker_button_release (GtkWidget      *widget,
 static void
 tracker_class_init (TrackerClass *class)
 {
-    GtkObjectClass *object_class;
+    GObjectClass *object_class;
     GtkWidgetClass *widget_class;
 
-    object_class = (GtkObjectClass*) class;
+    object_class = (GObjectClass*) class;
     widget_class = (GtkWidgetClass*) class;
     
     widget_class->realize = tracker_realize;
     widget_class->expose_event = tracker_expose;
-    widget_class->draw = tracker_draw;
     widget_class->size_request = tracker_size_request;
     widget_class->size_allocate = tracker_size_allocate;
     widget_class->button_press_event = tracker_button_press;
     widget_class->button_release_event = tracker_button_release;
     widget_class->motion_notify_event = tracker_motion_notify;
+    widget_class->scroll_event = tracker_scroll;
 
 
-    tracker_signals[SIG_PATPOS] = gtk_signal_new ("patpos",
-						  GTK_RUN_FIRST,
-						  object_class->type,
-						  GTK_SIGNAL_OFFSET(TrackerClass, patpos),
-						  my_3ints_marshal,
-						  GTK_TYPE_NONE, 3,
-						  GTK_TYPE_INT,
-						  GTK_TYPE_INT,
-						  GTK_TYPE_INT);
-    tracker_signals[SIG_XPANNING] = gtk_signal_new ("xpanning",
-						    GTK_RUN_FIRST,
-						    object_class->type,
-						    GTK_SIGNAL_OFFSET(TrackerClass, xpanning),
-						    my_3ints_marshal,
-						    GTK_TYPE_NONE, 3,
-						    GTK_TYPE_INT,
-						    GTK_TYPE_INT,
-						    GTK_TYPE_INT);
-    tracker_signals[SIG_MAINMENU_BLOCKMARK_SET] = gtk_signal_new("mainmenu_blockmark_set",
-								 GTK_RUN_FIRST,
-								 object_class->type,
-								 GTK_SIGNAL_OFFSET(TrackerClass, mainmenu_blockmark_set),
-								 my_1int_marshal,
-								 GTK_TYPE_NONE, 1,
-								 GTK_TYPE_INT);
+    tracker_signals[SIG_PATPOS] =
+	   		g_signal_new ("patpos",
+			G_TYPE_FROM_CLASS (object_class),
+			(GSignalFlags)(G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION),
+			G_STRUCT_OFFSET (TrackerClass, patpos),
+			NULL, NULL,
+			___marshal_Sig1,
+			G_TYPE_NONE, 3,
+			G_TYPE_INT,
+			G_TYPE_INT,
+			G_TYPE_INT);
 
-    gtk_object_class_add_signals(object_class, tracker_signals, LAST_SIGNAL);
+    tracker_signals[SIG_XPANNING] = g_signal_new ("xpanning",
+		    	G_TYPE_FROM_CLASS (object_class),
+			(GSignalFlags)G_SIGNAL_RUN_FIRST,
+			G_STRUCT_OFFSET(TrackerClass, xpanning),
+			NULL, NULL,
+			___marshal_Sig1,
+			G_TYPE_NONE, 3,
+			G_TYPE_INT, G_TYPE_INT, G_TYPE_INT);
+    tracker_signals[SIG_MAINMENU_BLOCKMARK_SET] = g_signal_new(
+		    "mainmenu_blockmark_set",
+		    	G_TYPE_FROM_CLASS (object_class),
+			(GSignalFlags)G_SIGNAL_RUN_FIRST,
+			G_STRUCT_OFFSET(TrackerClass, mainmenu_blockmark_set),
+			NULL, NULL,
+			___marshal_Sig2,
+			G_TYPE_NONE, 1, G_TYPE_INT);
+
     
     class->patpos = NULL;
     class->xpanning = NULL;
@@ -1344,18 +1392,21 @@ tracker_get_type (void)
     static guint tracker_type = 0;
     
     if (!tracker_type) {
-	GtkTypeInfo tracker_info =
+	GTypeInfo tracker_info =
 	{
-	    "Tracker",
-	    sizeof(Tracker),
 	    sizeof(TrackerClass),
-	    (GtkClassInitFunc) tracker_class_init,
-	    (GtkObjectInitFunc) tracker_init,
-	    (GtkArgSetFunc) NULL,
-	    (GtkArgGetFunc) NULL,
+	    (GBaseInitFunc) NULL,
+	    (GBaseFinalizeFunc) NULL,
+	    (GClassInitFunc) tracker_class_init,
+	    (GClassFinalizeFunc) NULL,
+	    NULL,
+	    sizeof(Tracker),
+	    0,
+	    (GInstanceInitFunc) tracker_init,
 	};
 	
-	tracker_type = gtk_type_unique (gtk_widget_get_type (), &tracker_info);
+	tracker_type = g_type_register_static(gtk_widget_get_type (),
+	    "Tracker", &tracker_info, (GTypeFlags)0);
     }
     
     return tracker_type;

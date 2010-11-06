@@ -1,0 +1,123 @@
+I discovered that the note cut (EC) effect is not working.
+
+Retrig effects E9x and Rxy work at the very strange maner: their results are
+depending on BPM value and aren't that one might wait from these effects. I
+even managed to find the old machine with MSDOS and FT2 and explored how these
+effects must work. Theoretically, tracker must play note at the 0th tick and
+repeat it at every x, 2x, 3x and so on tick until the end of the line. And E9x
+works exactly so. But Ryx effect (where parameter y determines volume change
+during the repeating) has the bug: the note is played at 0th tick, then at
+(x-1)th thick (instead of x-th), and then -- at 2x-1, 3x-1 and so on. For
+instance, these effects in FT2 works as follows:
+
+Tick E92 Ry2 E93 Ry3
+0     *   *   *   *
+1     -   *   -   -
+2     *   -   -   *
+3     -   *   *   -
+4     *   -   -   -
+5     -   *   -   *
+
+Where * means note playing.
+
+Curently I have no got enough free time to fix this bug. But I'd like to
+propose a way of fixing it: Rxy effect should simulate FT2 bug for the
+compatibility, but we should introduce the new effect working as Rxy. but
+without the bug. 
+
+1) An ability to render the track/pattern into the sample;
+2) An ability to use the external sound processing programs (like Sox) to process the samples. 
+
+>Christos Dimitrakakis wrote:
+>>
+>
+>>> > Wouldn't the amplification slider benefit from an actual numerical
+>>> > entry? Now the sensitivity of the slider depends on how large your ST
+>>> > window is.
+>
+>>
+>>
+>> The benefit is that you can adjust amplification as fast as you want
+>> (for instance if you want to decrease volume up to zero in some time).
+>> But maybe the combination of the slider PLUS the entry would be better?
+>>
+
+
+Yes, I meant both  :) 
+
+The numerical entry would also be useful when setting up the maximum
+possible gain.
+
+...As well as the ability of determination the maximum possible gain
+automatically by the analyzing the module.
+
+I'm currently working on a patch to implement an "Open Recent" sub-menu
+(off the File menu) that lists the last four modules loaded into the
+application.
+
+So what about having its own menubar in the sample editor with various
+functions grouped into different submenus (for instance, Edit->(Copy, Paste,
+Cut, Delete, Save as WAV), Zoom->(Zoom in, Zoom out, Zoom into selection) and
+so on)? At the same time we'll solve the problem of very long button labels. 
+
+Gets my vote, but I think a right-click menu would be better -> less
+mouse movement and faster editing.
+
+You could put something about the right click menu in the hint area when
+you open the sample editor...
+
+I think that the most commonly used buttons should be there all the
+time. Volume changing/mixing/resampling should be menu options.
+Copy/Cut/Paste/Zoom should be buttons.
+
+Another good rule of thumb is: which things could be implemented as
+external plug-ins and which are directly related to the sample editing
+window? The former can go in menus, the latter stay as button. For
+example, the scrollbars and zoom functions are basic viewing elements
+and should not be removed from the window.
+
+So I conclude, that some basic functions must be implemented as buttons,
+namely: Zoom to selection, Show all, Zoom in, Zoom out, Cut, Copy, Paste,
+Remove. But I suggest to change the buttons with text labels into the buttons
+with icons and tooltips. And the other things could be hidden into menus. I
+also want to implement the keyboard shortcuts for the basic functions.
+Finally, the right-click menu at the sample editing area also not be bad... 
+
+Would it be possible to copy the memory address and the data type 
+(instrument, pattern selection, wave selection...) into the 
+regular clipboard buffer, in text form? Or would it cause a 
+segfault if the other instance tried to access the buffer?
+
+I know to few about all this. Can the X clipboard handle anything 
+other than text, at all? I've just checked: Gnoise can't copy 
+sound between two instances, Gimp can't copy image data between 
+two instances... This seems to be a general problem :o(
+
+What about support for fully stereo channels in ST? All modern windows
+trackers and players support stereo samples in XM. Would it be too hard to
+implement this into Soundtracker? 
+
+> My screen is too dim, and the selection color is not really visible for me,
+and I am quite tired of changing the colours manually.  :)
+
+Maybe you'll implement this (not hard, but requires some time)? I also have an
+idea to paint various effects (and maybe instruments) with the different
+colors for better distinguishability.
+
+And the another idea I have for future -- to make the fx command switching
+various types of interpolation. 
+
+
+...make a way for soundtracker to launch and
+communicate with an existing standalone editor?
+
+xm.c: when loading files with non-standard version, ask user if she/he wants to
+load these files really.
+
+Pressing <SHIFT> + UP/DOWN in the tracker window to initiate the selection mode
+(think how to do this better). I propose 3 modes: 1) "Classic ST" (Ctrl + B 
+to start/stop selection mode); 2) "FT2" (pressing Shift + Right/Left/Up/Down 
+starts selection mode, releasing Shift -- stops); 3) "Hybride" (as 2., but 
+releasing Shift doesn't stop selection mode, only Ctrl + B (C,X)). In 2. 
+and 3. user also can start selection mode by pressing Ctrl + B and stop by 
+pressing Ctrl + B,C,X

@@ -298,14 +298,19 @@ sample_display_realize (GtkWidget *widget)
     s->bg_gc = gdk_gc_new(widget->window);
     s->fg_gc = gdk_gc_new(widget->window);
     s->zeroline_gc = gdk_gc_new(widget->window);
-    gdk_gc_set_foreground(s->bg_gc, &SAMPLE_DISPLAY_CLASS(GTK_OBJECT(widget)->klass)->colors[SAMPLE_DISPLAYCOL_BG]);
-    gdk_gc_set_foreground(s->fg_gc, &SAMPLE_DISPLAY_CLASS(GTK_OBJECT(widget)->klass)->colors[SAMPLE_DISPLAYCOL_FG]);
-    gdk_gc_set_foreground(s->zeroline_gc, &SAMPLE_DISPLAY_CLASS(GTK_OBJECT(widget)->klass)->colors[SAMPLE_DISPLAYCOL_ZERO]);
+    gdk_gc_set_foreground(s->bg_gc, &SAMPLE_DISPLAY_GET_CLASS(
+			    SAMPLE_DISPLAY(widget))->colors[SAMPLE_DISPLAYCOL_BG]);
+    gdk_gc_set_foreground(s->fg_gc, &SAMPLE_DISPLAY_GET_CLASS(
+			   SAMPLE_DISPLAY (widget))->colors[SAMPLE_DISPLAYCOL_FG]);
+    gdk_gc_set_foreground(s->zeroline_gc, &SAMPLE_DISPLAY_GET_CLASS(
+			    SAMPLE_DISPLAY(widget))->colors[SAMPLE_DISPLAYCOL_ZERO]);
     if(s->edit) {
 	s->loop_gc = gdk_gc_new(widget->window);
 	s->mixerpos_gc = gdk_gc_new(widget->window);
-	gdk_gc_set_foreground(s->loop_gc, &SAMPLE_DISPLAY_CLASS(GTK_OBJECT(widget)->klass)->colors[SAMPLE_DISPLAYCOL_LOOP]);
-	gdk_gc_set_foreground(s->mixerpos_gc, &SAMPLE_DISPLAY_CLASS(GTK_OBJECT(widget)->klass)->colors[SAMPLE_DISPLAYCOL_MIXERPOS]);
+	gdk_gc_set_foreground(s->loop_gc, &SAMPLE_DISPLAY_GET_CLASS(
+				SAMPLE_DISPLAY(widget))->colors[SAMPLE_DISPLAYCOL_LOOP]);
+	gdk_gc_set_foreground(s->mixerpos_gc, &SAMPLE_DISPLAY_GET_CLASS(
+				SAMPLE_DISPLAY(widget))->colors[SAMPLE_DISPLAYCOL_MIXERPOS]);
     }
 
     sample_display_init_display(s, attributes.width, attributes.height);
@@ -567,13 +572,6 @@ sample_display_draw_update (GtkWidget *widget,
     }
 }
 
-static void
-sample_display_draw (GtkWidget *widget,
-		     GdkRectangle *area)
-{
-    sample_display_draw_main(widget, area);
-}
-
 static gint
 sample_display_expose (GtkWidget *widget,
 		       GdkEventExpose *event)
@@ -824,51 +822,51 @@ sample_display_motion_notify (GtkWidget *widget,
 static void
 sample_display_class_init (SampleDisplayClass *class)
 {
-    GtkObjectClass *object_class;
+    GObjectClass *object_class;
     GtkWidgetClass *widget_class;
     int n;
     const int *p;
     GdkColor *c;
 
-    object_class = (GtkObjectClass*) class;
+    object_class = (GObjectClass*) class;
     widget_class = (GtkWidgetClass*) class;
 
     widget_class->realize = sample_display_realize;
     widget_class->size_allocate = sample_display_size_allocate;
     widget_class->expose_event = sample_display_expose;
-    widget_class->draw = sample_display_draw;
     widget_class->size_request = sample_display_size_request;
     widget_class->button_press_event = sample_display_button_press;
     widget_class->button_release_event = sample_display_button_release;
     widget_class->motion_notify_event = sample_display_motion_notify;
 
-    sample_display_signals[SIG_SELECTION_CHANGED] = gtk_signal_new ("selection_changed",
-							     GTK_RUN_FIRST,
-							     object_class->type,
-							     GTK_SIGNAL_OFFSET(SampleDisplayClass, selection_changed),
-							     gtk_marshal_NONE__INT_INT,
-							     GTK_TYPE_NONE, 2,
-							     GTK_TYPE_INT,
-							     GTK_TYPE_INT);
-    sample_display_signals[SIG_LOOP_CHANGED] = gtk_signal_new ("loop_changed",
-							GTK_RUN_FIRST,
-							object_class->type,
-							GTK_SIGNAL_OFFSET(SampleDisplayClass, loop_changed),
-							gtk_marshal_NONE__INT_INT,
-							GTK_TYPE_NONE, 2,
-							GTK_TYPE_INT,
-							GTK_TYPE_INT);
-    sample_display_signals[SIG_WINDOW_CHANGED] = gtk_signal_new ("window_changed",
-								 GTK_RUN_FIRST,
-								 object_class->type,
-								 GTK_SIGNAL_OFFSET(SampleDisplayClass, window_changed),
-								 gtk_marshal_NONE__INT_INT,
-								 GTK_TYPE_NONE, 2,
-								 GTK_TYPE_INT,
-								 GTK_TYPE_INT);
+    sample_display_signals[SIG_SELECTION_CHANGED] =
+	    g_signal_new ("selection_changed",
+			G_TYPE_FROM_CLASS (object_class),
+			(GSignalFlags)G_SIGNAL_RUN_FIRST,
+			G_STRUCT_OFFSET(SampleDisplayClass, selection_changed),
+			NULL, NULL,
+			gtk_marshal_NONE__INT_INT,
+			G_TYPE_NONE, 2,
+			G_TYPE_INT, G_TYPE_INT);
+    sample_display_signals[SIG_LOOP_CHANGED] =
+	    g_signal_new ("loop_changed",
+			G_TYPE_FROM_CLASS (object_class),
+			(GSignalFlags)G_SIGNAL_RUN_FIRST,
+			G_STRUCT_OFFSET(SampleDisplayClass, loop_changed),
+			NULL, NULL,
+			gtk_marshal_NONE__INT_INT,
+			G_TYPE_NONE, 2,
+			G_TYPE_INT, G_TYPE_INT);
+    sample_display_signals[SIG_WINDOW_CHANGED] =
+	    g_signal_new ("window_changed",
+			G_TYPE_FROM_CLASS (object_class),
+			(GSignalFlags)G_SIGNAL_RUN_FIRST,
+			 G_STRUCT_OFFSET(SampleDisplayClass, window_changed),
+			 NULL, NULL,
+			 gtk_marshal_NONE__INT_INT,
+			 G_TYPE_NONE, 2,
+			 G_TYPE_INT, G_TYPE_INT);
 
-    gtk_object_class_add_signals(object_class, sample_display_signals, LAST_SIGNAL);
-    
     class->selection_changed = NULL;
     class->loop_changed = NULL;
     class->window_changed = NULL;
@@ -894,18 +892,22 @@ sample_display_get_type (void)
     static guint sample_display_type = 0;
 
     if (!sample_display_type) {
-	GtkTypeInfo sample_display_info =
+	GTypeInfo sample_display_info =
 	{
-	    "SampleDisplay",
-	    sizeof(SampleDisplay),
 	    sizeof(SampleDisplayClass),
-	    (GtkClassInitFunc) sample_display_class_init,
-	    (GtkObjectInitFunc) sample_display_init,
-	    (GtkArgSetFunc) NULL,
-	    (GtkArgGetFunc) NULL,
+	    	(GBaseInitFunc) NULL,
+		(GBaseFinalizeFunc) NULL,
+	    (GClassInitFunc) sample_display_class_init,
+	    (GClassFinalizeFunc) NULL,
+	    NULL,
+	    sizeof(SampleDisplay),
+	    0,
+	    (GInstanceInitFunc) sample_display_init,
+	    
 	};
 
-	sample_display_type = gtk_type_unique (gtk_widget_get_type (), &sample_display_info);
+	sample_display_type = g_type_register_static(gtk_widget_get_type (),
+	    "SampleDisplay", &sample_display_info, (GTypeFlags)0);
     }
 
     return sample_display_type;

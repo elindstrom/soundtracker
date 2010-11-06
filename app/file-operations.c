@@ -102,24 +102,29 @@ file_selection_dir_button (GtkWidget *widget,
 static void
 fileops_filesel_pre_insertion (GtkFileSelection *fs)
 {
+/* Maybe these 2 functions responsible for single-clicking...
     gtk_widget_hide(fs->button_area);
+	printf("file list type: %s\n", G_OBJECT_TYPE_NAME(G_OBJECT(fs->file_list)));
 
     if(is_single_click_dialog(fs)) {
 	gtk_widget_hide(fileops_filesel_get_confirm_area(fs));
 
-	handler_id_f = gtk_signal_connect_after (GTK_OBJECT (fs->file_list), "select_row",
-						 (GtkSignalFunc) file_selection_file_button,
+
+	handler_id_f = g_signal_connect_after (G_OBJECT (fs->file_list), "select-cursor-row",
+						 (GCallback) file_selection_file_button,
 						 (gpointer) fs);
     }
 
-    handler_id_d = gtk_signal_connect_after (GTK_OBJECT (fs->dir_list), "select_row",
-					   (GtkSignalFunc) file_selection_dir_button,
+    handler_id_d = g_signal_connect_after (G_OBJECT (fs->dir_list), "select-cursor-row",
+					   (GCallback) file_selection_dir_button,
 					   (gpointer) fs);
+*/
 }
 
 static void
 fileops_filesel_post_removal (GtkFileSelection *fs)
 {
+/*
     gtk_signal_disconnect(GTK_OBJECT(fs->dir_list), handler_id_d);
 
     if(is_single_click_dialog(fs)) {
@@ -129,6 +134,7 @@ fileops_filesel_post_removal (GtkFileSelection *fs)
     }
 
     gtk_widget_show(fs->button_area);
+*/
 }
 
 static void
