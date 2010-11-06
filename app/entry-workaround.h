@@ -1,8 +1,8 @@
 
 /*
- * The Real SoundTracker - Input (sampling) driver module definitions
+ * The Real SoundTracker - workaround for gtk_entry_set_text() bug (header)
  *
- * Copyright (C) 1999-2001 Michael Krause
+ * Copyright (C) 2005 Yury Aliaev
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,20 +19,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef _ST_DRIVER_IN_H
-#define _ST_DRIVER_IN_H
+#include <gtk/gtk.h>
 
-#include <glib.h>
-
-#include "driver.h"
-
-typedef struct st_in_driver {
-    st_driver common;
-} st_in_driver;
-
-void     sample_editor_sampled            (void *dest,
-					   guint32 count,
-					   int mixfreq,
-					   int mixformat);
-
-#endif /* _ST_DRIVER_IN_H */
+void		wa_entry_set_text	(GtkEntry *entry, const gchar *text);
