@@ -1,0 +1,18 @@
+2) The clock in the right bottom corner is removed;
+5) Single click doesn't work in the fileselector (naturally use filechooser instead);
+6) Huge CPU overhead (partially fixed);
+7) Is very unstable (partially fixed). File->exit works good, but closing the 
+main window leads to the crash;
+8) Keyboard accelerators don't work;
+9) Contains a lot of obsolete code.
+10) Minor bug with selections, up and down buttons in the tracker fonts dialog
+11) Make lists "zebrine"
+12) Crashes due to midi;
+13) listview rows are higher than clist rows. This is the bug of gtk+-2.8.x. 
+2.6.0 is Ok;
+14) some CPU-consuming code in the instrument list selection callback (really 
+in the callback);
+15) Change option-menu in keys.c with notebook (like in audioconfig.c) for better
+widget sizes' behaviour;
+
+Regarding gtk_entry_set_text double signal: see gtkentry.c->2059, 2300

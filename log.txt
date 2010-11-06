@@ -1,0 +1,65 @@
+make  all-recursive
+make[1]: Entering directory `/home/mutabor/Projects/soundtracker-0.6.7.gtk2'
+Making all in intl
+make[2]: Entering directory `/home/mutabor/Projects/soundtracker-0.6.7.gtk2/intl'
+make[2]: Цель `all' не требует выполнения команд.
+make[2]: Leaving directory `/home/mutabor/Projects/soundtracker-0.6.7.gtk2/intl'
+Making all in po
+make[2]: Entering directory `/home/mutabor/Projects/soundtracker-0.6.7.gtk2/po'
+make[2]: Цель `all' не требует выполнения команд.
+make[2]: Leaving directory `/home/mutabor/Projects/soundtracker-0.6.7.gtk2/po'
+Making all in doc
+make[2]: Entering directory `/home/mutabor/Projects/soundtracker-0.6.7.gtk2/doc'
+make[2]: Цель `all' не требует выполнения команд.
+make[2]: Leaving directory `/home/mutabor/Projects/soundtracker-0.6.7.gtk2/doc'
+Making all in app
+make[2]: Entering directory `/home/mutabor/Projects/soundtracker-0.6.7.gtk2/app'
+Making all in drivers
+make[3]: Entering directory `/home/mutabor/Projects/soundtracker-0.6.7.gtk2/app/drivers'
+make[3]: Цель `all' не требует выполнения команд.
+make[3]: Leaving directory `/home/mutabor/Projects/soundtracker-0.6.7.gtk2/app/drivers'
+Making all in mixers
+make[3]: Entering directory `/home/mutabor/Projects/soundtracker-0.6.7.gtk2/app/mixers'
+make[3]: Цель `all' не требует выполнения команд.
+make[3]: Leaving directory `/home/mutabor/Projects/soundtracker-0.6.7.gtk2/app/mixers'
+make[3]: Entering directory `/home/mutabor/Projects/soundtracker-0.6.7.gtk2/app'
+if gcc -DHAVE_CONFIG_H -I. -I. -I.. -DLOCALEDIR=\"/usr/local/share/locale\"    -O6 -ffast-math -fomit-frame-pointer -fforce-addr -march=i586 -mcpu=pentium -Wall -DORBIT2=1 -pthread -DXTHREADS -D_REENTRANT -DXUSE_MTSAFE_API -I/usr/include/libgnomeui-2.0 -I/usr/include/libgnome-2.0 -I/usr/include/libgnomecanvas-2.0 -I/usr/include/gtk-2.0 -I/usr/include/libart-2.0 -I/usr/include/gconf/2 -I/usr/include/libbonoboui-2.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/orbit-2.0 -I/usr/include/libbonobo-2.0 -I/usr/include/gnome-vfs-2.0 -I/usr/lib/gnome-vfs-2.0/include -I/usr/include/bonobo-activation-2.0 -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/lib/gtk-2.0/include -I/usr/X11R6/include -I/usr/include/atk-1.0 -I/usr/include/freetype2/config -I/usr/include/libxml2   -DXTHREADS -D_REENTRANT -DXUSE_MTSAFE_API -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/X11R6/include -I/usr/include/atk-1.0 -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/include/freetype2/config -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   -I/usr/include/gtk-2.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include      -MT audioconfig.o -MD -MP -MF ".deps/audioconfig.Tpo" -c -o audioconfig.o audioconfig.c; \
+then mv -f ".deps/audioconfig.Tpo" ".deps/audioconfig.Po"; else rm -f ".deps/audioconfig.Tpo"; exit 1; fi
+audioconfig.c: In function `audioconfig_driver_load_config':
+audioconfig.c:92: error: structure has no member named `loadsettings'
+audioconfig.c:96: error: structure has no member named `loadsettings'
+audioconfig.c: In function `audioconfig_clist_select':
+audioconfig.c:126: error: structure has no member named `new'
+audioconfig.c:133: error: structure has no member named `name'
+audioconfig.c:133: error: structure has no member named `name'
+audioconfig.c:133: error: structure has no member named `name'
+audioconfig.c:133: error: structure has no member named `name'
+audioconfig.c:133: error: structure has no member named `name'
+audioconfig.c:133: error: structure has no member named `name'
+audioconfig.c:133: error: structure has no member named `name'
+audioconfig.c:133: error: structure has no member named `name'
+audioconfig.c:133: error: structure has no member named `name'
+audioconfig.c:133: error: structure has no member named `name'
+audioconfig.c:133: error: structure has no member named `name'
+audioconfig.c:133: error: structure has no member named `name'
+audioconfig.c:133: error: structure has no member named `name'
+audioconfig.c:133: error: structure has no member named `name'
+audioconfig.c:133: error: structure has no member named `name'
+audioconfig.c:133: error: structure has no member named `name'
+audioconfig.c:133: error: structure has no member named `name'
+audioconfig.c:133: error: structure has no member named `name'
+audioconfig.c:133: error: structure has no member named `name'
+audioconfig.c:133: error: structure has no member named `name'
+audioconfig.c:141: error: structure has no member named `getwidget'
+audioconfig.c:156: error: structure has no member named `destroy'
+audioconfig.c: In function `audioconfig_dialog':
+audioconfig.c:301: warning: assignment from incompatible pointer type
+audioconfig.c: In function `audioconfig_load_config':
+audioconfig.c:403: error: structure has no member named `new'
+make[3]: *** [audioconfig.o] Ошибка 1
+make[3]: Leaving directory `/home/mutabor/Projects/soundtracker-0.6.7.gtk2/app'
+make[2]: *** [all-recursive] Ошибка 1
+make[2]: Leaving directory `/home/mutabor/Projects/soundtracker-0.6.7.gtk2/app'
+make[1]: *** [all-recursive] Ошибка 1
+make[1]: Leaving directory `/home/mutabor/Projects/soundtracker-0.6.7.gtk2'
+make: *** [all] Ошибка 2
