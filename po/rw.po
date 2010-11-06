@@ -1,0 +1,2324 @@
+# Kinyarwanda translations for soundtracker package.
+# Copyright (C) 2005 Free Software Foundation, Inc.
+# Steve Murphy <murf@e-tools.com>, 2005.
+# Steve performed initial rough translation from compendium built from translations provided by the following translators:
+# Philibert Ndandali  <ndandali@yahoo.fr>, 2005.
+# Viateur MUGENZI <muvia1@yahoo.fr>, 2005.
+# Noëlla Mupole <s24211045@tuks.co.za>, 2005.
+# Carole Karema <karemacarole@hotmail.com>, 2005.
+# JEAN BAPTISTE NGENDAHAYO <ngenda_denis@yahoo.co.uk>, 2005.
+# Augustin KIBERWA  <akiberwa@yahoo.co.uk>, 2005.
+# Donatien NSENGIYUMVA <ndonatienuk@yahoo.co.uk>, 2005.
+# Antoine Bigirimana <antoine@e-tools.com>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: soundtracker 0.6.7\n"
+"Report-Msgid-Bugs-To: soundtracker-discuss@soundtracker.org\n"
+"POT-Creation-Date: 2006-02-25 14:25+0100\n"
+"PO-Revision-Date: 2005-04-04 10:55-0700\n"
+"Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
+"Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: app/audioconfig.c:63
+msgid "Playback Output"
+msgstr ""
+
+#: app/audioconfig.c:69
+msgid "Editing Output"
+msgstr ""
+
+#: app/audioconfig.c:75
+msgid "Sampling"
+msgstr ""
+
+#: app/audioconfig.c:261
+msgid "Driver Module"
+msgstr ""
+
+#: app/audioconfig.c:262
+msgid "Mixer Module"
+msgstr ""
+
+#: app/audioconfig.c:263
+msgid "Description"
+msgstr "Insobanuramiterere"
+
+#: app/audioconfig.c:271 app/audioconfig.c:274
+msgid "Audio Configuration"
+msgstr ""
+
+#: app/audioconfig.c:289
+msgid "Drivers"
+msgstr ""
+
+#: app/audioconfig.c:326
+msgid "Mixers"
+msgstr ""
+
+#: app/audioconfig.c:359 app/gui-settings.c:512 app/gui.c:274
+#: app/sample-editor.c:2241 app/transposition.c:347
+msgid "Close"
+msgstr "Gufunga"
+
+#: app/drivers/alsa-input.c:125 app/drivers/alsa-output.c:134
+#: app/drivers/alsa2-input.c:125 app/drivers/alsa2-output.c:135
+#, fuzzy, c-format
+msgid "(%d bytes)"
+msgstr "(%dBayite"
+
+#: app/drivers/alsa-input.c:128 app/drivers/alsa2-input.c:128
+#, fuzzy, c-format
+msgid "Estimated audio delay: %f microseconds"
+msgstr "Gutinda"
+
+#: app/drivers/alsa-input.c:193 app/drivers/alsa-output.c:199
+#: app/drivers/alsa2-input.c:193 app/drivers/alsa2-output.c:198
+#: app/drivers/oss-output.c:205 app/drivers/sun-output.c:197
+#, fuzzy
+msgid "These changes won't take effect until you restart playing."
+msgstr "Amahinduka INGARUKA Ongera utangire"
+
+# officecfg/registry\schema\org\openoffice\Office\Common.xcs:....Filter.Graphic.Export.BMP.Resolution.text
+#: app/drivers/alsa-input.c:205 app/drivers/alsa-output.c:211
+#: app/drivers/alsa2-input.c:205 app/drivers/alsa2-output.c:210
+#: app/drivers/oss-output.c:233 app/drivers/sun-output.c:225
+#: app/sample-editor.c:1612
+#, fuzzy
+msgid "Resolution:"
+msgstr "Imikemurire"
+
+#: app/drivers/alsa-input.c:215 app/drivers/alsa-output.c:221
+#: app/drivers/alsa2-input.c:215 app/drivers/alsa2-output.c:220
+#: app/drivers/oss-output.c:243 app/drivers/sun-output.c:236
+#: app/sample-editor.c:1642
+msgid "Channels:"
+msgstr ""
+
+#: app/drivers/alsa-input.c:225 app/drivers/alsa-output.c:231
+#: app/drivers/alsa2-input.c:225 app/drivers/alsa2-output.c:230
+#: app/drivers/oss-output.c:253 app/drivers/sun-output.c:247
+msgid "Frequency [Hz]:"
+msgstr ""
+
+#: app/drivers/alsa-input.c:235 app/drivers/alsa-output.c:241
+#: app/drivers/alsa2-input.c:235 app/drivers/alsa2-output.c:240
+#: app/drivers/oss-output.c:263 app/drivers/sun-output.c:258
+msgid "Buffer Size:"
+msgstr ""
+
+#: app/drivers/alsa-input.c:268 app/drivers/alsa-output.c:274
+#: app/drivers/alsa2-input.c:268 app/drivers/alsa2-output.c:273
+#, fuzzy
+msgid "ALSA card number:"
+msgstr "Umubare"
+
+#: app/drivers/alsa-input.c:283 app/drivers/alsa-output.c:289
+#: app/drivers/alsa2-input.c:283 app/drivers/alsa2-output.c:288
+#, fuzzy
+msgid "ALSA device number:"
+msgstr "APAREYE Umubare"
+
+#: app/drivers/alsa-input.c:374
+#, fuzzy, c-format
+msgid ""
+"Couldn't open ALSA device for sound input (card:%d, device:%d):\n"
+"%s"
+msgstr "Gufungura APAREYE kugirango Ijwi Iyinjiza APAREYE"
+
+#: app/drivers/alsa-input.c:426 app/drivers/alsa-output.c:426
+#: app/drivers/oss-input.c:267 app/drivers/oss-output.c:424
+#, fuzzy
+msgid "Required sound output format not supported.\n"
+msgstr "Ijwi Ibisohoka Imiterere OYA"
+
+#: app/drivers/alsa-input.c:439 app/drivers/alsa-output.c:441
+#, fuzzy
+msgid "Required sound output parameters not supported.\n"
+msgstr "Ijwi Ibisohoka Ibigenga OYA"
+
+#: app/drivers/alsa-output.c:137 app/drivers/alsa2-output.c:138
+#: app/drivers/oss-output.c:149 app/drivers/sun-output.c:137
+#, fuzzy, c-format
+msgid "Estimated audio delay: %f milliseconds"
+msgstr "Gutinda"
+
+#: app/drivers/alsa-output.c:377 app/drivers/alsa2-input.c:375
+#: app/drivers/alsa2-output.c:379
+#, fuzzy, c-format
+msgid ""
+"Couldn't open ALSA device for sound output (card:%d, device:%d):\n"
+"%s"
+msgstr "Gufungura APAREYE kugirango Ijwi Ibisohoka APAREYE"
+
+#: app/drivers/alsa2-input.c:436 app/drivers/alsa2-output.c:440
+#, fuzzy
+msgid "Required output-channel parameters not supported.\n"
+msgstr "Ibisohoka Ibigenga OYA"
+
+#: app/drivers/alsa2-input.c:441 app/drivers/alsa2-output.c:445
+#, fuzzy
+msgid "Unable to prepare ALSA channel.\n"
+msgstr "Kuri"
+
+#: app/drivers/alsa2-input.c:454 app/drivers/alsa2-output.c:458
+#, fuzzy
+msgid "Alsa setup error.\n"
+msgstr "Imikorere Ikosa"
+
+#: app/drivers/esd-output.c:96
+#, fuzzy
+msgid ""
+"Note that the ESD output is unusable in\n"
+"interactive mode because of the latency added\n"
+"by ESD. Use the OSS or ALSA output plug-ins\n"
+"for serious work."
+msgstr "i Ibisohoka ni Ubwoko Bya i i Cyangwa Ibisohoka Akazi"
+
+#: app/drivers/esd-output.c:161
+#, fuzzy, c-format
+msgid ""
+"Couldn't connect to ESD for sound output:\n"
+"%s"
+msgstr "Kwihuza Kuri kugirango Ijwi Ibisohoka"
+
+#: app/drivers/file-output.c:92 app/drivers/file-output.c:297
+#, fuzzy
+msgid "no settings (yet), sorry!"
+msgstr "Oya Amagenamiterere"
+
+#: app/drivers/file-output.c:167 app/drivers/file-output.c:374
+#: app/sample-editor.c:1857
+#, fuzzy
+msgid "Can't open file for writing."
+msgstr "Gufungura IDOSIYE kugirango"
+
+#: app/drivers/oss-input.c:111 app/drivers/sun-input.c:105
+#, fuzzy
+msgid "These changes won't take effect until you restart sampling."
+msgstr "Amahinduka INGARUKA Ongera utangire"
+
+#: app/drivers/oss-input.c:123
+#, fuzzy
+msgid "Input device (e.g. '/dev/dsp'):"
+msgstr "g."
+
+#: app/drivers/oss-input.c:234
+#, fuzzy, c-format
+msgid ""
+"Couldn't open %s for sampling:\n"
+"%s"
+msgstr "Gufungura kugirango"
+
+#: app/drivers/oss-output.c:183 app/drivers/sun-output.c:172
+#, fuzzy, c-format
+msgid "(%d samples)"
+msgstr "(%dIngero- fatizo"
+
+#: app/drivers/oss-output.c:217
+#, fuzzy
+msgid "Output device (e.g. '/dev/dsp'):"
+msgstr "g."
+
+#: app/drivers/oss-output.c:391
+#, fuzzy, c-format
+msgid ""
+"Couldn't open %s for sound output:\n"
+"%s"
+msgstr "Gufungura kugirango Ijwi Ibisohoka"
+
+#: app/drivers/jack-output.c:254
+#, fuzzy
+msgid "transport master"
+msgstr "Mugenga"
+
+#: app/drivers/jack-output.c:259
+msgid "declick"
+msgstr ""
+
+#: app/drivers/jack-output.c:279
+#, fuzzy, c-format
+msgid "Running at %d Hz with %d frames"
+msgstr "ku Na: Amakadiri"
+
+#: app/drivers/jack-output.c:283
+#, fuzzy, c-format
+msgid "Jack server not running?"
+msgstr "Seriveri OYA"
+
+#: app/drivers/jack-output.c:327
+#, c-format
+msgid "soundtracker"
+msgstr ""
+
+#: app/drivers/jack-output.c:347
+msgid "out_1"
+msgstr ""
+
+#: app/drivers/jack-output.c:348
+msgid "out_2"
+msgstr ""
+
+#: app/drivers/sun-output.c:209
+#, fuzzy
+msgid "Output device (e.g. '/dev/audio'):"
+msgstr "g."
+
+# desktop/source\app\ssodlg.src:DLG_SSOLOGIN.text
+#: app/drivers/sun-output.c:389 app/drivers/sun-output.c:460
+#: app/drivers/sun-input.c:229 app/drivers/sun-input.c:311
+#, fuzzy, c-format
+msgid "%s: %s"
+msgstr "%s:%s"
+
+#: app/drivers/sun-output.c:395
+#, fuzzy, c-format
+msgid "%s: Cannot play (%s)"
+msgstr "%s:Gukina"
+
+#: app/drivers/sun-output.c:402 app/drivers/sun-input.c:250
+#, c-format
+msgid "%s: Cannot handle %dHz (%s)"
+msgstr ""
+
+#: app/drivers/sun-output.c:431 app/drivers/sun-input.c:280
+#, fuzzy, c-format
+msgid "%s: Required sound encoding not supported.\n"
+msgstr "%s:Ijwi Imisobekere: OYA"
+
+#: app/drivers/sun-output.c:454 app/drivers/sun-input.c:305
+#, fuzzy, c-format
+msgid "%s: Cannot set block size (%s)"
+msgstr "%s:Gushyiraho Funga Ingano"
+
+#: app/drivers/sun-input.c:117
+#, fuzzy
+msgid "Input device (e.g. '/dev/audio'):"
+msgstr "g."
+
+#: app/drivers/sun-input.c:242
+#, fuzzy, c-format
+msgid "%s: Cannot record (%s)"
+msgstr "%s:Icyabitswe"
+
+#: app/envelope-box.c:878
+msgid "Length"
+msgstr "Uburebure"
+
+# sc/source\core\src\compiler.src:RID_SC_FUNCTION_NAMES.SC_OPCODE_CURRENT.text
+#: app/envelope-box.c:879
+#, fuzzy
+msgid "Current"
+msgstr "KIGEZWEHO"
+
+#: app/envelope-box.c:880
+msgid "Offset"
+msgstr "Ofuseti"
+
+#: app/envelope-box.c:881
+msgid "Value"
+msgstr "Agaciro"
+
+#: app/envelope-box.c:887 app/playlist.c:524
+msgid "Insert"
+msgstr "Kongeramo"
+
+#: app/envelope-box.c:893 app/playlist.c:533
+msgid "Delete"
+msgstr "Gusiba"
+
+#: app/envelope-box.c:985
+msgid ""
+"Graphical\n"
+"Envelope\n"
+"Editor\n"
+"only in\n"
+"GNOME Version"
+msgstr ""
+
+#: app/envelope-box.c:1000
+msgid "Sustain"
+msgstr ""
+
+#: app/envelope-box.c:1008
+msgid "Point"
+msgstr "Akadomo"
+
+#: app/envelope-box.c:1010
+msgid "Loop"
+msgstr ""
+
+#: app/envelope-box.c:1018 app/sample-editor.c:275
+msgid "Start"
+msgstr "tangira"
+
+#: app/envelope-box.c:1019 app/sample-editor.c:276
+msgid "End"
+msgstr "Impera"
+
+#: app/file-operations.c:162
+msgid "Load Module"
+msgstr ""
+
+#: app/file-operations.c:163
+#, fuzzy
+msgid "Save Module"
+msgstr "Kubika"
+
+#: app/file-operations.c:164
+msgid "Render WAV"
+msgstr ""
+
+#: app/file-operations.c:165
+#, fuzzy
+msgid "Save Song"
+msgstr "Kubika"
+
+#: app/file-operations.c:166 app/sample-editor.c:383
+msgid "Load Sample"
+msgstr ""
+
+#: app/file-operations.c:167
+#, fuzzy
+msgid "Save Sample"
+msgstr "Kubika"
+
+#: app/file-operations.c:168
+msgid "Load Instrument"
+msgstr ""
+
+#: app/file-operations.c:169
+#, fuzzy
+msgid "Save Instrument"
+msgstr "Kubika"
+
+#: app/file-operations.c:175
+msgid "File"
+msgstr "Idosiye "
+
+#: app/file-operations.c:226
+#, fuzzy
+msgid "Operation not supported."
+msgstr "OYA"
+
+#: app/gui-settings.c:100
+msgid "Scopes Frequency"
+msgstr ""
+
+#: app/gui-settings.c:103
+msgid "Tracker Frequency"
+msgstr ""
+
+#: app/gui-settings.c:317 app/gui-settings.c:320
+msgid "GUI Configuration"
+msgstr ""
+
+#: app/gui-settings.c:354
+#, fuzzy
+msgid "Hexadecimal row numbers"
+msgstr "Urubariro Imibare"
+
+#: app/gui-settings.c:361
+#, fuzzy
+msgid "Use upper case letters for hex numbers"
+msgstr "Nkuru kugirango Imibare"
+
+#: app/gui-settings.c:368
+#, fuzzy
+msgid "Asynchronous (IT-style) pattern editing"
+msgstr "IMISUSIRE Ishusho"
+
+#: app/gui-settings.c:375
+#, fuzzy
+msgid "Fxx command updates Tempo/BPM sliders"
+msgstr "Komandi:"
+
+#: app/gui-settings.c:382
+#, fuzzy
+msgid "Switch to tracker after loading/saving"
+msgstr "Kuri Nyuma Itangira... Mu kubika"
+
+#: app/gui-settings.c:389
+#, fuzzy
+msgid "Save window geometry on exit"
+msgstr "Kubika Idirishya Iyigamashusho ku Gusohoka"
+
+#: app/gui-settings.c:396
+#, fuzzy
+msgid "Use note name B instead of H"
+msgstr "Impugukirwa Izina: Bya H"
+
+#: app/gui-settings.c:403
+msgid "Save and restore permanent channels"
+msgstr ""
+
+#: app/gui-settings.c:417
+#, fuzzy
+msgid "Scopes buffer size [MB]"
+msgstr "Ingano"
+
+#: app/gui-settings.c:436
+#, fuzzy
+msgid "Track line format:"
+msgstr "Umurongo Imiterere"
+
+# svtools/source\dialogs\prnsetup.src:STR_SVT_PRNDLG_READY.text
+#: app/gui-subs.c:32 app/gui.c:2369
+#, fuzzy
+msgid "Ready."
+msgstr "Cyiteguye"
+
+#: app/gui-subs.c:33
+msgid "Playing song..."
+msgstr ""
+
+#: app/gui-subs.c:34
+#, fuzzy
+msgid "Playing pattern..."
+msgstr "Ishusho"
+
+#: app/gui-subs.c:35
+#, fuzzy
+msgid "Loading module..."
+msgstr "Modire"
+
+#: app/gui-subs.c:36
+msgid "Module loaded."
+msgstr ""
+
+#: app/gui-subs.c:37
+#, fuzzy
+msgid "Saving module..."
+msgstr "Modire"
+
+#: app/gui-subs.c:38
+msgid "Module saved."
+msgstr ""
+
+#: app/gui-subs.c:39
+#, fuzzy
+msgid "Loading sample..."
+msgstr "Urugero"
+
+#: app/gui-subs.c:40
+msgid "Sample loaded."
+msgstr ""
+
+#: app/gui-subs.c:41
+#, fuzzy
+msgid "Saving sample..."
+msgstr "Urugero"
+
+#: app/gui-subs.c:42
+msgid "Sample saved."
+msgstr ""
+
+#: app/gui-subs.c:43
+msgid "Loading instrument..."
+msgstr ""
+
+#: app/gui-subs.c:44
+msgid "Instrument loaded."
+msgstr ""
+
+#: app/gui-subs.c:45
+msgid "Saving instrument..."
+msgstr ""
+
+#: app/gui-subs.c:46
+msgid "Instrument saved."
+msgstr ""
+
+#: app/gui-subs.c:47
+msgid "Saving song..."
+msgstr ""
+
+#: app/gui-subs.c:48
+msgid "Song saved."
+msgstr ""
+
+#: app/gui-subs.c:483 app/gui-subs.c:554
+msgid "Question"
+msgstr ""
+
+#: app/gui-subs.c:492
+msgid "Yes"
+msgstr "Yego"
+
+#: app/gui-subs.c:500
+msgid "No"
+msgstr "Oya"
+
+#: app/gui-subs.c:507 app/gui-subs.c:571 app/keys.c:711
+#: app/sample-editor.c:1520 app/sample-editor.c:1695 app/sample-editor.c:2019
+#: app/sample-editor.c:2480 app/midi-settings-050.c:637
+#: app/midi-settings-09x.c:640
+msgid "Cancel"
+msgstr "Kureka"
+
+#: app/gui-subs.c:589
+msgid "Warning"
+msgstr "Iburira"
+
+# starmath/source\smres.src:RID_ERR_IDENT.text
+#: app/gui-subs.c:615
+#, fuzzy
+msgid "Error!"
+msgstr "IKOSA"
+
+#: app/gui.c:140
+msgid "Tempo"
+msgstr ""
+
+#: app/gui.c:245 app/gui.c:255 app/gui.c:2078
+#, fuzzy
+msgid "Row highlighting configuration"
+msgstr "Igaragaza cyane Iboneza"
+
+#: app/gui.c:301
+#, fuzzy
+msgid "Highlight rows (major / minor):"
+msgstr "Imbariro"
+
+#: app/gui.c:478
+#, fuzzy
+msgid ""
+"Odd pattern rows contain data which will be lost after shrinking.\n"
+"Do you want to continue anyway?"
+msgstr "Wabaushakagupfagukomeza."
+
+#: app/gui.c:506
+#, fuzzy
+msgid ""
+"The pattern is too long for expanding.\n"
+"Some data at the end of the pattern will be lost.\n"
+"Do you want to continue anyway?"
+msgstr "Wabaushakagupfagukomeza."
+
+#: app/gui.c:555 app/instrument-editor.c:212 app/sample-editor.c:1719
+#: app/sample-editor.c:1915 app/sample-editor.c:1959
+#, fuzzy
+msgid "No file selected."
+msgstr "IDOSIYE Byahiswemo"
+
+#: app/gui.c:563
+#, fuzzy
+msgid ""
+"Are you sure you want to free the current project?\n"
+"All changes will be lost!"
+msgstr "Kuri Kigenga i KIGEZWEHO Umushinga Amahinduka"
+
+#: app/gui.c:577 app/gui.c:592 app/gui.c:607 app/gui.c:625
+#: app/sample-editor.c:1928 app/sample-editor.c:1977
+#, fuzzy
+msgid "Are you sure you want to overwrite the file?"
+msgstr "Kuri Guhindura i IDOSIYE"
+
+#: app/gui.c:638
+#, fuzzy
+msgid "Error when opening pattern file!"
+msgstr "Ryari: Gufungura%S Ishusho IDOSIYE"
+
+#: app/gui.c:651
+#, fuzzy
+msgid ""
+"The length of the pattern being loaded doesn't match with that of current "
+"pattern in module.\n"
+"Do you want to change the current pattern length?"
+msgstr ""
+"Uburebure Bya i Ishusho BIHUYE Na: Bya KIGEZWEHO Ishusho in Modire Kuri "
+"Guhindura>> i KIGEZWEHO Ishusho Uburebure"
+
+#: app/gui.c:1719
+msgid "SoundTracker Startup"
+msgstr ""
+
+#: app/gui.c:1778 app/gui.c:1815
+msgid "Loading..."
+msgstr "Itangira..."
+
+#: app/gui.c:1804
+msgid "Use SoundTracker!"
+msgstr ""
+
+#: app/gui.c:1862
+msgid "Load XM..."
+msgstr ""
+
+#: app/gui.c:1864
+#, fuzzy
+msgid "Save XM..."
+msgstr "Kubika"
+
+#: app/gui.c:1867
+#, fuzzy
+msgid "Render module as WAV..."
+msgstr "Modire Nka"
+
+#: app/gui.c:1870
+#, fuzzy
+msgid "Save song as XM..."
+msgstr "Kubika Nka"
+
+#: app/gui.c:1872
+#, fuzzy
+msgid "Load current pattern..."
+msgstr "KIGEZWEHO Ishusho"
+
+#: app/gui.c:1874
+#, fuzzy
+msgid "Save current pattern..."
+msgstr "Kubika KIGEZWEHO Ishusho"
+
+#: app/gui.c:1944
+msgid "Play Song"
+msgstr ""
+
+#: app/gui.c:1956
+msgid "Play Pattern"
+msgstr ""
+
+#: app/gui.c:1968
+msgid "Stop"
+msgstr "Hagarara"
+
+#: app/gui.c:1973
+msgid "Pat"
+msgstr ""
+
+#: app/gui.c:1979
+#, fuzzy
+msgid "Edited pattern"
+msgstr "Ishusho"
+
+#: app/gui.c:1992
+#, fuzzy
+msgid "When enabled, browsing the playlist does not change the edited pattern."
+msgstr "Bikora i OYA Guhindura>> i Ishusho"
+
+#: app/gui.c:2008
+#, fuzzy
+msgid "Number of Channels:"
+msgstr "Bya"
+
+#: app/gui.c:2025
+msgid "Pattern Length"
+msgstr ""
+
+#: app/gui.c:2060
+#, fuzzy
+msgid "Set preferred accidental type"
+msgstr "Bikunzwe Ubwoko"
+
+#: app/gui.c:2066
+msgid "Measure"
+msgstr ""
+
+#: app/gui.c:2067
+#, fuzzy
+msgid "Enable row highlighting"
+msgstr "Urubariro Igaragaza cyane"
+
+#: app/gui.c:2093
+msgid "Other..."
+msgstr "Ikindi..."
+
+#: app/gui.c:2129
+#, fuzzy
+msgid "Change effect column editing direction"
+msgstr "INGARUKA Inkingi Icyerekezo"
+
+#: app/gui.c:2160
+msgid "Global amplification"
+msgstr ""
+
+#: app/gui.c:2196
+msgid "Pitchbend"
+msgstr ""
+
+#: app/gui.c:2204
+#, fuzzy
+msgid "Reset pitchbend to its normal value"
+msgstr "Kuri Bisanzwe Agaciro"
+
+#: app/gui.c:2216
+msgid "Editing"
+msgstr ""
+
+#: app/gui.c:2223
+msgid "Octave"
+msgstr ""
+
+#: app/gui.c:2232
+msgid "Jump"
+msgstr "Simbuka"
+
+#: app/gui.c:2241
+msgid "Instr"
+msgstr ""
+
+#: app/gui.c:2257
+msgid "Sample"
+msgstr "Urugero"
+
+#: app/gui.c:2296
+#, fuzzy
+msgid "Welcome to SoundTracker!"
+msgstr "Kuri"
+
+# desktop/source\app\ssodlg.src:DLG_SSOLOGIN.text
+#: app/gui.c:2323
+#, fuzzy
+msgid "%M:%S"
+msgstr "%M:%S"
+
+#: app/instrument-editor.c:81
+msgid "VolFade"
+msgstr ""
+
+#: app/instrument-editor.c:82
+msgid "VibSpeed"
+msgstr ""
+
+#: app/instrument-editor.c:83
+msgid "VibDepth"
+msgstr ""
+
+#: app/instrument-editor.c:84
+msgid "VibSweep"
+msgstr ""
+
+# sfx2/source\appl\app.src:STR_ERR_NOFILE.text
+#: app/instrument-editor.c:163 app/instrument-editor.c:186
+#, fuzzy
+msgid "Can't open file."
+msgstr "Ntibishoboka gufungura idosiye$."
+
+#: app/instrument-editor.c:229
+msgid "Sine"
+msgstr "Sinisi"
+
+#: app/instrument-editor.c:229
+msgid "Square"
+msgstr "kare"
+
+#: app/instrument-editor.c:229
+msgid "Saw Down"
+msgstr ""
+
+#: app/instrument-editor.c:229
+msgid "Saw Up"
+msgstr ""
+
+#: app/instrument-editor.c:233
+msgid "Instrument Editor"
+msgstr ""
+
+#: app/instrument-editor.c:242
+#, fuzzy
+msgid "Volume envelope"
+msgstr "Ibahasha"
+
+#: app/instrument-editor.c:250
+#, fuzzy
+msgid "Panning envelope"
+msgstr "Ibahasha"
+
+#: app/instrument-editor.c:267
+msgid "Load Instrument..."
+msgstr ""
+
+#: app/instrument-editor.c:269
+#, fuzzy
+msgid "Save Instrument..."
+msgstr "Kubika"
+
+#: app/instrument-editor.c:271
+msgid "Load XI"
+msgstr ""
+
+#: app/instrument-editor.c:277
+#, fuzzy
+msgid "Save XI"
+msgstr "Kubika"
+
+#: app/instrument-editor.c:296
+msgid "Vibrato Type:"
+msgstr ""
+
+# scp/source\cde\unxbasic_cde.lng:STR_BASIC_CDEINT_NETWORK_STRING2.text
+#: app/instrument-editor.c:368
+msgid "Note:"
+msgstr "Ibisobanuro:"
+
+#: app/instrument-editor.c:386
+msgid "Initialize"
+msgstr "gutangiza"
+
+# #-#-#-#-#  dbaccess.pot (PACKAGE VERSION)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (PACKAGE VERSION)  #-#-#-#-#
+#: app/keys.c:57
+msgid "<none>"
+msgstr "<tacyo>"
+
+#: app/keys.c:129
+#, fuzzy
+msgid "The key that inserts the special keyoff note for FastTracker modules."
+msgstr "Urufunguzo i Bidasanzwe Impugukirwa kugirango Modire"
+
+#: app/keys.c:131
+#, fuzzy
+msgid "The key that increases \"jump\" value."
+msgstr "Urufunguzo Simbuka Agaciro"
+
+#: app/keys.c:133
+#, fuzzy
+msgid "The key that decreases \"jump\" value."
+msgstr "Urufunguzo Simbuka Agaciro"
+
+#: app/keys.c:145
+msgid "Upper Octave Keys..."
+msgstr ""
+
+#: app/keys.c:146
+#, fuzzy
+msgid ""
+"These are the keys on the upper half of the keyboard. The c key is normally "
+"the key to the right of the TAB key. The rest of the keys should be ordered "
+"in a piano keyboard fashion, including the number keys row above."
+msgstr ""
+"i Utubuto ku i Nkuru Bya i Mwandikisho C Urufunguzo ni i Urufunguzo Kuri i "
+"Iburyo: Bya i Urufunguzo Bya i Utubuto in a Mwandikisho i Umubare Utubuto "
+"Urubariro hejuru"
+
+#: app/keys.c:152
+msgid "Lower Octave Keys..."
+msgstr ""
+
+#: app/keys.c:153
+#, fuzzy
+msgid ""
+"These are the keys on the lower half of the keyboard. The c key is normally "
+"the first character key to the right of the left Shift key. The rest of the "
+"keys should be ordered in a piano keyboard fashion, including the row above."
+msgstr ""
+"i Utubuto ku i Ntoya Bya i Mwandikisho C Urufunguzo ni i Itangira Inyuguti "
+"Urufunguzo Kuri i Iburyo: Bya i Ibumoso: Urufunguzo Bya i Utubuto in a "
+"Mwandikisho i Urubariro hejuru"
+
+#: app/keys.c:159
+msgid "Other Keys..."
+msgstr ""
+
+#: app/keys.c:160
+#, fuzzy
+msgid "Various other keys"
+msgstr "Ikindi Utubuto"
+
+#: app/keys.c:513
+msgid "Function"
+msgstr "Umumaro"
+
+#: app/keys.c:514
+msgid "Assignment"
+msgstr "ishyiraho"
+
+#: app/keys.c:523 app/keys.c:526
+msgid "Keyboard Configuration"
+msgstr ""
+
+#: app/keys.c:575
+msgid "Key Group Explanation"
+msgstr ""
+
+#: app/keys.c:592
+msgid "Key Explanation"
+msgstr ""
+
+#: app/keys.c:623
+msgid "Modifiers:"
+msgstr ""
+
+#: app/keys.c:649
+#, fuzzy
+msgid "Learn selected key"
+msgstr "Byahiswemo Urufunguzo"
+
+#: app/keys.c:655
+#, fuzzy
+msgid "Learn all keys"
+msgstr "Byose Utubuto"
+
+#: app/keys.c:661
+#, fuzzy
+msgid ""
+"Please press the desired key combination!\n"
+"Click into left list to cancel"
+msgstr "Kanda i Urufunguzo Ivanga Ibumoso: Urutonde Kuri Kureka"
+
+#: app/keys.c:691 app/menubar.c:104 app/sample-editor.c:2472
+#: app/midi-settings-050.c:635 app/midi-settings-09x.c:638
+msgid "Ok"
+msgstr "Oke"
+
+#: app/keys.c:701 app/midi-settings-050.c:636 app/midi-settings-09x.c:639
+msgid "Apply"
+msgstr "Gushyiraho"
+
+#: app/keys.c:771
+#, fuzzy
+msgid ""
+"The keyboard configuration file is defective.\n"
+"Please use the Keyboard Configuration dialog."
+msgstr "Mwandikisho Iboneza IDOSIYE ni Gukoresha i Ikiganiro"
+
+#: app/keys.c:1000
+#, c-format
+msgid "CH%02d"
+msgstr ""
+
+#: app/keys.c:1001
+#, fuzzy, c-format
+msgid "Fast jump to channel %d"
+msgstr "Simbuka Kuri"
+
+#: app/keys.c:1076
+#, fuzzy
+msgid ""
+"Automatic key configuration unsuccessful.\n"
+"Please use the Keyboard Configuration dialog\n"
+"in the Settings menu."
+msgstr "Urufunguzo Iboneza Gukoresha i i Ibikubiyemo"
+
+#: app/menubar.c:140
+#, fuzzy
+msgid ""
+"Are you sure you want to do this?\n"
+"All changes will be lost!"
+msgstr "Kuri iyi Amahinduka"
+
+#: app/menubar.c:162
+#, fuzzy
+msgid ""
+"Are you sure you want to quit?\n"
+"All changes will be lost!"
+msgstr "Kuri Kuvamo Amahinduka"
+
+# sfx2/source\appl\minbox.src:RID_MAIL_INBOX.BTN_MAILINBOX_OPEN.text
+#: app/menubar.c:419
+#, fuzzy
+msgid "_Open..."
+msgstr "Gufungura..."
+
+# sfx2/source\doc\doc.src:STR_SAVEASDOC.text
+#: app/menubar.c:421
+#, fuzzy
+msgid "Save _as..."
+msgstr "Gushyingura muri..."
+
+#: app/menubar.c:427
+#, fuzzy
+msgid "Save Module as _WAV..."
+msgstr "Kubika Nka"
+
+#: app/menubar.c:429
+#, fuzzy
+msgid "Save XM without samples..."
+msgstr "Kubika Ingero- fatizo"
+
+#: app/menubar.c:434
+#, fuzzy
+msgid "_Quit"
+msgstr "Kuvamo"
+
+#: app/menubar.c:441
+msgid "Clear _All"
+msgstr ""
+
+#: app/menubar.c:443
+msgid "Clear _Patterns Only"
+msgstr ""
+
+#: app/menubar.c:448
+msgid "_Optimize Module"
+msgstr ""
+
+# dbaccess/source/ui/inc/toolbox.hrc:MID_SBA_QRY_CUT.text
+#: app/menubar.c:455 app/menubar.c:466 app/menubar.c:522 app/menubar.c:556
+#, fuzzy
+msgid "C_ut"
+msgstr "Gukata"
+
+# dbaccess/source/ui/inc/toolbox.hrc:MID_SBA_QRY_COPY.text
+#: app/menubar.c:457 app/menubar.c:468 app/menubar.c:524 app/menubar.c:558
+#, fuzzy
+msgid "_Copy"
+msgstr "Gukoporora"
+
+# dbaccess/source/ui/inc/toolbox.hrc:MID_SBA_QRY_PASTE.text
+#: app/menubar.c:459 app/menubar.c:470 app/menubar.c:560
+#, fuzzy
+msgid "_Paste"
+msgstr "Komeka"
+
+#: app/menubar.c:475
+#, fuzzy
+msgid "_Kill notes"
+msgstr "Ibisobanuro"
+
+#: app/menubar.c:480
+msgid "_Insert track"
+msgstr ""
+
+#: app/menubar.c:482
+msgid "_Delete track"
+msgstr ""
+
+#: app/menubar.c:487
+#, fuzzy
+msgid "Increment cmd value"
+msgstr "Cmd+ Agaciro"
+
+#: app/menubar.c:489
+#, fuzzy
+msgid "Decrement cmd value"
+msgstr "Cmd+ Agaciro"
+
+#: app/menubar.c:496
+#, fuzzy
+msgid "_Mark mode"
+msgstr "Ubwoko"
+
+#: app/menubar.c:498 app/menubar.c:554
+#, fuzzy
+msgid "C_lear block marks"
+msgstr "Funga"
+
+#: app/menubar.c:503 app/menubar.c:562
+#, fuzzy
+msgid "_Interpolate effects"
+msgstr "Ingaruka"
+
+#: app/menubar.c:508
+#, fuzzy
+msgid "Transpose half-note up"
+msgstr "Impugukirwa Hejuru"
+
+#: app/menubar.c:510
+#, fuzzy
+msgid "Transpose half-note down"
+msgstr "Impugukirwa Hasi"
+
+#: app/menubar.c:512
+#, fuzzy
+msgid "Transpose octave up"
+msgstr "Hejuru"
+
+#: app/menubar.c:514
+#, fuzzy
+msgid "Transpose octave down"
+msgstr "Hasi"
+
+# dbaccess/source/ui/inc/toolbox.hrc:MID_SBA_QRY_PASTE.text
+#: app/menubar.c:526
+#, fuzzy
+msgid "P_aste"
+msgstr "Komeka"
+
+#: app/menubar.c:531
+msgid "_Jazz Edit Mode"
+msgstr ""
+
+#: app/menubar.c:534
+msgid "_Record keyreleases"
+msgstr ""
+
+#: app/menubar.c:539
+msgid "Transp_osition..."
+msgstr ""
+
+# sc/source\ui\src\autofmt.src:RID_SCDLG_AUTOFORMAT.BTN_PATTERN.text
+#: app/menubar.c:544 app/menubar.c:569 app/menubar.c:707
+#, fuzzy
+msgid "_Pattern"
+msgstr "Ishusho"
+
+#: app/menubar.c:545 app/menubar.c:570 app/menubar.c:708
+msgid "_Track"
+msgstr ""
+
+# filter/source\pdf\impdialog.src:RID_PDF_EXPORT_DLG.RB_SELECTION.text
+#: app/menubar.c:546 app/menubar.c:571
+#, fuzzy
+msgid "_Selection"
+msgstr "Ihitamo"
+
+#: app/menubar.c:578
+msgid "_Find Unused Pattern"
+msgstr ""
+
+#: app/menubar.c:580
+#, fuzzy
+msgid "_Copy Current to Unused Pattern"
+msgstr "Kuri"
+
+#: app/menubar.c:585
+msgid "C_lear Unused Patterns"
+msgstr ""
+
+#: app/menubar.c:587
+msgid "_Pack Patterns"
+msgstr ""
+
+#: app/menubar.c:592
+#, fuzzy
+msgid "_Save Current Pattern"
+msgstr "Kubika"
+
+#: app/menubar.c:594
+msgid "L_oad Pattern"
+msgstr ""
+
+#: app/menubar.c:599
+msgid "Sh_rink Current Pattern"
+msgstr ""
+
+#: app/menubar.c:601
+msgid "_Expand Current Pattern"
+msgstr ""
+
+#: app/menubar.c:608
+msgid "_Toggle Current Channel Permanentness"
+msgstr ""
+
+#: app/menubar.c:610
+msgid "Toggle _All Channels Permanentness"
+msgstr ""
+
+#: app/menubar.c:618
+msgid "_Load XI..."
+msgstr ""
+
+#: app/menubar.c:620
+#, fuzzy
+msgid "_Save XI..."
+msgstr "Kubika"
+
+#: app/menubar.c:625
+msgid "_Clear Current"
+msgstr ""
+
+#: app/menubar.c:630
+msgid "_Delete Unused Instruments"
+msgstr ""
+
+#: app/menubar.c:637
+#, fuzzy
+msgid "_Flicker-free scrolling"
+msgstr "Kigenga"
+
+#: app/menubar.c:640
+#, fuzzy
+msgid "_Previous font"
+msgstr "Intego- nyuguti"
+
+#: app/menubar.c:642
+#, fuzzy
+msgid "_Next font"
+msgstr "Intego- nyuguti"
+
+#: app/menubar.c:647
+#, fuzzy
+msgid "Change preferred _accidental type"
+msgstr "Bikunzwe Ubwoko"
+
+#: app/menubar.c:649
+#, fuzzy
+msgid "Change effect column editing _direction"
+msgstr "INGARUKA Inkingi Icyerekezo"
+
+#: app/menubar.c:657
+msgid "Display _Oscilloscopes"
+msgstr ""
+
+#: app/menubar.c:660
+msgid "_Tracker"
+msgstr ""
+
+#: app/menubar.c:664
+msgid "_Keyboard Configuration..."
+msgstr ""
+
+#: app/menubar.c:666
+msgid "_Audio Configuration..."
+msgstr ""
+
+#: app/menubar.c:668
+msgid "_GUI Configuration..."
+msgstr ""
+
+#: app/menubar.c:674
+msgid "_MIDI Configuration..."
+msgstr ""
+
+#: app/menubar.c:679
+#, fuzzy
+msgid "Disable splash screen"
+msgstr "Mugaragaza"
+
+#: app/menubar.c:681
+#, fuzzy
+msgid "_Save Settings now"
+msgstr "Kubika NONEAHA"
+
+#: app/menubar.c:683
+#, fuzzy
+msgid "Save Settings on _Exit"
+msgstr "Kubika ku"
+
+# offmgr/source\offapp\intro\intro.hrc:TEXT_DEFAULTABOUT.text
+#: app/menubar.c:690
+#, fuzzy
+msgid "_About..."
+msgstr "Ibyerekeye"
+
+#: app/menubar.c:695
+msgid "Show _Tips..."
+msgstr ""
+
+#: app/menubar.c:697
+msgid "_XM Effects..."
+msgstr ""
+
+# sc/source\ui\src\globstr.src:RID_GLOBSTR.STR_HFCMD_FILE.text
+#: app/menubar.c:704
+#, fuzzy
+msgid "_File"
+msgstr "IDOSIYE"
+
+# basctl/source\basicide\basidesh.src:RID_STR_STDMODULENAME.text
+#: app/menubar.c:705
+#, fuzzy
+msgid "_Module"
+msgstr "Modire"
+
+# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
+# basctl/source\basicide\basidesh.src:RID_BASICMENU.MN_EDIT.text
+# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
+# basctl/source\basicide\basidesh.src:RID_BASICPLUGINMENU.MN_PLEDIT.text
+# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
+# basctl/source\basicide\macrodlg.src:RID_MACROCHOOSER.RID_PB_EDIT.text
+# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
+# basctl/source\basicide\moduldlg.src:RID_TP_MODULS.RID_PB_EDIT.text
+# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
+# basctl/source\basicide\moduldlg.src:RID_TP_LIBS.RID_PB_EDIT.text
+#: app/menubar.c:706
+#, fuzzy
+msgid "_Edit"
+msgstr "Guhindura"
+
+#: app/menubar.c:709
+msgid "_Instrument"
+msgstr ""
+
+#: app/menubar.c:710
+#, fuzzy
+msgid "_Settings"
+msgstr "Amagenamiterere"
+
+#: app/menubar.c:711
+#, fuzzy
+msgid "_Help"
+msgstr "Ifashayobora"
+
+#: app/mixers/integer32.c:493
+#, fuzzy
+msgid "Integers mixer, no interpolation, no filters, maximum sample length 1M"
+msgstr "Oya Oya Muyunguruzi Kinini Urugero Uburebure"
+
+#: app/module-info.c:115
+msgid "Instrument Name"
+msgstr ""
+
+#: app/module-info.c:115
+msgid "#smpl"
+msgstr ""
+
+#: app/module-info.c:116
+msgid "Sample Name"
+msgstr ""
+
+#: app/module-info.c:117
+msgid "Linear"
+msgstr "Kurikiramurongo"
+
+#: app/module-info.c:117 app/sample-editor.c:235
+msgid "Amiga"
+msgstr ""
+
+#: app/module-info.c:124
+msgid "Module Info"
+msgstr ""
+
+#: app/module-info.c:164
+msgid "Songname:"
+msgstr ""
+
+#: app/module-info.c:179
+msgid "Frequencies:"
+msgstr ""
+
+#: app/module-info.c:184
+msgid "ProTracker Mode"
+msgstr ""
+
+#: app/module-info.c:395
+#, fuzzy, c-format
+msgid ""
+"Unused patterns: %d (used: %d)\n"
+"Unused instruments: %d (used: %d)\n"
+"\n"
+"Clear unused and reorder playlist?\n"
+msgstr "Kidakoreshwa Na Kwongera gupanga"
+
+#: app/playlist.c:526
+#, fuzzy
+msgid "Insert pattern that is being edited"
+msgstr "Ishusho ni"
+
+#: app/playlist.c:535
+#, fuzzy
+msgid "Remove current playlist entry"
+msgstr "KIGEZWEHO Icyinjijwe"
+
+#: app/playlist.c:543
+msgid "Add + Cpy"
+msgstr ""
+
+#: app/playlist.c:545
+#, fuzzy
+msgid ""
+"Add a free pattern behind current position, and copy current pattern to it"
+msgstr ""
+"a Kigenga Ishusho KIGEZWEHO Ibirindiro Na Gukoporora KIGEZWEHO Ishusho Kuri"
+
+#: app/playlist.c:548
+msgid "Add Free"
+msgstr ""
+
+#: app/playlist.c:550
+#, fuzzy
+msgid "Add a free pattern behind current position"
+msgstr "a Kigenga Ishusho KIGEZWEHO Ibirindiro"
+
+#: app/playlist.c:560
+#, fuzzy
+msgid "Len"
+msgstr "Uburebure"
+
+#: app/playlist.c:574
+#, fuzzy
+msgid "Song length"
+msgstr "Uburebure"
+
+#: app/playlist.c:580
+#, fuzzy
+msgid "Rstrt"
+msgstr "tangira"
+
+#: app/playlist.c:593
+#, fuzzy
+msgid "Song restart position"
+msgstr "Ongera utangire Ibirindiro"
+
+#: app/preferences.c:74
+#, fuzzy
+msgid ""
+"A directory called '.soundtracker' has been created in your\n"
+"home directory to store configuration files.\n"
+msgstr "A bushyinguro Byaremwe in bushyinguro Kuri Iboneza Idosiye"
+
+#: app/sample-editor.c:234
+msgid "No loop"
+msgstr ""
+
+#: app/sample-editor.c:236
+msgid "PingPong"
+msgstr ""
+
+#: app/sample-editor.c:240 app/sample-editor.c:1574
+#, fuzzy
+msgid "8 bits"
+msgstr "8"
+
+#: app/sample-editor.c:241 app/sample-editor.c:1574
+msgid "16 bits"
+msgstr ""
+
+#: app/sample-editor.c:247
+msgid "Sample Editor"
+msgstr ""
+
+#: app/sample-editor.c:287 app/midi-settings-050.c:504
+#: app/midi-settings-09x.c:507
+msgid "Volume"
+msgstr "Ijwi"
+
+#: app/sample-editor.c:288
+msgid "Panning"
+msgstr ""
+
+#: app/sample-editor.c:289
+msgid "Finetune"
+msgstr ""
+
+# filter/source\pdf\impdialog.src:RID_PDF_EXPORT_DLG.RB_SELECTION.text
+#: app/sample-editor.c:309
+#, fuzzy
+msgid "Selection:"
+msgstr "Ihitamo"
+
+#: app/sample-editor.c:313 app/track-editor.c:198 app/track-editor.c:208
+msgid "None"
+msgstr "Ntacyo"
+
+#: app/sample-editor.c:319
+msgid "All"
+msgstr "Byose"
+
+#: app/sample-editor.c:340
+msgid "Length:"
+msgstr "Uburebure:"
+
+#: app/sample-editor.c:356
+#, fuzzy
+msgid "Set as loop"
+msgstr "Nka"
+
+#: app/sample-editor.c:364
+msgid "RelNote"
+msgstr ""
+
+#: app/sample-editor.c:375
+msgid "Load Sample..."
+msgstr ""
+
+#: app/sample-editor.c:377
+#, fuzzy
+msgid "Save WAV..."
+msgstr "Kubika"
+
+#: app/sample-editor.c:379
+#, fuzzy
+msgid "Save region as WAV..."
+msgstr "Kubika Nka"
+
+#: app/sample-editor.c:392
+#, fuzzy
+msgid "Save WAV"
+msgstr "Kubika"
+
+#: app/sample-editor.c:402
+#, fuzzy
+msgid "Save Region"
+msgstr "Kubika"
+
+#: app/sample-editor.c:413
+msgid "Monitor"
+msgstr ""
+
+#: app/sample-editor.c:419
+msgid "Volume Ramp"
+msgstr ""
+
+#: app/sample-editor.c:425
+msgid "Trim"
+msgstr ""
+
+#: app/sample-editor.c:436
+#, fuzzy
+msgid "Zoom to selection"
+msgstr "Kuri Ihitamo"
+
+# starmath/sdi\smslots.src:SID_ADJUST.text
+#: app/sample-editor.c:442
+#, fuzzy
+msgid "Show all"
+msgstr "Kwerekana Byose"
+
+#: app/sample-editor.c:448
+#, fuzzy
+msgid "Zoom in (+50%)"
+msgstr "in 50 %%"
+
+#: app/sample-editor.c:454
+#, fuzzy
+msgid "Zoom out (-50%)"
+msgstr "Inyuma 50 %%"
+
+#: app/sample-editor.c:460
+msgid "Reverse"
+msgstr "Ihindurakerekezo"
+
+#: app/sample-editor.c:470
+msgid "Cut"
+msgstr "Gukata"
+
+#: app/sample-editor.c:476
+msgid "Remove"
+msgstr "Gukuraho"
+
+#: app/sample-editor.c:482
+msgid "Copy"
+msgstr "Guporora"
+
+#: app/sample-editor.c:488
+msgid "Paste"
+msgstr "Komeka"
+
+#: app/sample-editor.c:494
+msgid "Clear Sample"
+msgstr ""
+
+#: app/sample-editor.c:500
+#, fuzzy
+msgid "Crop"
+msgstr "Guporora"
+
+#: app/sample-editor.c:564
+#, fuzzy
+msgid "(no selection)"
+msgstr "(Oya Ihitamo"
+
+#: app/sample-editor.c:1069
+#, fuzzy
+msgid "Out of memory for copybuffer.\n"
+msgstr "Bya Ububiko kugirango"
+
+#: app/sample-editor.c:1188
+msgid "<just pasted>"
+msgstr ""
+
+#: app/sample-editor.c:1301
+#, fuzzy
+msgid "Out of memory for sample data."
+msgstr "Bya Ububiko kugirango Urugero Ibyatanzwe"
+
+# svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_CLASS_READ.text
+#: app/sample-editor.c:1317 app/sample-editor.c:1329
+#, fuzzy
+msgid "Read error."
+msgstr "Ikosa- gusoma"
+
+#: app/sample-editor.c:1476
+#, fuzzy
+msgid "Load stereo sample"
+msgstr "Urugero"
+
+#: app/sample-editor.c:1484
+#, fuzzy
+msgid ""
+"You have selected a stereo sample!\n"
+"(SoundTracker can only handle mono samples!)\n"
+"\n"
+"Please choose which channel to load:"
+msgstr "Byahiswemo a Urugero Ingero- fatizo Guhitamo Kuri Ibirimo"
+
+#: app/sample-editor.c:1495
+msgid "Left"
+msgstr "Ibumoso"
+
+#: app/sample-editor.c:1501
+msgid "Mix"
+msgstr ""
+
+#: app/sample-editor.c:1507
+msgid "Right"
+msgstr "Iburyo"
+
+#: app/sample-editor.c:1575
+msgid "Signed"
+msgstr ""
+
+#: app/sample-editor.c:1575
+msgid "Unsigned"
+msgstr "Bitashizweho umukono"
+
+#: app/sample-editor.c:1576
+msgid "Little-Endian"
+msgstr ""
+
+#: app/sample-editor.c:1576
+msgid "Big-Endian"
+msgstr ""
+
+#: app/sample-editor.c:1577
+msgid "Mono"
+msgstr ""
+
+#: app/sample-editor.c:1577
+msgid "Stereo"
+msgstr ""
+
+#: app/sample-editor.c:1589
+#, fuzzy
+msgid "Load raw sample"
+msgstr "Urugero"
+
+#: app/sample-editor.c:1597
+#, fuzzy
+msgid ""
+"You have selected a sample that is not\n"
+"in a known format. You can load the raw data now.\n"
+"\n"
+"Please choose a format:"
+msgstr ""
+"Byahiswemo a Urugero ni a Imiterere Ibirimo i Ibyatanzwe NONEAHA Guhitamo a "
+"Imiterere"
+
+#: app/sample-editor.c:1623
+#, fuzzy
+msgid "Word format:"
+msgstr "Imiterere"
+
+#: app/sample-editor.c:1670
+msgid "Sampling Rate:"
+msgstr ""
+
+#: app/sample-editor.c:1681
+msgid "8363"
+msgstr ""
+
+#: app/sample-editor.c:1689 app/sample-editor.c:2004
+msgid "OK"
+msgstr "OKE"
+
+#: app/sample-editor.c:1748
+#, fuzzy
+msgid "Can't read sample"
+msgstr "Gusoma Urugero"
+
+#: app/sample-editor.c:1761
+#, fuzzy
+msgid "Sample is too long for current mixer module. Loading anyway."
+msgstr "ni kugirango KIGEZWEHO Modire"
+
+#: app/sample-editor.c:1785
+#, fuzzy
+msgid "Can only handle 8 and 16 bit samples with up to 2 channels"
+msgstr "8 Na Ingero- fatizo Na: Hejuru Kuri 2."
+
+#: app/sample-editor.c:1968
+#, fuzzy
+msgid "Please select region first."
+msgstr "Guhitamo Itangira"
+
+#: app/sample-editor.c:2012
+#, fuzzy
+msgid "Start sampling"
+msgstr "Gutangira"
+
+#: app/sample-editor.c:2042
+#, fuzzy
+msgid "No sampling driver available"
+msgstr "Musomyi: Bihari"
+
+#: app/sample-editor.c:2052 app/sample-editor.c:2055
+msgid "Sampling Window"
+msgstr ""
+
+#: app/sample-editor.c:2104
+#, fuzzy
+msgid "Out of memory while sampling!"
+msgstr "Bya Ububiko"
+
+#: app/sample-editor.c:2155
+msgid "<just sampled>"
+msgstr ""
+
+#: app/sample-editor.c:2186
+#, fuzzy
+msgid "Recorded sample is too long for current mixer module. Using it anyway."
+msgstr "Urugero ni kugirango KIGEZWEHO Modire"
+
+#: app/sample-editor.c:2239
+msgid "Normalize"
+msgstr ""
+
+#: app/sample-editor.c:2240
+msgid "Execute"
+msgstr "Gukora"
+
+#: app/sample-editor.c:2250 app/sample-editor.c:2253
+msgid "Volume Ramping"
+msgstr ""
+
+#: app/sample-editor.c:2269
+#, fuzzy
+msgid "Perform linear volume fade on Selection"
+msgstr "By'umurongo Igice Kwijima ku"
+
+#: app/sample-editor.c:2281
+#, fuzzy
+msgid "Left [%]:"
+msgstr "Ibumoso:"
+
+#: app/sample-editor.c:2284 app/sample-editor.c:2301
+msgid "H"
+msgstr "H"
+
+#: app/sample-editor.c:2290 app/sample-editor.c:2307
+msgid "D"
+msgstr "D"
+
+#: app/sample-editor.c:2298
+#, fuzzy
+msgid "Right [%]:"
+msgstr "Iburyo:"
+
+#: app/sample-editor.c:2442 app/sample-editor.c:2453
+msgid "Trim parameters"
+msgstr ""
+
+#: app/sample-editor.c:2498
+msgid "Trim at the beginning"
+msgstr ""
+
+#: app/sample-editor.c:2505
+msgid "Trim at the end"
+msgstr ""
+
+#: app/sample-editor.c:2512
+msgid "Threshold (dB)"
+msgstr ""
+
+#: app/tips-dialog.c:50
+#, fuzzy
+msgid ""
+"Welcome to SoundTracker!\n"
+"\n"
+"If you are new to this type of program, you will want to get hold of\n"
+"some XM or MOD files first and play with them."
+msgstr ""
+"Kuri Gishya Kuri iyi Ubwoko Bya Porogaramu Kuri Kubona Cyangwa Idosiye "
+"Itangira Na Gukina Na:"
+
+#: app/tips-dialog.c:55
+#, fuzzy
+msgid ""
+"You can make SoundTracker's edit mode more responsive to keyboard\n"
+"input by decreasing the mixing buffer size of the \"Editing\" object in\n"
+"the Audio Configuration."
+msgstr "Ubwoko Guhindura Ubwoko Birenzeho Kuri ku i Ingano Bya i Igikoresho"
+
+#: app/tips-dialog.c:59
+#, fuzzy
+msgid ""
+"You can adjust the loop points in the sample editor by holding Shift\n"
+"and using the left and right mousebuttons.\n"
+msgstr "i Utudomo in i Urugero Muhinduzi ku ikoresha i Ibumoso: Na Iburyo:"
+
+#: app/tips-dialog.c:62
+#, fuzzy
+msgid ""
+"If you want to know more about tracking, and how the various commands\n"
+"work, have a look at http://www.united-trackers.org/"
+msgstr "Kuri Birenzeho Ibyerekeye Na i a ku HTTP www org"
+
+#: app/tips-dialog.c:65
+#, fuzzy
+msgid ""
+"You can assign samples of an instrument to the individual keys by\n"
+"activating its sample and then clicking on the keyboard in the\n"
+"instrument editor page."
+msgstr ""
+"Kugenera... Ingero- fatizo Bya Kuri i Utubuto Urugero Na Hanyuma ku i "
+"Mwandikisho in Muhinduzi Ipaji"
+
+#: app/tips-dialog.c:69
+#, fuzzy
+msgid ""
+"Is your cursor trapped in a number entry field?\n"
+"Just press Return or Tab to free yourself!"
+msgstr "indanga in a Umubare Icyinjijwe Umwanya Kanda Cyangwa Kuri Kigenga"
+
+#: app/tips-dialog.c:81
+#, fuzzy
+msgid "SoundTracker Tip of the day"
+msgstr "Bya i UMUNSI"
+
+#: app/tips-dialog.c:154
+msgid "Previous Tip"
+msgstr ""
+
+#: app/tips-dialog.c:162
+msgid "Next Tip"
+msgstr ""
+
+#: app/tips-dialog.c:174
+#, fuzzy
+msgid "Show tip next time"
+msgstr "Inyobora: Komeza>> Igihe"
+
+#: app/track-editor.c:113
+msgid "Arpeggio"
+msgstr ""
+
+#: app/track-editor.c:114
+#, fuzzy
+msgid "Porta up"
+msgstr "Hejuru"
+
+#: app/track-editor.c:115
+#, fuzzy
+msgid "Porta down"
+msgstr "Hasi"
+
+#: app/track-editor.c:116 app/track-editor.c:180
+msgid "Tone porta"
+msgstr ""
+
+#: app/track-editor.c:117 app/track-editor.c:176
+msgid "Vibrato"
+msgstr ""
+
+#: app/track-editor.c:118
+#, fuzzy
+msgid "Tone porta + Volume slide"
+msgstr "Igice"
+
+#: app/track-editor.c:119
+#, fuzzy
+msgid "Vibrato + Volume slide"
+msgstr "Igice"
+
+#: app/track-editor.c:120
+msgid "Tremolo"
+msgstr ""
+
+#: app/track-editor.c:121 app/track-editor.c:177
+msgid "Set panning"
+msgstr ""
+
+#: app/track-editor.c:122 app/track-editor.c:124
+#, fuzzy
+msgid "Position jump"
+msgstr "Simbuka"
+
+#: app/track-editor.c:123 app/track-editor.c:125 app/track-editor.c:201
+#, fuzzy
+msgid "Set volume"
+msgstr "Igice"
+
+#: app/track-editor.c:126
+#, fuzzy
+msgid "Pattern break"
+msgstr "itandukanya"
+
+#: app/track-editor.c:128
+msgid "Set tempo/bpm"
+msgstr ""
+
+#: app/track-editor.c:129
+#, fuzzy
+msgid "Set global volume"
+msgstr "Igice"
+
+#: app/track-editor.c:130
+#, fuzzy
+msgid "Global volume slide"
+msgstr "Igice Igice"
+
+#: app/track-editor.c:133
+#, fuzzy
+msgid "Key off"
+msgstr "Bidakora"
+
+#: app/track-editor.c:134
+#, fuzzy
+msgid "Set envelop position"
+msgstr "Ibirindiro"
+
+#: app/track-editor.c:138
+#, fuzzy
+msgid "Panning slide"
+msgstr "Igice"
+
+#: app/track-editor.c:139
+#, fuzzy
+msgid "LP filter resonance"
+msgstr "Muyunguruzi..."
+
+#: app/track-editor.c:140
+#, fuzzy
+msgid "Multi retrig note"
+msgstr "Impugukirwa"
+
+#: app/track-editor.c:142
+msgid "Tremor"
+msgstr ""
+
+#: app/track-editor.c:148
+#, fuzzy
+msgid "LP filter cutoff"
+msgstr "Muyunguruzi..."
+
+#: app/track-editor.c:153
+#, fuzzy
+msgid "Fine porta up"
+msgstr "Hejuru"
+
+#: app/track-editor.c:154
+#, fuzzy
+msgid "Fine porta down"
+msgstr "Hasi"
+
+#: app/track-editor.c:155
+#, fuzzy
+msgid "Set gliss control"
+msgstr "Igenzura"
+
+#: app/track-editor.c:156
+#, fuzzy
+msgid "Set vibrato control"
+msgstr "Igenzura"
+
+#: app/track-editor.c:157
+msgid "Set finetune"
+msgstr ""
+
+#: app/track-editor.c:158
+msgid "Set loop begin/loop"
+msgstr ""
+
+#: app/track-editor.c:159
+#, fuzzy
+msgid "Set tremolo control"
+msgstr "Igenzura"
+
+#: app/track-editor.c:161
+#, fuzzy
+msgid "Retrig note"
+msgstr "Impugukirwa"
+
+#: app/track-editor.c:162 app/track-editor.c:174
+#, fuzzy
+msgid "Fine volume slide up"
+msgstr "Igice Igice Hejuru"
+
+#: app/track-editor.c:163 app/track-editor.c:173
+#, fuzzy
+msgid "Fine volume slide down"
+msgstr "Igice Igice Hasi"
+
+#: app/track-editor.c:164
+#, fuzzy
+msgid "Note cut"
+msgstr "Gukata"
+
+#: app/track-editor.c:165
+#, fuzzy
+msgid "Note delay"
+msgstr "Gutinda"
+
+#: app/track-editor.c:166
+#, fuzzy
+msgid "Pattern delay"
+msgstr "Gutinda"
+
+#: app/track-editor.c:171
+#, fuzzy
+msgid "Volume slide down"
+msgstr "Igice Hasi"
+
+#: app/track-editor.c:172
+#, fuzzy
+msgid "Volume slide up"
+msgstr "Igice Hejuru"
+
+#: app/track-editor.c:175
+#, fuzzy
+msgid "Set vibrato speed"
+msgstr "Umuvuduko"
+
+#: app/track-editor.c:178
+#, fuzzy
+msgid "Panning slide left"
+msgstr "Igice Ibumoso:"
+
+#: app/track-editor.c:179
+#, fuzzy
+msgid "Panning slide right"
+msgstr "Igice Iburyo:"
+
+# starmath/source\smres.src:RID_TOOLBOXWINDOW.4.RID_SINX.text
+#: app/track-editor.c:184
+#, fuzzy
+msgid "sine"
+msgstr "Sinisi"
+
+#: app/track-editor.c:185
+#, fuzzy
+msgid "ramp down"
+msgstr "Hasi"
+
+# #-#-#-#-#  svx.pot (PACKAGE VERSION)  #-#-#-#-#
+# svx/sdi\svxslots.src:SID_DRAW_SQUARE.text
+# #-#-#-#-#  svx.pot (PACKAGE VERSION)  #-#-#-#-#
+# svx/source\dialog\sdstring.src:RID_SVXSTR_SQUARE.text
+# #-#-#-#-#  svx.pot (PACKAGE VERSION)  #-#-#-#-#
+# svx/source\dialog\sdstring.src:RID_SVXSTR_LEND10.text
+# #-#-#-#-#  svx.pot (PACKAGE VERSION)  #-#-#-#-#
+# svx/source\dialog\tabarea.src:RID_SVXPAGE_TRANSPARENCE.LB_TRGR_GRADIENT_TYPES.6.text
+# #-#-#-#-#  svx.pot (PACKAGE VERSION)  #-#-#-#-#
+# svx/source\dialog\tabarea.src:RID_SVXPAGE_GRADIENT.LB_GRADIENT_TYPES.5.text
+# #-#-#-#-#  svx.pot (PACKAGE VERSION)  #-#-#-#-#
+# svx/source\svdraw\svdstr.src:STR_ObjNameSingulQUAD.text
+#: app/track-editor.c:186
+#, fuzzy
+msgid "square"
+msgstr "kare"
+
+#: app/track-editor.c:231 app/track-editor.c:237 app/track-editor.c:254
+#: app/track-editor.c:260
+#, fuzzy, c-format
+msgid "None ]"
+msgstr "Ntacyo"
+
+#: app/track-editor.c:360
+msgid "Jazz Edit:"
+msgstr ""
+
+#: app/track-editor.c:405
+msgid "Tracker"
+msgstr ""
+
+#: app/tracker-settings.c:235
+#, fuzzy
+msgid "Font list"
+msgstr "Urutonde"
+
+#: app/tracker-settings.c:255
+#, fuzzy
+msgid "Add font"
+msgstr "Intego- nyuguti"
+
+#: app/tracker-settings.c:261
+#, fuzzy
+msgid "Delete font"
+msgstr "Intego- nyuguti"
+
+#: app/tracker-settings.c:267
+#, fuzzy
+msgid "Apply font"
+msgstr "Intego- nyuguti"
+
+#: app/tracker-settings.c:282
+msgid "Up"
+msgstr "Hejuru"
+
+#: app/tracker-settings.c:285
+msgid "Down"
+msgstr "Hasi"
+
+#: app/tracker-settings.c:288
+#, fuzzy
+msgid "Select font..."
+msgstr "Intego- nyuguti"
+
+#: app/transposition.c:198
+msgid "Whole Song"
+msgstr ""
+
+#: app/transposition.c:199
+msgid "All Patterns"
+msgstr ""
+
+#: app/transposition.c:200
+msgid "Current Pattern"
+msgstr ""
+
+#: app/transposition.c:201
+msgid "Current Track"
+msgstr ""
+
+#: app/transposition.c:205
+msgid "Current Instrument"
+msgstr ""
+
+#: app/transposition.c:206
+msgid "All Instruments"
+msgstr ""
+
+#: app/transposition.c:210
+#, fuzzy
+msgid "Half note up"
+msgstr "Impugukirwa Hejuru"
+
+#: app/transposition.c:211
+#, fuzzy
+msgid "Half note down"
+msgstr "Impugukirwa Hasi"
+
+#: app/transposition.c:212
+#, fuzzy
+msgid "Octave up"
+msgstr "Hejuru"
+
+#: app/transposition.c:213
+#, fuzzy
+msgid "Octave down"
+msgstr "Hasi"
+
+#: app/transposition.c:216
+#, fuzzy
+msgid "Exchange 1 <-> 2"
+msgstr "1. 2."
+
+#: app/transposition.c:217
+#, fuzzy
+msgid "Change 1 -> 2"
+msgstr "1. 2."
+
+#: app/transposition.c:226 app/transposition.c:229
+msgid "Transposition Tools"
+msgstr ""
+
+#: app/transposition.c:250
+#, fuzzy
+msgid "Scope of the operation:"
+msgstr "Bya i"
+
+#: app/transposition.c:257
+msgid "Note Transposition"
+msgstr ""
+
+#: app/transposition.c:288
+msgid "Instrument Changing"
+msgstr ""
+
+#: app/transposition.c:303
+#, fuzzy
+msgid "Instrument 1:"
+msgstr "1."
+
+#: app/transposition.c:305 app/transposition.c:315
+msgid "Current instrument"
+msgstr ""
+
+#: app/transposition.c:313
+#, fuzzy
+msgid "Instrument 2:"
+msgstr "2."
+
+#: app/xm.c:196
+#, fuzzy, c-format
+msgid "Pattern length out of range: %d.\n"
+msgstr "Uburebure Inyuma Bya Urutonde"
+
+#: app/xm.c:547
+#, fuzzy
+msgid "File is no XI instrument."
+msgstr "Idosiye ni Oya"
+
+#: app/xm.c:557
+#, fuzzy, c-format
+msgid "Unknown XI version 0x%x\n"
+msgstr "Verisiyo"
+
+#: app/xm.c:587
+#, fuzzy, c-format
+msgid "Invalid vibtype %d, using Sine.\n"
+msgstr "ikoresha"
+
+#: app/xm.c:859 app/xm.c:984
+#, fuzzy
+msgid "Error while loading patterns."
+msgstr "Itangira..."
+
+#: app/xm.c:927
+msgid "Can't open file"
+msgstr "Ntishoboye gufungura ifayilo/ifishi"
+
+#: app/xm.c:990
+#, fuzzy
+msgid "Error while loading instruments."
+msgstr "Itangira..."
+
+#: app/xm.c:1001
+#, fuzzy, c-format
+msgid ""
+"Module contains sample(s) that are too long for the current mixer.\n"
+"Maximum sample length is %d."
+msgstr "Kirimo Urugero S kugirango i KIGEZWEHO Urugero Uburebure ni"
+
+#: app/xm.c:1399
+#, fuzzy
+msgid "Not FastTracker XM and not supported MOD format!"
+msgstr "Na OYA Imiterere"
+
+#: app/xm.c:1414 app/xm.c:1435
+#, fuzzy
+msgid "Error when file reading or unexpected end of file"
+msgstr "Ryari: IDOSIYE Cyangwa Impera Bya IDOSIYE"
+
+#: app/xm.c:1418
+#, fuzzy
+msgid "Incorrect or unsupported version of pattern file!"
+msgstr "Cyangwa Verisiyo Bya Ishusho IDOSIYE"
+
+#: app/xm.c:1422
+#, fuzzy
+msgid "Incorrect pattern length!"
+msgstr "Ishusho Uburebure"
+
+#: app/xm.c:1468
+#, fuzzy
+msgid "Error during saving pattern!"
+msgstr "Mu kubika Ishusho"
+
+#: app/midi-settings-050.c:497 app/midi-settings-09x.c:500
+#, fuzzy
+msgid "Auto connect"
+msgstr "Kwihuza"
+
+#: app/midi-settings-050.c:512 app/midi-settings-09x.c:515
+msgid "Channel"
+msgstr ""
+
+#: app/midi-settings-050.c:521 app/midi-settings-09x.c:524
+#, fuzzy
+msgid "Client number"
+msgstr "Umubare"
+
+#: app/midi-settings-050.c:531 app/midi-settings-09x.c:534
+msgid "Port number"
+msgstr "inomero y'impagike"
+
+#: app/midi-settings-050.c:549 app/midi-settings-09x.c:552
+msgid "Input"
+msgstr "Ibyinjizwa"
+
+#: app/midi-settings-050.c:558 app/midi-settings-09x.c:561
+msgid "For future development"
+msgstr ""
+
+#: app/midi-settings-050.c:564 app/midi-settings-09x.c:567
+msgid "Output"
+msgstr "Ibisohoka"
+
+#: app/midi-settings-050.c:575 app/midi-settings-09x.c:578
+#, fuzzy
+msgid "Debug level"
+msgstr "urwego"
+
+#: app/midi-settings-050.c:587 app/midi-settings-09x.c:590
+msgid "Misc"
+msgstr ""
+
+#: app/midi-settings-050.c:631 app/midi-settings-09x.c:634
+msgid "MIDI Configuration"
+msgstr ""

@@ -1,0 +1,2118 @@
+# Vietnamese translation for Soundtracker.
+# Copyright © 2006 Free Software Foundation, Inc.
+# Clytie Siddall <clytie@riverland.net.au>, 2006.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: soundtracker-0.6.7\n"
+"Report-Msgid-Bugs-To: soundtracker-discuss@soundtracker.org\n"
+"POT-Creation-Date: 2006-02-25 14:25+0100\n"
+"PO-Revision-Date: 2006-02-19 15:50+1030\n"
+"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
+"Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"X-Generator: LocFactoryEditor 1.6b36\n"
+
+#: app/audioconfig.c:63
+msgid "Playback Output"
+msgstr "Kết xuất phát lại"
+
+#: app/audioconfig.c:69
+msgid "Editing Output"
+msgstr "Kết xuất hiệu chỉnh"
+
+#: app/audioconfig.c:75
+msgid "Sampling"
+msgstr "Lấy mẫu"
+
+#: app/audioconfig.c:261
+msgid "Driver Module"
+msgstr "Mô-đun Điều khiển"
+
+#: app/audioconfig.c:262
+msgid "Mixer Module"
+msgstr "Mô-đun Hoà tiếng"
+
+#: app/audioconfig.c:263
+msgid "Description"
+msgstr "Mô tả"
+
+#: app/audioconfig.c:271 app/audioconfig.c:274
+msgid "Audio Configuration"
+msgstr "Cấu hình Âm thanh"
+
+#: app/audioconfig.c:289
+msgid "Drivers"
+msgstr "Trình điều khiển"
+
+#: app/audioconfig.c:326
+msgid "Mixers"
+msgstr "Bộ hoà tiếng"
+
+#: app/audioconfig.c:359 app/gui-settings.c:512 app/gui.c:274
+#: app/sample-editor.c:2241 app/transposition.c:347
+msgid "Close"
+msgstr "Đóng"
+
+#: app/drivers/alsa-input.c:125 app/drivers/alsa-output.c:134
+#: app/drivers/alsa2-input.c:125 app/drivers/alsa2-output.c:135
+#, c-format
+msgid "(%d bytes)"
+msgstr "(%d byte)"
+
+#: app/drivers/alsa-input.c:128 app/drivers/alsa2-input.c:128
+#, c-format
+msgid "Estimated audio delay: %f microseconds"
+msgstr "Trì hoãn âm thanh xấp xỉ: %f micrô-giây"
+
+#: app/drivers/alsa-input.c:193 app/drivers/alsa-output.c:199
+#: app/drivers/alsa2-input.c:193 app/drivers/alsa2-output.c:198
+#: app/drivers/oss-output.c:205 app/drivers/sun-output.c:197
+msgid "These changes won't take effect until you restart playing."
+msgstr ""
+"Những thay đổi này sẽ không hoạt động cho đến khi đã chạy lại phát nhạc."
+
+#: app/drivers/alsa-input.c:205 app/drivers/alsa-output.c:211
+#: app/drivers/alsa2-input.c:205 app/drivers/alsa2-output.c:210
+#: app/drivers/oss-output.c:233 app/drivers/sun-output.c:225
+#: app/sample-editor.c:1612
+msgid "Resolution:"
+msgstr "Độ phân giải:"
+
+#: app/drivers/alsa-input.c:215 app/drivers/alsa-output.c:221
+#: app/drivers/alsa2-input.c:215 app/drivers/alsa2-output.c:220
+#: app/drivers/oss-output.c:243 app/drivers/sun-output.c:236
+#: app/sample-editor.c:1642
+msgid "Channels:"
+msgstr "Kênh:"
+
+#: app/drivers/alsa-input.c:225 app/drivers/alsa-output.c:231
+#: app/drivers/alsa2-input.c:225 app/drivers/alsa2-output.c:230
+#: app/drivers/oss-output.c:253 app/drivers/sun-output.c:247
+msgid "Frequency [Hz]:"
+msgstr "Tần số [Hz]:"
+
+#: app/drivers/alsa-input.c:235 app/drivers/alsa-output.c:241
+#: app/drivers/alsa2-input.c:235 app/drivers/alsa2-output.c:240
+#: app/drivers/oss-output.c:263 app/drivers/sun-output.c:258
+msgid "Buffer Size:"
+msgstr "Cỡ bộ đệm:"
+
+#: app/drivers/alsa-input.c:268 app/drivers/alsa-output.c:274
+#: app/drivers/alsa2-input.c:268 app/drivers/alsa2-output.c:273
+msgid "ALSA card number:"
+msgstr "Số thẻ ALSA:"
+
+#: app/drivers/alsa-input.c:283 app/drivers/alsa-output.c:289
+#: app/drivers/alsa2-input.c:283 app/drivers/alsa2-output.c:288
+msgid "ALSA device number:"
+msgstr "Số thiết bị ALSA:"
+
+#: app/drivers/alsa-input.c:374
+#, c-format
+msgid ""
+"Couldn't open ALSA device for sound input (card:%d, device:%d):\n"
+"%s"
+msgstr ""
+"Không thể mở thiết bị ALSA để nhập âm thanh (thẻ:%d, thiết bị:%d):\n"
+"%s"
+
+#: app/drivers/alsa-input.c:426 app/drivers/alsa-output.c:426
+#: app/drivers/oss-input.c:267 app/drivers/oss-output.c:424
+msgid "Required sound output format not supported.\n"
+msgstr "Chưa hỗ trợ kiểu dạng thức xuất âm thanh cần thiết.\n"
+
+#: app/drivers/alsa-input.c:439 app/drivers/alsa-output.c:441
+msgid "Required sound output parameters not supported.\n"
+msgstr "Chưa hỗ trợ các tham số xuất âm thanh cần thiết.\n"
+
+#: app/drivers/alsa-output.c:137 app/drivers/alsa2-output.c:138
+#: app/drivers/oss-output.c:149 app/drivers/sun-output.c:137
+#, c-format
+msgid "Estimated audio delay: %f milliseconds"
+msgstr "Trì hoãn âm thanh xấp xỉ: %f mili-giây"
+
+#: app/drivers/alsa-output.c:377 app/drivers/alsa2-input.c:375
+#: app/drivers/alsa2-output.c:379
+#, c-format
+msgid ""
+"Couldn't open ALSA device for sound output (card:%d, device:%d):\n"
+"%s"
+msgstr ""
+"Không thể mở thiết bị ALSA để xuất âm thanh (thẻ:%d, thiết bị:%d):\n"
+"%s"
+
+#: app/drivers/alsa2-input.c:436 app/drivers/alsa2-output.c:440
+msgid "Required output-channel parameters not supported.\n"
+msgstr "Chưa hỗ trợ các tham số kênh xuất âm thanh cần thiết.\n"
+
+#: app/drivers/alsa2-input.c:441 app/drivers/alsa2-output.c:445
+msgid "Unable to prepare ALSA channel.\n"
+msgstr "Không thể chuẩn bị kênh ALSA.\n"
+
+#: app/drivers/alsa2-input.c:454 app/drivers/alsa2-output.c:458
+msgid "Alsa setup error.\n"
+msgstr "Lỗi thiết lập ALSA.\n"
+
+#: app/drivers/esd-output.c:96
+msgid ""
+"Note that the ESD output is unusable in\n"
+"interactive mode because of the latency added\n"
+"by ESD. Use the OSS or ALSA output plug-ins\n"
+"for serious work."
+msgstr ""
+"Hãy ghi chú rằng không thể sử dụng dữ liệu xuất\n"
+"ESD trong chế độ tương tác, vì sự âm ỷ do ESD thêm.\n"
+"Hãy sử dụng bộ cầm phít OSS hay ALSA\n"
+"cho việc quan trọng nào."
+
+#: app/drivers/esd-output.c:161
+#, c-format
+msgid ""
+"Couldn't connect to ESD for sound output:\n"
+"%s"
+msgstr ""
+"Không thể kết nối đến ESD để xuất âm thanh:\n"
+"%s"
+
+#: app/drivers/file-output.c:92 app/drivers/file-output.c:297
+msgid "no settings (yet), sorry!"
+msgstr "chưa thiết lập gì."
+
+#: app/drivers/file-output.c:167 app/drivers/file-output.c:374
+#: app/sample-editor.c:1857
+msgid "Can't open file for writing."
+msgstr "Không thể mở tập tin để ghi."
+
+#: app/drivers/oss-input.c:111 app/drivers/sun-input.c:105
+msgid "These changes won't take effect until you restart sampling."
+msgstr ""
+"Những thay đổi này sẽ không hoạt động cho đến khi đã khởi chạy lại lấy mẫu."
+
+#: app/drivers/oss-input.c:123
+msgid "Input device (e.g. '/dev/dsp'):"
+msgstr "Thiết bị nhập (v.d. </dev/dsp>):"
+
+#: app/drivers/oss-input.c:234
+#, c-format
+msgid ""
+"Couldn't open %s for sampling:\n"
+"%s"
+msgstr ""
+"Không thể mở %s để lấy mẫu :\n"
+"%s"
+
+#: app/drivers/oss-output.c:183 app/drivers/sun-output.c:172
+#, c-format
+msgid "(%d samples)"
+msgstr "(%d mẫu)"
+
+#: app/drivers/oss-output.c:217
+msgid "Output device (e.g. '/dev/dsp'):"
+msgstr "Thiết bị xuất (v.d. </dev/dsp>):"
+
+#: app/drivers/oss-output.c:391
+#, c-format
+msgid ""
+"Couldn't open %s for sound output:\n"
+"%s"
+msgstr ""
+"không thể mở %s để xuất âm thanh:\n"
+"%s"
+
+#: app/drivers/jack-output.c:254
+msgid "transport master"
+msgstr "truyền tải cái"
+
+#: app/drivers/jack-output.c:259
+msgid "declick"
+msgstr "bỏ nhắp"
+
+#: app/drivers/jack-output.c:279
+#, c-format
+msgid "Running at %d Hz with %d frames"
+msgstr "Đang chạy tại %d Hz với %d khung"
+
+#: app/drivers/jack-output.c:283
+#, c-format
+msgid "Jack server not running?"
+msgstr "Trình phục vụ Jack có chạy chưa?"
+
+#: app/drivers/jack-output.c:327
+#, c-format
+msgid "soundtracker"
+msgstr "bộ theo dõi âm thanh"
+
+#: app/drivers/jack-output.c:347
+msgid "out_1"
+msgstr "ra_1"
+
+#: app/drivers/jack-output.c:348
+msgid "out_2"
+msgstr "ra_2"
+
+#: app/drivers/sun-output.c:209
+msgid "Output device (e.g. '/dev/audio'):"
+msgstr "Thiết bị xuất (v.d. </dev/audio>):"
+
+#: app/drivers/sun-output.c:389 app/drivers/sun-output.c:460
+#: app/drivers/sun-input.c:229 app/drivers/sun-input.c:311
+#, c-format
+msgid "%s: %s"
+msgstr "%s: %s"
+
+#: app/drivers/sun-output.c:395
+#, c-format
+msgid "%s: Cannot play (%s)"
+msgstr "%s: không thể phát (%s)"
+
+#: app/drivers/sun-output.c:402 app/drivers/sun-input.c:250
+#, c-format
+msgid "%s: Cannot handle %dHz (%s)"
+msgstr "%s: không thể quản lý %dHz (%s)"
+
+#: app/drivers/sun-output.c:431 app/drivers/sun-input.c:280
+#, c-format
+msgid "%s: Required sound encoding not supported.\n"
+msgstr "%s: chưa hỗ trợ cách mã hoá âm thanh cần thiết.\n"
+
+#: app/drivers/sun-output.c:454 app/drivers/sun-input.c:305
+#, c-format
+msgid "%s: Cannot set block size (%s)"
+msgstr "%s: không thể đặt kích cỡ khối (%s)"
+
+#: app/drivers/sun-input.c:117
+msgid "Input device (e.g. '/dev/audio'):"
+msgstr "Thiết bị nhập (v.d. </dev/audio>):"
+
+#: app/drivers/sun-input.c:242
+#, c-format
+msgid "%s: Cannot record (%s)"
+msgstr "%s: không thể thu (%s)"
+
+#: app/envelope-box.c:878
+msgid "Length"
+msgstr "Dài"
+
+#: app/envelope-box.c:879
+msgid "Current"
+msgstr "Hiện có"
+
+#: app/envelope-box.c:880
+msgid "Offset"
+msgstr "Hiệu số"
+
+#: app/envelope-box.c:881
+msgid "Value"
+msgstr "Giá trị"
+
+#: app/envelope-box.c:887 app/playlist.c:524
+msgid "Insert"
+msgstr "Chèn"
+
+#: app/envelope-box.c:893 app/playlist.c:533
+msgid "Delete"
+msgstr "Xoá bỏ"
+
+#: app/envelope-box.c:985
+msgid ""
+"Graphical\n"
+"Envelope\n"
+"Editor\n"
+"only in\n"
+"GNOME Version"
+msgstr ""
+"Bộ hiệu\n"
+"chỉnh\n"
+"bao bọc\n"
+"đồ họa\n"
+"chỉ trong\n"
+"phiên bản GNOME"
+
+#: app/envelope-box.c:1000
+msgid "Sustain"
+msgstr "Kéo dài"
+
+#: app/envelope-box.c:1008
+msgid "Point"
+msgstr "Điểm"
+
+#: app/envelope-box.c:1010
+msgid "Loop"
+msgstr "Lặp lặp"
+
+#: app/envelope-box.c:1018 app/sample-editor.c:275
+msgid "Start"
+msgstr "Đầu"
+
+#: app/envelope-box.c:1019 app/sample-editor.c:276
+msgid "End"
+msgstr "Cuối"
+
+#: app/file-operations.c:162
+msgid "Load Module"
+msgstr "Tải mô-đun"
+
+#: app/file-operations.c:163
+msgid "Save Module"
+msgstr "Lưu mô-đun"
+
+#: app/file-operations.c:164
+msgid "Render WAV"
+msgstr "Vẽ WAV"
+
+#: app/file-operations.c:165
+msgid "Save Song"
+msgstr "Lưu bài hát"
+
+#: app/file-operations.c:166 app/sample-editor.c:383
+msgid "Load Sample"
+msgstr "Tải mẫu"
+
+#: app/file-operations.c:167
+msgid "Save Sample"
+msgstr "Lưu mẫu"
+
+#: app/file-operations.c:168
+msgid "Load Instrument"
+msgstr "Tải nhạc khí"
+
+#: app/file-operations.c:169
+msgid "Save Instrument"
+msgstr "Lưu nhạc khí"
+
+#: app/file-operations.c:175
+msgid "File"
+msgstr "Tập tin"
+
+#: app/file-operations.c:226
+msgid "Operation not supported."
+msgstr "Chưa hỗ trợ thao tác."
+
+#: app/gui-settings.c:100
+msgid "Scopes Frequency"
+msgstr "Tần số phạm vị"
+
+#: app/gui-settings.c:103
+msgid "Tracker Frequency"
+msgstr "Tần số bộ theo dõi"
+
+#: app/gui-settings.c:317 app/gui-settings.c:320
+msgid "GUI Configuration"
+msgstr "Cấu hình giao diện"
+
+#: app/gui-settings.c:354
+msgid "Hexadecimal row numbers"
+msgstr "Số thứ tự hàng thập lục"
+
+#: app/gui-settings.c:361
+msgid "Use upper case letters for hex numbers"
+msgstr "Hiện số thập lục bằng chữ hoa"
+
+#: app/gui-settings.c:368
+msgid "Asynchronous (IT-style) pattern editing"
+msgstr "Cách hiệu chỉnh mẫu không đồng bộ (kiểu IT)"
+
+#: app/gui-settings.c:375
+msgid "Fxx command updates Tempo/BPM sliders"
+msgstr "Lệnh Fxx cập nhật các bộ trượt Nhịp Độ/NMG"
+
+#: app/gui-settings.c:382
+msgid "Switch to tracker after loading/saving"
+msgstr "Chuyển sang bộ theo dõi sau khih tải/lưu"
+
+#: app/gui-settings.c:389
+msgid "Save window geometry on exit"
+msgstr "Lưu vị trí cửa sổ khi thoát"
+
+#: app/gui-settings.c:396
+msgid "Use note name B instead of H"
+msgstr "Sử dụng tên nốt B thay vào H"
+
+#: app/gui-settings.c:403
+msgid "Save and restore permanent channels"
+msgstr ""
+
+#: app/gui-settings.c:417
+msgid "Scopes buffer size [MB]"
+msgstr "Kích cỡ bộ đệm phạm vị [MB]"
+
+#: app/gui-settings.c:436
+msgid "Track line format:"
+msgstr "Dạng thức đường theo dõi :"
+
+#: app/gui-subs.c:32 app/gui.c:2369
+msgid "Ready."
+msgstr "Sẵn sàng."
+
+#: app/gui-subs.c:33
+msgid "Playing song..."
+msgstr "Đang phát bài hát..."
+
+#: app/gui-subs.c:34
+msgid "Playing pattern..."
+msgstr "Đang phát mẫu..."
+
+#: app/gui-subs.c:35
+msgid "Loading module..."
+msgstr "Đang tải mô-đun..."
+
+#: app/gui-subs.c:36
+msgid "Module loaded."
+msgstr "Mô-đun đã được tải."
+
+#: app/gui-subs.c:37
+msgid "Saving module..."
+msgstr "Đang lưu mô-đun..."
+
+#: app/gui-subs.c:38
+msgid "Module saved."
+msgstr "Mô-đun đã được lưu."
+
+#: app/gui-subs.c:39
+msgid "Loading sample..."
+msgstr "Đang tải mẫu..."
+
+#: app/gui-subs.c:40
+msgid "Sample loaded."
+msgstr "Mẫu đã được tải."
+
+#: app/gui-subs.c:41
+msgid "Saving sample..."
+msgstr "Đang lưu mẫu..."
+
+#: app/gui-subs.c:42
+msgid "Sample saved."
+msgstr "Mẫu đã được lưu."
+
+#: app/gui-subs.c:43
+msgid "Loading instrument..."
+msgstr "Đang tải nhạc khí..."
+
+#: app/gui-subs.c:44
+msgid "Instrument loaded."
+msgstr "Nhạc khí đã được tải."
+
+#: app/gui-subs.c:45
+msgid "Saving instrument..."
+msgstr "Đang lưu nhạc khí..."
+
+#: app/gui-subs.c:46
+msgid "Instrument saved."
+msgstr "Nhạc khí đã được lưu."
+
+#: app/gui-subs.c:47
+msgid "Saving song..."
+msgstr "Đang lưu bài hát..."
+
+#: app/gui-subs.c:48
+msgid "Song saved."
+msgstr "Bài hát đã được lưu."
+
+#: app/gui-subs.c:483 app/gui-subs.c:554
+msgid "Question"
+msgstr "Câu hỏi"
+
+#: app/gui-subs.c:492
+msgid "Yes"
+msgstr "Có"
+
+#: app/gui-subs.c:500
+msgid "No"
+msgstr "Không"
+
+#: app/gui-subs.c:507 app/gui-subs.c:571 app/keys.c:711
+#: app/sample-editor.c:1520 app/sample-editor.c:1695 app/sample-editor.c:2019
+#: app/sample-editor.c:2480 app/midi-settings-050.c:637
+#: app/midi-settings-09x.c:640
+msgid "Cancel"
+msgstr "Thôi"
+
+#: app/gui-subs.c:589
+msgid "Warning"
+msgstr "Cảnh báo"
+
+#: app/gui-subs.c:615
+msgid "Error!"
+msgstr "• Lỗi •"
+
+#: app/gui.c:140
+msgid "Tempo"
+msgstr "Nhịp độ"
+
+#: app/gui.c:245 app/gui.c:255 app/gui.c:2078
+msgid "Row highlighting configuration"
+msgstr "Cấu hình tô sáng hàng"
+
+#: app/gui.c:301
+msgid "Highlight rows (major / minor):"
+msgstr "Tô sáng hàng (lớn / nhỏ):"
+
+#: app/gui.c:478
+msgid ""
+"Odd pattern rows contain data which will be lost after shrinking.\n"
+"Do you want to continue anyway?"
+msgstr ""
+"Các hàng mẫu lẻ chứa dữ liệu sẽ bị mất sau khi thu hẹp.\n"
+"Bạn vẫn còn muốn tiếp tục không?"
+
+#: app/gui.c:506
+msgid ""
+"The pattern is too long for expanding.\n"
+"Some data at the end of the pattern will be lost.\n"
+"Do you want to continue anyway?"
+msgstr ""
+"Mẫu quá dài để mở rộng.\n"
+"Một số dữ liệu tại cuỗi mẫu này sẽ bị mất. Bạn vẫn còn muốn tiếp tục không?"
+
+#: app/gui.c:555 app/instrument-editor.c:212 app/sample-editor.c:1719
+#: app/sample-editor.c:1915 app/sample-editor.c:1959
+msgid "No file selected."
+msgstr "Chưa chọn tập tin."
+
+#: app/gui.c:563
+msgid ""
+"Are you sure you want to free the current project?\n"
+"All changes will be lost!"
+msgstr ""
+"Bạn có chắc muốn giải phóng dự án hiện thời không?\n"
+"• Mọi thay đổi sẽ bị mất hoàn toàn. •"
+
+#: app/gui.c:577 app/gui.c:592 app/gui.c:607 app/gui.c:625
+#: app/sample-editor.c:1928 app/sample-editor.c:1977
+msgid "Are you sure you want to overwrite the file?"
+msgstr "Bạn có chắc muốn ghi đè lên tập tin này không?"
+
+#: app/gui.c:638
+msgid "Error when opening pattern file!"
+msgstr "• Gặp lỗi khi mở tập tin mẫu. •"
+
+#: app/gui.c:651
+msgid ""
+"The length of the pattern being loaded doesn't match with that of current "
+"pattern in module.\n"
+"Do you want to change the current pattern length?"
+msgstr ""
+"Mẫu đang được tải không có cùng một độ dài với mẫu hiện thời trong mô-đun.\n"
+"Bạn có muốn thay đổi độ dài của mẫu hiện thời không?"
+
+#: app/gui.c:1719
+msgid "SoundTracker Startup"
+msgstr "Khởi chạy Bộ Theo dõi Âm thanh"
+
+#: app/gui.c:1778 app/gui.c:1815
+msgid "Loading..."
+msgstr "Đang tải..."
+
+#: app/gui.c:1804
+msgid "Use SoundTracker!"
+msgstr "Sử dụng Bộ Theo dõi Âm thanh nhé. :)"
+
+#: app/gui.c:1862
+msgid "Load XM..."
+msgstr "Tải XM..."
+
+#: app/gui.c:1864
+msgid "Save XM..."
+msgstr "Lưu XM..."
+
+#: app/gui.c:1867
+msgid "Render module as WAV..."
+msgstr "Vẽ mô-đun là WAV..."
+
+#: app/gui.c:1870
+msgid "Save song as XM..."
+msgstr "Lưu bài hát dạng XM..."
+
+#: app/gui.c:1872
+msgid "Load current pattern..."
+msgstr "Tải mẫu hiện có..."
+
+#: app/gui.c:1874
+msgid "Save current pattern..."
+msgstr "Lưu mẫu hiện có..."
+
+#: app/gui.c:1944
+msgid "Play Song"
+msgstr "Phát bài hát"
+
+#: app/gui.c:1956
+msgid "Play Pattern"
+msgstr "Phát mẫu"
+
+#: app/gui.c:1968
+msgid "Stop"
+msgstr "Dừng"
+
+#: app/gui.c:1973
+msgid "Pat"
+msgstr "Mẫu"
+
+#: app/gui.c:1979
+msgid "Edited pattern"
+msgstr "Mẫu đã sửa đổi"
+
+#: app/gui.c:1992
+msgid "When enabled, browsing the playlist does not change the edited pattern."
+msgstr ""
+"Khi bật, việc duyệt qua danh mục nhạc không thay đổi mẫu đã hiệu chỉnh."
+
+#: app/gui.c:2008
+msgid "Number of Channels:"
+msgstr "Số kênh:"
+
+#: app/gui.c:2025
+msgid "Pattern Length"
+msgstr "Dài mẫu"
+
+#: app/gui.c:2060
+msgid "Set preferred accidental type"
+msgstr "Đặt kiểu dấu thăng giáng bất thường đã muốn"
+
+#: app/gui.c:2066
+msgid "Measure"
+msgstr "Đo"
+
+#: app/gui.c:2067
+msgid "Enable row highlighting"
+msgstr "Bật tô sáng hàng"
+
+#: app/gui.c:2093
+msgid "Other..."
+msgstr "Khác..."
+
+#: app/gui.c:2129
+msgid "Change effect column editing direction"
+msgstr "Thay đổi hướng hiệu chỉnh cột hiệu ứng"
+
+#: app/gui.c:2160
+msgid "Global amplification"
+msgstr "Khuếch đại toàn cục"
+
+#: app/gui.c:2196
+msgid "Pitchbend"
+msgstr "Pitchbend"
+
+#: app/gui.c:2204
+msgid "Reset pitchbend to its normal value"
+msgstr "Phục hồi giá trị gốc của cong cao giọng (pitchbend)"
+
+#: app/gui.c:2216
+msgid "Editing"
+msgstr "HIệu chỉnh"
+
+#: app/gui.c:2223
+msgid "Octave"
+msgstr "Quãng tám"
+
+#: app/gui.c:2232
+msgid "Jump"
+msgstr "Bước"
+
+#: app/gui.c:2241
+msgid "Instr"
+msgstr "Khí"
+
+#: app/gui.c:2257
+msgid "Sample"
+msgstr "Mẫu"
+
+#: app/gui.c:2296
+msgid "Welcome to SoundTracker!"
+msgstr "Chào mừng dùng Bộ Theo dõi Âm thanh."
+
+#: app/gui.c:2323
+msgid "%M:%S"
+msgstr "%M:%S"
+
+#: app/instrument-editor.c:81
+msgid "VolFade"
+msgstr "Mờ âm"
+
+#: app/instrument-editor.c:82
+msgid "VibSpeed"
+msgstr "Tốc độ rung"
+
+#: app/instrument-editor.c:83
+msgid "VibDepth"
+msgstr "Sâu rung"
+
+#: app/instrument-editor.c:84
+msgid "VibSweep"
+msgstr "Quét rung"
+
+#: app/instrument-editor.c:163 app/instrument-editor.c:186
+msgid "Can't open file."
+msgstr "Không thể mở tập tin."
+
+#: app/instrument-editor.c:229
+msgid "Sine"
+msgstr "Sin"
+
+#: app/instrument-editor.c:229
+msgid "Square"
+msgstr "Vuông"
+
+#: app/instrument-editor.c:229
+msgid "Saw Down"
+msgstr "Cưa xuống"
+
+#: app/instrument-editor.c:229
+msgid "Saw Up"
+msgstr "Cưa lên"
+
+#: app/instrument-editor.c:233
+msgid "Instrument Editor"
+msgstr "Bộ hiệu chỉnh nhạc khí"
+
+#: app/instrument-editor.c:242
+msgid "Volume envelope"
+msgstr "Bộ bao âm lượng"
+
+#: app/instrument-editor.c:250
+msgid "Panning envelope"
+msgstr "Bộ bao kéo ngang"
+
+#: app/instrument-editor.c:267
+msgid "Load Instrument..."
+msgstr "Tải nhạc khí"
+
+#: app/instrument-editor.c:269
+msgid "Save Instrument..."
+msgstr "Lưu nhạc khí..."
+
+#: app/instrument-editor.c:271
+msgid "Load XI"
+msgstr "Tải XI"
+
+#: app/instrument-editor.c:277
+msgid "Save XI"
+msgstr "Lưu XI"
+
+#: app/instrument-editor.c:296
+msgid "Vibrato Type:"
+msgstr "Kiểu vi-bợ-ră-tộ :"
+
+#: app/instrument-editor.c:368
+msgid "Note:"
+msgstr "Nốt:"
+
+#: app/instrument-editor.c:386
+msgid "Initialize"
+msgstr "Sở khởi"
+
+#: app/keys.c:57
+msgid "<none>"
+msgstr "<không có>"
+
+#: app/keys.c:129
+msgid "The key that inserts the special keyoff note for FastTracker modules."
+msgstr "Phím chèn nốt kiểu ra phím đặc biệt cho mô-đun FastTracker."
+
+#: app/keys.c:131
+msgid "The key that increases \"jump\" value."
+msgstr "Phím tăng giá trị « bước »."
+
+#: app/keys.c:133
+msgid "The key that decreases \"jump\" value."
+msgstr "Phím giảm giá trị « bước »."
+
+#: app/keys.c:145
+msgid "Upper Octave Keys..."
+msgstr "Phím quãng tám trên..."
+
+#: app/keys.c:146
+msgid ""
+"These are the keys on the upper half of the keyboard. The c key is normally "
+"the key to the right of the TAB key. The rest of the keys should be ordered "
+"in a piano keyboard fashion, including the number keys row above."
+msgstr ""
+"Những phím này chiếm phần hai trên của bàn phím. Phím C thường là phím bên "
+"phải phím Tab. Các phím còn lại nên theo thứ tự pianô, gồm hàng phím số bên "
+"trên."
+
+#: app/keys.c:152
+msgid "Lower Octave Keys..."
+msgstr "Phím quãng tám dưới..."
+
+#: app/keys.c:153
+msgid ""
+"These are the keys on the lower half of the keyboard. The c key is normally "
+"the first character key to the right of the left Shift key. The rest of the "
+"keys should be ordered in a piano keyboard fashion, including the row above."
+msgstr ""
+"Những phím này chiếm phần hai dưới của bàn phím. Phím C thường là phím bên "
+"phải phím Shift trái. Các phím còn lại nên theo thứ tự pianô, gồm hàng bên "
+"trên."
+
+#: app/keys.c:159
+msgid "Other Keys..."
+msgstr "Phím khác..."
+
+#: app/keys.c:160
+msgid "Various other keys"
+msgstr "Nhiều phím khác nhau"
+
+#: app/keys.c:513
+msgid "Function"
+msgstr "Chức năng"
+
+#: app/keys.c:514
+msgid "Assignment"
+msgstr "Cách gán"
+
+#: app/keys.c:523 app/keys.c:526
+msgid "Keyboard Configuration"
+msgstr "Cấu hình Bàn phím"
+
+#: app/keys.c:575
+msgid "Key Group Explanation"
+msgstr "Mô tả nhóm phím"
+
+#: app/keys.c:592
+msgid "Key Explanation"
+msgstr "Mô tả phím"
+
+#: app/keys.c:623
+msgid "Modifiers:"
+msgstr "Phím sửa đổi:"
+
+#: app/keys.c:649
+msgid "Learn selected key"
+msgstr "Học biết phím được chọn"
+
+#: app/keys.c:655
+msgid "Learn all keys"
+msgstr "Học biết mọi phím"
+
+#: app/keys.c:661
+msgid ""
+"Please press the desired key combination!\n"
+"Click into left list to cancel"
+msgstr ""
+"Hãy bấm tổ hợp phím đã muốn.\n"
+"Nhắp vào danh sách trái để thôi."
+
+#: app/keys.c:691 app/menubar.c:104 app/sample-editor.c:2472
+#: app/midi-settings-050.c:635 app/midi-settings-09x.c:638
+msgid "Ok"
+msgstr "Được"
+
+#: app/keys.c:701 app/midi-settings-050.c:636 app/midi-settings-09x.c:639
+msgid "Apply"
+msgstr "Áp dụng"
+
+#: app/keys.c:771
+msgid ""
+"The keyboard configuration file is defective.\n"
+"Please use the Keyboard Configuration dialog."
+msgstr ""
+"Tập tin cấu hình bàn phím là sai.\n"
+"Hãy sử dụng hộp thoại Cấu hình Bàn phím."
+
+#: app/keys.c:1000
+#, c-format
+msgid "CH%02d"
+msgstr "CH%02d"
+
+#: app/keys.c:1001
+#, c-format
+msgid "Fast jump to channel %d"
+msgstr "Bước nhanh tới kênh %d"
+
+#: app/keys.c:1076
+msgid ""
+"Automatic key configuration unsuccessful.\n"
+"Please use the Keyboard Configuration dialog\n"
+"in the Settings menu."
+msgstr ""
+"Việc tự động cấu hình phím bị lỗi.\n"
+"Hãy sử dụng hộp thoại Cấu hình Bàn phím\n"
+"trong trình đơn Thiết lập."
+
+#: app/menubar.c:140
+msgid ""
+"Are you sure you want to do this?\n"
+"All changes will be lost!"
+msgstr ""
+"Bạn có chắc là muốn làm việc này không?\n"
+"Mọi thay đổi sẽ bị mất hoàn toàn."
+
+#: app/menubar.c:162
+msgid ""
+"Are you sure you want to quit?\n"
+"All changes will be lost!"
+msgstr ""
+"Bạn có chắc muốn thoát không?\n"
+"Mọi thay đổi sẽ bị mất hoàn toàn."
+
+#: app/menubar.c:419
+msgid "_Open..."
+msgstr "_Mở..."
+
+#: app/menubar.c:421
+msgid "Save _as..."
+msgstr "Lưu _dạng..."
+
+#: app/menubar.c:427
+msgid "Save Module as _WAV..."
+msgstr "Lưu mô-đun dạng _WAV..."
+
+#: app/menubar.c:429
+msgid "Save XM without samples..."
+msgstr "Lưu XM không có mẫu..."
+
+#: app/menubar.c:434
+msgid "_Quit"
+msgstr "T_hoát"
+
+#: app/menubar.c:441
+msgid "Clear _All"
+msgstr "Xoá _hết"
+
+#: app/menubar.c:443
+msgid "Clear _Patterns Only"
+msgstr "Xoá chỉ các _mẫu"
+
+#: app/menubar.c:448
+msgid "_Optimize Module"
+msgstr "_Ưu tiên hóa mô-đun"
+
+#: app/menubar.c:455 app/menubar.c:466 app/menubar.c:522 app/menubar.c:556
+msgid "C_ut"
+msgstr "Cắ_t"
+
+#: app/menubar.c:457 app/menubar.c:468 app/menubar.c:524 app/menubar.c:558
+msgid "_Copy"
+msgstr "_Chép"
+
+#: app/menubar.c:459 app/menubar.c:470 app/menubar.c:560
+msgid "_Paste"
+msgstr "_Dán"
+
+#: app/menubar.c:475
+msgid "_Kill notes"
+msgstr "_Buộc kết thúc nốt"
+
+#: app/menubar.c:480
+msgid "_Insert track"
+msgstr "_Chèn rãnh"
+
+#: app/menubar.c:482
+msgid "_Delete track"
+msgstr "_Xoá bỏ rãnh"
+
+#: app/menubar.c:487
+msgid "Increment cmd value"
+msgstr "Tăng dần giá trị lệnh"
+
+#: app/menubar.c:489
+msgid "Decrement cmd value"
+msgstr "Giảm dần giá trị lệnh"
+
+#: app/menubar.c:496
+msgid "_Mark mode"
+msgstr "Chế độ đánh _dấu"
+
+#: app/menubar.c:498 app/menubar.c:554
+msgid "C_lear block marks"
+msgstr "X_oá các dấu khối"
+
+#: app/menubar.c:503 app/menubar.c:562
+msgid "_Interpolate effects"
+msgstr "Nội _suy hiệu ứng"
+
+#: app/menubar.c:508
+msgid "Transpose half-note up"
+msgstr "Đổi chỗ nửa nốt lên"
+
+#: app/menubar.c:510
+msgid "Transpose half-note down"
+msgstr "Đổi chỗ nửa nốt xuống"
+
+#: app/menubar.c:512
+msgid "Transpose octave up"
+msgstr "Đổi chố quãng tám lên"
+
+#: app/menubar.c:514
+msgid "Transpose octave down"
+msgstr "Đổi chố quãng tám xuống"
+
+#: app/menubar.c:526
+msgid "P_aste"
+msgstr "D_án"
+
+#: app/menubar.c:531
+msgid "_Jazz Edit Mode"
+msgstr "Chế độ hiệu chỉnh nhạc _ja"
+
+#: app/menubar.c:534
+msgid "_Record keyreleases"
+msgstr ""
+
+#: app/menubar.c:539
+msgid "Transp_osition..."
+msgstr "Đổi ch_ỗ..."
+
+#: app/menubar.c:544 app/menubar.c:569 app/menubar.c:707
+msgid "_Pattern"
+msgstr "_Mẫu"
+
+#: app/menubar.c:545 app/menubar.c:570 app/menubar.c:708
+msgid "_Track"
+msgstr "_Rãnh"
+
+#: app/menubar.c:546 app/menubar.c:571
+msgid "_Selection"
+msgstr "Vùng _chọn"
+
+#: app/menubar.c:578
+msgid "_Find Unused Pattern"
+msgstr "Tìm mẫu kh_ông dùng"
+
+#: app/menubar.c:580
+msgid "_Copy Current to Unused Pattern"
+msgstr "_Chép điều hiện thời vào mẫu không dùng"
+
+#: app/menubar.c:585
+msgid "C_lear Unused Patterns"
+msgstr "X_oá các mẫu không dùng"
+
+#: app/menubar.c:587
+msgid "_Pack Patterns"
+msgstr "_Nén mẫu"
+
+#: app/menubar.c:592
+msgid "_Save Current Pattern"
+msgstr "_Lưu mẫu hiện có"
+
+#: app/menubar.c:594
+msgid "L_oad Pattern"
+msgstr "Tải _mẫu"
+
+#: app/menubar.c:599
+msgid "Sh_rink Current Pattern"
+msgstr "Thu hẹ_p mẫu hiện có"
+
+#: app/menubar.c:601
+msgid "_Expand Current Pattern"
+msgstr "Mở _rộng mẫu hiện có"
+
+#: app/menubar.c:608
+msgid "_Toggle Current Channel Permanentness"
+msgstr ""
+
+#: app/menubar.c:610
+msgid "Toggle _All Channels Permanentness"
+msgstr ""
+
+#: app/menubar.c:618
+msgid "_Load XI..."
+msgstr "_Tải XI..."
+
+#: app/menubar.c:620
+msgid "_Save XI..."
+msgstr "_Lưu XI..."
+
+#: app/menubar.c:625
+msgid "_Clear Current"
+msgstr "X_oá điều hiện có"
+
+#: app/menubar.c:630
+msgid "_Delete Unused Instruments"
+msgstr "_Xoá bỏ các nhạc khí không dùng"
+
+#: app/menubar.c:637
+msgid "_Flicker-free scrolling"
+msgstr "C_uộn miễn lung linh"
+
+#: app/menubar.c:640
+msgid "_Previous font"
+msgstr "Phông chữ t_rước"
+
+#: app/menubar.c:642
+msgid "_Next font"
+msgstr "Phông chữ _kế"
+
+#: app/menubar.c:647
+msgid "Change preferred _accidental type"
+msgstr "Đổi kiểu dấu th_ăng giáng bất thường đã muốn"
+
+#: app/menubar.c:649
+msgid "Change effect column editing _direction"
+msgstr "Đổi h_ướng hiệu chỉnh cột hiệu ứng"
+
+#: app/menubar.c:657
+msgid "Display _Oscilloscopes"
+msgstr "Hiện các cái nghiệm d_ao động"
+
+#: app/menubar.c:660
+msgid "_Tracker"
+msgstr "Bộ th_eo dõi"
+
+#: app/menubar.c:664
+msgid "_Keyboard Configuration..."
+msgstr "Cấu hình _Bàn phím..."
+
+#: app/menubar.c:666
+msgid "_Audio Configuration..."
+msgstr "Cấu hình _Âm thanh..."
+
+#: app/menubar.c:668
+msgid "_GUI Configuration..."
+msgstr "_Cấu hình g_iao diện..."
+
+#: app/menubar.c:674
+msgid "_MIDI Configuration..."
+msgstr "Cấu hình _MIDI..."
+
+#: app/menubar.c:679
+msgid "Disable splash screen"
+msgstr "Tắt màn hình giật gân"
+
+#: app/menubar.c:681
+msgid "_Save Settings now"
+msgstr "_Lưu thiết lập ngay"
+
+#: app/menubar.c:683
+msgid "Save Settings on _Exit"
+msgstr "Lưu thiết lập khi t_hoát"
+
+#: app/menubar.c:690
+msgid "_About..."
+msgstr "_Giới thiệu..."
+
+#: app/menubar.c:695
+msgid "Show _Tips..."
+msgstr "Hiện _mẹo..."
+
+#: app/menubar.c:697
+msgid "_XM Effects..."
+msgstr "Hiệu ứng _XM..."
+
+#: app/menubar.c:704
+msgid "_File"
+msgstr "_Tập tin"
+
+#: app/menubar.c:705
+msgid "_Module"
+msgstr "_Mô-đun"
+
+#: app/menubar.c:706
+msgid "_Edit"
+msgstr "_Hiệu chỉnh"
+
+#: app/menubar.c:709
+msgid "_Instrument"
+msgstr "Nhạc _khí"
+
+#: app/menubar.c:710
+msgid "_Settings"
+msgstr "Thiết _lập"
+
+#: app/menubar.c:711
+msgid "_Help"
+msgstr "Trợ _giúp"
+
+#: app/mixers/integer32.c:493
+msgid "Integers mixer, no interpolation, no filters, maximum sample length 1M"
+msgstr "Bộ hoà tiếng số nguyên, không nội suy, không lọc, độ dài mẫu tối đa 1M"
+
+#: app/module-info.c:115
+msgid "Instrument Name"
+msgstr "Tên nhạc khí"
+
+#: app/module-info.c:115
+msgid "#smpl"
+msgstr "#mẫu"
+
+#: app/module-info.c:116
+msgid "Sample Name"
+msgstr "Tên mẫu"
+
+#: app/module-info.c:117
+msgid "Linear"
+msgstr "Tuyến"
+
+# Name: don't translate / Tên: đừng dịch
+#: app/module-info.c:117 app/sample-editor.c:235
+msgid "Amiga"
+msgstr "Amiga"
+
+#: app/module-info.c:124
+msgid "Module Info"
+msgstr "Thông tin mô-đun"
+
+#: app/module-info.c:164
+msgid "Songname:"
+msgstr "Tên bài hát:"
+
+#: app/module-info.c:179
+msgid "Frequencies:"
+msgstr "Tần số :"
+
+#: app/module-info.c:184
+msgid "ProTracker Mode"
+msgstr "Chế độ Siêu Theo dõi "
+
+#: app/module-info.c:395
+#, c-format
+msgid ""
+"Unused patterns: %d (used: %d)\n"
+"Unused instruments: %d (used: %d)\n"
+"\n"
+"Clear unused and reorder playlist?\n"
+msgstr ""
+"Mẫu không dùng: %d (đã dùng: %d)\n"
+"Nạc khí không dùng: %d (đã dùng: %d)\n"
+"\n"
+"Xoá các điều không dùng,\n"
+"và sắp xếp lại danh mục nhạc không?\n"
+
+#: app/playlist.c:526
+msgid "Insert pattern that is being edited"
+msgstr "Chèn mẫu đang được hiệu chỉnh"
+
+#: app/playlist.c:535
+msgid "Remove current playlist entry"
+msgstr "Gỡ bỏ mục nhập danh mục nhạc hiện có"
+
+#: app/playlist.c:543
+msgid "Add + Cpy"
+msgstr "Thêm và Chép"
+
+#: app/playlist.c:545
+msgid ""
+"Add a free pattern behind current position, and copy current pattern to it"
+msgstr ""
+"Thêm một mẫu tự do ở sau vị trí hiện có, và sao chép mẫu hiện thời vào nó."
+
+#: app/playlist.c:548
+msgid "Add Free"
+msgstr "Thêm Tự do"
+
+#: app/playlist.c:550
+msgid "Add a free pattern behind current position"
+msgstr "Thêm một mẫu tự do ở sau vị trí hiện có"
+
+#: app/playlist.c:560
+#, fuzzy
+msgid "Len"
+msgstr "Dài"
+
+#: app/playlist.c:574
+msgid "Song length"
+msgstr "Dài bài hát"
+
+#: app/playlist.c:580
+#, fuzzy
+msgid "Rstrt"
+msgstr "Khí"
+
+#: app/playlist.c:593
+msgid "Song restart position"
+msgstr "Vị trí phát lại bài hát"
+
+#: app/preferences.c:74
+msgid ""
+"A directory called '.soundtracker' has been created in your\n"
+"home directory to store configuration files.\n"
+msgstr ""
+"Mới tạo một thư mục tên <.soundtracker> trong thư mục\n"
+"chính của bạn, để lưu các tập tin cấu hình.\n"
+
+#: app/sample-editor.c:234
+msgid "No loop"
+msgstr "Không lặp"
+
+#: app/sample-editor.c:236
+msgid "PingPong"
+msgstr "PingPong"
+
+#: app/sample-editor.c:240 app/sample-editor.c:1574
+msgid "8 bits"
+msgstr "8 bit"
+
+#: app/sample-editor.c:241 app/sample-editor.c:1574
+msgid "16 bits"
+msgstr "16 bit"
+
+#: app/sample-editor.c:247
+msgid "Sample Editor"
+msgstr "Bộ HIệu chỉnh Mẫu"
+
+#: app/sample-editor.c:287 app/midi-settings-050.c:504
+#: app/midi-settings-09x.c:507
+msgid "Volume"
+msgstr "Âm lượng"
+
+#: app/sample-editor.c:288
+msgid "Panning"
+msgstr "Kéo ngang"
+
+#: app/sample-editor.c:289
+msgid "Finetune"
+msgstr "Dò chỉnh"
+
+#: app/sample-editor.c:309
+msgid "Selection:"
+msgstr "Vùng chọn:"
+
+#: app/sample-editor.c:313 app/track-editor.c:198 app/track-editor.c:208
+msgid "None"
+msgstr "Không có"
+
+#: app/sample-editor.c:319
+msgid "All"
+msgstr "Tất cả"
+
+#: app/sample-editor.c:340
+msgid "Length:"
+msgstr "Dài:"
+
+#: app/sample-editor.c:356
+msgid "Set as loop"
+msgstr "Đặt là vòng lặp"
+
+#: app/sample-editor.c:364
+msgid "RelNote"
+msgstr "Nốt_lq"
+
+#: app/sample-editor.c:375
+msgid "Load Sample..."
+msgstr "Tải mẫu..."
+
+#: app/sample-editor.c:377
+msgid "Save WAV..."
+msgstr "Lưu WAV..."
+
+#: app/sample-editor.c:379
+msgid "Save region as WAV..."
+msgstr "Lưu miền dạng WAV..."
+
+#: app/sample-editor.c:392
+msgid "Save WAV"
+msgstr "Lưu WAV"
+
+#: app/sample-editor.c:402
+msgid "Save Region"
+msgstr "Lưu miền"
+
+#: app/sample-editor.c:413
+msgid "Monitor"
+msgstr "Màn hình"
+
+#: app/sample-editor.c:419
+msgid "Volume Ramp"
+msgstr "Dốc âm lượng"
+
+#: app/sample-editor.c:425
+#, fuzzy
+msgid "Trim"
+msgstr "Run"
+
+#: app/sample-editor.c:436
+msgid "Zoom to selection"
+msgstr "Phóng tới phần chọn"
+
+#: app/sample-editor.c:442
+msgid "Show all"
+msgstr "Hiện hết"
+
+#: app/sample-editor.c:448
+msgid "Zoom in (+50%)"
+msgstr "Phóng to (+50%)"
+
+#: app/sample-editor.c:454
+msgid "Zoom out (-50%)"
+msgstr "Thu nhỏ (-50%)"
+
+#: app/sample-editor.c:460
+msgid "Reverse"
+msgstr "Ngược lại"
+
+#: app/sample-editor.c:470
+msgid "Cut"
+msgstr "Cắt"
+
+#: app/sample-editor.c:476
+msgid "Remove"
+msgstr "Gỡ bỏ"
+
+#: app/sample-editor.c:482
+msgid "Copy"
+msgstr "Chép"
+
+#: app/sample-editor.c:488
+msgid "Paste"
+msgstr "Dán"
+
+#: app/sample-editor.c:494
+msgid "Clear Sample"
+msgstr "Xoá mẫu"
+
+#: app/sample-editor.c:500
+#, fuzzy
+msgid "Crop"
+msgstr "Chép"
+
+#: app/sample-editor.c:564
+msgid "(no selection)"
+msgstr "(chưa chọn gì)"
+
+#: app/sample-editor.c:1069
+msgid "Out of memory for copybuffer.\n"
+msgstr "Hết bộ nhớ cho bộ nhớ đệm sao chép:\n"
+
+#: app/sample-editor.c:1188
+msgid "<just pasted>"
+msgstr "<vừa dán>"
+
+#: app/sample-editor.c:1301
+msgid "Out of memory for sample data."
+msgstr "Hết bộ nhớ cho dữ liệu mẫu."
+
+#: app/sample-editor.c:1317 app/sample-editor.c:1329
+msgid "Read error."
+msgstr "Lỗi đọc."
+
+#: app/sample-editor.c:1476
+msgid "Load stereo sample"
+msgstr "Tải mẫu âm lập thể"
+
+#: app/sample-editor.c:1484
+msgid ""
+"You have selected a stereo sample!\n"
+"(SoundTracker can only handle mono samples!)\n"
+"\n"
+"Please choose which channel to load:"
+msgstr ""
+"Bạn đã chọn một mẫu âm lập thể.\n"
+"• Nhưng mà Bộ Theo dõi Âm thanh có thể quản lý chỉ mẫu nguồn đơn. •\n"
+"\n"
+"Hãy chọn kênh nào cần tải:"
+
+#: app/sample-editor.c:1495
+msgid "Left"
+msgstr "Trái"
+
+#: app/sample-editor.c:1501
+msgid "Mix"
+msgstr "Trộn"
+
+#: app/sample-editor.c:1507
+msgid "Right"
+msgstr "Phải"
+
+#: app/sample-editor.c:1575
+msgid "Signed"
+msgstr "Đã ký"
+
+#: app/sample-editor.c:1575
+msgid "Unsigned"
+msgstr "Chưa ký"
+
+#: app/sample-editor.c:1576
+msgid "Little-Endian"
+msgstr "Cuối nhỏ"
+
+#: app/sample-editor.c:1576
+msgid "Big-Endian"
+msgstr "Cuối lớn"
+
+#: app/sample-editor.c:1577
+msgid "Mono"
+msgstr "Nguồn đơn"
+
+#: app/sample-editor.c:1577
+msgid "Stereo"
+msgstr "Âm lập thể"
+
+#: app/sample-editor.c:1589
+msgid "Load raw sample"
+msgstr "Tải mẫu thô"
+
+#: app/sample-editor.c:1597
+msgid ""
+"You have selected a sample that is not\n"
+"in a known format. You can load the raw data now.\n"
+"\n"
+"Please choose a format:"
+msgstr ""
+"Bạn đã chọn một mẫu không phải\n"
+"có dạng thức đã biết.\n"
+"Lúc bây giờ bạn có thể tải dữ liệu thô.\n"
+"\n"
+"Hãy chọn một dạng thức:"
+
+#: app/sample-editor.c:1623
+msgid "Word format:"
+msgstr "Dạng thức từ"
+
+#: app/sample-editor.c:1670
+msgid "Sampling Rate:"
+msgstr "Tần số lấy mẫu :"
+
+#: app/sample-editor.c:1681
+msgid "8363"
+msgstr "8363"
+
+#: app/sample-editor.c:1689 app/sample-editor.c:2004
+msgid "OK"
+msgstr "Được"
+
+#: app/sample-editor.c:1748
+msgid "Can't read sample"
+msgstr "Không thể đọc mẫu"
+
+#: app/sample-editor.c:1761
+msgid "Sample is too long for current mixer module. Loading anyway."
+msgstr "Mẫu quá dài cho mô-đun hoà tiếng hiện có. Vẫn đang tải nó."
+
+#: app/sample-editor.c:1785
+msgid "Can only handle 8 and 16 bit samples with up to 2 channels"
+msgstr "Có thể quản lý mẫu chỉ 8 bit và 16 bit với đến 2 kênh"
+
+#: app/sample-editor.c:1968
+msgid "Please select region first."
+msgstr "Hãy chọn miền trước tiên."
+
+#: app/sample-editor.c:2012
+msgid "Start sampling"
+msgstr "Chạy lấy mẫu"
+
+#: app/sample-editor.c:2042
+msgid "No sampling driver available"
+msgstr "Không có sẵn sàng trình điều khiển lấy mẫu"
+
+#: app/sample-editor.c:2052 app/sample-editor.c:2055
+msgid "Sampling Window"
+msgstr "Cửa sổ lấy mẫu"
+
+#: app/sample-editor.c:2104
+msgid "Out of memory while sampling!"
+msgstr "• Hết bộ nhớ trong khi lấy mẫu. •"
+
+#: app/sample-editor.c:2155
+msgid "<just sampled>"
+msgstr "<vừa lấy mẫu>"
+
+#: app/sample-editor.c:2186
+msgid "Recorded sample is too long for current mixer module. Using it anyway."
+msgstr ""
+"Mẫu đã ghi lưu là quá dài cho mô-đun hoà tiếng hiện có. Vẫn đang dùng nó."
+
+#: app/sample-editor.c:2239
+msgid "Normalize"
+msgstr "Chuẩn hóa"
+
+#: app/sample-editor.c:2240
+msgid "Execute"
+msgstr "Thực hiện"
+
+#: app/sample-editor.c:2250 app/sample-editor.c:2253
+msgid "Volume Ramping"
+msgstr "Mức gốc âm lượng"
+
+#: app/sample-editor.c:2269
+msgid "Perform linear volume fade on Selection"
+msgstr "Thực hiện việc mờ âm lượng tuyến với vùng chọn"
+
+#: app/sample-editor.c:2281
+msgid "Left [%]:"
+msgstr "Trái [%]:"
+
+#: app/sample-editor.c:2284 app/sample-editor.c:2301
+msgid "H"
+msgstr "H"
+
+#: app/sample-editor.c:2290 app/sample-editor.c:2307
+msgid "D"
+msgstr "D"
+
+#: app/sample-editor.c:2298
+msgid "Right [%]:"
+msgstr "Phải [%]:"
+
+#: app/sample-editor.c:2442 app/sample-editor.c:2453
+msgid "Trim parameters"
+msgstr ""
+
+#: app/sample-editor.c:2498
+msgid "Trim at the beginning"
+msgstr ""
+
+#: app/sample-editor.c:2505
+msgid "Trim at the end"
+msgstr ""
+
+#: app/sample-editor.c:2512
+msgid "Threshold (dB)"
+msgstr ""
+
+#: app/tips-dialog.c:50
+msgid ""
+"Welcome to SoundTracker!\n"
+"\n"
+"If you are new to this type of program, you will want to get hold of\n"
+"some XM or MOD files first and play with them."
+msgstr ""
+"Chúc mừng bạn dùng Bộ Theo dõi Âm thanh.\n"
+"\n"
+"Nếu bạn không quen với chương trình kiểu này,\n"
+"khuyên bạn lấy một số tập tin dạng XM hay MOD trước tien\n"
+"và làm thử nghiệm với chúng."
+
+#: app/tips-dialog.c:55
+msgid ""
+"You can make SoundTracker's edit mode more responsive to keyboard\n"
+"input by decreasing the mixing buffer size of the \"Editing\" object in\n"
+"the Audio Configuration."
+msgstr ""
+"Bạn có thể làm cho chế độ hiệu chỉnh của Bộ Theo dõi Âm thanh là sẵn sàng "
+"hơn đáp lại kết nhập bàn phím, bằng cách giảm kích cỡ của bộ đệm hoà tiếng "
+"của đối tượng « Hiệu chỉnh » trong Cấu hình Âm Thanh."
+
+#: app/tips-dialog.c:59
+msgid ""
+"You can adjust the loop points in the sample editor by holding Shift\n"
+"and using the left and right mousebuttons.\n"
+msgstr ""
+"Bạn có thể điều chỉnh những điểm lặp lặp trong bộ hiệu chỉnh mẫu, bằng cách "
+"bấm giữ phím Shift rồi bấm nút trái và phải trên chuột.\n"
+
+#: app/tips-dialog.c:62
+msgid ""
+"If you want to know more about tracking, and how the various commands\n"
+"work, have a look at http://www.united-trackers.org/"
+msgstr ""
+"Nếu bạn muốn biết thêm về theo dõi, và về cách thực hiện những lệnh khác "
+"nhau, hãy xem <http://www.united-trackers.org/>."
+
+#: app/tips-dialog.c:65
+msgid ""
+"You can assign samples of an instrument to the individual keys by\n"
+"activating its sample and then clicking on the keyboard in the\n"
+"instrument editor page."
+msgstr ""
+"Bạn có thể gán mẫu của một nhạc khí nào đó cho phím riêng bằng cách kích "
+"hoạt mẫu nó rồi nhắp vào bàn phím trong trang hiệu chỉnh nhạc khí."
+
+#: app/tips-dialog.c:69
+msgid ""
+"Is your cursor trapped in a number entry field?\n"
+"Just press Return or Tab to free yourself!"
+msgstr ""
+"Con chạy của bạn bị bẫy trong trường nhập số phải không?\n"
+"Hãy đơn giản bấm phím Return hay Tab để nhả nó."
+
+#: app/tips-dialog.c:81
+msgid "SoundTracker Tip of the day"
+msgstr "Mẹo của hôm nay của Bộ Theo dõi Âm thanh"
+
+#: app/tips-dialog.c:154
+msgid "Previous Tip"
+msgstr "Mẹo trước"
+
+#: app/tips-dialog.c:162
+msgid "Next Tip"
+msgstr "Mẹo kế"
+
+#: app/tips-dialog.c:174
+msgid "Show tip next time"
+msgstr "Hiển thị mẹo lần sau"
+
+#: app/track-editor.c:113
+msgid "Arpeggio"
+msgstr "Hợp âm rải"
+
+#: app/track-editor.c:114
+msgid "Porta up"
+msgstr "Mang lên"
+
+#: app/track-editor.c:115
+msgid "Porta down"
+msgstr "Mang xuống"
+
+#: app/track-editor.c:116 app/track-editor.c:180
+msgid "Tone porta"
+msgstr "Mang giọng"
+
+#: app/track-editor.c:117 app/track-editor.c:176
+msgid "Vibrato"
+msgstr "Vi-bợ-ră-tộ"
+
+#: app/track-editor.c:118
+msgid "Tone porta + Volume slide"
+msgstr "Mạng giọng và Trượt âm lượng"
+
+#: app/track-editor.c:119
+msgid "Vibrato + Volume slide"
+msgstr "Vi-bợ-ră-tộ và Trượt âm lượng"
+
+#: app/track-editor.c:120
+msgid "Tremolo"
+msgstr "Vê"
+
+#: app/track-editor.c:121 app/track-editor.c:177
+msgid "Set panning"
+msgstr "Đặt kéo ngang"
+
+#: app/track-editor.c:122 app/track-editor.c:124
+msgid "Position jump"
+msgstr "Bước vị trí"
+
+#: app/track-editor.c:123 app/track-editor.c:125 app/track-editor.c:201
+msgid "Set volume"
+msgstr "Đặt âm lượng"
+
+#: app/track-editor.c:126
+msgid "Pattern break"
+msgstr "Ngắt mẫu"
+
+#: app/track-editor.c:128
+msgid "Set tempo/bpm"
+msgstr "Đặt nhịp độ/NMP"
+
+#: app/track-editor.c:129
+msgid "Set global volume"
+msgstr "Đặt âm lượng toàn cục"
+
+#: app/track-editor.c:130
+msgid "Global volume slide"
+msgstr "Bộ trượt âm lượng toàn cục"
+
+#: app/track-editor.c:133
+msgid "Key off"
+msgstr "Ra phím"
+
+#: app/track-editor.c:134
+msgid "Set envelop position"
+msgstr "Đặt vị trí bao"
+
+#: app/track-editor.c:138
+msgid "Panning slide"
+msgstr "Đang kéo ngang trượt"
+
+#: app/track-editor.c:139
+msgid "LP filter resonance"
+msgstr "Cộng hưởng lọc phát lâu"
+
+#: app/track-editor.c:140
+msgid "Multi retrig note"
+msgstr "Nốt đa gây nên lại"
+
+#: app/track-editor.c:142
+msgid "Tremor"
+msgstr "Run"
+
+#: app/track-editor.c:148
+msgid "LP filter cutoff"
+msgstr "Ngưỡng lọc phát lâu"
+
+#: app/track-editor.c:153
+msgid "Fine porta up"
+msgstr "Mang lên tế nhị"
+
+#: app/track-editor.c:154
+msgid "Fine porta down"
+msgstr "Mang xuống tế nhị"
+
+#: app/track-editor.c:155
+msgid "Set gliss control"
+msgstr "Đặt điều khiển bước lướt"
+
+#: app/track-editor.c:156
+msgid "Set vibrato control"
+msgstr "Đặt điều khiển vi-bợ-ră-tộ"
+
+#: app/track-editor.c:157
+msgid "Set finetune"
+msgstr "Đặt dò chỉnh"
+
+#: app/track-editor.c:158
+msgid "Set loop begin/loop"
+msgstr "Đặt lặp đi/lặp"
+
+#: app/track-editor.c:159
+msgid "Set tremolo control"
+msgstr "Đặt điều khiển vê"
+
+#: app/track-editor.c:161
+msgid "Retrig note"
+msgstr "Nốt gây nên lại"
+
+#: app/track-editor.c:162 app/track-editor.c:174
+msgid "Fine volume slide up"
+msgstr "Trượt lên âm lượng tế nhị"
+
+#: app/track-editor.c:163 app/track-editor.c:173
+msgid "Fine volume slide down"
+msgstr "Trượt xuống âm lượng tế nhị"
+
+#: app/track-editor.c:164
+msgid "Note cut"
+msgstr "Cắt nốt"
+
+#: app/track-editor.c:165
+msgid "Note delay"
+msgstr "Trì hoãn nốt"
+
+#: app/track-editor.c:166
+msgid "Pattern delay"
+msgstr "Trì hoãn mẫu"
+
+#: app/track-editor.c:171
+msgid "Volume slide down"
+msgstr "Trượt âm lượng xuống"
+
+#: app/track-editor.c:172
+msgid "Volume slide up"
+msgstr "Trượt âm lượng lên"
+
+#: app/track-editor.c:175
+msgid "Set vibrato speed"
+msgstr "Đặt tốc độ vibợrătộ"
+
+#: app/track-editor.c:178
+msgid "Panning slide left"
+msgstr "Đang kéo ngang trượt trái"
+
+#: app/track-editor.c:179
+msgid "Panning slide right"
+msgstr "Đang kéo ngang trượt phải"
+
+#: app/track-editor.c:184
+msgid "sine"
+msgstr "sin"
+
+#: app/track-editor.c:185
+msgid "ramp down"
+msgstr "dốc xuống"
+
+#: app/track-editor.c:186
+msgid "square"
+msgstr "vuông"
+
+#: app/track-editor.c:231 app/track-editor.c:237 app/track-editor.c:254
+#: app/track-editor.c:260
+#, c-format
+msgid "None ]"
+msgstr "Không có]"
+
+#: app/track-editor.c:360
+msgid "Jazz Edit:"
+msgstr "Hiệu chỉnh Ja:"
+
+#: app/track-editor.c:405
+msgid "Tracker"
+msgstr "Bộ theo dõi"
+
+#: app/tracker-settings.c:235
+msgid "Font list"
+msgstr "Danh sách phông chữ"
+
+#: app/tracker-settings.c:255
+msgid "Add font"
+msgstr "Thêm phông chữ"
+
+#: app/tracker-settings.c:261
+msgid "Delete font"
+msgstr "Xoá bỏ phông chữ"
+
+#: app/tracker-settings.c:267
+msgid "Apply font"
+msgstr "Áp dụng phông chữ"
+
+#: app/tracker-settings.c:282
+msgid "Up"
+msgstr "Lên"
+
+#: app/tracker-settings.c:285
+msgid "Down"
+msgstr "Xuống"
+
+#: app/tracker-settings.c:288
+msgid "Select font..."
+msgstr "Chọn phông chữ..."
+
+#: app/transposition.c:198
+msgid "Whole Song"
+msgstr "Toàn bộ bài hát"
+
+#: app/transposition.c:199
+msgid "All Patterns"
+msgstr "Mọi mẫu"
+
+#: app/transposition.c:200
+msgid "Current Pattern"
+msgstr "Mẫu hiện có"
+
+#: app/transposition.c:201
+msgid "Current Track"
+msgstr "Rãnh hiện có"
+
+#: app/transposition.c:205
+msgid "Current Instrument"
+msgstr "Nhạc khí hiện có"
+
+#: app/transposition.c:206
+msgid "All Instruments"
+msgstr "Mọi nhạc khí"
+
+#: app/transposition.c:210
+msgid "Half note up"
+msgstr "Nửa nốt lên"
+
+#: app/transposition.c:211
+msgid "Half note down"
+msgstr "Nửa nốt xuống"
+
+#: app/transposition.c:212
+msgid "Octave up"
+msgstr "Quãng tám lên"
+
+#: app/transposition.c:213
+msgid "Octave down"
+msgstr "Quãng tám xuống"
+
+#: app/transposition.c:216
+msgid "Exchange 1 <-> 2"
+msgstr "Trao đổi 1 ↔ 2"
+
+#: app/transposition.c:217
+msgid "Change 1 -> 2"
+msgstr "Đổi 1 → 2"
+
+#: app/transposition.c:226 app/transposition.c:229
+msgid "Transposition Tools"
+msgstr "Công cụ đổi chỗ"
+
+#: app/transposition.c:250
+msgid "Scope of the operation:"
+msgstr "Phạm vị thao tác:"
+
+#: app/transposition.c:257
+msgid "Note Transposition"
+msgstr "Đổi chỗ nốt"
+
+#: app/transposition.c:288
+msgid "Instrument Changing"
+msgstr "Chuyển đổi nhạc khí"
+
+#: app/transposition.c:303
+msgid "Instrument 1:"
+msgstr "Nhạc khí 1:"
+
+#: app/transposition.c:305 app/transposition.c:315
+msgid "Current instrument"
+msgstr "Nhạc khí hiện có"
+
+#: app/transposition.c:313
+msgid "Instrument 2:"
+msgstr "Nhạc khí 2:"
+
+#: app/xm.c:196
+#, c-format
+msgid "Pattern length out of range: %d.\n"
+msgstr "Độ dài mẫu ở ngoại phạm vị: %d:\n"
+
+#: app/xm.c:547
+msgid "File is no XI instrument."
+msgstr "Tập tin không phải là nhạc khí XI."
+
+#: app/xm.c:557
+#, c-format
+msgid "Unknown XI version 0x%x\n"
+msgstr "Không biết phiên bản XI 0x%x\n"
+
+#: app/xm.c:587
+#, c-format
+msgid "Invalid vibtype %d, using Sine.\n"
+msgstr "Kiểu rung không hợp %d nên dùng Sin.\n"
+
+#: app/xm.c:859 app/xm.c:984
+msgid "Error while loading patterns."
+msgstr "Gặp lỗi khi tải mẫu."
+
+#: app/xm.c:927
+msgid "Can't open file"
+msgstr "Không thể mở tập tin"
+
+#: app/xm.c:990
+msgid "Error while loading instruments."
+msgstr "Gặp lỗi trong khi tải các nhạc khí."
+
+#: app/xm.c:1001
+#, c-format
+msgid ""
+"Module contains sample(s) that are too long for the current mixer.\n"
+"Maximum sample length is %d."
+msgstr ""
+"Mô-đun chứa mẫu quá dài cho bộ hoà tiếng hiện có :\n"
+"Độ dài mẫu tối đa là %d."
+
+#: app/xm.c:1399
+msgid "Not FastTracker XM and not supported MOD format!"
+msgstr ""
+"• Không phải là XM FastTracker, cũng không phải là dạng thức MOD được hỗ "
+"trợ. •"
+
+#: app/xm.c:1414 app/xm.c:1435
+msgid "Error when file reading or unexpected end of file"
+msgstr "Gặp lỗi khi đọc hoặc gặp kết thúc tập tin bất ngờ."
+
+#: app/xm.c:1418
+msgid "Incorrect or unsupported version of pattern file!"
+msgstr "• Phiên bản tập tin mẫu là không đúng hoặc không được hỗ trợ. •"
+
+#: app/xm.c:1422
+msgid "Incorrect pattern length!"
+msgstr "• Độ dài mẫu không đúng. •"
+
+#: app/xm.c:1468
+msgid "Error during saving pattern!"
+msgstr "• Gặp lỗi trong khi lưu mẫu. •"
+
+#: app/midi-settings-050.c:497 app/midi-settings-09x.c:500
+msgid "Auto connect"
+msgstr "Tự động kết nối"
+
+#: app/midi-settings-050.c:512 app/midi-settings-09x.c:515
+msgid "Channel"
+msgstr "Kênh"
+
+#: app/midi-settings-050.c:521 app/midi-settings-09x.c:524
+msgid "Client number"
+msgstr "Số hiệu ứng dụng khách"
+
+#: app/midi-settings-050.c:531 app/midi-settings-09x.c:534
+msgid "Port number"
+msgstr "Số hiệu cổng"
+
+#: app/midi-settings-050.c:549 app/midi-settings-09x.c:552
+msgid "Input"
+msgstr "Nhập"
+
+#: app/midi-settings-050.c:558 app/midi-settings-09x.c:561
+msgid "For future development"
+msgstr "Để phát triển trong tương lai"
+
+#: app/midi-settings-050.c:564 app/midi-settings-09x.c:567
+msgid "Output"
+msgstr "Xuất"
+
+#: app/midi-settings-050.c:575 app/midi-settings-09x.c:578
+msgid "Debug level"
+msgstr "Cấp gỡ lỗi"
+
+#: app/midi-settings-050.c:587 app/midi-settings-09x.c:590
+msgid "Misc"
+msgstr "Lặt vặt"
+
+#: app/midi-settings-050.c:631 app/midi-settings-09x.c:634
+msgid "MIDI Configuration"
+msgstr "Cấu hình MIDI"

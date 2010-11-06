@@ -1,0 +1,2185 @@
+# soundtracker Turkish translation.
+# Copyright (C) 2004 Free Software Foundation, Inc.
+# Olcay Yıldırım <olcayyildirim2003@yahoo.com>, 2004
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: soundtracker 0.6.7\n"
+"Report-Msgid-Bugs-To: soundtracker-discuss@soundtracker.org\n"
+"POT-Creation-Date: 2006-02-25 14:25+0100\n"
+"PO-Revision-Date: 2004-06-14 11:48+0200\n"
+"Last-Translator: Aysun Kıran <aysunkir@yahoo.com>\n"
+"Language-Team: Turkish <gnu-tr-u12a@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: app/audioconfig.c:63
+msgid "Playback Output"
+msgstr "Kayıttan yürütme çıkışı"
+
+#: app/audioconfig.c:69
+msgid "Editing Output"
+msgstr "Düzenleme Çıkışı"
+
+#: app/audioconfig.c:75
+msgid "Sampling"
+msgstr "Örnekleme"
+
+#: app/audioconfig.c:261
+msgid "Driver Module"
+msgstr "Sürücü Birimi"
+
+#: app/audioconfig.c:262
+msgid "Mixer Module"
+msgstr "Karıştırıcı Birimi"
+
+#: app/audioconfig.c:263
+msgid "Description"
+msgstr "Tanım"
+
+#: app/audioconfig.c:271 app/audioconfig.c:274
+msgid "Audio Configuration"
+msgstr "Ses Yapılandırması"
+
+#: app/audioconfig.c:289
+msgid "Drivers"
+msgstr "Sürücüler"
+
+#: app/audioconfig.c:326
+msgid "Mixers"
+msgstr "Karıştırıcılar"
+
+#: app/audioconfig.c:359 app/gui-settings.c:512 app/gui.c:274
+#: app/sample-editor.c:2241 app/transposition.c:347
+msgid "Close"
+msgstr "Kapat"
+
+#: app/drivers/alsa-input.c:125 app/drivers/alsa-output.c:134
+#: app/drivers/alsa2-input.c:125 app/drivers/alsa2-output.c:135
+#, c-format
+msgid "(%d bytes)"
+msgstr "(%d bayt)"
+
+#: app/drivers/alsa-input.c:128 app/drivers/alsa2-input.c:128
+#, c-format
+msgid "Estimated audio delay: %f microseconds"
+msgstr "Tahmin Edilen Ses Gecikmesi: %f mikrosaniye"
+
+#: app/drivers/alsa-input.c:193 app/drivers/alsa-output.c:199
+#: app/drivers/alsa2-input.c:193 app/drivers/alsa2-output.c:198
+#: app/drivers/oss-output.c:205 app/drivers/sun-output.c:197
+msgid "These changes won't take effect until you restart playing."
+msgstr ""
+"Yürütmeye yeniden başlayıncaya kadar bu değişiklikler etkili olmayacaktır."
+
+#: app/drivers/alsa-input.c:205 app/drivers/alsa-output.c:211
+#: app/drivers/alsa2-input.c:205 app/drivers/alsa2-output.c:210
+#: app/drivers/oss-output.c:233 app/drivers/sun-output.c:225
+#: app/sample-editor.c:1612
+msgid "Resolution:"
+msgstr "Çözünürlük"
+
+#: app/drivers/alsa-input.c:215 app/drivers/alsa-output.c:221
+#: app/drivers/alsa2-input.c:215 app/drivers/alsa2-output.c:220
+#: app/drivers/oss-output.c:243 app/drivers/sun-output.c:236
+#: app/sample-editor.c:1642
+msgid "Channels:"
+msgstr "Kanallar:"
+
+#: app/drivers/alsa-input.c:225 app/drivers/alsa-output.c:231
+#: app/drivers/alsa2-input.c:225 app/drivers/alsa2-output.c:230
+#: app/drivers/oss-output.c:253 app/drivers/sun-output.c:247
+msgid "Frequency [Hz]:"
+msgstr "Sıklık[Hz]:"
+
+#: app/drivers/alsa-input.c:235 app/drivers/alsa-output.c:241
+#: app/drivers/alsa2-input.c:235 app/drivers/alsa2-output.c:240
+#: app/drivers/oss-output.c:263 app/drivers/sun-output.c:258
+msgid "Buffer Size:"
+msgstr "Arabellik Boyutu:"
+
+#: app/drivers/alsa-input.c:268 app/drivers/alsa-output.c:274
+#: app/drivers/alsa2-input.c:268 app/drivers/alsa2-output.c:273
+msgid "ALSA card number:"
+msgstr "ALSA kart numarası:"
+
+#: app/drivers/alsa-input.c:283 app/drivers/alsa-output.c:289
+#: app/drivers/alsa2-input.c:283 app/drivers/alsa2-output.c:288
+msgid "ALSA device number:"
+msgstr "ALSA aygıt numarası:"
+
+#: app/drivers/alsa-input.c:374
+#, c-format
+msgid ""
+"Couldn't open ALSA device for sound input (card:%d, device:%d):\n"
+"%s"
+msgstr ""
+"Ses girişi için ALSA aygıtı açılamadı (kart:%d, aygıt:%d):\n"
+"%s"
+
+#: app/drivers/alsa-input.c:426 app/drivers/alsa-output.c:426
+#: app/drivers/oss-input.c:267 app/drivers/oss-output.c:424
+msgid "Required sound output format not supported.\n"
+msgstr "Gereken ses çıkışı desteklenmiyor.\n"
+
+#: app/drivers/alsa-input.c:439 app/drivers/alsa-output.c:441
+msgid "Required sound output parameters not supported.\n"
+msgstr "Gereken ses çıkış değiştirgeleri desteklenmiyor.\n"
+
+#: app/drivers/alsa-output.c:137 app/drivers/alsa2-output.c:138
+#: app/drivers/oss-output.c:149 app/drivers/sun-output.c:137
+#, c-format
+msgid "Estimated audio delay: %f milliseconds"
+msgstr "Kestirilen ses gecikmesi:%f  milisaniye"
+
+#: app/drivers/alsa-output.c:377 app/drivers/alsa2-input.c:375
+#: app/drivers/alsa2-output.c:379
+#, c-format
+msgid ""
+"Couldn't open ALSA device for sound output (card:%d, device:%d):\n"
+"%s"
+msgstr ""
+"Ses çıkışı için ALSA aygıtı açılamadı (kart:%d, aygıt:%d):\n"
+"%s"
+
+#: app/drivers/alsa2-input.c:436 app/drivers/alsa2-output.c:440
+msgid "Required output-channel parameters not supported.\n"
+msgstr "Mecburi çıkış-kanalı değiştirgeleri desteklenmiyor.\n"
+
+#: app/drivers/alsa2-input.c:441 app/drivers/alsa2-output.c:445
+msgid "Unable to prepare ALSA channel.\n"
+msgstr "ALSA kanalı hazırlanamıyor.\n"
+
+#: app/drivers/alsa2-input.c:454 app/drivers/alsa2-output.c:458
+msgid "Alsa setup error.\n"
+msgstr "Alsa kurma hatası.\n"
+
+#: app/drivers/esd-output.c:96
+msgid ""
+"Note that the ESD output is unusable in\n"
+"interactive mode because of the latency added\n"
+"by ESD. Use the OSS or ALSA output plug-ins\n"
+"for serious work."
+msgstr ""
+"ESD çıkışının ESD tarafından eklenen\n"
+" gecikme süresi nedeniyle etkileşimli kipte\n"
+" kullanılamadığına dikkat edin. Ciddi işler için OSS ya da ALSA çıkışı fişli "
+"kabloları\n"
+"  kullanın."
+
+#: app/drivers/esd-output.c:161
+#, c-format
+msgid ""
+"Couldn't connect to ESD for sound output:\n"
+"%s"
+msgstr ""
+"Ses çıkışı için ESD'ye bağlanamadı:\n"
+"%s"
+
+#: app/drivers/file-output.c:92 app/drivers/file-output.c:297
+msgid "no settings (yet), sorry!"
+msgstr "ayarlar yok (henüz), üzgünüz!"
+
+#: app/drivers/file-output.c:167 app/drivers/file-output.c:374
+#: app/sample-editor.c:1857
+msgid "Can't open file for writing."
+msgstr "Dosya yazım için açılamıyor."
+
+#: app/drivers/oss-input.c:111 app/drivers/sun-input.c:105
+msgid "These changes won't take effect until you restart sampling."
+msgstr ""
+"Örneklendirme yeniden başlayıncaya kadar bu değişiklikler etkili "
+"olmayacaktır."
+
+#: app/drivers/oss-input.c:123
+msgid "Input device (e.g. '/dev/dsp'):"
+msgstr "Giriş Aygıtı (örn. '/dev/dsp):"
+
+#: app/drivers/oss-input.c:234
+#, c-format
+msgid ""
+"Couldn't open %s for sampling:\n"
+"%s"
+msgstr ""
+"Örnekleme için %s açılamadı:\n"
+"%s"
+
+#: app/drivers/oss-output.c:183 app/drivers/sun-output.c:172
+#, c-format
+msgid "(%d samples)"
+msgstr "(%d örnekler)"
+
+#: app/drivers/oss-output.c:217
+msgid "Output device (e.g. '/dev/dsp'):"
+msgstr "Çıkış aygıtı (örn. '/dev/dsp'):"
+
+#: app/drivers/oss-output.c:391
+#, c-format
+msgid ""
+"Couldn't open %s for sound output:\n"
+"%s"
+msgstr ""
+"Ses çıkışı için %s açılamadı:\n"
+"%s"
+
+#: app/drivers/jack-output.c:254
+msgid "transport master"
+msgstr "taşıma ustası"
+
+#: app/drivers/jack-output.c:259
+msgid "declick"
+msgstr "tıklamayı geri al"
+
+#: app/drivers/jack-output.c:279
+#, c-format
+msgid "Running at %d Hz with %d frames"
+msgstr "%d çerçeveleriyle %d Hz'de çalışıyor"
+
+#: app/drivers/jack-output.c:283
+#, c-format
+msgid "Jack server not running?"
+msgstr "Fiş sunucusu çalışmıyor mu?"
+
+#  TODO: this should be improved, both error handling and saving the string
+#  I'm probably not taking advantage of libjack
+#: app/drivers/jack-output.c:327
+#, c-format
+msgid "soundtracker"
+msgstr "sestakipçisi"
+
+#: app/drivers/jack-output.c:347
+msgid "out_1"
+msgstr "dış_1"
+
+#: app/drivers/jack-output.c:348
+msgid "out_2"
+msgstr "dış_2"
+
+#: app/drivers/sun-output.c:209
+msgid "Output device (e.g. '/dev/audio'):"
+msgstr "Çıkış aygıtı (örn. '/dev/ses'):"
+
+#: app/drivers/sun-output.c:389 app/drivers/sun-output.c:460
+#: app/drivers/sun-input.c:229 app/drivers/sun-input.c:311
+#, c-format
+msgid "%s: %s"
+msgstr "%s: %s"
+
+#: app/drivers/sun-output.c:395
+#, c-format
+msgid "%s: Cannot play (%s)"
+msgstr "%s: Okunamıyor (%s)"
+
+#: app/drivers/sun-output.c:402 app/drivers/sun-input.c:250
+#, c-format
+msgid "%s: Cannot handle %dHz (%s)"
+msgstr "%s: %dHz (%s) işlenemiyor"
+
+#: app/drivers/sun-output.c:431 app/drivers/sun-input.c:280
+#, c-format
+msgid "%s: Required sound encoding not supported.\n"
+msgstr "%s: Gereken ses kodlaması desteklenmiyor.\n"
+
+#: app/drivers/sun-output.c:454 app/drivers/sun-input.c:305
+#, c-format
+msgid "%s: Cannot set block size (%s)"
+msgstr "%s: Blok boyutu ayarlanamıyor (%s)"
+
+#: app/drivers/sun-input.c:117
+msgid "Input device (e.g. '/dev/audio'):"
+msgstr "Giriş aygıtı (örn. '/dev/ses'):"
+
+#: app/drivers/sun-input.c:242
+#, c-format
+msgid "%s: Cannot record (%s)"
+msgstr "%s: Kaydedilemiyor (%s)"
+
+#: app/envelope-box.c:878
+msgid "Length"
+msgstr "Uzunluk"
+
+#: app/envelope-box.c:879
+msgid "Current"
+msgstr "Geçerli"
+
+#: app/envelope-box.c:880
+msgid "Offset"
+msgstr "Kaydır"
+
+#: app/envelope-box.c:881
+msgid "Value"
+msgstr "Değer"
+
+#: app/envelope-box.c:887 app/playlist.c:524
+msgid "Insert"
+msgstr "Ekle"
+
+#: app/envelope-box.c:893 app/playlist.c:533
+msgid "Delete"
+msgstr "Sil"
+
+#: app/envelope-box.c:985
+msgid ""
+"Graphical\n"
+"Envelope\n"
+"Editor\n"
+"only in\n"
+"GNOME Version"
+msgstr ""
+"Graphical\n"
+"Zarf\n"
+"Düzenleyici\n"
+"sadece içinde\n"
+"GNOME Sürümü"
+
+#: app/envelope-box.c:1000
+msgid "Sustain"
+msgstr "Devam ettir"
+
+#: app/envelope-box.c:1008
+msgid "Point"
+msgstr "Nokta"
+
+#: app/envelope-box.c:1010
+msgid "Loop"
+msgstr "Döngü"
+
+#: app/envelope-box.c:1018 app/sample-editor.c:275
+msgid "Start"
+msgstr "Başlat"
+
+#: app/envelope-box.c:1019 app/sample-editor.c:276
+msgid "End"
+msgstr "Sonlandır"
+
+#: app/file-operations.c:162
+msgid "Load Module"
+msgstr " Birimi Yükle"
+
+#: app/file-operations.c:163
+msgid "Save Module"
+msgstr " Birimi Kaydet"
+
+#: app/file-operations.c:164
+msgid "Render WAV"
+msgstr "WAV'ı Göster"
+
+#: app/file-operations.c:165
+msgid "Save Song"
+msgstr "Şarkıyı Kaydet"
+
+#: app/file-operations.c:166 app/sample-editor.c:383
+msgid "Load Sample"
+msgstr "Örneği Yükle"
+
+#: app/file-operations.c:167
+msgid "Save Sample"
+msgstr "Örneği Kaydet"
+
+#: app/file-operations.c:168
+msgid "Load Instrument"
+msgstr "Aygıtı Yükle"
+
+#: app/file-operations.c:169
+msgid "Save Instrument"
+msgstr "Aygıtı  Kaydet"
+
+#: app/file-operations.c:175
+msgid "File"
+msgstr "Dosya"
+
+#: app/file-operations.c:226
+msgid "Operation not supported."
+msgstr "İşlem desteklenmiyor."
+
+#: app/gui-settings.c:100
+msgid "Scopes Frequency"
+msgstr "Alanlar Sıklığı"
+
+#: app/gui-settings.c:103
+msgid "Tracker Frequency"
+msgstr "İzci Sıklığı"
+
+#: app/gui-settings.c:317 app/gui-settings.c:320
+msgid "GUI Configuration"
+msgstr "GUI Yapılandırması"
+
+#: app/gui-settings.c:354
+msgid "Hexadecimal row numbers"
+msgstr "Onaltılı satır sayıları"
+
+#: app/gui-settings.c:361
+msgid "Use upper case letters for hex numbers"
+msgstr "Altılı sayılar için büyük harfleri kullan"
+
+#: app/gui-settings.c:368
+msgid "Asynchronous (IT-style) pattern editing"
+msgstr "Eşzamansız (IT-biçemi) desen düzenleme"
+
+#: app/gui-settings.c:375
+msgid "Fxx command updates Tempo/BPM sliders"
+msgstr "Fxx komutu Tempo/BPM kaydırıcılarını günceller"
+
+#: app/gui-settings.c:382
+msgid "Switch to tracker after loading/saving"
+msgstr "Yükleme/kaydetmeden sonra izciye dönüştür"
+
+#: app/gui-settings.c:389
+msgid "Save window geometry on exit"
+msgstr "Çıkışta pencere geometrisini kaydet"
+
+#: app/gui-settings.c:396
+msgid "Use note name B instead of H"
+msgstr "Nota adı olarak H yerine B kullan"
+
+#: app/gui-settings.c:403
+msgid "Save and restore permanent channels"
+msgstr ""
+
+#: app/gui-settings.c:417
+msgid "Scopes buffer size [MB]"
+msgstr "Alanlar arabelleği boyutu [MB]"
+
+#: app/gui-settings.c:436
+msgid "Track line format:"
+msgstr "Satır biçimini izle:"
+
+#  	    gtk_window_set_transient_for(GTK_WINDOW(gui_splash_window), GTK_WINDOW(mainwindow));
+#  (doesn't do anything on WindowMaker)
+#: app/gui-subs.c:32 app/gui.c:2369
+msgid "Ready."
+msgstr "Hazır."
+
+#: app/gui-subs.c:33
+msgid "Playing song..."
+msgstr "Şarkı okunuyor..."
+
+#: app/gui-subs.c:34
+msgid "Playing pattern..."
+msgstr "Desen okunuyor..."
+
+#: app/gui-subs.c:35
+msgid "Loading module..."
+msgstr "Birim yükleniyor..."
+
+#: app/gui-subs.c:36
+msgid "Module loaded."
+msgstr "Birim yüklendi."
+
+#: app/gui-subs.c:37
+msgid "Saving module..."
+msgstr "Birim kaydediliyor..."
+
+#: app/gui-subs.c:38
+msgid "Module saved."
+msgstr "Birim kaydedildi."
+
+#: app/gui-subs.c:39
+msgid "Loading sample..."
+msgstr "Örnek yükleniyor."
+
+#: app/gui-subs.c:40
+msgid "Sample loaded."
+msgstr "Örnek yüklendi."
+
+#: app/gui-subs.c:41
+msgid "Saving sample..."
+msgstr "Örnek kaydediliyor..."
+
+#: app/gui-subs.c:42
+msgid "Sample saved."
+msgstr "Örnek kaydedildi."
+
+#: app/gui-subs.c:43
+msgid "Loading instrument..."
+msgstr "Aygıt yükleniyor..."
+
+#: app/gui-subs.c:44
+msgid "Instrument loaded."
+msgstr "Aygıt yüklendi."
+
+#: app/gui-subs.c:45
+msgid "Saving instrument..."
+msgstr "Aygıt kaydediliyor..."
+
+#: app/gui-subs.c:46
+msgid "Instrument saved."
+msgstr "Aygıt kaydedildi."
+
+#: app/gui-subs.c:47
+msgid "Saving song..."
+msgstr "Şarkı kaydediliyor..."
+
+#: app/gui-subs.c:48
+msgid "Song saved."
+msgstr "Şarkı kaydedildi."
+
+#: app/gui-subs.c:483 app/gui-subs.c:554
+msgid "Question"
+msgstr "Soru"
+
+#: app/gui-subs.c:492
+msgid "Yes"
+msgstr "Evet"
+
+#: app/gui-subs.c:500
+msgid "No"
+msgstr "Hayır"
+
+#: app/gui-subs.c:507 app/gui-subs.c:571 app/keys.c:711
+#: app/sample-editor.c:1520 app/sample-editor.c:1695 app/sample-editor.c:2019
+#: app/sample-editor.c:2480 app/midi-settings-050.c:637
+#: app/midi-settings-09x.c:640
+msgid "Cancel"
+msgstr "İptal"
+
+#: app/gui-subs.c:589
+msgid "Warning"
+msgstr "Uyarı"
+
+#: app/gui-subs.c:615
+msgid "Error!"
+msgstr "Hata!"
+
+#: app/gui.c:140
+msgid "Tempo"
+msgstr "Tempo"
+
+#: app/gui.c:245 app/gui.c:255 app/gui.c:2078
+msgid "Row highlighting configuration"
+msgstr "Satır vurgulama yapılandırması"
+
+#: app/gui.c:301
+msgid "Highlight rows (major / minor):"
+msgstr "Satırları vurgulama (büyük / küçük):"
+
+#: app/gui.c:478
+msgid ""
+"Odd pattern rows contain data which will be lost after shrinking.\n"
+"Do you want to continue anyway?"
+msgstr ""
+"Tek sayılı desen satırları küçültmeden sonra kaybedilecek bilgileri "
+"içeriyor. \n"
+"Yine de devam etmek istiyor musunuz?"
+
+#: app/gui.c:506
+#, fuzzy
+msgid ""
+"The pattern is too long for expanding.\n"
+"Some data at the end of the pattern will be lost.\n"
+"Do you want to continue anyway?"
+msgstr ""
+"Desen genişletilemeyecek kadar uzun.\n"
+"Desenin sonunda bazı bilgiler kaybedilecek. yine de devam etmek istiyor "
+"musunuz?"
+
+#  No file was actually selected.
+#: app/gui.c:555 app/instrument-editor.c:212 app/sample-editor.c:1719
+#: app/sample-editor.c:1915 app/sample-editor.c:1959
+msgid "No file selected."
+msgstr "Seçili dosya yok."
+
+#: app/gui.c:563
+msgid ""
+"Are you sure you want to free the current project?\n"
+"All changes will be lost!"
+msgstr ""
+"Geçerli projeyi boşaltmak istediğinizden emin misiniz?\n"
+"Bütün değişiklikler kaybedilecek!"
+
+#: app/gui.c:577 app/gui.c:592 app/gui.c:607 app/gui.c:625
+#: app/sample-editor.c:1928 app/sample-editor.c:1977
+msgid "Are you sure you want to overwrite the file?"
+msgstr "Dosyanın üstüne yazmak istediğinizden emin misiniz?"
+
+#: app/gui.c:638
+msgid "Error when opening pattern file!"
+msgstr "Desen dosyasını açmada hata!"
+
+#: app/gui.c:651
+msgid ""
+"The length of the pattern being loaded doesn't match with that of current "
+"pattern in module.\n"
+"Do you want to change the current pattern length?"
+msgstr ""
+"Yüklenmekte olan desenin uzunluğu birimdeki geçerli deseninkiyle uyuşmuyor.\n"
+"Geçerli desen uzunluğunu değiştirmek ister misiniz?"
+
+#: app/gui.c:1719
+msgid "SoundTracker Startup"
+msgstr "SoundTracker Açılışı"
+
+#: app/gui.c:1778 app/gui.c:1815
+msgid "Loading..."
+msgstr "Yükleniyor..."
+
+#: app/gui.c:1804
+msgid "Use SoundTracker!"
+msgstr "SoundTracker'ı Kullan!"
+
+#: app/gui.c:1862
+msgid "Load XM..."
+msgstr "XM'yi  Yükle..."
+
+#: app/gui.c:1864
+msgid "Save XM..."
+msgstr "XM'yi Kaydet..."
+
+#: app/gui.c:1867
+msgid "Render module as WAV..."
+msgstr "Birimi WAV olarak göster..."
+
+#: app/gui.c:1870
+msgid "Save song as XM..."
+msgstr "XM'yi şarkı olarak kaydet..."
+
+#: app/gui.c:1872
+msgid "Load current pattern..."
+msgstr "Geçerli deseni yükle..."
+
+#: app/gui.c:1874
+msgid "Save current pattern..."
+msgstr "Geçerli deseni kaydet..."
+
+#: app/gui.c:1944
+msgid "Play Song"
+msgstr "Şarkıyı Çal"
+
+#: app/gui.c:1956
+msgid "Play Pattern"
+msgstr "Deseni  Oku"
+
+#: app/gui.c:1968
+msgid "Stop"
+msgstr "Dur"
+
+#: app/gui.c:1973
+msgid "Pat"
+msgstr "Pat"
+
+#: app/gui.c:1979
+msgid "Edited pattern"
+msgstr "Düzenlenen desen"
+
+#: app/gui.c:1992
+msgid "When enabled, browsing the playlist does not change the edited pattern."
+msgstr ""
+"Devreye sokulduğunda şarkı listesine göz atma düzenlenen deseni değiştirmez."
+
+#: app/gui.c:2008
+msgid "Number of Channels:"
+msgstr "Kanal Sayısı:"
+
+#: app/gui.c:2025
+msgid "Pattern Length"
+msgstr "Örüntü Uzunluğu"
+
+#: app/gui.c:2060
+msgid "Set preferred accidental type"
+msgstr "Tercih edilen yanlış türü sapta"
+
+#: app/gui.c:2066
+msgid "Measure"
+msgstr "Önlem"
+
+#: app/gui.c:2067
+msgid "Enable row highlighting"
+msgstr "Satır vurgulamasını etkinleştir "
+
+#: app/gui.c:2093
+msgid "Other..."
+msgstr "Diğer..."
+
+#: app/gui.c:2129
+msgid "Change effect column editing direction"
+msgstr "Yönü düzenleyen etki sütununu değiştir"
+
+#: app/gui.c:2160
+msgid "Global amplification"
+msgstr "Genel büyütme"
+
+#: app/gui.c:2196
+msgid "Pitchbend"
+msgstr "Perdekıvrımı"
+
+#: app/gui.c:2204
+msgid "Reset pitchbend to its normal value"
+msgstr "Perdekıvrımrnı yeniden normal değerine ayarla"
+
+#: app/gui.c:2216
+msgid "Editing"
+msgstr "Düzenleme"
+
+#: app/gui.c:2223
+msgid "Octave"
+msgstr "Oktav"
+
+#: app/gui.c:2232
+msgid "Jump"
+msgstr "Atla"
+
+#: app/gui.c:2241
+msgid "Instr"
+msgstr "Instr"
+
+#: app/gui.c:2257
+msgid "Sample"
+msgstr "Örnek"
+
+#  Status Bar
+#: app/gui.c:2296
+msgid "Welcome to SoundTracker!"
+msgstr "SoundTracker'a Hoşgeldiniz!"
+
+#: app/gui.c:2323
+msgid "%M:%S"
+msgstr "%M:%S"
+
+#: app/instrument-editor.c:81
+msgid "VolFade"
+msgstr "VolSönüşüm"
+
+#: app/instrument-editor.c:82
+msgid "VibSpeed"
+msgstr "VibHız"
+
+#: app/instrument-editor.c:83
+msgid "VibDepth"
+msgstr "VibDerinlik"
+
+#: app/instrument-editor.c:84
+msgid "VibSweep"
+msgstr "VibTarama"
+
+#: app/instrument-editor.c:163 app/instrument-editor.c:186
+msgid "Can't open file."
+msgstr "Dosya açılamıyor."
+
+#: app/instrument-editor.c:229
+msgid "Sine"
+msgstr "Sinüs"
+
+#: app/instrument-editor.c:229
+msgid "Square"
+msgstr "Kare"
+
+#: app/instrument-editor.c:229
+msgid "Saw Down"
+msgstr "Aşağı Testere"
+
+#: app/instrument-editor.c:229
+msgid "Saw Up"
+msgstr "Yukarı Testere"
+
+#: app/instrument-editor.c:233
+msgid "Instrument Editor"
+msgstr "Aygıt Düzenleyici"
+
+#: app/instrument-editor.c:242
+msgid "Volume envelope"
+msgstr "Ses zarfı"
+
+#: app/instrument-editor.c:250
+msgid "Panning envelope"
+msgstr "Gezdirme zarfı"
+
+#: app/instrument-editor.c:267
+msgid "Load Instrument..."
+msgstr "Aygıtı Yükle..."
+
+#: app/instrument-editor.c:269
+msgid "Save Instrument..."
+msgstr "Aygıtı Kaydet..."
+
+#: app/instrument-editor.c:271
+msgid "Load XI"
+msgstr "XI'yı Yükle"
+
+#: app/instrument-editor.c:277
+msgid "Save XI"
+msgstr "XI'yi Kaydet"
+
+#: app/instrument-editor.c:296
+msgid "Vibrato Type:"
+msgstr "Vibrato Türü:"
+
+#: app/instrument-editor.c:368
+msgid "Note:"
+msgstr "Not:"
+
+#: app/instrument-editor.c:386
+msgid "Initialize"
+msgstr "Başlat"
+
+#: app/keys.c:57
+msgid "<none>"
+msgstr "<hiçbiri>"
+
+#  3 fixed entries,
+#  32 dynamically generated ones (see keys_generate_channel_explanations()),
+#  1 NULL terminator
+#: app/keys.c:129
+msgid "The key that inserts the special keyoff note for FastTracker modules."
+msgstr "Hızlıİzci birimleri için özel tuşkapalı notasını yerleştiren tuş"
+
+#: app/keys.c:131
+msgid "The key that increases \"jump\" value."
+msgstr "\"atlama\" değerini artıran tuş."
+
+#: app/keys.c:133
+msgid "The key that decreases \"jump\" value."
+msgstr "\"atlama\" değerini azaltan tuş."
+
+#: app/keys.c:145
+msgid "Upper Octave Keys..."
+msgstr "Üst Oktav Tuşları..."
+
+#: app/keys.c:146
+msgid ""
+"These are the keys on the upper half of the keyboard. The c key is normally "
+"the key to the right of the TAB key. The rest of the keys should be ordered "
+"in a piano keyboard fashion, including the number keys row above."
+msgstr ""
+"Bunlar klavyenin üst yarısındaki tuşlardır. C tuşu normalde TAB tuşunun "
+"sağına denk gelen tuştur. Tuşların geri kalanı, yukarı satırdaki sayı tuşlar "
+"da dahil olmak üzere bir piyano klavyesi düzeninde düzenlenmelidir."
+
+#: app/keys.c:152
+msgid "Lower Octave Keys..."
+msgstr "Alt Oktav Tuşları..."
+
+#: app/keys.c:153
+msgid ""
+"These are the keys on the lower half of the keyboard. The c key is normally "
+"the first character key to the right of the left Shift key. The rest of the "
+"keys should be ordered in a piano keyboard fashion, including the row above."
+msgstr ""
+"Bunlar klavyenin alt yarısındaki tuşlardır. C tuşu normalde sol ÜstKarakter "
+"tuşunun sağına denk gelen ilk karakter tuşudur. Tuşların geri kalanı, yukarı "
+"satır da dahil olmak üzere bir piyano klavyesi düzeninde düzenlenmelidir."
+
+#: app/keys.c:159
+msgid "Other Keys..."
+msgstr "Diğer Tuşlar..."
+
+#: app/keys.c:160
+msgid "Various other keys"
+msgstr "Çeşitli başka tuşlar"
+
+#: app/keys.c:513
+msgid "Function"
+msgstr "İşlev"
+
+#: app/keys.c:514
+msgid "Assignment"
+msgstr "Atama"
+
+#: app/keys.c:523 app/keys.c:526
+msgid "Keyboard Configuration"
+msgstr "Klavye Yapılandırması"
+
+#  Explaining Text
+#: app/keys.c:575
+msgid "Key Group Explanation"
+msgstr "Tuş Grubu Açıklaması"
+
+#  Explaining Text
+#: app/keys.c:592
+msgid "Key Explanation"
+msgstr "Tuş Açıklaması"
+
+#: app/keys.c:623
+msgid "Modifiers:"
+msgstr "Değiştiriciler:"
+
+#  Learn-Buttons
+#: app/keys.c:649
+msgid "Learn selected key"
+msgstr "Seçili tuşu öğren"
+
+#: app/keys.c:655
+msgid "Learn all keys"
+msgstr "Bütün tuşları öğren"
+
+#: app/keys.c:661
+msgid ""
+"Please press the desired key combination!\n"
+"Click into left list to cancel"
+msgstr ""
+"Lütfen istenen tuş bileşimine basın!\n"
+" İptal etmek için soldaki listeye tıklayın"
+
+#  Create the buttons.
+#: app/keys.c:691 app/menubar.c:104 app/sample-editor.c:2472
+#: app/midi-settings-050.c:635 app/midi-settings-09x.c:638
+msgid "Ok"
+msgstr "Tamam"
+
+#: app/keys.c:701 app/midi-settings-050.c:636 app/midi-settings-09x.c:639
+msgid "Apply"
+msgstr "Uygula"
+
+#: app/keys.c:771
+msgid ""
+"The keyboard configuration file is defective.\n"
+"Please use the Keyboard Configuration dialog."
+msgstr ""
+"Klavye yapılandırma dosyası bozuk.\n"
+"Lütfen Klavye Yapılandırma iletişim kutusunu kullanın."
+
+#: app/keys.c:1000
+#, c-format
+msgid "CH%02d"
+msgstr "CH%02d"
+
+#: app/keys.c:1001
+#, c-format
+msgid "Fast jump to channel %d"
+msgstr "Kanal %d'ye hızlı atlama"
+
+#  Automatic key configuration unsuccessful. Popup requester.
+#: app/keys.c:1076
+msgid ""
+"Automatic key configuration unsuccessful.\n"
+"Please use the Keyboard Configuration dialog\n"
+"in the Settings menu."
+msgstr "O"
+
+#: app/menubar.c:140
+msgid ""
+"Are you sure you want to do this?\n"
+"All changes will be lost!"
+msgstr ""
+"Bunu yapmak istediğnizden emin misiniz?\n"
+"Bütün değişiklikler kaybedilecek!"
+
+#: app/menubar.c:162
+msgid ""
+"Are you sure you want to quit?\n"
+"All changes will be lost!"
+msgstr ""
+"Çıkmak istediğinizden emin misiniz?\n"
+"Bütün değişiklikler kaybedilecek."
+
+#: app/menubar.c:419
+msgid "_Open..."
+msgstr "_Aç..."
+
+#: app/menubar.c:421
+msgid "Save _as..."
+msgstr "Farklı_kaydet..."
+
+#: app/menubar.c:427
+msgid "Save Module as _WAV..."
+msgstr "Birimi WAV olarak_kaydet..."
+
+#: app/menubar.c:429
+msgid "Save XM without samples..."
+msgstr "XM'yi örnekler olmadan kaydet..."
+
+#: app/menubar.c:434
+msgid "_Quit"
+msgstr "_Bırak"
+
+#: app/menubar.c:441
+msgid "Clear _All"
+msgstr "Tümünü_Temizle"
+
+#: app/menubar.c:443
+msgid "Clear _Patterns Only"
+msgstr "Sadece_Desenleri Temizle"
+
+#: app/menubar.c:448
+msgid "_Optimize Module"
+msgstr "_Birimi en iyi şekilde kullan"
+
+#: app/menubar.c:455 app/menubar.c:466 app/menubar.c:522 app/menubar.c:556
+msgid "C_ut"
+msgstr "K_es"
+
+#: app/menubar.c:457 app/menubar.c:468 app/menubar.c:524 app/menubar.c:558
+msgid "_Copy"
+msgstr "_Kopyala"
+
+#: app/menubar.c:459 app/menubar.c:470 app/menubar.c:560
+msgid "_Paste"
+msgstr "_Yapıştır"
+
+#: app/menubar.c:475
+msgid "_Kill notes"
+msgstr "_Notaları sonlandır"
+
+#: app/menubar.c:480
+msgid "_Insert track"
+msgstr "_İzi yerleştir"
+
+#: app/menubar.c:482
+msgid "_Delete track"
+msgstr "_İzi sil"
+
+#: app/menubar.c:487
+msgid "Increment cmd value"
+msgstr "Cmd değerini artırma"
+
+#: app/menubar.c:489
+msgid "Decrement cmd value"
+msgstr "Cmd değerini azaltma"
+
+#: app/menubar.c:496
+msgid "_Mark mode"
+msgstr "_İm kipi"
+
+#: app/menubar.c:498 app/menubar.c:554
+msgid "C_lear block marks"
+msgstr "B_lok imlerini Temizle"
+
+#: app/menubar.c:503 app/menubar.c:562
+msgid "_Interpolate effects"
+msgstr "_Etkileri ara değerle"
+
+#: app/menubar.c:508
+msgid "Transpose half-note up"
+msgstr "Yarım-nota yukarı değiştir"
+
+#: app/menubar.c:510
+msgid "Transpose half-note down"
+msgstr "Yarım-nota aşağı değiştir"
+
+#: app/menubar.c:512
+msgid "Transpose octave up"
+msgstr "Oktavı yukarıya "
+
+#: app/menubar.c:514
+msgid "Transpose octave down"
+msgstr "Oktavı aşağı değiştir"
+
+#: app/menubar.c:526
+msgid "P_aste"
+msgstr "Y_apıştır"
+
+#: app/menubar.c:531
+msgid "_Jazz Edit Mode"
+msgstr "_Jazz Düzenleme Kipi"
+
+#: app/menubar.c:534
+msgid "_Record keyreleases"
+msgstr ""
+
+#: app/menubar.c:539
+msgid "Transp_osition..."
+msgstr "Değişt_irme..."
+
+#: app/menubar.c:544 app/menubar.c:569 app/menubar.c:707
+msgid "_Pattern"
+msgstr "_Desen"
+
+#: app/menubar.c:545 app/menubar.c:570 app/menubar.c:708
+msgid "_Track"
+msgstr "_İzle"
+
+#: app/menubar.c:546 app/menubar.c:571
+msgid "_Selection"
+msgstr "_Seçim"
+
+#: app/menubar.c:578
+msgid "_Find Unused Pattern"
+msgstr "_"
+
+#: app/menubar.c:580
+msgid "_Copy Current to Unused Pattern"
+msgstr "_Geçerli olanı Kullanılmayan Desene Kopyala"
+
+#: app/menubar.c:585
+msgid "C_lear Unused Patterns"
+msgstr "K_ullanılmayan Desenleri Temizle"
+
+#: app/menubar.c:587
+msgid "_Pack Patterns"
+msgstr "_Desenleri Paketle"
+
+#: app/menubar.c:592
+msgid "_Save Current Pattern"
+msgstr "_Geçerli Deseni Kaydet"
+
+#: app/menubar.c:594
+msgid "L_oad Pattern"
+msgstr "D_eseni Yükle"
+
+#: app/menubar.c:599
+msgid "Sh_rink Current Pattern"
+msgstr "Ge_çerli Deseni Küçült"
+
+#: app/menubar.c:601
+msgid "_Expand Current Pattern"
+msgstr "_Geçerli Deseni Genişlet"
+
+#: app/menubar.c:608
+msgid "_Toggle Current Channel Permanentness"
+msgstr ""
+
+#: app/menubar.c:610
+msgid "Toggle _All Channels Permanentness"
+msgstr ""
+
+#: app/menubar.c:618
+msgid "_Load XI..."
+msgstr "_XI'yi yükle..."
+
+#: app/menubar.c:620
+msgid "_Save XI..."
+msgstr "_XI'yi Kaydet..."
+
+#: app/menubar.c:625
+msgid "_Clear Current"
+msgstr "_Geçerli olanı Temizle "
+
+#: app/menubar.c:630
+msgid "_Delete Unused Instruments"
+msgstr "_Kullanılmayan Aygıtları Sil"
+
+#: app/menubar.c:637
+msgid "_Flicker-free scrolling"
+msgstr "_Titreşimsiz kaydırma"
+
+#: app/menubar.c:640
+msgid "_Previous font"
+msgstr "_Önceki yazıtipi"
+
+#: app/menubar.c:642
+msgid "_Next font"
+msgstr "_Sonraki yazıtipi"
+
+#: app/menubar.c:647
+msgid "Change preferred _accidental type"
+msgstr "Tercih edilen_yanlış türü değiştir"
+
+#: app/menubar.c:649
+msgid "Change effect column editing _direction"
+msgstr "Yönü_düzenleyen etki sütununu değiştir"
+
+#: app/menubar.c:657
+msgid "Display _Oscilloscopes"
+msgstr "Göster_Oscilloscopes"
+
+#: app/menubar.c:660
+msgid "_Tracker"
+msgstr "_İzci"
+
+#: app/menubar.c:664
+msgid "_Keyboard Configuration..."
+msgstr "_Klavye Yapılandırması..."
+
+#: app/menubar.c:666
+msgid "_Audio Configuration..."
+msgstr "_Ses Yapılandırması..."
+
+#: app/menubar.c:668
+msgid "_GUI Configuration..."
+msgstr "_GUI Yapılandırması..."
+
+#: app/menubar.c:674
+msgid "_MIDI Configuration..."
+msgstr "_MIDI Yapılandırması..."
+
+#: app/menubar.c:679
+msgid "Disable splash screen"
+msgstr "Sıçrama ekranı devre dışı"
+
+#: app/menubar.c:681
+msgid "_Save Settings now"
+msgstr "_Ayarları şimdi kaydet"
+
+#: app/menubar.c:683
+msgid "Save Settings on _Exit"
+msgstr "Çıkışta Ayarları_Kaydet"
+
+#: app/menubar.c:690
+msgid "_About..."
+msgstr "_Hakkında..."
+
+#: app/menubar.c:695
+msgid "Show _Tips..."
+msgstr "İpuçlarını_Göster..."
+
+#: app/menubar.c:697
+msgid "_XM Effects..."
+msgstr "_XM Etkileri..."
+
+#: app/menubar.c:704
+msgid "_File"
+msgstr "_Dosya"
+
+#: app/menubar.c:705
+msgid "_Module"
+msgstr "_Birim"
+
+#: app/menubar.c:706
+msgid "_Edit"
+msgstr "_Düzenle"
+
+#: app/menubar.c:709
+msgid "_Instrument"
+msgstr "_Aygıt"
+
+#: app/menubar.c:710
+msgid "_Settings"
+msgstr "_Ayarlar"
+
+#: app/menubar.c:711
+msgid "_Help"
+msgstr "_Yardım"
+
+#: app/mixers/integer32.c:493
+msgid "Integers mixer, no interpolation, no filters, maximum sample length 1M"
+msgstr ""
+"Tam sayılar karıştırıcısı, ara değerleme yok, en fazla örnek uzunluğu 1M"
+
+#: app/module-info.c:115
+msgid "Instrument Name"
+msgstr "Aygıt Adı"
+
+#: app/module-info.c:115
+msgid "#smpl"
+msgstr "#smpl"
+
+#: app/module-info.c:116
+msgid "Sample Name"
+msgstr "Örnek Adı"
+
+#: app/module-info.c:117
+msgid "Linear"
+msgstr "Doğrusal"
+
+#: app/module-info.c:117 app/sample-editor.c:235
+msgid "Amiga"
+msgstr "Amiga"
+
+#: app/module-info.c:124
+msgid "Module Info"
+msgstr "Birim Bilgisi"
+
+#: app/module-info.c:164
+msgid "Songname:"
+msgstr "Şarkı adı:"
+
+#: app/module-info.c:179
+msgid "Frequencies:"
+msgstr "Sıklıklar:"
+
+#: app/module-info.c:184
+msgid "ProTracker Mode"
+msgstr "Proİzci Kipi"
+
+#: app/module-info.c:395
+#, c-format
+msgid ""
+"Unused patterns: %d (used: %d)\n"
+"Unused instruments: %d (used: %d)\n"
+"\n"
+"Clear unused and reorder playlist?\n"
+msgstr ""
+"Kullanılmayan desenler:%d (kullanılan: %d)\n"
+"Kullanılmayan aygıtlar: %d (kullanılan: %d)\n"
+"\n"
+"Kullanılmayanı temizle ve şarkı listesini yeniden düzenle?\n"
+
+#: app/playlist.c:526
+msgid "Insert pattern that is being edited"
+msgstr "Düzenlenmekte olan deseni yerleştir"
+
+#: app/playlist.c:535
+msgid "Remove current playlist entry"
+msgstr "Geçerli şarkı listesini kaldır"
+
+#: app/playlist.c:543
+msgid "Add + Cpy"
+msgstr "Ekle+Kpy"
+
+#: app/playlist.c:545
+msgid ""
+"Add a free pattern behind current position, and copy current pattern to it"
+msgstr ""
+"Geçerli konumun arkasına boş bir desen ekle, ve geçerli deseni ona kopyala"
+
+#: app/playlist.c:548
+msgid "Add Free"
+msgstr "Boş Ekle"
+
+#: app/playlist.c:550
+msgid "Add a free pattern behind current position"
+msgstr "Geçerli konumun arkasına boş bir desen ekle"
+
+#: app/playlist.c:560
+#, fuzzy
+msgid "Len"
+msgstr "Uzunluk"
+
+#: app/playlist.c:574
+msgid "Song length"
+msgstr "Şarkı uzunluğu"
+
+#: app/playlist.c:580
+#, fuzzy
+msgid "Rstrt"
+msgstr "Instr"
+
+#: app/playlist.c:593
+msgid "Song restart position"
+msgstr "Şarkıyı yeniden başlatma konumu"
+
+#: app/preferences.c:74
+msgid ""
+"A directory called '.soundtracker' has been created in your\n"
+"home directory to store configuration files.\n"
+msgstr ""
+" Yapılandırma dosyalarını depolamak için ana dizininizde\n"
+"'.soundtracker' adlı bir dizin oluşturuldu. \n"
+
+#: app/sample-editor.c:234
+msgid "No loop"
+msgstr "Döngü yok"
+
+#: app/sample-editor.c:236
+msgid "PingPong"
+msgstr "PinPon"
+
+#: app/sample-editor.c:240 app/sample-editor.c:1574
+msgid "8 bits"
+msgstr "8 bit"
+
+#: app/sample-editor.c:241 app/sample-editor.c:1574
+msgid "16 bits"
+msgstr "16 bit"
+
+#: app/sample-editor.c:247
+msgid "Sample Editor"
+msgstr "Örnek Düzenleyici"
+
+#: app/sample-editor.c:287 app/midi-settings-050.c:504
+#: app/midi-settings-09x.c:507
+msgid "Volume"
+msgstr "Ses"
+
+#: app/sample-editor.c:288
+msgid "Panning"
+msgstr "Gezdirme"
+
+#: app/sample-editor.c:289
+msgid "Finetune"
+msgstr "İnce ayar"
+
+#: app/sample-editor.c:309
+msgid "Selection:"
+msgstr "Seçim:"
+
+#: app/sample-editor.c:313 app/track-editor.c:198 app/track-editor.c:208
+msgid "None"
+msgstr "Hiçbiri"
+
+#: app/sample-editor.c:319
+msgid "All"
+msgstr "Tümü"
+
+#: app/sample-editor.c:340
+msgid "Length:"
+msgstr "Uzunluk:"
+
+#: app/sample-editor.c:356
+msgid "Set as loop"
+msgstr "Döngü olarak ayarla"
+
+#: app/sample-editor.c:364
+msgid "RelNote"
+msgstr "RelNotası"
+
+#: app/sample-editor.c:375
+msgid "Load Sample..."
+msgstr "Örneği Yükle..."
+
+#: app/sample-editor.c:377
+msgid "Save WAV..."
+msgstr "WAV'i Kaydet..."
+
+#: app/sample-editor.c:379
+msgid "Save region as WAV..."
+msgstr "Bölgeyi WAV olarak Kaydet"
+
+#: app/sample-editor.c:392
+msgid "Save WAV"
+msgstr "WAV'i Kaydet"
+
+#: app/sample-editor.c:402
+msgid "Save Region"
+msgstr "Bölgeyi Kaydet"
+
+#: app/sample-editor.c:413
+msgid "Monitor"
+msgstr "Görüntü birimi"
+
+#: app/sample-editor.c:419
+msgid "Volume Ramp"
+msgstr "Ses Yokuşu"
+
+#  R
+#  S
+#: app/sample-editor.c:425
+#, fuzzy
+msgid "Trim"
+msgstr "Titreşim"
+
+#: app/sample-editor.c:436
+msgid "Zoom to selection"
+msgstr "Seçim oranı"
+
+#: app/sample-editor.c:442
+msgid "Show all"
+msgstr "Tümünü göster"
+
+#: app/sample-editor.c:448
+msgid "Zoom in (+50%)"
+msgstr "Yakınlaştır (+50%)"
+
+#: app/sample-editor.c:454
+msgid "Zoom out (-50%)"
+msgstr "Uzaklaştır (-50%)"
+
+#: app/sample-editor.c:460
+msgid "Reverse"
+msgstr "Ters"
+
+#: app/sample-editor.c:470
+msgid "Cut"
+msgstr "Kes"
+
+#: app/sample-editor.c:476
+msgid "Remove"
+msgstr "Kaldır"
+
+#: app/sample-editor.c:482
+msgid "Copy"
+msgstr "Kopyala"
+
+#: app/sample-editor.c:488
+msgid "Paste"
+msgstr "Yapıştır"
+
+#: app/sample-editor.c:494
+msgid "Clear Sample"
+msgstr "Örneği Temizle"
+
+#: app/sample-editor.c:500
+#, fuzzy
+msgid "Crop"
+msgstr "Kopyala"
+
+#: app/sample-editor.c:564
+msgid "(no selection)"
+msgstr "(seçim yok)"
+
+#: app/sample-editor.c:1069
+msgid "Out of memory for copybuffer.\n"
+msgstr "Kopyaarabelleği için bellek yetersiz.\n"
+
+#: app/sample-editor.c:1188
+msgid "<just pasted>"
+msgstr "<henüz yapıştırıldı>"
+
+#: app/sample-editor.c:1301
+msgid "Out of memory for sample data."
+msgstr "Örnek bilgileri için bellek yetersiz."
+
+#: app/sample-editor.c:1317 app/sample-editor.c:1329
+msgid "Read error."
+msgstr "Okumada hata."
+
+#: app/sample-editor.c:1476
+msgid "Load stereo sample"
+msgstr "Çiftli örneği Yükle"
+
+#: app/sample-editor.c:1484
+msgid ""
+"You have selected a stereo sample!\n"
+"(SoundTracker can only handle mono samples!)\n"
+"\n"
+"Please choose which channel to load:"
+msgstr ""
+"İkili bir örnek seçtiniz!\n"
+"(SoundTracker sadece tekli örnekleri işleyebiliyor!)\n"
+"\n"
+"Lütfen yüklenecek kanalı seçin:"
+
+#: app/sample-editor.c:1495
+msgid "Left"
+msgstr "Sol"
+
+#: app/sample-editor.c:1501
+msgid "Mix"
+msgstr "Karıştır"
+
+#: app/sample-editor.c:1507
+msgid "Right"
+msgstr "Sağ"
+
+#: app/sample-editor.c:1575
+msgid "Signed"
+msgstr "İşaretli"
+
+#: app/sample-editor.c:1575
+msgid "Unsigned"
+msgstr "İşaretsiz"
+
+#: app/sample-editor.c:1576
+msgid "Little-Endian"
+msgstr "Küçük-Sonlandırıcı"
+
+#: app/sample-editor.c:1576
+msgid "Big-Endian"
+msgstr "Büyük-Sonlandırıcı"
+
+#: app/sample-editor.c:1577
+msgid "Mono"
+msgstr "Tekli"
+
+#: app/sample-editor.c:1577
+msgid "Stereo"
+msgstr "Çiftli"
+
+#: app/sample-editor.c:1589
+msgid "Load raw sample"
+msgstr "Ham örneği Yükle"
+
+#: app/sample-editor.c:1597
+msgid ""
+"You have selected a sample that is not\n"
+"in a known format. You can load the raw data now.\n"
+"\n"
+"Please choose a format:"
+msgstr ""
+"Bilinen biçimde \n"
+"olmayan bir örnek seçtiniz. Şimdi ham bilgileri yükleyebilirsiniz.\n"
+" \n"
+"Lütfen bir biçim seçin:"
+
+#: app/sample-editor.c:1623
+msgid "Word format:"
+msgstr "Sözcük biçimi:"
+
+#: app/sample-editor.c:1670
+msgid "Sampling Rate:"
+msgstr "Örnekleme Hızı:"
+
+#: app/sample-editor.c:1681
+msgid "8363"
+msgstr "8363"
+
+#: app/sample-editor.c:1689 app/sample-editor.c:2004
+msgid "OK"
+msgstr "Tamam"
+
+#: app/sample-editor.c:1748
+msgid "Can't read sample"
+msgstr "Örnek okunamıyor"
+
+#: app/sample-editor.c:1761
+msgid "Sample is too long for current mixer module. Loading anyway."
+msgstr "Örnek geçerli karıştırıcı birimi için fazla uzun. Yine de yükleniyor. "
+
+#: app/sample-editor.c:1785
+msgid "Can only handle 8 and 16 bit samples with up to 2 channels"
+msgstr "Sadece ikiye kadar kanalı olan 8 ve 16 bit örnekler işlenebiliyor"
+
+#: app/sample-editor.c:1968
+msgid "Please select region first."
+msgstr "Lütfen ilk olarak bölgeyi seçin."
+
+#: app/sample-editor.c:2012
+msgid "Start sampling"
+msgstr "Örneklemeyi Başlat"
+
+#: app/sample-editor.c:2042
+msgid "No sampling driver available"
+msgstr "Örnekleme sürücüsü mevcut değil"
+
+#: app/sample-editor.c:2052 app/sample-editor.c:2055
+msgid "Sampling Window"
+msgstr "Örnekleme Penceresi"
+
+#: app/sample-editor.c:2104
+msgid "Out of memory while sampling!"
+msgstr "Örneklemede bellek yetersiz!"
+
+#: app/sample-editor.c:2155
+msgid "<just sampled>"
+msgstr "<henüz örneklendirildi>"
+
+#: app/sample-editor.c:2186
+msgid "Recorded sample is too long for current mixer module. Using it anyway."
+msgstr ""
+"Kaydedilen örnek geçerli karaıştırıcı birim için fazla uzun. Yine de "
+"kullanılıyor. "
+
+#: app/sample-editor.c:2239
+msgid "Normalize"
+msgstr "Düzgelemek"
+
+#: app/sample-editor.c:2240
+msgid "Execute"
+msgstr "Yürüt"
+
+#: app/sample-editor.c:2250 app/sample-editor.c:2253
+msgid "Volume Ramping"
+msgstr "Ses Tırmanması"
+
+#: app/sample-editor.c:2269
+msgid "Perform linear volume fade on Selection"
+msgstr "Seçim tuşu üzerinde doğrusal ses sönüşümü gerçekleştir"
+
+#: app/sample-editor.c:2281
+msgid "Left [%]:"
+msgstr "Sol [%]:"
+
+#: app/sample-editor.c:2284 app/sample-editor.c:2301
+msgid "H"
+msgstr "H"
+
+#: app/sample-editor.c:2290 app/sample-editor.c:2307
+msgid "D"
+msgstr "D"
+
+#: app/sample-editor.c:2298
+msgid "Right [%]:"
+msgstr "Sağ [%]:"
+
+#: app/sample-editor.c:2442 app/sample-editor.c:2453
+msgid "Trim parameters"
+msgstr ""
+
+#: app/sample-editor.c:2498
+msgid "Trim at the beginning"
+msgstr ""
+
+#: app/sample-editor.c:2505
+msgid "Trim at the end"
+msgstr ""
+
+#: app/sample-editor.c:2512
+msgid "Threshold (dB)"
+msgstr ""
+
+#: app/tips-dialog.c:50
+msgid ""
+"Welcome to SoundTracker!\n"
+"\n"
+"If you are new to this type of program, you will want to get hold of\n"
+"some XM or MOD files first and play with them."
+msgstr ""
+"SoundTracker'a Hoşgeldiniz!\n"
+"\n"
+"Bu tür programa tanıdık değilseniz, ilk önce bazı XM ya da MOD dosyalarını "
+"edinip\n"
+" onlarla oynamak isteyeceksiniz."
+
+#: app/tips-dialog.c:55
+msgid ""
+"You can make SoundTracker's edit mode more responsive to keyboard\n"
+"input by decreasing the mixing buffer size of the \"Editing\" object in\n"
+"the Audio Configuration."
+msgstr ""
+" Ses Yapılandırmasındaki \"düzenleme\" nesnesinin karıştırıcı ara bellek "
+"boyutunu azaltarak SoundTracker'ın düzenleme kipini klavye\n"
+" girişine daha duyarlı yapabilirsiniz."
+
+#: app/tips-dialog.c:59
+msgid ""
+"You can adjust the loop points in the sample editor by holding Shift\n"
+"and using the left and right mousebuttons.\n"
+msgstr ""
+"Örnek düzenleyicisindeki döngü noktalarını ÜstKarakteri\n"
+" basılı tutarak ve sağ ve sol fare düğmelerini kullanarak "
+"ayarlayabilirsiniz.\n"
+
+#: app/tips-dialog.c:62
+msgid ""
+"If you want to know more about tracking, and how the various commands\n"
+"work, have a look at http://www.united-trackers.org/"
+msgstr ""
+"İzleme, ve çeşitli komutların\n"
+" nasıl çalıştığı üzerine daha fazla bilgi edinmek isterseniz, http://www."
+"united-trackers.org/ adresine bakın"
+
+#: app/tips-dialog.c:65
+msgid ""
+"You can assign samples of an instrument to the individual keys by\n"
+"activating its sample and then clicking on the keyboard in the\n"
+"instrument editor page."
+msgstr ""
+"Bir aygıtın örneklerini onun örneğini etkinleştirerek\n"
+" ve sonra klavye üzerindeki\n"
+" aygıt düzenleyici sayfasına tıklayarak tekli tuşlara atayabilirsiniz."
+
+#: app/tips-dialog.c:69
+msgid ""
+"Is your cursor trapped in a number entry field?\n"
+"Just press Return or Tab to free yourself!"
+msgstr ""
+"İmleciniz bir sayı giriş alanına mı yakalandı?\n"
+"Kendinizi kurtarmak için hemen Dönüş ya da Sekme tuşuna basın!"
+
+#: app/tips-dialog.c:81
+msgid "SoundTracker Tip of the day"
+msgstr "Günün SoundTracker  İpucu"
+
+#: app/tips-dialog.c:154
+msgid "Previous Tip"
+msgstr "Önceki İpucu"
+
+#: app/tips-dialog.c:162
+msgid "Next Tip"
+msgstr "Sonraki İpucu"
+
+#: app/tips-dialog.c:174
+msgid "Show tip next time"
+msgstr "Bir sonraki sefer ipucunu göster"
+
+#: app/track-editor.c:113
+msgid "Arpeggio"
+msgstr "Arpej"
+
+#  0
+#: app/track-editor.c:114
+msgid "Porta up"
+msgstr "Yukarı Porta"
+
+#  1
+#: app/track-editor.c:115
+msgid "Porta down"
+msgstr "Aşağı Porta"
+
+#  2
+#: app/track-editor.c:116 app/track-editor.c:180
+msgid "Tone porta"
+msgstr "Ton portası"
+
+#  3
+#: app/track-editor.c:117 app/track-editor.c:176
+msgid "Vibrato"
+msgstr "Vibrato"
+
+#  4
+#: app/track-editor.c:118
+msgid "Tone porta + Volume slide"
+msgstr "Ton portası + Ses slaydı"
+
+#  5
+#: app/track-editor.c:119
+msgid "Vibrato + Volume slide"
+msgstr "Vibrato + Ses slaydı"
+
+#  6
+#: app/track-editor.c:120
+msgid "Tremolo"
+msgstr "Tremolo"
+
+#  7
+#: app/track-editor.c:121 app/track-editor.c:177
+msgid "Set panning"
+msgstr "Gezdirmeyi ayarla"
+
+#  8
+#: app/track-editor.c:122 app/track-editor.c:124
+msgid "Position jump"
+msgstr "Konum atlama"
+
+#  9
+#: app/track-editor.c:123 app/track-editor.c:125 app/track-editor.c:201
+msgid "Set volume"
+msgstr "Sesi ayarla"
+
+#  C
+#: app/track-editor.c:126
+msgid "Pattern break"
+msgstr "Desen sonu"
+
+#  D
+#  E
+#: app/track-editor.c:128
+msgid "Set tempo/bpm"
+msgstr "Tempo/bpm'yi ayarla"
+
+#  F
+#: app/track-editor.c:129
+msgid "Set global volume"
+msgstr "Genel sesi ayarla"
+
+#  G
+#: app/track-editor.c:130
+msgid "Global volume slide"
+msgstr "Genel ses slaydı"
+
+#  H
+#  I
+#  J
+#: app/track-editor.c:133
+msgid "Key off"
+msgstr "Tuş kapalı"
+
+#  K
+#: app/track-editor.c:134
+msgid "Set envelop position"
+msgstr "Zarf konumunu ayarla"
+
+#  L
+#  M
+#  N
+#  O
+#: app/track-editor.c:138
+msgid "Panning slide"
+msgstr "Gezdirme slaydı"
+
+#  P
+#: app/track-editor.c:139
+msgid "LP filter resonance"
+msgstr "LP süzgeci çınlaması"
+
+#  Q
+#: app/track-editor.c:140
+msgid "Multi retrig note"
+msgstr "Çoklu retrig notası"
+
+#  R
+#  S
+#: app/track-editor.c:142
+msgid "Tremor"
+msgstr "Titreşim"
+
+#  T
+#  U
+#  V
+#  W
+#  X
+#  Y
+#: app/track-editor.c:148
+msgid "LP filter cutoff"
+msgstr "LP süzgecinin kesilmesi"
+
+#  0
+#: app/track-editor.c:153
+msgid "Fine porta up"
+msgstr "Yukarı ince porta"
+
+#  1
+#: app/track-editor.c:154
+msgid "Fine porta down"
+msgstr "Aşağı ince porta"
+
+#  2
+#: app/track-editor.c:155
+msgid "Set gliss control"
+msgstr "Gliss denetimini ayarla"
+
+#  3
+#: app/track-editor.c:156
+msgid "Set vibrato control"
+msgstr "Vibrato denetimini ayarla"
+
+#  4
+#: app/track-editor.c:157
+msgid "Set finetune"
+msgstr "İnce ayarı ayarla"
+
+#  5
+#: app/track-editor.c:158
+msgid "Set loop begin/loop"
+msgstr "Döngü başlangıcını/döngüyü ayarla"
+
+#  6
+#: app/track-editor.c:159
+msgid "Set tremolo control"
+msgstr "Tremolo denetimini ayarla"
+
+#  7
+#  8
+#: app/track-editor.c:161
+msgid "Retrig note"
+msgstr "Retrig notası"
+
+#  9
+#: app/track-editor.c:162 app/track-editor.c:174
+msgid "Fine volume slide up"
+msgstr "Yukarı ince ses slaydı"
+
+#  A
+#: app/track-editor.c:163 app/track-editor.c:173
+msgid "Fine volume slide down"
+msgstr "Aşağı ince ses slaydı"
+
+#  B
+#: app/track-editor.c:164
+msgid "Note cut"
+msgstr "Nota kesimi"
+
+#  C
+#: app/track-editor.c:165
+msgid "Note delay"
+msgstr "Nota gecikmesi"
+
+#  D
+#: app/track-editor.c:166
+msgid "Pattern delay"
+msgstr "Desen gecikmesi"
+
+#: app/track-editor.c:171
+msgid "Volume slide down"
+msgstr "Aşağı ses slaydı"
+
+#: app/track-editor.c:172
+msgid "Volume slide up"
+msgstr "Yukarı ses slaydı"
+
+#: app/track-editor.c:175
+msgid "Set vibrato speed"
+msgstr "Titreşim hızını ayarla"
+
+#: app/track-editor.c:178
+msgid "Panning slide left"
+msgstr "Sola gezdirme slaydı"
+
+#: app/track-editor.c:179
+msgid "Panning slide right"
+msgstr "Sağa gezdirme slaydı"
+
+#: app/track-editor.c:184
+msgid "sine"
+msgstr "sinüs"
+
+#  0
+#: app/track-editor.c:185
+msgid "ramp down"
+msgstr "aşağı yokuş"
+
+#  1
+#: app/track-editor.c:186
+msgid "square"
+msgstr "kare"
+
+#: app/track-editor.c:231 app/track-editor.c:237 app/track-editor.c:254
+#: app/track-editor.c:260
+#, c-format
+msgid "None ]"
+msgstr "Hiçbiri ]"
+
+#: app/track-editor.c:360
+msgid "Jazz Edit:"
+msgstr "Jazz "
+
+#: app/track-editor.c:405
+msgid "Tracker"
+msgstr "İzci "
+
+#: app/tracker-settings.c:235
+msgid "Font list"
+msgstr "Yazı tipi listesi"
+
+#: app/tracker-settings.c:255
+msgid "Add font"
+msgstr "Yazı tipini ekle"
+
+#: app/tracker-settings.c:261
+msgid "Delete font"
+msgstr "Yazı tipini sil"
+
+#: app/tracker-settings.c:267
+msgid "Apply font"
+msgstr "Yazı tipini uygula"
+
+#: app/tracker-settings.c:282
+msgid "Up"
+msgstr "Yukarı"
+
+#: app/tracker-settings.c:285
+msgid "Down"
+msgstr "Aşağı"
+
+#: app/tracker-settings.c:288
+msgid "Select font..."
+msgstr "Yazı tipini Seç..."
+
+#: app/transposition.c:198
+msgid "Whole Song"
+msgstr "Bütün Şarkı"
+
+#: app/transposition.c:199
+msgid "All Patterns"
+msgstr "Bütün Desenler"
+
+#: app/transposition.c:200
+msgid "Current Pattern"
+msgstr "Geçerli Desen"
+
+#: app/transposition.c:201
+msgid "Current Track"
+msgstr "Geçerli İz"
+
+#: app/transposition.c:205
+msgid "Current Instrument"
+msgstr "Geçerli Aygıt"
+
+#: app/transposition.c:206
+msgid "All Instruments"
+msgstr "Bütün Aygıtlar"
+
+#: app/transposition.c:210
+msgid "Half note up"
+msgstr "Yukarı yarım nota"
+
+#: app/transposition.c:211
+msgid "Half note down"
+msgstr "Aşağı yarım nota"
+
+#: app/transposition.c:212
+msgid "Octave up"
+msgstr "Yukarı oktav"
+
+#: app/transposition.c:213
+msgid "Octave down"
+msgstr "Aşağı oktav"
+
+#: app/transposition.c:216
+msgid "Exchange 1 <-> 2"
+msgstr "Değiştirme 1 <-> 2"
+
+#: app/transposition.c:217
+msgid "Change 1 -> 2"
+msgstr "Değişiklik 1 -> 2"
+
+#: app/transposition.c:226 app/transposition.c:229
+msgid "Transposition Tools"
+msgstr "Değiştirme Araçları"
+
+#: app/transposition.c:250
+msgid "Scope of the operation:"
+msgstr "İşlemin etki alanı:"
+
+#: app/transposition.c:257
+msgid "Note Transposition"
+msgstr "Nota Değiştirme"
+
+#: app/transposition.c:288
+msgid "Instrument Changing"
+msgstr "Aygıt Değiştirme"
+
+#: app/transposition.c:303
+msgid "Instrument 1:"
+msgstr "Aygıt 1:"
+
+#: app/transposition.c:305 app/transposition.c:315
+msgid "Current instrument"
+msgstr "Geçerli aygıt"
+
+#: app/transposition.c:313
+msgid "Instrument 2:"
+msgstr "Aygıt 2:"
+
+#: app/xm.c:196
+#, c-format
+msgid "Pattern length out of range: %d.\n"
+msgstr "Desen uzunluğu gereken aralıkta değil: %d.\n"
+
+#: app/xm.c:547
+msgid "File is no XI instrument."
+msgstr "Dosyada XI aygıtı yok."
+
+#: app/xm.c:557
+#, c-format
+msgid "Unknown XI version 0x%x\n"
+msgstr "Bilinmeyen XI sürümü 0x%x\n"
+
+#: app/xm.c:587
+#, c-format
+msgid "Invalid vibtype %d, using Sine.\n"
+msgstr "Sİnüs kullanan geçersiz %d vibtürü.\n"
+
+#: app/xm.c:859 app/xm.c:984
+msgid "Error while loading patterns."
+msgstr "Desenleri yüklemede hata."
+
+#: app/xm.c:927
+msgid "Can't open file"
+msgstr "Dosya açılamıyor"
+
+#: app/xm.c:990
+msgid "Error while loading instruments."
+msgstr "Aygıtları yüklemede hata."
+
+#: app/xm.c:1001
+#, c-format
+msgid ""
+"Module contains sample(s) that are too long for the current mixer.\n"
+"Maximum sample length is %d."
+msgstr ""
+"Birim geçerli karıştırıcı için fazla uzun olan örnek(ler) içeriyor.\n"
+"En fazla örnek uzunluğu %d'dir."
+
+#: app/xm.c:1399
+msgid "Not FastTracker XM and not supported MOD format!"
+msgstr "Hızlıİzci XM yok ve MOD biçimi desteklenmiyor!"
+
+#: app/xm.c:1414 app/xm.c:1435
+msgid "Error when file reading or unexpected end of file"
+msgstr "Dosyanın okunmasında hata ya da dosyanın beklenmedik sonu"
+
+#: app/xm.c:1418
+msgid "Incorrect or unsupported version of pattern file!"
+msgstr "Desen dosyasının yanlış ya da desteklenmeyen sürümü!"
+
+#: app/xm.c:1422
+msgid "Incorrect pattern length!"
+msgstr "Yanlış desen pattern uzunluğu!"
+
+#: app/xm.c:1468
+msgid "Error during saving pattern!"
+msgstr "Deseni kaydetmede hata!"
+
+#: app/midi-settings-050.c:497 app/midi-settings-09x.c:500
+msgid "Auto connect"
+msgstr "Otomatik bağlantı"
+
+#: app/midi-settings-050.c:512 app/midi-settings-09x.c:515
+msgid "Channel"
+msgstr "Kanal"
+
+#  Create the spin button for the input client number.
+#: app/midi-settings-050.c:521 app/midi-settings-09x.c:524
+msgid "Client number"
+msgstr "Kullanıcı sayısı"
+
+#  Create the spin button for the input port number.
+#: app/midi-settings-050.c:531 app/midi-settings-09x.c:534
+msgid "Port number"
+msgstr "Bağlantı noktası sayısı"
+
+#: app/midi-settings-050.c:549 app/midi-settings-09x.c:552
+msgid "Input"
+msgstr "Giriş"
+
+#: app/midi-settings-050.c:558 app/midi-settings-09x.c:561
+msgid "For future development"
+msgstr "Gelecek gelişmeler için"
+
+#: app/midi-settings-050.c:564 app/midi-settings-09x.c:567
+msgid "Output"
+msgstr "Çıkış"
+
+#  Create the spin button for the debug level.
+#: app/midi-settings-050.c:575 app/midi-settings-09x.c:578
+msgid "Debug level"
+msgstr "Hata ayıklama düzeyi"
+
+#: app/midi-settings-050.c:587 app/midi-settings-09x.c:590
+msgid "Misc"
+msgstr "Diğer"
+
+#: app/midi-settings-050.c:631 app/midi-settings-09x.c:634
+msgid "MIDI Configuration"
+msgstr "MIDI Yapılandırması"
