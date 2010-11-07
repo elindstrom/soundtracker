@@ -1,4 +1,4 @@
- 
+
 /*
  * The Real SoundTracker - XM player
  *
@@ -453,7 +453,7 @@ xm_player_get_note_pitch (channel *ch)
 	    note = 0;
 	else if(note >= 36)
 	    note = 35;
-	
+
 	return protracker_periods[(ch->cursamp->finetune >> 4) + 8][note] << 4;
     }
 }
@@ -488,7 +488,7 @@ xm_player_playnote_protracker (channel *ch)
 	if(!xm_player_start_note(ch, checknote))
 	    return;
     }
-    
+
     if (procnot && !delaytmp) {
 	if (!portatmp) {
 	    gint32 nn;
@@ -504,7 +504,7 @@ xm_player_playnote_protracker (channel *ch)
 	    if(proccmd == xmpCmdSFinetune)
 		nn = -ch->cursamp->relnote*256 - (gint16)(procdat << 4) + 0x80;
 	    ch->chCurNormNote = nn;
-		
+
 	    ch->chPitch = ch->chFinalPitch = ch->chPortaToPitch = xm_player_get_note_pitch(ch);
 
 	    ch->nextpos=0;
@@ -584,7 +584,7 @@ xm_player_playnote_fasttracker (channel *ch)
 	if(!xm_player_start_note(ch, checknote))
 	    return;
     }
-    
+
     if (procnot && !delaytmp) {
 	if (!portatmp) {
 	    gint32 nn;
@@ -605,7 +605,7 @@ xm_player_playnote_fasttracker (channel *ch)
 	    if(proccmd == xmpCmdSFinetune)
 		nn = -ch->cursamp->relnote*256 - (gint16)(procdat << 4) + 0x80;
 	    ch->chCurNormNote = nn;
-		
+
 	    ch->chPitch = ch->chFinalPitch = ch->chPortaToPitch = xm_player_get_note_pitch(ch);
 
 	    ch->nextpos=0;
@@ -689,7 +689,7 @@ xmplayer_final_channel_ops (int chnr)
 	if(ch->curins->vol_env.flags & EF_ON) {
 	    vol = (vol * env_handle(&ch->curins->vol_env, &ch->chVolEnvPos, ch->chSustain)) >> 8;
 	}
-	
+
 	if(ch->curins->pan_env.flags & EF_ON) {
 	    pan += ((env_handle(&ch->curins->pan_env, &ch->chPanEnvPos, ch->chSustain)-128)*(128-((pan<0)?-pan:pan)))>>7;
 	}
@@ -710,14 +710,14 @@ xmplayer_final_channel_ops (int chnr)
 		dep=((ch->curins->vibdepth << 2)*(ch->chAVibPos-32768))>>14;
 		break;
 	    }
-	    
+
 	    ch->chAVibSwpPos += 0xFFFF / (ch->curins->vibsweep + 1);
 	    if (ch->chAVibSwpPos>0x10000)
 		ch->chAVibSwpPos=0x10000;
 	    dep=(dep*(int)ch->chAVibSwpPos)>>17;
-	    
+
 	    ch->chFinalPitch-=dep;
-	    
+
 	    ch->chAVibPos += ch->curins->vibrate << 8;
 	}
     }
@@ -818,7 +818,7 @@ static void xmpPlayTick()
     if(player_will_loop) {
 	player_looped = TRUE;
 	player_will_loop = FALSE;
-    }    
+    }
 
     if(!curtick && patdelay) {
 	if (jumptoord!=-1) {
@@ -1590,9 +1590,9 @@ xmplayer_play_note_full (int chnr,
     /* CurNormNote is only relevant in FastTracker mode */
     nn = -ch->cursamp->relnote*256 - ch->cursamp->finetune*2;
     ch->chCurNormNote = nn;
-    
+
     ch->chPitch = ch->chFinalPitch = ch->chPortaToPitch = xm_player_get_note_pitch(ch);
-	    
+
     ch->chVibPos=0;
     ch->chTremPos=0;
     ch->chArpPos=0;
