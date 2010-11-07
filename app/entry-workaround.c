@@ -32,7 +32,7 @@ typedef enum {
 #define GTK_ENTRY_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_ENTRY, GtkEntryPrivate))
 #define INNER_BORDER     2
 
-struct _GtkEntryPrivate 
+struct _GtkEntryPrivate
 {
   gfloat xalign;
   gint insert_pos;
@@ -48,7 +48,7 @@ gtk_entry_set_positions (GtkEntry *entry,
 			 gint      selection_bound)
 {
   g_object_freeze_notify (G_OBJECT (entry));
-  
+
   if (current_pos != -1 &&
       entry->current_pos != current_pos)
     {
@@ -61,7 +61,7 @@ gtk_entry_set_positions (GtkEntry *entry,
       entry->selection_bound != selection_bound)
     {
       entry->selection_bound = selection_bound;
-      
+
       g_object_notify (G_OBJECT (entry), "selection-bound");
     }
 
@@ -76,9 +76,9 @@ append_char (GString *str,
   gint i;
   gint char_len;
   gchar buf[7];
-  
+
   char_len = g_unichar_to_utf8 (ch, buf);
-  
+
   i = 0;
   while (i < count)
     {
@@ -86,15 +86,15 @@ append_char (GString *str,
       ++i;
     }
 }
-     
-static char *    
+
+static char *
 gtk_entry_get_public_chars (GtkEntry *entry,
 			    gint      start,
 			    gint      end)
 {
   if (end < 0)
     end = entry->text_length;
-  
+
   if (entry->visible)
     return gtk_editable_get_chars (GTK_EDITABLE (entry), start, end);
   else if (!entry->invisible_char)
@@ -115,7 +115,7 @@ primary_get_cb (GtkClipboard     *clipboard,
 {
   GtkEntry *entry = GTK_ENTRY (data);
   gint start, end;
-  
+
   if (gtk_editable_get_selection_bounds (GTK_EDITABLE (entry), &start, &end))
     {
       gchar *str = gtk_entry_get_public_chars (entry, start, end);
@@ -139,13 +139,13 @@ gtk_entry_update_primary_selection (GtkEntry *entry)
   static GtkTargetEntry targets[] = {
     { "UTF8_STRING", 0, 0 },
     { "STRING", 0, 0 },
-    { "TEXT",   0, 0 }, 
+    { "TEXT",   0, 0 },
     { "COMPOUND_TEXT", 0, 0 },
-    { "text/plain;charset=utf-8",   0, 0 }, 
+    { "text/plain;charset=utf-8",   0, 0 },
     { NULL,   0, 0 },
     { "text/plain", 0, 0 }
   };
-  
+
   GtkClipboard *clipboard;
   gint start, end;
 
@@ -161,7 +161,7 @@ gtk_entry_update_primary_selection (GtkEntry *entry)
     return;
 
   clipboard = gtk_widget_get_clipboard (GTK_WIDGET (entry), GDK_SELECTION_PRIMARY);
-  
+
   if (gtk_editable_get_selection_bounds (GTK_EDITABLE (entry), &start, &end))
     {
       if (!gtk_clipboard_set_with_owner (clipboard, targets, G_N_ELEMENTS (targets),
@@ -255,7 +255,7 @@ blink_cb (gpointer data)
 		 "connect a handler to this signal, it must return\n"
 		 "FALSE so the entry gets the event as well");
     }
-  
+
   g_assert (GTK_WIDGET_HAS_FOCUS (entry));
   g_assert (entry->selection_bound == entry->current_pos);
 
@@ -295,15 +295,15 @@ gtk_entry_check_cursor_blink (GtkEntry *entry)
     }
   else
     {
-      if (entry->blink_timeout)  
-	{ 
+      if (entry->blink_timeout)
+	{
 	  g_source_remove (entry->blink_timeout);
 	  entry->blink_timeout = 0;
 	}
-      
+
       entry->cursor_visible = TRUE;
     }
-  
+
 }
 
 static PangoLayout *
@@ -313,13 +313,13 @@ gtk_entry_create_layout (GtkEntry *entry,
   GtkWidget *widget = GTK_WIDGET (entry);
   PangoLayout *layout = gtk_widget_create_pango_layout (widget, NULL);
   PangoAttrList *tmp_attrs = pango_attr_list_new ();
-  
+
   gchar *preedit_string = NULL;
   gint preedit_length = 0;
   PangoAttrList *preedit_attrs = NULL;
 
   pango_layout_set_single_paragraph_mode (layout, TRUE);
-  
+
   if (include_preedit)
     {
       gtk_im_context_get_preedit_string (entry->im_context,
@@ -330,12 +330,12 @@ gtk_entry_create_layout (GtkEntry *entry,
   if (preedit_length)
     {
       GString *tmp_string = g_string_new (NULL);
-      
+
       gint cursor_index = g_utf8_offset_to_pointer (entry->text, entry->current_pos) - entry->text;
-      
+
       if (entry->visible)
         {
-          g_string_prepend_len (tmp_string, entry->text, entry->n_bytes);
+          g_string_prepend_len (tmp_string, entry->text, entry->x_n_bytes);
           g_string_insert (tmp_string, cursor_index, preedit_string);
         }
       else
@@ -343,8 +343,8 @@ gtk_entry_create_layout (GtkEntry *entry,
           gint ch_len;
           gint preedit_len_chars;
           gunichar invisible_char;
-          
-          ch_len = g_utf8_strlen (entry->text, entry->n_bytes);
+
+          ch_len = g_utf8_strlen (entry->text, entry->x_n_bytes);
           preedit_len_chars = g_utf8_strlen (preedit_string, -1);
           ch_len += preedit_len_chars;
 
@@ -352,9 +352,9 @@ gtk_entry_create_layout (GtkEntry *entry,
             invisible_char = entry->invisible_char;
           else
             invisible_char = ' '; /* just pick a char */
-          
+
           append_char (tmp_string, invisible_char, ch_len);
-          
+
           /* Fix cursor index to point to invisible char corresponding
            * to the preedit, fix preedit_length to be the length of
            * the invisible chars representing the preedit
@@ -366,20 +366,20 @@ gtk_entry_create_layout (GtkEntry *entry,
             preedit_len_chars *
             g_unichar_to_utf8 (invisible_char, NULL);
         }
-      
+
       pango_layout_set_text (layout, tmp_string->str, tmp_string->len);
-      
+
       pango_attr_list_splice (tmp_attrs, preedit_attrs,
 			      cursor_index, preedit_length);
-      
+
       g_string_free (tmp_string, TRUE);
     }
   else
     {
       PangoDirection pango_dir;
-      
+
       if (entry->visible)
-	pango_dir = pango_find_base_dir (entry->text, entry->n_bytes);
+	pango_dir = pango_find_base_dir (entry->text, entry->x_n_bytes);
 
       else
 	pango_dir = PANGO_DIRECTION_NEUTRAL;
@@ -410,34 +410,34 @@ gtk_entry_create_layout (GtkEntry *entry,
       pango_layout_set_alignment (layout, pango_dir);
 
       entry->resolved_dir = pango_dir;
-      
+
       if (entry->visible)
         {
-          pango_layout_set_text (layout, entry->text, entry->n_bytes);
+          pango_layout_set_text (layout, entry->text, entry->x_n_bytes);
         }
       else
         {
           GString *str = g_string_new (NULL);
           gunichar invisible_char;
-          
+
           if (entry->invisible_char != 0)
             invisible_char = entry->invisible_char;
           else
             invisible_char = ' '; /* just pick a char */
-          
+
           append_char (str, invisible_char, entry->text_length);
           pango_layout_set_text (layout, str->str, str->len);
           g_string_free (str, TRUE);
         }
     }
-      
+
   pango_layout_set_attributes (layout, tmp_attrs);
 
   if (preedit_string)
     g_free (preedit_string);
   if (preedit_attrs)
     pango_attr_list_unref (preedit_attrs);
-      
+
   pango_attr_list_unref (tmp_attrs);
 
   return layout;
@@ -456,7 +456,7 @@ gtk_entry_ensure_layout (GtkEntry *entry,
       entry->cached_layout = gtk_entry_create_layout (entry, include_preedit);
       entry->cache_includes_preedit = include_preedit;
     }
-  
+
   return entry->cached_layout;
 }
 
@@ -470,7 +470,7 @@ gtk_entry_get_cursor_locations (GtkEntry   *entry,
     {
       if (strong_x)
 	*strong_x = 0;
-      
+
       if (weak_x)
 	*weak_x = 0;
     }
@@ -480,7 +480,7 @@ gtk_entry_get_cursor_locations (GtkEntry   *entry,
       const gchar *text = pango_layout_get_text (layout);
       PangoRectangle strong_pos, weak_pos;
       gint index;
-  
+
       if (type == CURSOR_STANDARD)
 	{
 	  index = g_utf8_offset_to_pointer (text, entry->current_pos + entry->preedit_cursor) - text;
@@ -500,12 +500,12 @@ gtk_entry_get_cursor_locations (GtkEntry   *entry,
 		}
 	    }
 	}
-      
+
       pango_layout_get_cursor_pos (layout, index, &strong_pos, &weak_pos);
-      
+
       if (strong_x)
 	*strong_x = strong_pos.x / PANGO_SCALE;
-      
+
       if (weak_x)
 	*weak_x = weak_pos.x / PANGO_SCALE;
     }
@@ -526,7 +526,7 @@ gtk_entry_adjust_scroll (GtkEntry *entry)
 
   if (!GTK_WIDGET_REALIZED (entry))
     return;
-  
+
   gdk_drawable_get_size (entry->text_area, &text_area_width, NULL);
   text_area_width -= 2 * INNER_BORDER;
 
@@ -572,7 +572,7 @@ gtk_entry_adjust_scroll (GtkEntry *entry)
    */
 
   gtk_entry_get_cursor_locations (entry, CURSOR_STANDARD, &strong_x, &weak_x);
-  
+
   strong_xoffset = strong_x - entry->scroll_offset;
 
   if (strong_xoffset < 0)
@@ -660,7 +660,7 @@ get_text_area_size (GtkEntry *entry,
 
   if (y)
     *y = yborder;
-  
+
   if (width)
     *width = GTK_WIDGET (entry)->allocation.width - xborder * 2;
 
@@ -707,12 +707,12 @@ recompute_idle_func (gpointer data)
   entry = GTK_ENTRY (data);
 
   entry->recompute_idle = 0;
-  
+
   if (gtk_widget_has_screen (GTK_WIDGET (entry)))
     {
       gtk_entry_adjust_scroll (entry);
       gtk_entry_queue_draw (entry);
-      
+
       update_im_cursor_location (entry);
     }
 
@@ -726,11 +726,11 @@ gtk_entry_recompute (GtkEntry *entry)
 {
   gtk_entry_reset_layout (entry);
   gtk_entry_check_cursor_blink (entry);
-  
+
   if (!entry->recompute_idle)
     {
       entry->recompute_idle = g_idle_add_full (G_PRIORITY_HIGH_IDLE + 15, /* between resize and redraw */
-					       recompute_idle_func, entry, NULL); 
+					       recompute_idle_func, entry, NULL);
     }
 }
 
@@ -746,7 +746,7 @@ wa_entry_set_text (GtkEntry *entry, const gchar *text)
     return;
 
   entry->text_length = 0;
-  entry->n_bytes = 0;
+  entry->x_n_bytes = 0;
 
   gtk_entry_set_positions (entry, 0, 0);
   gtk_entry_update_primary_selection (entry);

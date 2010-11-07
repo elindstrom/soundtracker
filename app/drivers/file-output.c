@@ -192,7 +192,7 @@ sndfile_open (void *dp)
 static double
 sndfile_get_play_time (void *dp)
 {
-    sndfile_driver * const d = dp;
+  //    sndfile_driver * const d = dp;
 
     return d->playtime;
 }
@@ -407,8 +407,9 @@ file_get_play_time (void *dp)
 static inline int
 file_get_play_rate (void *d)
 {
-    sndfile_driver * const dp = d;
-    return dp->p_mixfreq;
+  //    sndfile_driver * const dp = d;
+  //    return dp->p_mixfreq;
+  return -1;
 }
 
 static gboolean

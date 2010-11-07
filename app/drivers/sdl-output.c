@@ -31,7 +31,7 @@
 #include <SDL.h>
 
 #include "i18n.h"
-#include "driver-out.h"
+#include "driver-inout.h"
 #include "mixer.h"
 #include "errors.h"
 #include "gui-subs.h"
@@ -174,7 +174,7 @@ sdl_savesettings (void *dp,
     return TRUE;
 }
 
-st_out_driver driver_out_sdl = {
+st_io_driver driver_out_sdl = {
     { "SDL Output",
 
       sdl_new,
