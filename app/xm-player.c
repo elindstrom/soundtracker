@@ -882,6 +882,7 @@ static void xmpPlayTick()
 	    return;
 	}
 
+	gboolean patdelay_on_this_tick = FALSE;
 	for (i=0; i<nchan; i++) {
 	    channel *ch=&channels[i];
 
@@ -896,7 +897,7 @@ static void xmpPlayTick()
 		procdat &= 0xF;
 	    }
 
-	    if (!patdelay) {
+	    if (!patdelay || patdelay_on_this_tick) {
 		if (procins && procins<=ninst) {
 		    ch->chLastIns=ch->chCurIns;
 		    ch->chCurIns=procins;
@@ -1140,7 +1141,10 @@ static void xmpPlayTick()
 		break;
 	    case xmpCmdPatDelay:
 		if (!patdelay)
+		  {
 		    patdelay=procdat+1;
+		    patdelay_on_this_tick = TRUE;
+		  }
 		break;
 	    case xmpCmdDelayNote:
 		if (procnot)
