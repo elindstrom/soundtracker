@@ -450,6 +450,8 @@ instrument_editor_handle_keys (int shift,
     return FALSE;
 }
 
+void current_instrument_name_changed(void);
+
 void
 instrument_editor_update (void)
 {
@@ -461,7 +463,11 @@ instrument_editor_update (void)
     }
 
     if(current_instrument)
+      {
+	g_signal_handlers_block_by_func(gui_curins_name, current_instrument_name_changed, NULL);
 	wa_entry_set_text(GTK_ENTRY(gui_curins_name), current_instrument->name);
+	g_signal_handlers_unblock_by_func(gui_curins_name, current_instrument_name_changed, NULL);
+      }
 
     if(!o) {
 	envelope_box_set_envelope(ENVELOPE_BOX(volenv), NULL);
