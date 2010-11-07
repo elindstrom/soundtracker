@@ -155,7 +155,7 @@ static int gui_ewc_startstop = 0;
 /* gui event handlers */
 static void file_selected(GtkWidget *w, GtkFileSelection *fs);
 static void current_instrument_changed(GtkSpinButton *spin);
-void current_instrument_name_changed(void);
+static void current_instrument_name_changed(void);
 static void current_sample_changed(GtkSpinButton *spin);
 static void current_sample_name_changed(void);
 static int keyevent(GtkWidget *widget, GdkEventKey *event, gpointer data);
@@ -673,7 +673,7 @@ current_instrument_changed (GtkSpinButton *spin)
     xm_set_modified(m);
 }
 
-void
+static void
 current_instrument_name_changed (void)
 {
     STInstrument *i = &xm->instruments[gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin))-1];
@@ -1600,7 +1600,7 @@ gui_get_text_entry (int length,
     gtk_entry_set_max_length(GTK_ENTRY(thing), length);
 
     g_signal_connect_after(GTK_EDITABLE(thing), "insert-text",
-			   G_CALLBACK(changedfunc), NULL);
+			     G_CALLBACK(changedfunc), NULL);
 
     *widget = thing;
 }
