@@ -1,0 +1,6 @@
+*.o
+.deps
+*.a
+*~
+*.cache
+*.log
