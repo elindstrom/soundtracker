@@ -462,7 +462,6 @@ instrument_editor_update (void)
 
     if(current_instrument)
       gtk_entry_set_text(GTK_ENTRY(gui_curins_name), current_instrument->name);
-      //	wa_entry_set_text(GTK_ENTRY(gui_curins_name), current_instrument->name);
 
     if(!o) {
 	envelope_box_set_envelope(ENVELOPE_BOX(volenv), NULL);
