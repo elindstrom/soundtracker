@@ -693,7 +693,7 @@ current_sample_changed (GtkSpinButton *spin)
     STInstrument *i = &xm->instruments[gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin))-1];
     STSample *s = &i->samples[smpl = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(cursmpl_spin))];
 
-    wa_entry_set_text(GTK_ENTRY(gui_cursmpl_name), s->name);
+    gtk_entry_set_text(GTK_ENTRY(gui_cursmpl_name), s->name);
     sample_editor_set_sample(s);
     modinfo_set_current_sample(smpl);
     xm_set_modified(m);

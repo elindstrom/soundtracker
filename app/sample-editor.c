@@ -620,7 +620,7 @@ sample_editor_update (void)
 	return;
     }
 
-    wa_entry_set_text(GTK_ENTRY(gui_cursmpl_name), sts->name);
+    gtk_entry_set_text(GTK_ENTRY(gui_cursmpl_name), sts->name);
 
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_volume), sts->volume);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_panning), sts->panning - 128);
