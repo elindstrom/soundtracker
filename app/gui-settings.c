@@ -37,7 +37,6 @@
 #include "track-editor.h"
 #include "extspinbutton.h"
 #include "tracker-settings.h"
-#include "entry-workaround.h"
 
 gui_prefs gui_settings = {
     "---0000000",
@@ -443,7 +442,7 @@ gui_settings_dialog (void)
     gtk_entry_set_max_length((GtkEntry*)thing, 3);
     strncpy(stmp, gui_settings.tracker_line_format, 3);
     stmp[3] = 0;
-    wa_entry_set_text((GtkEntry*)thing, stmp);
+    gtk_entry_set_text((GtkEntry*)thing, stmp);
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
     g_signal_connect(thing, "changed",
@@ -454,7 +453,7 @@ gui_settings_dialog (void)
     gtk_entry_set_max_length((GtkEntry*)thing, 2);
     strncpy(stmp, gui_settings.tracker_line_format+3, 2);
     stmp[2] = 0;
-    wa_entry_set_text((GtkEntry*)thing, stmp);
+    gtk_entry_set_text((GtkEntry*)thing, stmp);
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
     g_signal_connect(thing, "changed",
@@ -465,7 +464,7 @@ gui_settings_dialog (void)
     gtk_entry_set_max_length((GtkEntry*)thing, 2);
     strncpy(stmp, gui_settings.tracker_line_format+5, 2);
     stmp[2] = 0;
-    wa_entry_set_text((GtkEntry*)thing, stmp);
+    gtk_entry_set_text((GtkEntry*)thing, stmp);
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
     g_signal_connect(thing, "changed",
@@ -476,7 +475,7 @@ gui_settings_dialog (void)
     gtk_entry_set_max_length((GtkEntry*)thing, 3);
     strncpy(stmp, gui_settings.tracker_line_format+7, 3);
     stmp[3] = 0;
-    wa_entry_set_text((GtkEntry*)thing, stmp);
+    gtk_entry_set_text((GtkEntry*)thing, stmp);
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
     g_signal_connect(thing, "changed",

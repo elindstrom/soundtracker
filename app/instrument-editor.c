@@ -41,7 +41,6 @@
 #include "gui-settings.h"
 #include "module-info.h"
 #include "file-operations.h"
-#include "entry-workaround.h"
 
 static GtkWidget *volenv, *panenv, *disableboxes[4];
 static GtkWidget *instrument_editor_vibtype_w[4];

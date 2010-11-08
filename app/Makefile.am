@@ -40,8 +40,7 @@ soundtracker_SOURCES = \
 	transposition.c transposition.h \
 	xm.c xm.h \
 	xm-player.c xm-player.h \
-	tracer.c tracer.h \
-	entry-workaround.c entry-workaround.h
+	tracer.c tracer.h
 
 if !NO_GDK_PIXBUF
   soundtracker_SOURCES += scalablepic.c scalablepic.h

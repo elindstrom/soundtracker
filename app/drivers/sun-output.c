@@ -44,7 +44,6 @@
 #include "errors.h"
 #include "gui-subs.h"
 #include "preferences.h"
-#include "entry-workaround.h"
 
 typedef struct sun_driver {
     GtkWidget *configwidget;
@@ -128,7 +127,7 @@ prefs_init_from_structure (sun_driver *d)
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(d->prefs_mixfreq_w[i]), TRUE);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(d->bufsizespin_w), d->p_bufsize);
 
-    wa_entry_set_text(GTK_ENTRY(d->prefs_devaudio_w), d->p_devaudio);
+    gtk_entry_set_text(GTK_ENTRY(d->prefs_devaudio_w), d->p_devaudio);
 }
 
 static void
@@ -215,7 +214,7 @@ sun_make_config_widgets (sun_driver *d)
     thing = gtk_entry_new_with_max_length(126);
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
-    wa_entry_set_text(GTK_ENTRY(thing), d->p_devaudio);
+    gtk_entry_set_text(GTK_ENTRY(thing), d->p_devaudio);
     g_signal_connect_after(thing, "changed",
 			     G_CALLBACK(sun_devaudio_changed), d);
     d->prefs_devaudio_w = thing;

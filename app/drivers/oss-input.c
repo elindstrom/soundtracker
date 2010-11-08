@@ -50,7 +50,6 @@
 #include "mixer.h"
 #include "errors.h"
 #include "gui-subs.h"
-#include "entry-workaround.h"
 
 typedef struct oss_driver {
     GtkWidget *configwidget;
@@ -93,7 +92,7 @@ oss_poll_ready_sampling (gpointer data,
 static void
 prefs_init_from_structure (oss_driver *d)
 {
-    wa_entry_set_text(GTK_ENTRY(d->prefs_devdsp_w), d->p_devdsp);
+    gtk_entry_set_text(GTK_ENTRY(d->prefs_devdsp_w), d->p_devdsp);
 }
 
 static void
@@ -129,7 +128,7 @@ oss_make_config_widgets (oss_driver *d)
     thing = gtk_entry_new_with_max_length(126);
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
-    wa_entry_set_text(GTK_ENTRY(thing), d->p_devdsp);
+    gtk_entry_set_text(GTK_ENTRY(thing), d->p_devdsp);
     g_signal_connect_after(thing, "changed",
 			     G_CALLBACK(oss_devdsp_changed), d);
     d->prefs_devdsp_w = thing;

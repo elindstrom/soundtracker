@@ -51,7 +51,6 @@
 #include "errors.h"
 #include "gui-subs.h"
 #include "preferences.h"
-#include "entry-workaround.h"
 
 typedef struct oss_driver {
     GtkWidget *configwidget;
@@ -140,7 +139,7 @@ prefs_init_from_structure (oss_driver *d)
 
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(d->bufsizespin_w), d->p_fragsize);
 
-    wa_entry_set_text(GTK_ENTRY(d->prefs_devdsp_w), d->p_devdsp);
+    gtk_entry_set_text(GTK_ENTRY(d->prefs_devdsp_w), d->p_devdsp);
 }
 
 static void
@@ -223,7 +222,7 @@ oss_make_config_widgets (oss_driver *d)
     thing = gtk_entry_new_with_max_length(126);
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
-    wa_entry_set_text(GTK_ENTRY(thing), d->p_devdsp);
+    gtk_entry_set_text(GTK_ENTRY(thing), d->p_devdsp);
     g_signal_connect_after(thing, "changed",
 			     G_CALLBACK(oss_devdsp_changed), d);
     d->prefs_devdsp_w = thing;

@@ -37,7 +37,6 @@
 #include "instrument-editor.h"
 #include "keys.h"
 #include "track-editor.h"
-#include "entry-workaround.h"
 
 static GtkWidget *ilist, *slist, *songname;
 static GtkWidget *freqmode_w[2], *ptmode_toggle;
@@ -267,7 +266,7 @@ modinfo_update_all (void)
     for(i = 0; i < 128; i++)
 	modinfo_update_instrument(i);
 
-    wa_entry_set_text(GTK_ENTRY(songname), xm->name);
+    gtk_entry_set_text(GTK_ENTRY(songname), xm->name);
 
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(ptmode_toggle), xm->flags & XM_FLAGS_IS_MOD);
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(freqmode_w[xm->flags & XM_FLAGS_AMIGA_FREQ]), TRUE);

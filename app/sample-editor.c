@@ -1,4 +1,3 @@
-
 /*
  * The Real SoundTracker - sample editor
  *
@@ -63,7 +62,6 @@
 #include "file-operations.h"
 #include "gui-settings.h"
 #include "xm.h"
-#include "entry-workaround.h"
 
 // == GUI variables
 
@@ -1685,7 +1683,7 @@ sample_editor_open_raw_sample_dialog (const gchar *filename)
     gtk_box_pack_start(GTK_BOX(box2), combo, FALSE, TRUE, 0);
     gtk_widget_show (combo);    
     wavload_raw_rate = GTK_COMBO (combo)->entry; 
-    wa_entry_set_text (GTK_ENTRY (wavload_raw_rate), _("8363")); // default
+    gtk_entry_set_text (GTK_ENTRY (wavload_raw_rate), _("8363")); // default
     
     // The bottom of the box
 

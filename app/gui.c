@@ -1,4 +1,3 @@
-
 /*
  * The Real SoundTracker - main user interface handling
  *
@@ -65,7 +64,6 @@
 #include "file-operations.h"
 #include "playlist.h"
 #include "extspinbutton.h"
-#include "entry-workaround.h"
 
 int gui_playing_mode = 0;
 int notebook_current_page = NOTEBOOK_PAGE_FILE;

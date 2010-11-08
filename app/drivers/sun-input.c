@@ -43,7 +43,6 @@
 #include "mixer.h"
 #include "errors.h"
 #include "gui-subs.h"
-#include "entry-workaround.h"
 
 typedef struct sun_driver {
     GtkWidget *configwidget;
@@ -85,7 +84,7 @@ sun_poll_ready_sampling (gpointer data,
 static void
 prefs_init_from_structure (sun_driver *d)
 {
-    wa_entry_set_text(GTK_ENTRY(d->prefs_devaudio_w), d->p_devaudio);
+    gtk_entry_set_text(GTK_ENTRY(d->prefs_devaudio_w), d->p_devaudio);
 }
 
 static void
@@ -123,7 +122,7 @@ sun_make_config_widgets (sun_driver *d)
     thing = gtk_entry_new_with_max_length(126);
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
-    wa_entry_set_text(GTK_ENTRY(thing), d->p_devaudio);
+    gtk_entry_set_text(GTK_ENTRY(thing), d->p_devaudio);
     g_signal_connect_after(thing, "changed",
 			     G_CALLBACK(sun_devaudio_changed), d);
     d->prefs_devaudio_w = thing;
