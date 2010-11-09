@@ -529,7 +529,7 @@ static GnomeUIInfo edit_menu[] = {
     GNOMEUIINFO_SEPARATOR,
 
     { GNOME_APP_UI_TOGGLEITEM, N_("_Jazz Edit Mode"), NULL, track_editor_toggle_jazz_edit, (gpointer)0, NULL,
-      GNOME_APP_PIXMAP_NONE, 0, ' ', GDK_SHIFT_MASK, NULL }, 
+      GNOME_APP_PIXMAP_NONE, 0, ' ', GDK_CONTROL_MASK, NULL }, 
 
     { GNOME_APP_UI_TOGGLEITEM, N_("_Record keyreleases"), NULL, track_editor_toggle_insert_noteoff, 
       (gpointer)0, NULL, GNOME_APP_PIXMAP_NONE, 0, 0, 0, NULL },  
