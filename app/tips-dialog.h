@@ -29,7 +29,9 @@ void        tips_dialog_open               (void);
 
 /* Return dialog main vbox without creating window. An existing tips
    dialog window will be closed. */
-GtkWidget * tips_dialog_get_vbox           (void);
+GtkWidget * tips_dialog_get_vbox    (void);
+GtkWidget * tips_dialog_get_content_vbox   (void);
+GtkWidget * tips_dialog_get_action_vbox    (void);
 
 void        tips_dialog_load_settings      (void);
 void        tips_dialog_save_settings      (void);

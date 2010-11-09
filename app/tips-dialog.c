@@ -38,6 +38,8 @@ static int  tips_show_next (GtkWidget *widget, gpointer data);
 static void tips_toggle_update (GtkWidget *widget, gpointer data);
 
 static GtkWidget *tips_dialog_vbox = NULL;
+static GtkWidget *tips_dialog_content_vbox = NULL;
+static GtkWidget *tips_dialog_action_vbox = NULL;
 static GtkWidget *tips_dialog = NULL;
 static GtkWidget *tips_label;
 
@@ -81,9 +83,12 @@ tips_dialog_open ()
 	gtk_window_set_title (GTK_WINDOW (tips_dialog), (_("SoundTracker Tip of the day")));
 	g_signal_connect(tips_dialog, "delete_event",
 			 G_CALLBACK(tips_dialog_hide), NULL);
-	
-	thing = tips_dialog_get_vbox();
-	gtk_container_add(GTK_CONTAINER (tips_dialog), thing);
+	thing = tips_dialog_get_content_vbox();
+	gtk_container_add(GTK_CONTAINER (gtk_dialog_get_content_area(tips_dialog)), thing);
+	gtk_widget_show(thing);
+
+	thing = tips_dialog_get_action_vbox();
+	gtk_container_add(GTK_CONTAINER (gtk_dialog_get_action_area(tips_dialog)), thing);
 	gtk_widget_show(thing);
     }
 
@@ -100,8 +105,80 @@ tips_dialog_vbox_destroy (GtkObject *object)
     tips_dialog_vbox = NULL;
 }
 
+static void
+tips_dialog_content_vbox_destroy (GtkObject *object)
+{
+    tips_dialog_content_vbox = NULL;
+}
+
+static void
+tips_dialog_action_vbox_destroy (GtkObject *object)
+{
+    tips_dialog_action_vbox = NULL;
+}
+
 GtkWidget *
 tips_dialog_get_vbox (void)
+{
+    GtkWidget *vbox;
+    GtkWidget *cbox;
+    GtkWidget *abox;
+
+    if(tips_dialog_vbox) {
+	g_error("tips_dialog_get_vbox() called twice.\n");
+	return NULL;
+    }
+
+    tips_dialog_vbox = vbox = gtk_vbox_new (FALSE, 0);
+
+    g_signal_connect(tips_dialog_vbox, "destroy",
+		     G_CALLBACK(tips_dialog_vbox_destroy), NULL);
+
+    cbox = tips_dialog_get_content_vbox();
+    abox = tips_dialog_get_action_vbox();
+
+    gtk_container_set_border_width (GTK_CONTAINER (cbox), 10);
+    gtk_box_pack_start (GTK_BOX (vbox), cbox, FALSE, TRUE, 0);
+    gtk_widget_show (cbox);
+
+    gtk_container_set_border_width (GTK_CONTAINER (abox), 10);
+    gtk_box_pack_end (GTK_BOX (vbox), abox, FALSE, TRUE, 0);
+    gtk_widget_show (abox);
+
+    return vbox;
+}
+
+GtkWidget *
+tips_dialog_get_content_vbox (void)
+{
+    GtkWidget *vbox;
+    GtkWidget *hbox;
+
+    if(tips_dialog_content_vbox) {
+	g_error("tips_dialog_get_content_vbox() called twice.\n");
+	return NULL;
+    }
+
+    tips_dialog_content_vbox = vbox = gtk_vbox_new (FALSE, 0);
+
+    g_signal_connect(tips_dialog_content_vbox, "destroy",
+		     G_CALLBACK(tips_dialog_content_vbox_destroy), NULL);
+
+    hbox = gtk_hbox_new (FALSE, 5);
+    gtk_container_set_border_width (GTK_CONTAINER (hbox), 10);
+    gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, TRUE, 0);
+    gtk_widget_show (hbox);
+
+    tips_label = gtk_label_new (_(tips_array[tips_dialog_last_tip]));
+    gtk_label_set_justify (GTK_LABEL (tips_label), GTK_JUSTIFY_CENTER);
+    gtk_box_pack_start (GTK_BOX (hbox), tips_label, TRUE, TRUE, 3);
+    gtk_widget_show (tips_label);
+
+    return vbox;
+}
+
+GtkWidget *
+tips_dialog_get_action_vbox (void)
 {
     GtkWidget *vbox;
     GtkWidget *hbox1;
@@ -114,49 +191,27 @@ tips_dialog_get_vbox (void)
     GtkWidget *vbox_check;
     GtkWidget *button_check;
 
-    if(tips_dialog_vbox) {
-	g_error("tips_dialog_get_vbox() called twice.\n");
+    if(tips_dialog_action_vbox) {
+	g_error("tips_dialog_get_action_vbox() called twice.\n");
 	return NULL;
     }
 
-    tips_dialog_vbox = vbox = gtk_vbox_new (FALSE, 0);
+    tips_dialog_action_vbox = vbox = gtk_vbox_new (FALSE, 0);
 
-    g_signal_connect(tips_dialog_vbox, "destroy",
-		       G_CALLBACK(tips_dialog_vbox_destroy), NULL);
+    g_signal_connect(tips_dialog_action_vbox, "destroy",
+		     G_CALLBACK(tips_dialog_action_vbox_destroy), NULL);
 
-    hbox1 = gtk_hbox_new (FALSE, 5);
-    gtk_container_set_border_width (GTK_CONTAINER (hbox1), 10);
-    gtk_box_pack_start (GTK_BOX (vbox), hbox1, FALSE, TRUE, 0);
-    gtk_widget_show (hbox1);
+    bbox = gtk_hbox_new (TRUE, 5);
+    gtk_box_pack_start (GTK_BOX (vbox), bbox, TRUE, FALSE, 0);
+    gtk_widget_show(bbox);
 
-    hbox2 = gtk_hbox_new (FALSE, 5);
-    gtk_container_set_border_width (GTK_CONTAINER (hbox2), 10);
-    gtk_box_pack_end (GTK_BOX (vbox), hbox2, FALSE, TRUE, 0);
-    gtk_widget_show (hbox2);
-      
-    bbox = gtk_hbutton_box_new ();
-    gtk_box_pack_end (GTK_BOX (hbox2), bbox, FALSE, FALSE, 0);
-    gtk_widget_show (bbox);
-
-    vbox_bbox2 = gtk_vbox_new (FALSE, 0);
-    gtk_box_pack_end (GTK_BOX (hbox2), vbox_bbox2, FALSE, FALSE, 15);
-    gtk_widget_show (vbox_bbox2);
-
-    bbox2 = gtk_hbox_new (TRUE, 5); 
-    gtk_box_pack_end (GTK_BOX (vbox_bbox2), bbox2, TRUE, FALSE, 0);
-    gtk_widget_show(bbox2);
-
-    tips_label = gtk_label_new (_(tips_array[tips_dialog_last_tip]));
-    gtk_label_set_justify (GTK_LABEL (tips_label), GTK_JUSTIFY_CENTER);
-    gtk_box_pack_start (GTK_BOX (hbox1), tips_label, TRUE, TRUE, 3);
-    gtk_widget_show (tips_label);
 
     button_prev = gtk_button_new_with_label ((_("Previous Tip")));
     GTK_WIDGET_UNSET_FLAGS (button_prev, GTK_RECEIVES_DEFAULT);
     g_signal_connect(button_prev, "clicked",
-			G_CALLBACK(tips_show_next),
-			(gpointer) "prev");
-    gtk_container_add (GTK_CONTAINER (bbox2), button_prev);
+		     G_CALLBACK(tips_show_next),
+		     (gpointer) "prev");
+    gtk_container_add (GTK_CONTAINER (bbox), button_prev);
     gtk_widget_show (button_prev);
 
     button_next = gtk_button_new_with_label ((_("Next Tip")));
@@ -164,11 +219,11 @@ tips_dialog_get_vbox (void)
     g_signal_connect(button_next, "clicked",
 			G_CALLBACK(tips_show_next),
 			(gpointer) "next");
-    gtk_container_add (GTK_CONTAINER (bbox2), button_next);
+    gtk_container_add (GTK_CONTAINER (bbox), button_next);
     gtk_widget_show (button_next);
 
     vbox_check = gtk_vbox_new (FALSE, 0);
-    gtk_box_pack_start (GTK_BOX (hbox2), vbox_check, FALSE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (bbox), vbox_check, FALSE, TRUE, 0);
     gtk_widget_show (vbox_check);
 
     button_check = gtk_check_button_new_with_label ((_("Show tip next time")));
@@ -182,6 +237,8 @@ tips_dialog_get_vbox (void)
 
     return vbox;
 }
+
+
 
 static int
 tips_dialog_hide (GtkWidget *widget,
@@ -257,7 +314,7 @@ tips_dialog_save_settings (void)
     tips_dialog_last_tip++;
     prefs_put_int(f, "show-tips", tips_dialog_show_tips);
     prefs_put_int(f, "last-tip", tips_dialog_last_tip);
-    
+
     prefs_close(f);
     return;
 }
