@@ -84,11 +84,11 @@ tips_dialog_open ()
 	g_signal_connect(tips_dialog, "delete_event",
 			 G_CALLBACK(tips_dialog_hide), NULL);
 	thing = tips_dialog_get_content_vbox();
-	gtk_container_add(GTK_CONTAINER (gtk_dialog_get_content_area(tips_dialog)), thing);
+	gtk_container_add(GTK_CONTAINER (gtk_dialog_get_content_area(GTK_DIALOG(tips_dialog))), thing);
 	gtk_widget_show(thing);
 
 	thing = tips_dialog_get_action_vbox();
-	gtk_container_add(GTK_CONTAINER (gtk_dialog_get_action_area(tips_dialog)), thing);
+	gtk_container_add(GTK_CONTAINER (gtk_dialog_get_action_area(GTK_DIALOG(tips_dialog))), thing);
 	gtk_widget_show(thing);
     }
 
@@ -181,11 +181,7 @@ GtkWidget *
 tips_dialog_get_action_vbox (void)
 {
     GtkWidget *vbox;
-    GtkWidget *hbox1;
-    GtkWidget *hbox2;
     GtkWidget *bbox;
-    GtkWidget *vbox_bbox2;
-    GtkWidget *bbox2;
     GtkWidget *button_next;
     GtkWidget *button_prev;
     GtkWidget *vbox_check;
